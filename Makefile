@@ -1,6 +1,7 @@
 DESTDIR?=
 PERL5DIR=$(DESTDIR)/usr/share/perl5
 LIBDIR=$(DESTDIR)/usr/lib/backup-manager
+SHAREDIR=$(DESTDIR)/usr/share/backup-manager
 SHFILES=lib/dialog.sh \
 	lib/files.sh \
 	lib/actions.sh \
@@ -25,11 +26,13 @@ install_lib:
 # The main stuff to build the backup-manager package
 install_deb:
 	@echo -e "\n*** Installing scripts ***\n"
+	mkdir -p $(DESTDIR)/usr/sbin
 	mkdir -p $(DESTDIR)/usr/bin
 	mkdir -p $(DESTDIR)/etc
-	install --owner=root --group=root --mode=0755 backup-manager $(DESTDIR)/usr/bin
+	mkdir -p $(SHAREDIR)
+	install --owner=root --group=root --mode=0755 backup-manager $(DESTDIR)/usr/sbin
 	install --owner=root --group=root --mode=0755 backup-manager-upload $(DESTDIR)/usr/bin
-	install --owner=root --group=root --mode=0600 backup-manager.conf.tpl $(DESTDIR)/etc
+	install --owner=root --group=root --mode=0644 backup-manager.conf.tpl $(SHAREDIR)
 	
 	mkdir -p $(PERL5DIR)
 	mkdir -p $(PERL5DIR)/BackupManager

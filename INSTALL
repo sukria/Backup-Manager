@@ -3,7 +3,7 @@ How to install backup-manager
 ~/backup-manager $ 
 ~/backup-manager $ su 
 ~/backup-manager # make install 
-~/backup-manager # cp /etc/backup-manager.conf.tpl /etc/backup-manager.conf 
+~/backup-manager # cp /usr/share/backup-manager/backup-manager.conf.tpl /etc/backup-manager.conf 
 ~/backup-manager #  
 
 You can then edit /etc/backup-manager.conf to fit your needs.

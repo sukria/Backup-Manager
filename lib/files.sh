@@ -185,7 +185,8 @@ clean_file()
 	date=$(get_date_from_file $file)
 	date=$(echo $date | sed -e 's/[^0-9]//g')
 	if [ ! -z $date ]; then
-		if [ $date -lt $date_to_remove ]; then
+		if [ $date -lt $date_to_remove ] || 
+		   [ $date = $date_to_remove ]; then
 			info -n "Removing \$file: "
 			rm -f $file
 			info "ok"

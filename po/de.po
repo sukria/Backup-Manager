@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-07 21:25+0100\n"
+"POT-Creation-Date: 2004-12-10 15:36+0100\n"
 "PO-Revision-Date: 2003-12-18 10:09+0100\n"
 "Last-Translator: mikap <mikap@grml.org>\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgstr "konnte $BM_BURNING_DEVICE nicht auf $mount_point binden (mounten)"
 
 #: actions.sh.ext:29 actions.sh.ext:60 actions.sh.ext:136 actions.sh.ext:142
 #: actions.sh.ext:149 actions.sh.ext:290 actions.sh.ext:309 dialog.sh.ext:83
-#: dialog.sh.ext:90 files.sh.ext:158 files.sh.ext:169 files.sh.ext:191
+#: dialog.sh.ext:90 files.sh.ext:158 files.sh.ext:169 files.sh.ext:192
 msgid "ok"
 msgstr "ok"
 
@@ -310,16 +310,16 @@ msgstr "fehlgeschlagen (prüfen Sie die Dateirechte)"
 msgid "$file is not a regular file."
 msgstr ""
 
-#: files.sh.ext:189
+#: files.sh.ext:190
 #, sh-format
 msgid "Removing $file: "
 msgstr ""
 
-#: files.sh.ext:207
+#: files.sh.ext:208
 msgid "Directory given is not found"
 msgstr ""
 
-#: files.sh.ext:217
+#: files.sh.ext:218
 #, sh-format
 msgid "Entering directory $file."
 msgstr ""

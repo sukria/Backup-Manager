@@ -28,7 +28,6 @@ install_deb:
 	@echo -e "\n*** Installing scripts ***\n"
 	mkdir -p $(DESTDIR)/usr/sbin
 	mkdir -p $(DESTDIR)/usr/bin
-	mkdir -p $(DESTDIR)/etc
 	mkdir -p $(SHAREDIR)
 	install --owner=root --group=root --mode=0755 backup-manager $(DESTDIR)/usr/sbin
 	install --owner=root --group=root --mode=0755 backup-manager-upload $(DESTDIR)/usr/bin
@@ -55,6 +54,6 @@ deb:
 
 clean:
 	rm -f build-stamp
-	rm -rf debian/tmp
+	rm -rf debian/backup-manager
 	$(MAKE) -C po clean
 

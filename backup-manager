@@ -165,7 +165,7 @@ fi
 #############################################################
 
 # This is the time for pre-command
-exec_pre_command
+exec_pre_command || error "Unable to exec the pre-command"
 
 # first cleanning up the repository 
 if [ "$nopurge" != "true" ]; then
@@ -186,7 +186,7 @@ if [ "$noburn" != "true" ]; then
 fi
 
 # this is time for post-command
-exec_post_command
+exec_post_command || error "Unable to exec post-command"
 
 # release the lock concerned by this conffile
 release_lock

@@ -1,0 +1,9 @@
+ 0.5.7
+ 	* Removed the file TODO
+	* Added a COPYING file with the content of the GPL V2.
+	* Renamed backup-manager.conf.tpl backup-manager.conf.
+	* Better handling of pre and post commands.
+	* Added a file CHANGELOG.
+	
+  - Alexis Sukrieh <sukria@sukria.net>  Wed, 23 Mar 2005
+	

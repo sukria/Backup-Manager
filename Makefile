@@ -21,6 +21,7 @@ DOCPDF		= doc/user-guide.pdf
 DOCTXT		= doc/user-guide.txt
 
 # The backup-manager package
+install: install_lib install_deb install_po
 install_binary: doc install_lib install_deb install_po
 
 # The backup-manager-doc package
@@ -71,7 +72,7 @@ install_man:
 
 # Quick :)
 deb:
-	fakeroot dpkg-buildpackage -us -uc
+	dpkg-buildpackage -us -uc -rfakeroot
 
 clean:
 	rm -f build-stamp

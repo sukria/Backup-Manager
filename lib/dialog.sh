@@ -8,14 +8,32 @@
 # print on STDOUT the usage 
 usage()
 {
-	echo "$0 [options]"
-	echo "--verbose|-v        : Print what happends on STDOUT."
-	echo "--conffile|-c file  : Choose an alternate config file."
-	echo "--force|-f          : Force overwrite of existing archives."
-	echo "--help|-h           : Print this help message (man backup-manager for details)."
-	echo "--upload|-u         : Just upload the files of the day."
-	echo "--burn|-b           : Just burn the files of the day."
-	echo "--md5check|-m       : Just test the md5 sums."
+	echo_translated "$0 [options]"
+
+	echo ""
+	echo_translated "Output:"
+	echo -n "--help|-h           : "; echo_translated "Print this short help message."
+	echo -n "--verbose|-v        : "; echo_translated "Print what happends on STDOUT."
+	echo -n "--no-warnings       : "; echo_translated "Disable warnings."
+
+	echo ""
+	echo_translated "Single actions:"
+	echo -n "--upload|-u         : "; echo_translated "Just upload the files of the day."
+	echo -n "--burn|-b           : "; echo_translated "Just burn the files of the day."
+	echo -n "--md5check|-m       : "; echo_translated "Just test the md5 sums."
+	echo -n "--purge|-p          : "; echo_translated "Just purge old archives."
+
+	echo ""
+	echo_translated "Behaviour:"
+	echo -n "--conffile|-c file  : "; echo_translated "Choose an alternate config file."
+	echo -n "--force|-f          : "; echo_translated "Force overwrite of existing archives."
+
+	echo ""
+	echo_translated "Unwanted actions:"
+	echo -n "--no-upload         : "; echo_translated "Disable the upload process."
+	echo -n "--no-burn           : "; echo_translated "Disable the burning process."
+	echo -n "--no-purge          : "; echo_translated "Disable the purge process."
+
 	exit 0
 }
 

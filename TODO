@@ -1,13 +1,13 @@
 
-#1 (high)
+DONE #1 (high)
 	BM_DIRECTORIES_BLACKLIST: list
 	This will contain all the directories to exclude when generating archives.
 
-#2 (high)
+DONE #2 (high)
 	BM_DUMP_SYMLINKS: boolean
 	Tell if bm has to dump symlinks when generating archives.
 
-#3 (high)
+DIVERTED #3 (high) (See BM_DIRECTORIES_BLACKLIST)
 	Never backup the BM_ARCHIVE_REPOSITORY
 
 #4 (low)
@@ -16,6 +16,6 @@
 	This way, we have to put it somewhere user can find it.
 
 #5 (medium)
-	Handle the cron frequency in debocnf.
+	Handle the cron frequency in debconf.
 
 

@@ -4,6 +4,7 @@
 # Every major feature of backup-manager is here.
 #
 
+
 # This will get all the md5 sums of the day,
 # mount the BM_BURNING_DEVICE on /tmp/device and check 
 # that the files are correct with md5 tests.
@@ -30,7 +31,7 @@ check_cdrom_md5_sums()
 		base_file=$(basename $file)
 		date_of_file=$(get_date_from_file $file)
 		prefix_of_file=$(get_prefix_from_file $file)
-		info -n "Checking MD5 sum for \${base_file}: "
+		info -n "Checking MD5 sum for \$base_file: "
 		
 		# Which file should contain the MD5 hashes for that file ?
 		md5_file="$BM_ARCHIVES_REPOSITORY/${prefix_of_file}-${date_of_file}.md5"
@@ -112,7 +113,7 @@ burn_files()
 		if [ $size -gt $BM_BURNING_MAXSIZE ]; then
 			size=$(size_of_path "${BM_ARCHIVES_REPOSITORY}/*${TODAY}*")
 			if [ $size -gt $BM_BURNING_MAXSIZE ]; then
-				error "Cannot burn archives of the \${TODAY}, too big : \${size}M, must fit in \$BM_BURNING_MAXSIZE"
+				error "Cannot burn archives of the \$TODAY, too big : \${size}M, must fit in \$BM_BURNING_MAXSIZE"
 			else
 				what_to_burn="${BM_ARCHIVES_REPOSITORY}/*${TODAY}*"
 			fi
@@ -125,7 +126,7 @@ burn_files()
 		# burning the iso with the user choosen method
 		case "$BM_BURNING_METHOD" in
 			"CDRW")
-                                info -n "Blanking the CDRW in \${BM_BURNING_DEVICE}: "
+                                info -n "Blanking the CDRW in \$BM_BURNING_DEVICE: "
                                 ${cdrecord} -tao dev=${BM_BURNING_DEVICE} blank=all > ${logfile} 2>&1 ||
                                         error "failed"
 				info "ok"
@@ -157,6 +158,25 @@ burn_files()
 
 make_archives()
 {
+
+	# First, we read some conf keys.
+	
+	# Create the directories blacklist
+	blacklist=""
+	for pattern in $BM_DIRECTORIES_BLACKLIST
+	do
+		blacklist="$blacklist --exclude=$pattern"
+	done
+	
+	# Set the -h flag according to the $BM_DUMP_SYMLINKS conf key
+	h=""
+	if [ ! -z $BM_DUMP_SYMLINKS ]; then
+		if [ "$BM_DUMP_SYMLINKS" = "yes" ] ||
+		   [ "$BM_DUMP_SYMLINKS" = "true" ]; then
+			h="-h "
+		fi
+	fi
+
 	for DIR in $BM_DIRECTORIES
 	do
 		dir_name=$(get_dir_name $DIR $BM_NAME_FORMAT)
@@ -165,22 +185,23 @@ make_archives()
 		
 		if [ ! -f $file_to_create ] ||
 		   [ $force = true ]; then
-		   
+		   	
 			info -n "Creating \$file_to_create: "
 			case $BM_FILETYPE in
 				tar.gz) # generate a tar.gz file if needed 
-					$tar -c -z -f "$file_to_create" "$DIR" > /dev/null 2>&1
+					$tar $blacklist $h -c -z -f "$file_to_create" "$DIR" > /dev/null 2>&1 || info -n '~'
 				;;
 				tar.bz2|tar.bz) # generate a tar.bz2 file if needed
-					$tar -c -j -f "$file_to_create" "$DIR" > /dev/null 2>&1
+					$tar $blacklist $h -c -j -f "$file_to_create" "$DIR" > /dev/null 2>&1 || info '~'
 				;;
 				tar) # generate a tar file if needed
-					$tar -c -f "$file_to_create" "$DIR" > /dev/null 2>&1
+					$tar $blacklist $h -c -f "$file_to_create" "$DIR" > /dev/null 2>&1 || info '~'
 				;;
 				zip) # generate a zip file if needed
-					$zip -r "$file_to_create" "$DIR" > /dev/null 2>&1
+					$zip -r "$file_to_create" "$DIR" > /dev/null 2>&1 || info '~'
 				;;
 				*) # unknown option
+					info "failed"
 					error "The filetype \$BM_FILETYPE is not spported."
 					_exit
 				;;
@@ -198,33 +219,14 @@ make_archives()
 	done
 }
 
+# This will parse all the files contained in BM_ARCHIVES_REPOSITORY
+# and will clean them up. Using clean_directory() and clean_file().
 clean_repositories()
 {
-	TOOMUCH_TIME_AGO=`date +%Y%m%d --date "$BM_MAX_TIME_TO_LIVE days ago"`
-
-	for DIR in $BM_DIRECTORIES
-	do
-		dir_name=$(get_dir_name $DIR $BM_NAME_FORMAT)
-		file_to_remove="$BM_ARCHIVES_REPOSITORY/$BM_ARCHIVES_PREFIX$dir_name.$TOOMUCH_TIME_AGO.$BM_FILETYPE";
-
-		if [ -w "$file_to_remove" ]
-		then
-			info -n "Removing \$file_to_remove: "
-			rm "$file_to_remove" || error "failed"
-			info "ok"
-		fi
-
-	done
-
-	for subdir in $BM_ARCHIVES_REPOSITORY/*
-	do
-		if [ -d $subdir ]; then
-			info -n "Cleaning up \$subdir: "
-			rm -f $subdir/*$TOOMUCH_TIME_AGO.*
-			info "ok"
-		fi
-	done
+	info "Cleaning \$BM_ARCHIVES_REPOSITORY: "
+	clean_directory $BM_ARCHIVES_REPOSITORY
 }
+
 
 # This is the call to backup-manager-upload 
 # with the appropriate options.
@@ -265,12 +267,25 @@ upload_files ()
 	fi
 }
 
-# This will handle pre-commands and post-commands.
+# This will run the pre-command given.
+# If this command prints on STDOUT "false", 
+# backup-manager will stop here.
 exec_pre_command()
 {
-	if [ -n $BM_PRE_BACKUP_COMMAND ]; then
-		info "Pre-command found, running it"
-		`$BM_PRE_BACKUP_COMMAND` || error "Pre-command failed"
+	if [ ! -z "$BM_PRE_BACKUP_COMMAND" ]; then
+		info -n "Running pre-command: \$BM_PRE_BACKUP_COMMAND: "
+		RET=`$BM_PRE_BACKUP_COMMAND` || RET="false" 
+		case "$RET" in
+			"false")
+				info "failed"
+				warning "pre-command returned false. Stopping the process."
+				_exit 0
+			;;
+
+			*)
+				info "ok"
+			;;
+		esac
 	fi
 
 }
@@ -278,7 +293,17 @@ exec_pre_command()
 exec_post_command()
 {
 	if [ -n $BM_POST_BACKUP_COMMAND ]; then
-		info "Post-command found, running it"
-		`$BM_POST_BACKUP_COMMAND` || error "Post-command failed"
+		info -n "Running post-command: \$BM_POST_BACKUP_COMMAND: "
+		RET=`$BM_POST_BACKUP_COMMAND` || RET="false"
+		case "$RET" in
+			"false")
+				info "failed"
+				warning "post-command returned false."
+			;;
+
+			*)
+				info "ok"
+			;;
+		esac
 	fi
 }

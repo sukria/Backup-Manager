@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-06 18:10+0100\n"
+"POT-Creation-Date: 2004-12-07 16:01+0100\n"
 "PO-Revision-Date: 2003-12-18 08:00-0500\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "MIME-Version: 1.0\n"
@@ -14,59 +14,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: actions.sh.ext:17
+#: actions.sh.ext:18
 #, sh-format
 msgid "The mount point $mount_point is already there, remove it if needed"
 msgstr ""
 "Le point de montage $mount_point est déjà présent, effacez-le si besoin"
 
-#: actions.sh.ext:21
+#: actions.sh.ext:22
 #, sh-format
 msgid "Mounting $BM_BURNING_DEVICE: "
 msgstr "Montage de $BM_BURNING_DEVICE: "
 
-#: actions.sh.ext:22
+#: actions.sh.ext:23
 #, sh-format
 msgid "unable to create the mount point $mount_point"
 msgstr "Impossible de créer le point de montage $mount_point"
 
-#: actions.sh.ext:23
+#: actions.sh.ext:24
 #, fuzzy, sh-format
 msgid "unable to mount $BM_BURNING_DEVICE on $mount_point"
 msgstr "Impossible de monter $BM_BURNING_DEVICE sur $mount_point"
 
-#: actions.sh.ext:24 actions.sh.ext:55 actions.sh.ext:131 actions.sh.ext:137
-#: actions.sh.ext:144 actions.sh.ext:214 actions.sh.ext:224 dialog.sh.ext:65
-#: dialog.sh.ext:72 files.sh.ext:158 files.sh.ext:169
+#: actions.sh.ext:25 actions.sh.ext:56 actions.sh.ext:132 actions.sh.ext:138
+#: actions.sh.ext:145 actions.sh.ext:286 actions.sh.ext:305 dialog.sh.ext:83
+#: dialog.sh.ext:90 files.sh.ext:158 files.sh.ext:169 files.sh.ext:191
 msgid "ok"
 msgstr "ok"
 
-#: actions.sh.ext:33
+#: actions.sh.ext:34
 #, sh-format
-msgid "Checking MD5 sum for ${base_file}: "
-msgstr "Vérification de la somme MD5 pour ${base_file}: "
+msgid "Checking MD5 sum for $base_file: "
+msgstr "Vérification MD5 pour $base_file: "
 
-#: actions.sh.ext:58
+#: actions.sh.ext:59
 msgid "failed (read error)"
 msgstr "échec (erreur de lecture)"
 
-#: actions.sh.ext:62
+#: actions.sh.ext:63
 msgid "failed (MD5 hash mismatch)"
 msgstr "échec (la somme MD5 ne concorde pas)"
 
-#: actions.sh.ext:69
+#: actions.sh.ext:70
 msgid "Error during MD5 controls. Run $0 --md5check --verbose for details"
 msgstr ""
 "Problème lors du contrôle des sommes MD5. Faîtes $0 --md5check --verbose "
 "pour plus de détails"
 
-#: actions.sh.ext:87
+#: actions.sh.ext:88
 msgid "The automatic burning system is disabled in the conf file."
 msgstr ""
 "Le système de gravure automatique est déactivé dans le fichier de "
 "configuration."
 
-#: actions.sh.ext:90
+#: actions.sh.ext:91
 #, sh-format
 msgid ""
 "Please set the BM_BURNING_MEDIA conf key in $conffile, I assume you want "
@@ -75,7 +75,7 @@ msgstr ""
 "Il faut renseigner la clef BM_BURNING_MEDIA dans $conffile, valeur par "
 "défaut : 'cdrom'"
 
-#: actions.sh.ext:95
+#: actions.sh.ext:96
 #, sh-format
 msgid ""
 "Please set the BM_BURNING_DEVICE conf key in $conffile, I assume you want '/"
@@ -84,132 +84,218 @@ msgstr ""
 "Il faut renseigner la clef BM_BURNING_DEVICE dans $conffile, valeur par "
 "défaut : /dev/cdrom"
 
-#: actions.sh.ext:100
+#: actions.sh.ext:101
 #, sh-format
 msgid ""
 "Please set the BM_BURNING_METHOD conf key in $conffile, I assume you want "
 "'CDRW'"
 msgstr ""
+"Veuillez définir la clef BM_BURNING_METHOD dans $conffile, valeur par "
+"défaut: CDRW."
 
-#: actions.sh.ext:105
+#: actions.sh.ext:106
 #, sh-format
 msgid ""
 "Please set the BM_BURNING_MAXSIZE conf key in $conffile, I assume you want "
 "'650'"
 msgstr ""
+"Veuillez définir la clef BM_BURNING_MAXSIZE dans $conffile, valeur par "
+"défaut: 650"
 
-#: actions.sh.ext:115
-#, sh-format
+#: actions.sh.ext:116
+#, fuzzy, sh-format
 msgid ""
-"Cannot burn archives of the ${TODAY}, too big : ${size}M, must fit in "
+"Cannot burn archives of the $TODAY, too big : ${size}M, must fit in "
 "$BM_BURNING_MAXSIZE"
 msgstr ""
+"Impossible de graver les archives du ${TODAY}, trop encombrant : ${size}M, "
+"doit tenir dans ${BM_BURNING_MAXSIZE}M"
 
-#: actions.sh.ext:128
+#: actions.sh.ext:129
 #, fuzzy, sh-format
-msgid "Blanking the CDRW in ${BM_BURNING_DEVICE}: "
-msgstr "Montage de $BM_BURNING_DEVICE: "
+msgid "Blanking the CDRW in $BM_BURNING_DEVICE: "
+msgstr "Effacement de $BM_BURNING_DEVICE: "
 
-#: actions.sh.ext:130 actions.sh.ext:136 actions.sh.ext:143 actions.sh.ext:213
+#: actions.sh.ext:131 actions.sh.ext:137 actions.sh.ext:144 actions.sh.ext:204
+#: actions.sh.ext:280 actions.sh.ext:300
 msgid "failed"
 msgstr "échec"
 
-#: actions.sh.ext:133 actions.sh.ext:140
+#: actions.sh.ext:134 actions.sh.ext:141
 #, fuzzy, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE: "
-msgstr "Montage de $BM_BURNING_DEVICE: "
+msgstr "Gravure des données dans $BM_BURNING_DEVICE: "
 
-#: actions.sh.ext:169
+#: actions.sh.ext:189
 #, sh-format
 msgid "Creating $file_to_create: "
 msgstr "Création de $file_to_create: "
 
-#: actions.sh.ext:184
+#: actions.sh.ext:192 actions.sh.ext:195 actions.sh.ext:198 actions.sh.ext:201
+msgid "~"
+msgstr "~"
+
+#: actions.sh.ext:205
 #, sh-format
 msgid "The filetype $BM_FILETYPE is not spported."
 msgstr "Le type de fichier $BM_FILETYPE n'est pas supporté."
 
-#: actions.sh.ext:189
+#: actions.sh.ext:210
 #, sh-format
 msgid "ok (${size}M, "
 msgstr "ok (${size}M, "
 
-#: actions.sh.ext:196
+#: actions.sh.ext:217
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Fichier $file_to_create existe, passage au suivant."
 
-#: actions.sh.ext:212
+#: actions.sh.ext:226
 #, sh-format
-msgid "Removing $file_to_remove: "
-msgstr "Effaçage de $file_to_remove: "
+msgid "Cleaning $BM_ARCHIVES_REPOSITORY: "
+msgstr "Nettoyage de $BM_ARCHIVES_REPOSITORY: "
 
-#: actions.sh.ext:222
-#, sh-format
-msgid "Cleaning up $subdir: "
-msgstr "Nettoyage de $subdir: "
-
-#: actions.sh.ext:249 actions.sh.ext:261
+#: actions.sh.ext:251 actions.sh.ext:263
 msgid "unable to call backup-manager-upload"
 msgstr "Impossible d'utiliser backup-manager-upload"
 
-#: actions.sh.ext:264
+#: actions.sh.ext:266
 msgid "The upload system is disabled in the conf file."
 msgstr ""
 "Le système d'envoi de fichiers est désactivé dans le fichier de "
 "configuration."
 
-#: actions.sh.ext:272
-msgid "Pre-command found, running it"
-msgstr ""
-
-#: actions.sh.ext:273
-msgid "Pre-command failed"
-msgstr ""
+#: actions.sh.ext:276
+#, sh-format
+msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
+msgstr "Lancement de la pre-commande: $BM_PRE_BACKUP_COMMAND"
 
 #: actions.sh.ext:281
-msgid "Post-command found, running it"
-msgstr ""
+msgid "pre-command returned false. Stopping the process."
+msgstr "a pre-commande a échoué. Arrêt du processus."
 
-#: actions.sh.ext:282
-msgid "Post-command failed"
-msgstr ""
+#: actions.sh.ext:296
+#, sh-format
+msgid "Running post-command: $BM_POST_BACKUP_COMMAND: "
+msgstr "Lancement de la post-commande: $BM_POST_BACKUP_COMMAND"
 
-#: backup-manager.ext:52
+#: actions.sh.ext:301
+msgid "post-command returned false."
+msgstr "La post-commande a échoué."
+
+#: backup-manager.ext:53
 msgid "backup-manager must be run as root."
 msgstr "backup-manager doit être lancé en tant que root."
 
-#: backup-manager.ext:88
+#: backup-manager.ext:101
 msgid "-c option must be followed by an existing filename"
 msgstr "L'option -c doit être suivie d'un nom de fichier"
 
-#: dialog.sh.ext:63
+#: dialog.sh.ext:14
+msgid "Output:"
+msgstr "Affichage:"
+
+#: dialog.sh.ext:15
+msgid "Print this short help message."
+msgstr "Affiche ce cours message d'aide."
+
+#: dialog.sh.ext:16
+msgid "Print what happends on STDOUT."
+msgstr "Affiche ce qui se passe sur STDOUT."
+
+#: dialog.sh.ext:17
+msgid "Disable warnings."
+msgstr "Désactive les avertissements."
+
+#: dialog.sh.ext:20
+msgid "Single actions:"
+msgstr "Actions uniques:"
+
+#: dialog.sh.ext:21
+msgid "Just upload the files of the day."
+msgstr "Se contente d'envoyer les fichiers du jour."
+
+#: dialog.sh.ext:22
+msgid "Just burn the files of the day."
+msgstr "Se contente de graver les fichiers du jour."
+
+#: dialog.sh.ext:23
+msgid "Just test the md5 sums."
+msgstr "Se contente de tester les sommes MD5."
+
+#: dialog.sh.ext:24
+msgid "Just purge old archives."
+msgstr "Se contente de supprimer les vielles archives."
+
+#: dialog.sh.ext:27
+msgid "Behaviour:"
+msgstr "Comportement:"
+
+#: dialog.sh.ext:28
+msgid "Choose an alternate config file."
+msgstr "Choisi un fichier de configuration alternatif."
+
+#: dialog.sh.ext:29
+msgid "Force overwrite of existing archives."
+msgstr "Oblige la ré-écriture d'archives déjà existantes."
+
+#: dialog.sh.ext:32
+msgid "Unwanted actions:"
+msgstr "Actions non désirées."
+
+#: dialog.sh.ext:33
+msgid "Disable the upload process."
+msgstr "Désactive la phase d'envoi de fichier."
+
+#: dialog.sh.ext:34
+msgid "Disable the burning process."
+msgstr "Désactive la phase de gravure de données."
+
+#: dialog.sh.ext:35
+msgid "Disable the purge process."
+msgstr "Désactive la phase de nettoyage."
+
+#: dialog.sh.ext:81
 msgid "Releasing lock: "
 msgstr "Libération du vérou: "
 
-#: dialog.sh.ext:68
+#: dialog.sh.ext:86
 #, fuzzy, sh-format
 msgid "Unmounting $BM_BURNING_DEVICE: "
-msgstr "Montage de $BM_BURNING_DEVICE: "
+msgstr "Démontage de $BM_BURNING_DEVICE: "
 
-#: dialog.sh.ext:86
+#: dialog.sh.ext:104
 msgid "Warning, I was stopped before ending my job. Archives may be corrupted."
 msgstr ""
 "Attention, interruption utilisateur. Les archives risquent d'être corrompues."
 
-#: dialog.sh.ext:98
+#: dialog.sh.ext:116
 msgid "the BM_FILETYPE conf key is set to \"zip\" but zip is not installed."
 msgstr "La clef BM_FILETYPE vau \"zip\" mais zip n'est pas installé."
 
-#: dialog.sh.ext:108
+#: dialog.sh.ext:126
 #, sh-format
 msgid "The BM_DIRECTORIES conf key is not set in $conffile"
 msgstr "La clef BM_DIRECTORIES n'est pas définie dans $conffile"
 
-#: dialog.sh.ext:128
+#: dialog.sh.ext:146
 #, sh-format
 msgid "$BM_ARCHIVES_REPOSITORY does not exist, creating it"
 msgstr "$BM_ARCHIVES_REPOSITORY n'existe pas, création."
+
+#: files.sh.ext:142
+#, sh-format
+msgid "Removing lock for old PID, $pid is not running."
+msgstr "Libération du lock pour un vieux PID, $pid ne tourne plus."
+
+#: files.sh.ext:152
+#, sh-format
+msgid ""
+"A backup-manager process ($pid) is already running with the conffile "
+"$conffile."
+msgstr ""
+"Un processus backup-manager ($pid) tourne déjà avec le fichier de "
+"configuration $conffile"
 
 #: files.sh.ext:156 files.sh.ext:163
 #, sh-format
@@ -219,6 +305,25 @@ msgstr "Demande de vérou pour backup-manager, $pid avec $conffile: "
 #: files.sh.ext:166
 msgid "failed (check the file permissions)"
 msgstr "échec (vérifiez les permissions du fichier)"
+
+#: files.sh.ext:182
+#, sh-format
+msgid "$file is not a regular file."
+msgstr "$file n'est pas un fichier régulier."
+
+#: files.sh.ext:189
+#, sh-format
+msgid "Removing $file: "
+msgstr "Suppression de $file: "
+
+#: files.sh.ext:207
+msgid "Directory given is not found"
+msgstr "Le répertoire donné n'est pas trouvable."
+
+#: files.sh.ext:217
+#, sh-format
+msgid "Entering directory $file."
+msgstr "Entrée dans le répertoire $file."
 
 #: md5sum.sh.ext:14
 #, sh-format

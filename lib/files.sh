@@ -139,7 +139,7 @@ get_lock() {
 		if [ ! -z $pid ]; then
 			real_pid=$(ps --no-headers --pid $pid |awk '{print $1}')
 			if [ -z $real_pid ]; then
-				echo "Removing lock for old PID, \$pid is not running."
+				echo_translated "Removing lock for old PID, \$pid is not running."
 				release_lock
 				unmount_tmp_dir
 				pid=""
@@ -149,7 +149,7 @@ get_lock() {
 		if [ -n "$pid" ]; then
 			# we really must not use error or _exit here ! 
 			# this is the special point were release_lock should not be called !
-			echo "A backup-manager process (\$pid) is already running with the conffile \$conffile."
+			echo_translated "A backup-manager process (\$pid) is already running with the conffile \$conffile."
 			exit 1
 		else
 			pid=$$
@@ -169,3 +169,57 @@ get_lock() {
 		info "ok"
 	fi
 }
+
+
+# Remove a file if its date is older than the 
+# date of expiration.
+clean_file()
+{
+	date_to_remove=`date +%Y%m%d --date "$BM_MAX_TIME_TO_LIVE days ago"`
+	file="$1"
+	
+	if [ ! -f $file ]; then
+		error "\$file is not a regular file."
+	fi
+
+	date=$(get_date_from_file $file)
+	date=$(echo $date | sed -e 's/[^0-9]//g')
+	if [ ! -z $date ]; then
+		if [ $date -lt $date_to_remove ]; then
+			info -n "Removing \$file: "
+			rm -f $file
+			info "ok"
+		fi
+	fi
+}
+
+# clean one given repository.
+# This will take each file that has 
+# a date in its names and will compare 
+# the file's date to the date_to_remove.
+# If the file's date is older than the date_to_remove
+# we drop the file.
+clean_directory()
+{
+	directory="$1"
+
+	if [ ! -d $directory ]; then
+		error "Directory given is not found"
+	fi
+
+	for file in $directory/*
+	do
+		if [ ! -e $file ]; then
+			continue
+		fi
+		
+		if [ -d $file ]; then
+			info "Entering directory \$file."
+			clean_directory "$file"
+		else 
+			clean_file "$file"
+		fi
+	done
+}
+
+

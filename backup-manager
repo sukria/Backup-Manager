@@ -46,11 +46,12 @@ upload="false"
 burn="false"
 help="false"
 md5check="false"
+purge="false"
 conffile="/etc/backup-manager.conf"
 
 if [ "$UID" != 0 ]; then
 	echo_translated "backup-manager must be run as root."
-	exit
+	exit 1
 fi
 
 # Catch signals for a nice exit.
@@ -65,11 +66,23 @@ while [ $# -ge 1 ]; do
 		-m|--md5check) 
 			md5check="true"
 		;;
+		-p|--purge)
+			purge="true"
+		;;
+		--no-purge)
+			nopurge="true"
+		;;
 		-b|--burn) 
 			burn="true"
 		;;
+		--no-burn)
+			noburn="true"
+		;;
 		-u|--upload) 
 			upload="true"
+		;;
+		--no-upload)
+			noupload="true"
 		;;
 		-v|--verbose) 
 			verbose="true"
@@ -118,6 +131,10 @@ init_default_vars
 # create $ARCHIVES_REPOSITORY if not exists
 create_archive_root_if_not_exists
 
+##############################################################
+# Single actions handling
+#############################################################
+
 # only the uploading system
 if [ "$upload" == "true" ]; then
 	upload_files
@@ -136,20 +153,37 @@ if [ "$md5check" == "true" ]; then
 	_exit 0
 fi
 
+# only purge old archives
+if [ "$purge" == "true" ]; then
+	clean_repositories
+	_exit 0
+fi
+
+##############################################################
+# Default process : doing everything unless --no-flags 
+# are given.
+#############################################################
+
 # This is the time for pre-command
 exec_pre_command
 
 # first cleanning up the repository 
-clean_repositories
+if [ "$nopurge" != "true" ]; then
+	clean_repositories
+fi
 
 # now generating new archives...
 make_archives
 
-# uplaod if needed
-upload_files
+# upload if needed
+if [ "$noupload" != "true" ]; then
+	upload_files
+fi
 
 # burn if wanted
-burn_files
+if [ "$noburn" != "true" ]; then
+	burn_files
+fi
 
 # this is time for post-command
 exec_post_command

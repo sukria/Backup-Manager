@@ -15,9 +15,12 @@ export BM_FILETYPE="tar.gz"
 # the number of days we have to keep an archive
 export BM_MAX_TIME_TO_LIVE="5"
 
+# do you want to dereference the files pointed by symlinks ? 
+# enter yes or no.
+export BM_DUMP_SYMLINKS="no"
+
 # the prefix of every archive on that box (default is HOSTNAME)
 export BM_ARCHIVES_PREFIX="$HOSTNAME"
-
 
 
 ##############################################################
@@ -30,6 +33,8 @@ export BM_ARCHIVES_REPOSITORY="/backup"
 # the directories you want to backup
 export BM_DIRECTORIES="/etc /home"
 
+# Here the list of the directories you don't want to archive
+export BM_DIRECTORIES_BLACKLIST=""
 
 
 ##############################################################

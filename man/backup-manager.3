@@ -1,27 +1,56 @@
 .TH backup-manager
 .SH NAME
-backup-manager - generate archives from directories and upload them to remote hosts.
+backup-manager - An easy to use backup tool for your Linux box.
 .SH SYNOPSIS
   backup-manager [options]
 .SH DESCRIPTION
 This is a smart tool written in Bash and Perl to provide an easy way for 
 backuping local directories.
 .P
-User choose a list of directories and backup-manager will gziped them daily
-and can upload them to a list of remote hosts, either with ftp or scp.
-.P
-backup-manager uses syslog to log everything that happends with the 'cron'
-facility.
+All the behaviour of the tool will be determined by configuration files, 
+default one is /etc/backup-manager.conf.
+All the configuration keys located in the configuration file can tune the
+way backup-manager will work.
+It is able to make tarballs in tar.gz, tar.bz2, tar and zip format, upload
+them to remote hosts using FTP or SSH, burn them to CDR/CDRW automatically
+using mkisofs and cdrecord.
 .SH OPTIONS
 .P
---verbose|-v : print what happends to stdout (if no berbose flag is given, 
-only errors will be printed)
+.B --verbose|-v 
+Print what happends to STDOUT.
 .P
---help|-h : print a short help message.
+.B --no-warnings
+Disable warnings.
 .P
---upload|-u : just upload the files.
+.B --help|-h 
+Print a short help message.
+.P
+.B --upload|-u
+Just upload the files.
+.P
+.B --purge|-p
+Just purge old archives.
 .P 
---burn|-b : just burn the archives.
+.B --burn|-b 
+Just burn the archives.
+.P
+.B --md5check|-m
+Just perform the MD5 checkup on the CDR/CDRW.
+.P
+.B --config|-c file
+Use an alternate config file.
+.P
+.B --force|-f
+Force overwrite of existing archives.
+.P
+.B --no-upload
+Disable the uploading process.
+.P
+.B --no-burn
+Disable the burning process.
+.P
+.B --no-purge
+Disable the purging process.
 .SH UPLOADING SYSTEM
 If the scp transfert mode is used, no password will be prompted, ssh key
 authentification will be used instead. Be sure if you use this transfert
@@ -33,13 +62,9 @@ will be launched with the upload user you choose. this means that the user
 should exist on both remote and local machines.
 Keep that in mind when editing the ssh authorized keys on remote hosts.
 .SH BURNING SYSTEM
-backup-manager can burn archives using cdrecord and mkisofs. Look at the 
-file /etc/backup-manager.conf.tpl for details.
+If the BM_BURNING vonfiguration key is set to "yes", backup-manager
+will try to burn the archives after generating it. 
 .SH NOTES
-Nothing will be printed on STDOUT unless the flag --verbose is given.
-.P
-Errors will be printed on STDERR even if the flag --verbose is not given.
-.P
 On debian system the best way to configure backup-manager is to use dpkg-reconfigure.
 .SH SEE ALSO
 .BR backup-manager-upload (3),

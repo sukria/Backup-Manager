@@ -5,6 +5,8 @@ SHFILES=lib/dialog.sh \
 	lib/files.sh \
 	lib/actions.sh \
 	lib/gettext.sh \
+	lib/gettext-real.sh \
+	lib/gettext-dummy.sh \
 	lib/md5sum.sh 
 
 install: doc install_lib install_deb install_po
@@ -40,6 +42,7 @@ doc:
 
 # Installing the man pages.
 install_man:
+	@echo -e "\n*** Installing man pages ***\n"
 	install -d /usr/share/man/man3/
 	install --owner=root --group=root --mode=0644 man/*.3 /usr/share/man/man3/
 
@@ -50,3 +53,5 @@ deb:
 clean:
 	rm -f build-stamp
 	rm -rf debian/tmp
+	fakeroot debian/rules clean
+	$(MAKE) -C po clean

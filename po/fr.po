@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-07 16:01+0100\n"
+"POT-Creation-Date: 2004-12-07 21:25+0100\n"
 "PO-Revision-Date: 2003-12-18 08:00-0500\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "MIME-Version: 1.0\n"
@@ -14,59 +14,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: actions.sh.ext:18
+#: actions.sh.ext:22
 #, sh-format
 msgid "The mount point $mount_point is already there, remove it if needed"
 msgstr ""
 "Le point de montage $mount_point est déjà présent, effacez-le si besoin"
 
-#: actions.sh.ext:22
+#: actions.sh.ext:26
 #, sh-format
 msgid "Mounting $BM_BURNING_DEVICE: "
 msgstr "Montage de $BM_BURNING_DEVICE: "
 
-#: actions.sh.ext:23
+#: actions.sh.ext:27
 #, sh-format
 msgid "unable to create the mount point $mount_point"
 msgstr "Impossible de créer le point de montage $mount_point"
 
-#: actions.sh.ext:24
+#: actions.sh.ext:28
 #, fuzzy, sh-format
 msgid "unable to mount $BM_BURNING_DEVICE on $mount_point"
 msgstr "Impossible de monter $BM_BURNING_DEVICE sur $mount_point"
 
-#: actions.sh.ext:25 actions.sh.ext:56 actions.sh.ext:132 actions.sh.ext:138
-#: actions.sh.ext:145 actions.sh.ext:286 actions.sh.ext:305 dialog.sh.ext:83
+#: actions.sh.ext:29 actions.sh.ext:60 actions.sh.ext:136 actions.sh.ext:142
+#: actions.sh.ext:149 actions.sh.ext:290 actions.sh.ext:309 dialog.sh.ext:83
 #: dialog.sh.ext:90 files.sh.ext:158 files.sh.ext:169 files.sh.ext:191
 msgid "ok"
 msgstr "ok"
 
-#: actions.sh.ext:34
+#: actions.sh.ext:38
 #, sh-format
 msgid "Checking MD5 sum for $base_file: "
 msgstr "Vérification MD5 pour $base_file: "
 
-#: actions.sh.ext:59
+#: actions.sh.ext:63
 msgid "failed (read error)"
 msgstr "échec (erreur de lecture)"
 
-#: actions.sh.ext:63
+#: actions.sh.ext:67
 msgid "failed (MD5 hash mismatch)"
 msgstr "échec (la somme MD5 ne concorde pas)"
 
-#: actions.sh.ext:70
+#: actions.sh.ext:74
 msgid "Error during MD5 controls. Run $0 --md5check --verbose for details"
 msgstr ""
 "Problème lors du contrôle des sommes MD5. Faîtes $0 --md5check --verbose "
 "pour plus de détails"
 
-#: actions.sh.ext:88
+#: actions.sh.ext:92
 msgid "The automatic burning system is disabled in the conf file."
 msgstr ""
 "Le système de gravure automatique est déactivé dans le fichier de "
 "configuration."
 
-#: actions.sh.ext:91
+#: actions.sh.ext:95
 #, sh-format
 msgid ""
 "Please set the BM_BURNING_MEDIA conf key in $conffile, I assume you want "
@@ -75,7 +75,7 @@ msgstr ""
 "Il faut renseigner la clef BM_BURNING_MEDIA dans $conffile, valeur par "
 "défaut : 'cdrom'"
 
-#: actions.sh.ext:96
+#: actions.sh.ext:100
 #, sh-format
 msgid ""
 "Please set the BM_BURNING_DEVICE conf key in $conffile, I assume you want '/"
@@ -84,7 +84,7 @@ msgstr ""
 "Il faut renseigner la clef BM_BURNING_DEVICE dans $conffile, valeur par "
 "défaut : /dev/cdrom"
 
-#: actions.sh.ext:101
+#: actions.sh.ext:105
 #, sh-format
 msgid ""
 "Please set the BM_BURNING_METHOD conf key in $conffile, I assume you want "
@@ -93,7 +93,7 @@ msgstr ""
 "Veuillez définir la clef BM_BURNING_METHOD dans $conffile, valeur par "
 "défaut: CDRW."
 
-#: actions.sh.ext:106
+#: actions.sh.ext:110
 #, sh-format
 msgid ""
 "Please set the BM_BURNING_MAXSIZE conf key in $conffile, I assume you want "
@@ -102,7 +102,7 @@ msgstr ""
 "Veuillez définir la clef BM_BURNING_MAXSIZE dans $conffile, valeur par "
 "défaut: 650"
 
-#: actions.sh.ext:116
+#: actions.sh.ext:120
 #, fuzzy, sh-format
 msgid ""
 "Cannot burn archives of the $TODAY, too big : ${size}M, must fit in "
@@ -111,75 +111,75 @@ msgstr ""
 "Impossible de graver les archives du ${TODAY}, trop encombrant : ${size}M, "
 "doit tenir dans ${BM_BURNING_MAXSIZE}M"
 
-#: actions.sh.ext:129
+#: actions.sh.ext:133
 #, fuzzy, sh-format
 msgid "Blanking the CDRW in $BM_BURNING_DEVICE: "
 msgstr "Effacement de $BM_BURNING_DEVICE: "
 
-#: actions.sh.ext:131 actions.sh.ext:137 actions.sh.ext:144 actions.sh.ext:204
-#: actions.sh.ext:280 actions.sh.ext:300
+#: actions.sh.ext:135 actions.sh.ext:141 actions.sh.ext:148 actions.sh.ext:208
+#: actions.sh.ext:284 actions.sh.ext:304
 msgid "failed"
 msgstr "échec"
 
-#: actions.sh.ext:134 actions.sh.ext:141
+#: actions.sh.ext:138 actions.sh.ext:145
 #, fuzzy, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE: "
 msgstr "Gravure des données dans $BM_BURNING_DEVICE: "
 
-#: actions.sh.ext:189
+#: actions.sh.ext:193
 #, sh-format
 msgid "Creating $file_to_create: "
 msgstr "Création de $file_to_create: "
 
-#: actions.sh.ext:192 actions.sh.ext:195 actions.sh.ext:198 actions.sh.ext:201
+#: actions.sh.ext:196 actions.sh.ext:199 actions.sh.ext:202 actions.sh.ext:205
 msgid "~"
 msgstr "~"
 
-#: actions.sh.ext:205
+#: actions.sh.ext:209
 #, sh-format
 msgid "The filetype $BM_FILETYPE is not spported."
 msgstr "Le type de fichier $BM_FILETYPE n'est pas supporté."
 
-#: actions.sh.ext:210
+#: actions.sh.ext:214
 #, sh-format
 msgid "ok (${size}M, "
 msgstr "ok (${size}M, "
 
-#: actions.sh.ext:217
+#: actions.sh.ext:221
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Fichier $file_to_create existe, passage au suivant."
 
-#: actions.sh.ext:226
+#: actions.sh.ext:230
 #, sh-format
 msgid "Cleaning $BM_ARCHIVES_REPOSITORY: "
 msgstr "Nettoyage de $BM_ARCHIVES_REPOSITORY: "
 
-#: actions.sh.ext:251 actions.sh.ext:263
+#: actions.sh.ext:255 actions.sh.ext:267
 msgid "unable to call backup-manager-upload"
 msgstr "Impossible d'utiliser backup-manager-upload"
 
-#: actions.sh.ext:266
+#: actions.sh.ext:270
 msgid "The upload system is disabled in the conf file."
 msgstr ""
 "Le système d'envoi de fichiers est désactivé dans le fichier de "
 "configuration."
 
-#: actions.sh.ext:276
+#: actions.sh.ext:280
 #, sh-format
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
 msgstr "Lancement de la pre-commande: $BM_PRE_BACKUP_COMMAND"
 
-#: actions.sh.ext:281
+#: actions.sh.ext:285
 msgid "pre-command returned false. Stopping the process."
 msgstr "a pre-commande a échoué. Arrêt du processus."
 
-#: actions.sh.ext:296
+#: actions.sh.ext:300
 #, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND: "
 msgstr "Lancement de la post-commande: $BM_POST_BACKUP_COMMAND"
 
-#: actions.sh.ext:301
+#: actions.sh.ext:305
 msgid "post-command returned false."
 msgstr "La post-commande a échoué."
 

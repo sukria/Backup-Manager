@@ -1,8 +1,15 @@
 
-backup-manager was written by the following people :
+Providing backup-manager is something possible thanks 
+to the following people:
 
 Main code :
 	- Alexis Sukrieh <sukria@sukria.net>
 
-Patches :
-	- Michael Prokop, http://www.michael-prokop.at/blog/index.php
+Patches:
+	- Michael Prokop <mika@grml.org>
+
+Translations:
+	- Spanish: Diego Brouard  
+	- German:  Michael Prokop <mika@grml.org> 
+	- French:  Alexis Sukrieh <sukria@sukria.net>
+

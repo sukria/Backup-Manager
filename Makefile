@@ -56,5 +56,4 @@ deb:
 clean:
 	rm -f build-stamp
 	rm -rf debian/tmp
-	fakeroot debian/rules clean
 	$(MAKE) -C po clean

@@ -1,0 +1,219 @@
+# German messages for backup-manager.
+# Copyleft © 2004 Alexis Sukrieh..
+# This file is distributed under the same license as the backup-manager package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: backup-manager 0.5.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-12-06 18:11+0100\n"
+"PO-Revision-Date: 2003-12-18 10:09+0100\n"
+"Last-Translator: Diego Brouard\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: actions.sh.ext:17
+#, sh-format
+msgid "The mount point $mount_point is already there, remove it if needed"
+msgstr ""
+
+#: actions.sh.ext:21
+#, sh-format
+msgid "Mounting $BM_BURNING_DEVICE: "
+msgstr ""
+
+#: actions.sh.ext:22
+#, sh-format
+msgid "unable to create the mount point $mount_point"
+msgstr ""
+
+#: actions.sh.ext:23
+#, sh-format
+msgid "unable to mount $BM_BURNING_DEVICE on $mount_point"
+msgstr ""
+
+#: actions.sh.ext:24 actions.sh.ext:55 actions.sh.ext:131 actions.sh.ext:137
+#: actions.sh.ext:144 actions.sh.ext:214 actions.sh.ext:224 dialog.sh.ext:65
+#: dialog.sh.ext:72 files.sh.ext:158 files.sh.ext:169
+msgid "ok"
+msgstr ""
+
+#: actions.sh.ext:33
+#, sh-format
+msgid "Checking MD5 sum for ${base_file}: "
+msgstr ""
+
+#: actions.sh.ext:58
+msgid "failed (read error)"
+msgstr ""
+
+#: actions.sh.ext:62
+msgid "failed (MD5 hash mismatch)"
+msgstr ""
+
+#: actions.sh.ext:69
+msgid "Error during MD5 controls. Run $0 --md5check --verbose for details"
+msgstr ""
+
+#: actions.sh.ext:87
+msgid "The automatic burning system is disabled in the conf file."
+msgstr ""
+
+#: actions.sh.ext:90
+#, sh-format
+msgid ""
+"Please set the BM_BURNING_MEDIA conf key in $conffile, I assume you want "
+"'cdrom'"
+msgstr ""
+
+#: actions.sh.ext:95
+#, sh-format
+msgid ""
+"Please set the BM_BURNING_DEVICE conf key in $conffile, I assume you want '/"
+"dev/cdrom'"
+msgstr ""
+
+#: actions.sh.ext:100
+#, sh-format
+msgid ""
+"Please set the BM_BURNING_METHOD conf key in $conffile, I assume you want "
+"'CDRW'"
+msgstr ""
+
+#: actions.sh.ext:105
+#, sh-format
+msgid ""
+"Please set the BM_BURNING_MAXSIZE conf key in $conffile, I assume you want "
+"'650'"
+msgstr ""
+
+#: actions.sh.ext:115
+#, sh-format
+msgid ""
+"Cannot burn archives of the ${TODAY}, too big : ${size}M, must fit in "
+"$BM_BURNING_MAXSIZE"
+msgstr ""
+
+#: actions.sh.ext:128
+#, sh-format
+msgid "Blanking the CDRW in ${BM_BURNING_DEVICE}: "
+msgstr ""
+
+#: actions.sh.ext:130 actions.sh.ext:136 actions.sh.ext:143 actions.sh.ext:213
+msgid "failed"
+msgstr ""
+
+#: actions.sh.ext:133 actions.sh.ext:140
+#, sh-format
+msgid "Burning data to $BM_BURNING_DEVICE: "
+msgstr ""
+
+#: actions.sh.ext:169
+#, sh-format
+msgid "Creating $file_to_create: "
+msgstr ""
+
+#: actions.sh.ext:184
+#, sh-format
+msgid "The filetype $BM_FILETYPE is not spported."
+msgstr ""
+
+#: actions.sh.ext:189
+#, sh-format
+msgid "ok (${size}M, "
+msgstr ""
+
+#: actions.sh.ext:196
+#, sh-format
+msgid "File $file_to_create already exists, skipping."
+msgstr ""
+
+#: actions.sh.ext:212
+#, sh-format
+msgid "Removing $file_to_remove: "
+msgstr ""
+
+#: actions.sh.ext:222
+#, sh-format
+msgid "Cleaning up $subdir: "
+msgstr ""
+
+#: actions.sh.ext:249 actions.sh.ext:261
+msgid "unable to call backup-manager-upload"
+msgstr ""
+
+#: actions.sh.ext:264
+msgid "The upload system is disabled in the conf file."
+msgstr ""
+
+#: actions.sh.ext:272
+msgid "Pre-command found, running it"
+msgstr ""
+
+#: actions.sh.ext:273
+msgid "Pre-command failed"
+msgstr ""
+
+#: actions.sh.ext:281
+msgid "Post-command found, running it"
+msgstr ""
+
+#: actions.sh.ext:282
+msgid "Post-command failed"
+msgstr ""
+
+#: backup-manager.ext:52
+msgid "backup-manager must be run as root."
+msgstr ""
+
+#: backup-manager.ext:88
+msgid "-c option must be followed by an existing filename"
+msgstr ""
+
+#: dialog.sh.ext:63
+msgid "Releasing lock: "
+msgstr ""
+
+#: dialog.sh.ext:68
+#, sh-format
+msgid "Unmounting $BM_BURNING_DEVICE: "
+msgstr ""
+
+#: dialog.sh.ext:86
+msgid "Warning, I was stopped before ending my job. Archives may be corrupted."
+msgstr ""
+
+#: dialog.sh.ext:98
+msgid "the BM_FILETYPE conf key is set to \"zip\" but zip is not installed."
+msgstr ""
+
+#: dialog.sh.ext:108
+#, sh-format
+msgid "The BM_DIRECTORIES conf key is not set in $conffile"
+msgstr ""
+
+#: dialog.sh.ext:128
+#, sh-format
+msgid "$BM_ARCHIVES_REPOSITORY does not exist, creating it"
+msgstr ""
+
+#: files.sh.ext:156 files.sh.ext:163
+#, sh-format
+msgid "Getting lock for backup-manager $pid with $conffile: "
+msgstr ""
+
+#: files.sh.ext:166
+msgid "failed (check the file permissions)"
+msgstr ""
+
+#: md5sum.sh.ext:14
+#, sh-format
+msgid "No md5file found: $md5file"
+msgstr ""
+
+#: md5sum.sh.ext:66
+#, sh-format
+msgid "Archive given does not exists in the repository: $archive"
+msgstr ""

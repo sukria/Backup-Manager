@@ -1,0 +1,48 @@
+.TH backup-manager
+.SH NAME
+backup-manager - generate archives from directories and upload them to remote hosts.
+.SH SYNOPSIS
+  backup-manager [options]
+.SH DESCRIPTION
+This is a smart tool written in Bash and Perl to provide an easy way for 
+backuping local directories.
+.P
+User choose a list of directories and backup-manager will gziped them daily
+and can upload them to a list of remote hosts, either with ftp or scp.
+.P
+backup-manager uses syslog to log everything that happends with the 'cron'
+facility.
+.SH OPTIONS
+.P
+--verbose|-v : print what happends to stdout (if no berbose flag is given, 
+only errors will be printed)
+.P
+--help|-h : print a short help message.
+.P
+--upload|-u : just upload the files.
+.P 
+--burn|-b : just burn the archives.
+.SH UPLOADING SYSTEM
+If the scp transfert mode is used, no password will be prompted, ssh key
+authentification will be used instead. Be sure if you use this transfert
+mode to set the appropriate keys on your ssh accouts.
+.P
+backup-manager uses backup-manager-upload for uploading files.
+Although backup-manager is run by root (from crond), backup-manager-upload
+will be launched with the upload user you choose. this means that the user 
+should exist on both remote and local machines.
+Keep that in mind when editing the ssh authorized keys on remote hosts.
+.SH BURNING SYSTEM
+backup-manager can burn archives using cdrecord and mkisofs. Look at the 
+file /etc/backup-manager.conf.tpl for details.
+.SH NOTES
+Nothing will be printed on STDOUT unless the flag --verbose is given.
+.P
+Errors will be printed on STDERR even if the flag --verbose is not given.
+.P
+On debian system the best way to configure backup-manager is to use dpkg-reconfigure.
+.SH SEE ALSO
+.BR backup-manager-upload (3),
+.BR ssh-keygen (1)
+.SH AUTHOR
+Alexis Sukrieh <sukria@sukria.net>

@@ -1,0 +1,402 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+backup-manager-upload - Multiprotocol uploader for backup-manager.
+
+=head1 SYNOPSIS
+
+ backup-manager-upload [options] date 
+
+=head1 DESCRIPTION
+
+B<backup-manager-upload> will upload all the archives generated on the given 
+date to the specified host with either ftp or scp.
+Some metadates are available like today or yesterday.
+
+=head1 REQUIRED ARGS
+
+=over 4
+
+=item B<--mode=>I<transfert-mode>
+
+Select the transfert mode to use : ftp or scp.
+
+=item B<--host=>I<hostname1,hostname2,...,hostnameN>
+
+Select a list of remote hosts to connect to.
+
+=item B<--user=>I<username>
+
+Select the user to use for connection.
+
+
+=head1 OPTIONAL ARGS
+
+=item B<--password=>I<password>
+
+Select the ftp user's password (only needed for ftp transferts).
+
+=item B<--key=>I<path_to_private_key>
+
+Select the ssh private key file to use when opening the ssh session for scp transfert.
+Obviously, this is only needed for scp transfert mode.
+If you don't specify a key file, the user's default private key will be used.
+
+=item B<--directory=>I<directory>
+
+Select the location on the remote host where files will be uploaded.
+Default is /backup/uploads.
+
+=item B<--root=>I<directory>
+
+Select the local directory where files are.
+Default is /backup.
+
+=item B<--list>
+
+Just list the files to upload.
+
+=item B<--verbose>
+
+Flag to enable verbose mode.
+
+=item B<date>
+
+Date pattern to select some files to upload, can be a valid date (YYYYMMDD) or 'today' or 'yesterday'.
+
+=head1 SEE ALSO
+
+L<backup-manager(3)>
+
+=cut
+
+#
+# uses
+#
+
+use strict;
+use warnings;
+use BackupManager::Config;
+use BackupManager::Logger;
+
+use POSIX qw(strftime);
+
+
+
+#
+# global vars
+#
+
+
+my $scp = '/usr/bin/scp';
+my $g_verbose	= 0;
+my $g_list	= 0;
+my $g_host 	= undef;
+my $g_user 	= undef;
+my $g_pass 	= undef;
+my $g_protocol 	= 'scp';
+my $g_remote_dir= '/backup/uploads';
+my $g_root_dir	= '/backup';
+my $g_key_file	= undef;
+
+# first get the args
+BackupManager::Config::getopt("$0 -m=mode -h=host -u=user [options] date\n
+-v|--verbose	: Print on STDOUT what happends.
+-m|--mode	: Transfer mode to use : ftp or scp.
+-h|--host	: Remote hosts to connect to (separated by commas).
+-u|--user	: User to use for connection.
+-p|--password	: Password of remote host's user (only needed for ftp mode).
+-k|--key	: SSH key file to use for opening the scp session (only needed for scp mode).
+-d|--directory	: Directory on the remote host where files will go (default is /backup/uploads).
+-r|--root	: Root directory of your archives (default /backup).
+-l|--list	: Only prints which files would be uploaded.
+date		: All files >= date will be uploaded. Either a valid date (YYYYMMDD) or one of this words : today, yesterday",
+'verbose'	=> \$g_verbose,
+'mode|m=s' 	=> \$g_protocol,
+'host|h=s' 	=> \$g_host,
+'user|u=s' 	=> \$g_user,
+'password|p=s' 	=> \$g_pass,
+'directory|d=s'	=> \$g_remote_dir,
+'key|k=s'	=> \$g_key_file,
+'root|r=s'	=> \$g_root_dir,
+'list'		=> \$g_list,
+);
+
+
+#
+# subroutines
+#
+
+# this is used to print mesasges to screen only if user wants verbose mode.
+sub verbose ($)
+{
+	my $message = shift;
+	unless (defined $message) {
+		error "no message given to verbose function";
+		return 0;
+	}
+	chomp $message;
+
+	info $message;
+	print STDOUT $message."\n" if $g_verbose;
+}
+
+# this is used to log error and print it to STDERR even if verbose mode is disabled.
+sub verbose_error ($)
+{
+	my $message = shift;
+	unless (defined $message) {
+		error "no message given to verbose function";
+		return 0;
+	}
+	chomp $message;
+
+	error $message;
+	print STDERR $message."\n";
+}
+
+# send one file with scp
+# since Net::SSH is a wrapper to a system call of ssh, I don't use it.
+sub send_file_with_scp($$$$)
+{
+	my ($file, $user, $host, $location) = @_;
+	return 0 unless defined $file and 
+		defined $user and
+		defined $host and
+		defined $location;
+
+	my $cmd;
+	if (defined $g_key_file and -f $g_key_file) {
+		$cmd = "$scp -i $g_key_file -B $file $user".'@'.$host.':'.$location." >/dev/null 2>&1";
+	}
+	else {
+		$cmd = "$scp -B $file $user".'@'.$host.':'.$location." >/dev/null 2>&1";
+	}
+
+
+	# we use eval here to avoid crash with bad keys
+	my $ret = eval "system('$cmd')";
+	if ($@ or $ret) {
+		error "$scp failed for $file : $@ (command was : $cmd)" if $@;
+		error "$scp failed for $file (command was : $cmd)" if $ret;
+		return 0;
+	}
+
+	return 1;
+}
+
+
+# How to uplaod files with scp.
+# Note that Key Authentification is used, see man ssh-keygen.
+sub send_files_with_scp($$$$)
+{
+	# getting args
+	my ($user, $ra_hosts, $repository, $ra_files) = @_;
+	unless (defined $user and 
+		defined $ra_hosts and
+		defined $ra_files and
+		defined $repository) {
+		error "required args needed";
+		return 0;
+	}
+
+	# is scp here ?
+	unless (-x $scp) {
+		verbose_error "$scp is not here, cannot use this mode for transfert";
+		exit 1;
+	}
+
+	# loop on each hosts given and connect to them.
+	foreach my $host (@{$ra_hosts}) {
+		foreach my $file (@{$ra_files}) {
+			chomp $file;
+			if (-f $file and send_file_with_scp($file, $user, $host, $repository)) {
+				verbose "File $file uploaded successfully.";
+			}
+			elsif (-f $file) {
+				verbose_error "File $file cannot be uploaded, check ${user}'s ssh keys on host $host";
+			}
+			else {
+				verbose_error "File $file cannot be uploaded, it does not exist locally.";
+			}
+		}
+	}
+}
+
+
+# How to upload files with ftp.
+# We'll use the Net::FTP module here.
+sub send_files_with_ftp($$$$$)
+{
+	# trying to get Net::FTP.
+	eval "use Net::FTP";
+	if ($@) {
+		error "Net::FTP is not available, cannot use ftp transfert mode";
+		return 0;
+	}
+	
+	# getting args
+	my ($user, $passwd, $ra_hosts, $repository, $ra_files) = @_;
+	unless (defined $user and 
+		defined $passwd and
+		defined $ra_hosts and
+		defined $ra_files and
+		defined $repository) {
+		error "required args needed";
+		return 0;
+	}
+	
+	# loop on each hosts given and connect to them.
+	foreach my $host (@{$ra_hosts}) {
+		my $ftp = new Net::FTP ($host, Debug => 0);
+		if (defined $ftp) {
+			verbose "Connected to $host";
+			
+			if ($ftp->login($user, $passwd) and
+			    $ftp->cwd($repository)) {
+				verbose "Logged on $host, in $repository";
+			    
+				foreach my $file (@{$ra_files}) {
+					chomp $file;
+					if (-f $file and $ftp->put($file)) {
+						verbose "File $file uploaded successfully.";
+					}
+					elsif (-f $file) {
+						verbose_error "File $file cannot be uploaded, remote host $host said : ".$ftp->message;
+					}
+					else {
+						verbose_error "File $file cannot be uploaded, it does not exist locally.";
+					}
+				}
+				verbose "Log out $host\n";
+				$ftp->quit;
+			}
+			else {
+				verbose_error "unable to login and cwd on ${host}:${repository}";
+			}
+		}
+		else {
+			verbose_error "unable to connect to $host : $@\n";
+		}
+	}	
+}
+
+sub get_formated_date($)
+{
+	my $date = shift;
+	unless (defined $date) {
+		verbose_error "date is required, enter today, yesterday or YYYYMMDD";
+		exit 1;
+	}
+
+	if ($date eq 'today') {
+		return strftime ('%Y%m%d', localtime);
+	}
+	elsif ($date eq 'yesterday') {
+		return strftime ('%Y%m%d', localtime(time - (24 * 3600)));
+	}
+	elsif ($date =~ /^\d{4}\d{2}\d{2}$/) {
+		return $date;
+	}
+	else {
+		verbose_error "date $date is not valid, enter today, yesterday or YYYYMMDD";
+		exit 1;
+	}
+}
+
+sub get_files_list_from_date($)
+{
+	my $date = shift;
+	return [] unless defined $date;
+
+	my $ra_files = [];
+
+	unless (-d $g_root_dir) {
+		my $msg = "root dir specified does not exists : $g_root_dir";
+		print STDERR $msg."\n";
+		exit 1;
+	}
+
+	while (<$g_root_dir/*$date*>) {
+		push @{$ra_files}, $_;
+	}
+
+	return $ra_files;
+}
+
+sub get_hosts_from_str($) {
+	my ($hosts_str) = @_;
+	return [] unless defined $hosts_str;
+
+	my $ra_hosts = [];
+
+	$hosts_str =~ s/\s//g;
+	foreach my $host (split /,/, $hosts_str) {
+		push @{$ra_hosts}, $host;
+	}
+
+	return $ra_hosts;
+}
+
+#
+# main
+#
+
+# date is always the last args.
+my $date = $ARGV[$#ARGV];
+$date = 'today' if (not defined $date or $date =~ /^-/);
+
+# the really needed args !
+unless (defined $g_host and
+	defined $g_user and 
+	defined $g_protocol) {
+	print $BackupManager::Config::usage, "\n";
+	exit 1;
+}
+
+if ($g_protocol eq 'ftp' and not defined $g_pass) {
+	print $BackupManager::Config::usage, "\n";
+	exit 1;
+}
+
+# storing hosts on memory
+my $ra_hosts = get_hosts_from_str($g_host);
+
+# where to store archives...
+$g_remote_dir = "/backup/uploads/" if (not defined $g_remote_dir); 
+
+# let's find which files needs to be uploaded.
+my $ra_files = get_files_list_from_date(get_formated_date($date));
+
+# if user wants listing, just do it !
+if ($g_list) {
+	verbose "files to upload ($date) :";
+	foreach my $file (@{$ra_files}) {
+		print "- $file\n"; 
+	}
+	exit 0;
+}
+
+# We'll now send the files with the appropriate transfert protocol
+$g_protocol = lc $g_protocol;
+if ($g_protocol eq 'ftp') {
+	verbose "Trying to upload files with ftp";
+	send_files_with_ftp($g_user, $g_pass, $ra_hosts, $g_remote_dir, $ra_files);
+}
+elsif ($g_protocol eq 'scp' or $g_protocol eq 'ssh') {
+	verbose "Trying to upload files with scp";
+	send_files_with_scp($g_user, $ra_hosts, $g_remote_dir, $ra_files);
+}
+else {
+	print STDERR "mode '$g_protocol' is not supported\n";
+	exit 1;
+}
+
+=head1 AUTHOR
+
+Alexis Sukrieh <sukria@sukria.net>
+
+=cut
+
+

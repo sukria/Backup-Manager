@@ -1,0 +1,159 @@
+#!/bin/sh
+#####################################################
+# Backup Manager 
+#
+# This is the main backup-manager script. 
+#
+# It will read the conf file $conffile 
+# to know what to do and will then either :
+#	. generate archives in the format you choose
+#	. upload them to remote hosts with ftp or scp
+#	. clean up the archive repository
+#	. burn the backup-repo to a CDR/CDRW
+#
+#  This program is free software and is available 
+#  under the terms of the GNU General Public License.
+#
+######################################################
+
+set -e
+
+# All the path we'll need
+libdir="/usr/lib/backup-manager"
+zip="/usr/bin/zip"
+tar="/bin/tar"
+mkisofs="/usr/bin/mkisofs"
+cdrecord="/usr/bin/cdrecord"
+bmu="/usr/bin/backup-manager-upload"
+lockfile="/var/run/backup-manager.pid"
+md5sum="/usr/bin/md5sum"
+bc="/usr/bin/bc"
+logfile="/tmp/bm-cdrecord.log"
+mount_point="/tmp/bm-mnt"
+
+# Load the backup-manager's library
+. $libdir/gettext.sh
+. $libdir/dialog.sh
+. $libdir/files.sh
+. $libdir/md5sum.sh
+. $libdir/actions.sh
+
+# Initialize defautls values of arguments
+verbose="false"
+gettexts="true"
+force="false"
+upload="false"
+burn="false"
+help="false"
+md5check="false"
+conffile="/etc/backup-manager.conf"
+
+if [ "$UID" != 0 ]; then
+	gettext "backup-manager must be run as root."
+	exit
+fi
+
+# Catch signals for a nice exit.
+trap stop_me SIGINT SIGTERM SIGKILL
+
+# Parse the command line 
+while [ $# -ge 1 ]; do
+	case $1 in
+		-h|--help)
+			usage
+		;;
+		-m|--md5check) 
+			md5check="true"
+		;;
+		-b|--burn) 
+			burn="true"
+		;;
+		-u|--upload) 
+			upload="true"
+		;;
+		-v|--verbose) 
+			verbose="true"
+		;;
+		--no-gettexts)
+			gettexts="false"
+		;;
+		-f|--force) 
+			force="true"
+		;;
+		-c|--conffile)
+			# in this case, $2 should be the conffile !
+			if [ -f $2 ]; then
+				conffile=$2
+			else
+				gettext "-c option must be followed by an existing filename"
+				usage
+			fi
+			# we shift here to avoid processing the file path 
+			shift
+		;;
+		*)  
+			echo "unknown option $1"
+			usage
+			break
+		;;
+	esac
+	shift
+done
+
+# source the wanted conffile
+. $conffile
+
+# check that no other backup-manager is running
+get_lock
+
+# if the filetype is zip, check that $zip exists
+check_filetype
+
+# check the directories list to backup is not empty
+check_what_to_backup
+
+# set the default stuff
+init_default_vars
+
+# create $ARCHIVES_REPOSITORY if not exists
+create_archive_root_if_not_exists
+
+# only the uploading system
+if [ "$upload" == "true" ]; then
+	upload_files
+	_exit 0
+fi
+
+# only the burning system
+if [ "$burn" == "true" ]; then
+	burn_files
+	_exit 0
+fi
+
+# only the md5 checkup
+if [ "$md5check" == "true" ]; then
+	check_cdrom_md5_sums
+	_exit 0
+fi
+
+# This is the time for pre-command
+exec_pre_command
+
+# first cleanning up the repository 
+clean_repositories
+
+# now generating new archives...
+make_archives
+
+# uplaod if needed
+upload_files
+
+# burn if wanted
+burn_files
+
+# this is time for post-command
+exec_post_command
+
+# release the lock concerned by this conffile
+release_lock
+

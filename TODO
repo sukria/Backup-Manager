@@ -1,0 +1,21 @@
+
+#1 (high)
+	BM_DIRECTORIES_BLACKLIST: list
+	This will contain all the directories to exclude when generating archives.
+
+#2 (high)
+	BM_DUMP_SYMLINKS: boolean
+	Tell if bm has to dump symlinks when generating archives.
+
+#3 (high)
+	Never backup the BM_ARCHIVE_REPOSITORY
+
+#4 (low)
+	BM_BURNING_KEEP_ISO: boolean
+	Tell if we have to make the iso image on disk instead of using a pipe.
+	This way, we have to put it somewhere user can find it.
+
+#5 (medium)
+	Handle the cron frequency in debocnf.
+
+

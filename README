@@ -1,0 +1,17 @@
+
+			backup-manager
+
+
+	*    A really simple to use backup manager    *
+	
+
+The idea is to specify all the important directories of the system.
+backup-manager will generate tarballs (or zipped files) of all the
+specified directories.
+
+Archives can be uploaded daily to a list of remote hosts.
+Cleaning is done with purging each too old archive according to a 
+specified number of days.
+
+http://www.sukria.net/packages/backup-manager/
+

@@ -22,7 +22,7 @@
 
 		<author>Alexis Sukrieh
 		
-		<version>ver. &version;, &date-en;, rev. &cvs-rev;
+		<version>ver. &version;, &date-en;
 
 		<copyright>
 			<copyrightsummary>
@@ -53,10 +53,10 @@ it by writing to the &fsf-addr;.
 This user guide has been written for everyone who want to use &bmngr; 
 for archiving data. Reading this documentation should provide 
 all the information a user could ask for. If you find a point that is not
-detailed in this documentaion, please report it to &doc-email;. 
+detailed in this documentation, please report it to &doc-email;. 
 	<p>
 As &bmngr; is a sysadmin tool, the wording <em>User</em> in the title of this
-documentaion could be understood by <em>a system administrator who want to use
+documentation could be understood by <em>a system administrator who want to use
 &bmngr;</em>.  This guide will explain you the global design of &bmngr; as well as
 every important features this tool provides. 
 	<p>
@@ -80,15 +80,15 @@ Most of those examples are taken from the real life, thanks to &bmngr; users. If
 you think the way you use &bmngr; should be quoted here as an example, feel free
 to submit it to &doc-email;.
 	<p>
-You will aslo find at the end of this documentation, an appendix which will
-describe all the configuration keys you can use in a &bmngr; confgiuration file.
+You will also find at the end of this documentation, an appendix which will
+describe all the configuration keys you can use in a &bmngr; configuration file.
 
 	<sect id="history">Some History
 	<p>
 The first thing to explain before entering the technical part of this documentation
 is to underline why &bmngr; was written. Indeed, when it came on the Open Source
-scene, there were still several backup tools, all of them powerfull, well known
-and appreciated by users. So why having re-invented the whell? Was there really
+scene, there were still several backup tools, all of them powerful, well known
+and appreciated by users. So why having re-invented the wheel? Was there really
 a need for another Linux Backup Tool? I thought so, and I will tell you why.
 	<p>
 All began when I wanted to archive my important data at home, there were some
@@ -99,40 +99,37 @@ a simple script to do a simple thing: generating a couple of tarballs.
 One day, I don't know why, but I decided to host my webpage at home, I had a
 small Linux box with a permanent Internet access and a public IP address so it
 was possible and I did it. You can imagine that from that day, my backup strategy 
-growed and thus my backup script needed to be upgraded. I had then two boxes: the server
+grew up and thus my backup script needed to be upgraded. I had then two boxes: the server
 and my desktop machine. I then realized that I had to make a choice: using a
 <em>real</em> backup tool or enhancing my own script to make it well written,
 and easy to maintain. I choose the second alternative for only one reason: I did
 not find any backup tool that could fit my needs without requesting me to learn
 a lot of documentation, installing a server and a couple of agents or even hack a
-configuration file that is hundred lines long.
+configuration file that is hundreds lines long.
 	<p>
 In short, there wasn't any <em>easy-to-use</em> backup tool, and I wanted to
 write it.
 
 	<sect id="why-using-it">Why Using &bmngr;?
 	<p>
-Reading the short history of how &bmngr; got released, you may have seen
-that this tool is designed for a kind of Linux users: those who want a simple
-tool to manage a set of tarballs. If you want to implement a complex incremental
-backup strategy, with tape devices and complex agent/server structure, you should
-look at other backup tools, those which are there for a time.
+&FIXME;
 	<p>
-If you are reading this documentation, that means that you want to use &bmngr;
-and then, be aware that it will do the job as simple as possible, using FTP or
-SSH for transfert, <prgn>tar</prgn> or <prgn>zip</prgn> for building the archives
-and using your CDR burner for externalizing your files.
+&bmngr; is designed for a kind of Linux users: those who want a simple
+tool to manage a set of tarballs.
 	<p>
-If you keep in mind that it was written to be simple and you are ok with that
-philosophy, you can follow up, there is a chance that &bmngr; will fit your
-needs...
+Before I decided to write my own backup tool, either it was necessary to use complex tools, 
+or it was necessary to write one's own script to handle tar. It's now possible
+to use &bmngr; instead of writing your own Shell script and learning how to use
+it won't take you more time than writing your own backup tool.
+	<p>
+As the ease of use was a real aim...
 
-	<sect id="dependences">Dependencies
+	<sect id="dependencies">Dependencies
 	<p>
 The very last thing to say before we start is to list all the dependencies of
-&bmngr;. Indeed, a lot of actions it can perform are done thanks to well-known
+&bmngr;. Indeed, some actions it can perform are done thanks to well-known
 programs. If you plan to use some &bmngr;'s feature; please, be sure that the
-eventually dependence is installed on your system.
+corresponding program is installed on your system.
 
 <list>
 	<item><prgn>tar</prgn> or <prgn>zip</prgn> are used for generating the
@@ -151,9 +148,28 @@ eventually dependence is installed on your system.
 	</item>
 </list>
 
+	<p>
+All the internationalization efforts have been possible thanks to
+<prgn>gettext</prgn>, so be sure to have it on your system and to use a
+supported locale<footnote>French, German and Spanish locales are supported in
+the &bmngr-version;</footnote> if you want to have localized messages.
+
 <chapt id="main-design">Main Design
+	<p>
+Before explaining precise technical points, we will describe the main ideas that
+led to the current implementation of the tool. 
+
 	<sect id="what-acrhive">What's an Archive
+	<p>
+An archive is obviously either a tarball or a zip file, it is a backup of a part
+of your filesystem. For instance, archiving the <file>/home</file> directory
+could be made in a file like the following: <file>home.tar.gz</file>. This is
+what we'll call an <em>archive</em> in this dcumentation.
+
 	<sect id="archive-repo">The Archive Repository
+	<p>
+We need a place to keep all the archives we generate.
+
 	<sect id="lifetime">Lifetime of an Archive
 	<sect id="contexts">Context and Configuration Files
 	<sect id="upload-systm">The Upload System

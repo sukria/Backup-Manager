@@ -6,11 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-10 15:36+0100\n"
+"POT-Creation-Date: 2004-12-14 11:34+0100\n"
 "PO-Revision-Date: 2003-12-18 08:00-0500\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=ISO-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
@@ -31,7 +31,7 @@ msgid "unable to create the mount point $mount_point"
 msgstr "Impossible de créer le point de montage $mount_point"
 
 #: actions.sh.ext:28
-#, fuzzy, sh-format
+#, sh-format
 msgid "unable to mount $BM_BURNING_DEVICE on $mount_point"
 msgstr "Impossible de monter $BM_BURNING_DEVICE sur $mount_point"
 
@@ -103,7 +103,7 @@ msgstr ""
 "défaut: 650"
 
 #: actions.sh.ext:120
-#, fuzzy, sh-format
+#, sh-format
 msgid ""
 "Cannot burn archives of the $TODAY, too big : ${size}M, must fit in "
 "$BM_BURNING_MAXSIZE"
@@ -112,7 +112,7 @@ msgstr ""
 "doit tenir dans ${BM_BURNING_MAXSIZE}M"
 
 #: actions.sh.ext:133
-#, fuzzy, sh-format
+#, sh-format
 msgid "Blanking the CDRW in $BM_BURNING_DEVICE: "
 msgstr "Effacement de $BM_BURNING_DEVICE: "
 
@@ -122,7 +122,7 @@ msgid "failed"
 msgstr "échec"
 
 #: actions.sh.ext:138 actions.sh.ext:145
-#, fuzzy, sh-format
+#, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE: "
 msgstr "Gravure des données dans $BM_BURNING_DEVICE: "
 
@@ -260,7 +260,7 @@ msgid "Releasing lock: "
 msgstr "Libération du vérou: "
 
 #: dialog.sh.ext:86
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unmounting $BM_BURNING_DEVICE: "
 msgstr "Démontage de $BM_BURNING_DEVICE: "
 

@@ -1,16 +1,16 @@
 # German messages for backup-manager.
-# Copyleft Â© 2004 Alexis Sukrieh..
+# Copyleft © 2004 Alexis Sukrieh..
 # This file is distributed under the same license as the backup-manager package.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-10 15:36+0100\n"
+"POT-Creation-Date: 2004-12-14 11:35+0100\n"
 "PO-Revision-Date: 2003-12-18 10:09+0100\n"
-"Last-Translator: mikap <mikap@grml.org>\n"
+"Last-Translator: Michael Prokop <mika@grml.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=ISO-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -19,7 +19,7 @@ msgstr ""
 msgid "The mount point $mount_point is already there, remove it if needed"
 msgstr ""
 "Der Mountpunkt $mount_point existiert bereits, bitte entfernen Sie ihn wenn "
-"gewÃ¼nscht"
+"gewünscht"
 
 #: actions.sh.ext:26
 #, sh-format
@@ -43,9 +43,9 @@ msgid "ok"
 msgstr "ok"
 
 #: actions.sh.ext:38
-#, fuzzy, sh-format
+#, sh-format
 msgid "Checking MD5 sum for $base_file: "
-msgstr "Checken der MD5-Summe fÃ¼r ${base_file}: "
+msgstr "Checken der MD5-Summe für ${base_file}: "
 
 #: actions.sh.ext:63
 msgid "failed (read error)"
@@ -53,12 +53,12 @@ msgstr "fehlgeschlagen (Lesefehler)"
 
 #: actions.sh.ext:67
 msgid "failed (MD5 hash mismatch)"
-msgstr "fehlgeschlagen (MD5-Summe stimmt nicht Ã¼berein)"
+msgstr "fehlgeschlagen (MD5-Summe stimmt nicht überein)"
 
 #: actions.sh.ext:74
 msgid "Error during MD5 controls. Run $0 --md5check --verbose for details"
 msgstr ""
-"Fehler wÃ¤hrend der MD5-Summenkontrolle. FÃ¼r Details $0 --md5check --verbose "
+"Fehler während der MD5-Summenkontrolle. Für Details $0 --md5check --verbose "
 "verwenden"
 
 #: actions.sh.ext:92
@@ -103,18 +103,18 @@ msgstr ""
 "vermutlich wollen Sie'650'"
 
 #: actions.sh.ext:120
-#, fuzzy, sh-format
+#, sh-format
 msgid ""
 "Cannot burn archives of the $TODAY, too big : ${size}M, must fit in "
 "$BM_BURNING_MAXSIZE"
 msgstr ""
-"Konnte Archiv von ${TODAY} nicht brennen, zu groÃŸ : ${size}M, maximale GrÃ¶ÃŸe "
+"Konnte Archiv von ${TODAY} nicht brennen, zu groß : ${size}M, maximale Größe "
 "laut Konfiguration aber nur $BM_BURNING_MAXSIZE"
 
 #: actions.sh.ext:133
-#, fuzzy, sh-format
+#, sh-format
 msgid "Blanking the CDRW in $BM_BURNING_DEVICE: "
-msgstr "LÃ¶schen (blanking) der CDRW in ${BM_BURNING_DEVICE}: "
+msgstr "Löschen (blanking) der CDRW in ${BM_BURNING_DEVICE}: "
 
 #: actions.sh.ext:135 actions.sh.ext:141 actions.sh.ext:148 actions.sh.ext:208
 #: actions.sh.ext:284 actions.sh.ext:304
@@ -133,12 +133,12 @@ msgstr "Erstellen von $file_to_create:"
 
 #: actions.sh.ext:196 actions.sh.ext:199 actions.sh.ext:202 actions.sh.ext:205
 msgid "~"
-msgstr ""
+msgstr "~"
 
 #: actions.sh.ext:209
 #, sh-format
 msgid "The filetype $BM_FILETYPE is not spported."
-msgstr "Der Dateityp $BM_FILETYPE wird nicht unterstÃ¼tzt."
+msgstr "Der Dateityp $BM_FILETYPE wird nicht unterstützt."
 
 #: actions.sh.ext:214
 #, sh-format
@@ -153,11 +153,11 @@ msgstr "Datei $file_to_create existiert bereits, abgebrochen."
 #: actions.sh.ext:230
 #, sh-format
 msgid "Cleaning $BM_ARCHIVES_REPOSITORY: "
-msgstr ""
+msgstr "Aufräumen von $BM_ARCHIVES_REPOSITORY: "
 
 #: actions.sh.ext:255 actions.sh.ext:267
 msgid "unable to call backup-manager-upload"
-msgstr "konnte backup-manager-upload nicht ausfÃ¼hren"
+msgstr "konnte backup-manager-upload nicht ausführen"
 
 #: actions.sh.ext:270
 msgid "The upload system is disabled in the conf file."
@@ -166,92 +166,93 @@ msgstr "Das upload-System wurde in der Konfigurationsdatei deaktiviert."
 #: actions.sh.ext:280
 #, sh-format
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
-msgstr ""
+msgstr "pre-command läuft: $BM_PRE_BACKUP_COMMAND: "
 
 #: actions.sh.ext:285
 msgid "pre-command returned false. Stopping the process."
 msgstr ""
+"pre-command lieferte einen negativen Returnwert. Prozess wurde gestoppt."
 
 #: actions.sh.ext:300
 #, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND: "
-msgstr ""
+msgstr "post-command läuft: $BM_POST_BACKUP_COMMAND: "
 
 #: actions.sh.ext:305
 msgid "post-command returned false."
-msgstr ""
+msgstr "post-command lieferte einen negativen Returnwert."
 
 #: backup-manager.ext:53
 msgid "backup-manager must be run as root."
-msgstr "backup-manager muss als User root ausgefÃ¼hrt werden."
+msgstr "backup-manager muss als User root ausgeführt werden."
 
 #: backup-manager.ext:101
 msgid "-c option must be followed by an existing filename"
-msgstr "ein gÃ¼ltiger Dateiname muÃŸ der Option -c folgen"
+msgstr "ein gültiger Dateiname muß der Option -c folgen"
 
 #: dialog.sh.ext:14
 msgid "Output:"
-msgstr ""
+msgstr "Output:"
 
 #: dialog.sh.ext:15
 msgid "Print this short help message."
-msgstr ""
+msgstr "Ausgeben dieses kurzen Hilfetextes."
 
 #: dialog.sh.ext:16
 msgid "Print what happends on STDOUT."
-msgstr ""
+msgstr "Ausgeben was auf STDOUT passiert ist."
 
 #: dialog.sh.ext:17
 msgid "Disable warnings."
-msgstr ""
+msgstr "Deaktivieren der Warnungen."
 
 #: dialog.sh.ext:20
 msgid "Single actions:"
-msgstr ""
+msgstr "Einzelne Aktionen:"
 
 #: dialog.sh.ext:21
 msgid "Just upload the files of the day."
-msgstr ""
+msgstr "Nur die Dateien des Tages raufladen."
 
 #: dialog.sh.ext:22
 msgid "Just burn the files of the day."
-msgstr ""
+msgstr "Nur die Dateien des Tages brennen."
 
 #: dialog.sh.ext:23
 msgid "Just test the md5 sums."
-msgstr ""
+msgstr "Nur die MD5-Summen testen."
 
 #: dialog.sh.ext:24
 msgid "Just purge old archives."
-msgstr ""
+msgstr "Nur alte Archive löschen."
 
 #: dialog.sh.ext:27
 msgid "Behaviour:"
-msgstr ""
+msgstr "Verhalten:"
 
 #: dialog.sh.ext:28
 msgid "Choose an alternate config file."
-msgstr ""
+msgstr "Wählen Sie eine alternative Konfigurationsdatei."
 
 #: dialog.sh.ext:29
 msgid "Force overwrite of existing archives."
-msgstr ""
+msgstr "Überschreiben des existierenden Archives erzwingen."
 
 #: dialog.sh.ext:32
 msgid "Unwanted actions:"
-msgstr ""
+msgstr "Ungewollte Aktionen:"
 
 #: dialog.sh.ext:33
 msgid "Disable the upload process."
-msgstr ""
+msgstr "Deaktivieren des Upload-Vorgangs."
 
 #: dialog.sh.ext:34
 msgid "Disable the burning process."
-msgstr ""
+msgstr "Deaktivieren des Brenn-Vorgangs."
 
 #: dialog.sh.ext:35
 msgid "Disable the purge process."
-msgstr ""
+msgstr "Deaktivieren des Lösch-Vorgangs."
 
 #: dialog.sh.ext:81
 msgid "Releasing lock: "
@@ -265,8 +266,8 @@ msgstr "Unmounten von $BM_BURNING_DEVICE: "
 #: dialog.sh.ext:104
 msgid "Warning, I was stopped before ending my job. Archives may be corrupted."
 msgstr ""
-"Warnung, ich wurde angehalten bevor ich meinen Job erfolgreich ausfÃ¼hren "
-"konnte. Archive kÃ¶nnten defekt sein."
+"Warnung, ich wurde angehalten bevor ich meinen Job erfolgreich ausführen "
+"konnte. Archive könnten defekt sein."
 
 #: dialog.sh.ext:116
 msgid "the BM_FILETYPE conf key is set to \"zip\" but zip is not installed."
@@ -288,6 +289,7 @@ msgstr "$BM_ARCHIVES_REPOSITORY existiert nicht, wird angelegt"
 #, sh-format
 msgid "Removing lock for old PID, $pid is not running."
 msgstr ""
+"Löschen der Sperrdatei (lockfile) vom alten Prozess (pid), $pid läuft nicht."
 
 #: files.sh.ext:152
 #, sh-format
@@ -295,34 +297,37 @@ msgid ""
 "A backup-manager process ($pid) is already running with the conffile "
 "$conffile."
 msgstr ""
+"Ein backup-manager-Prozess ($pid) läuft bereits mit der Konfigurationsdatei "
+"$conffile."
 
 #: files.sh.ext:156 files.sh.ext:163
 #, sh-format
 msgid "Getting lock for backup-manager $pid with $conffile: "
 msgstr ""
+"Holen der Sperrdatei (lockfile) für backup-manager $pid mit $conffile: "
 
 #: files.sh.ext:166
 msgid "failed (check the file permissions)"
-msgstr "fehlgeschlagen (prÃ¼fen Sie die Dateirechte)"
+msgstr "fehlgeschlagen (prüfen Sie die Dateirechte)"
 
 #: files.sh.ext:182
 #, sh-format
 msgid "$file is not a regular file."
-msgstr ""
+msgstr "$file ist keine reguläre Datei."
 
 #: files.sh.ext:190
 #, sh-format
 msgid "Removing $file: "
-msgstr ""
+msgstr "Löschen von $file: "
 
 #: files.sh.ext:208
 msgid "Directory given is not found"
-msgstr ""
+msgstr "Angegebenes Verzeichnis nicht gefunden"
 
 #: files.sh.ext:218
 #, sh-format
 msgid "Entering directory $file."
-msgstr ""
+msgstr "Betreten vom Verzeichnis $file."
 
 #: md5sum.sh.ext:14
 #, sh-format

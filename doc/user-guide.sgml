@@ -1,0 +1,223 @@
+<!DOCTYPE debiandoc PUBLIC "-//DebianDoc//DTD DebianDoc//EN" [
+  <!-- include version information so we don't have to hard code it
+       within the document -->
+  <!ENTITY % versiondata SYSTEM "version.ent"> %versiondata;
+  <!-- common, language independent entities -->
+  <!ENTITY % commondata  SYSTEM "common.ent" > %commondata;
+
+  <!-- CVS revision of this document -->
+  <!ENTITY cvs-rev "$Revision$">
+
+  <!-- if you are translating this document, please notate the CVS
+       revision of the original developer's reference in cvs-en-rev -->
+  <!-- <!ENTITY cvs-en-rev "X.YZW"> -->
+
+  <!-- how to mark a section that needs more work -->
+  <!ENTITY FIXME "<em>FIXME:</em>&nbsp;">
+
+]>
+<debiandoc>
+	<book>
+		<title>&bmngr; &bmngr-version; User Guide
+
+		<author>Alexis Sukrieh
+		
+		<version>ver. &version;, &date-en;, rev. &cvs-rev;
+
+		<copyright>
+			<copyrightsummary>
+copyright &copy; 2005 Alexis Sukrieh
+			</copyrightsummary>
+
+	<p>
+This user guide is free software; you may redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2, or (at your option) any
+later version.
+	<p>
+This is distributed in the hope that it will be useful, but
+<em>without any warranty</em>; without even the implied warranty of
+was merchantability or fitness for a particular purpose.  See the GNU
+General Public License for more details.
+	<p>
+A copy of the GNU General Public License is available on the World Wide
+Web at <url id="&url-gpl;" name="the GNU web site">.  You can also obtain 
+it by writing to the &fsf-addr;.
+
+<toc detail="sect1">
+
+<chapt id="before-we-start">Before We Start
+
+	<sect id="scope">Scope of This Document
+	<p>
+This user guide has been written for everyone who want to use &bmngr; 
+for archiving data. Reading this documentation should provide 
+all the information a user could ask for. If you find a point that is not
+detailed in this documentaion, please report it to &doc-email;. 
+	<p>
+As &bmngr; is a sysadmin tool, the wording <em>User</em> in the title of this
+documentaion could be understood by <em>a system administrator who want to use
+&bmngr;</em>.  This guide will explain you the global design of &bmngr; as well as
+every important features this tool provides. 
+	<p>
+To begin with, the chapter you are reading, <em>Before We Start</em>, is an 
+introduction to the understanding of this tool, explaining how &bmngr; came, 
+why it was written as there was yet a lot of backup tools and what you need 
+if you want to use it at its full capacities.
+	<p>
+Then, you will have a global description of the <em>Main Design</em> of the program,
+explaining what are the ideas behind the code, how the tool behaves
+and what are the kind of features you can expect from it.
+	<p>
+When the main design would be clear to your mind, you will be interested in
+learning how you can precisely configure the tool in order to use a given
+feature, this will be detailed in the next part <em>Managing Configuration
+Files</em>.
+	<p>
+At this point, the next chapter, <em>Examples</em>, will give a set of precise
+configuration files that can be used to provide a particular archiving strategy.
+Most of those examples are taken from the real life, thanks to &bmngr; users. If
+you think the way you use &bmngr; should be quoted here as an example, feel free
+to submit it to &doc-email;.
+	<p>
+You will aslo find at the end of this documentation, an appendix which will
+describe all the configuration keys you can use in a &bmngr; confgiuration file.
+
+	<sect id="history">Some History
+	<p>
+The first thing to explain before entering the technical part of this documentation
+is to underline why &bmngr; was written. Indeed, when it came on the Open Source
+scene, there were still several backup tools, all of them powerfull, well known
+and appreciated by users. So why having re-invented the whell? Was there really
+a need for another Linux Backup Tool? I thought so, and I will tell you why.
+	<p>
+All began when I wanted to archive my important data at home, there were some
+important directories I wanted to backup and I then first wrote a small shell
+script that did the job. It was small, dirty and really not portable, but it was
+a simple script to do a simple thing: generating a couple of tarballs.
+	<p>
+One day, I don't know why, but I decided to host my webpage at home, I had a
+small Linux box with a permanent Internet access and a public IP address so it
+was possible and I did it. You can imagine that from that day, my backup strategy 
+growed and thus my backup script needed to be upgraded. I had then two boxes: the server
+and my desktop machine. I then realized that I had to make a choice: using a
+<em>real</em> backup tool or enhancing my own script to make it well written,
+and easy to maintain. I choose the second alternative for only one reason: I did
+not find any backup tool that could fit my needs without requesting me to learn
+a lot of documentation, installing a server and a couple of agents or even hack a
+configuration file that is hundred lines long.
+	<p>
+In short, there wasn't any <em>easy-to-use</em> backup tool, and I wanted to
+write it.
+
+	<sect id="why-using-it">Why Using &bmngr;?
+	<p>
+Reading the short history of how &bmngr; got released, you may have seen
+that this tool is designed for a kind of Linux users: those who want a simple
+tool to manage a set of tarballs. If you want to implement a complex incremental
+backup strategy, with tape devices and complex agent/server structure, you should
+look at other backup tools, those which are there for a time.
+	<p>
+If you are reading this documentation, that means that you want to use &bmngr;
+and then, be aware that it will do the job as simple as possible, using FTP or
+SSH for transfert, <prgn>tar</prgn> or <prgn>zip</prgn> for building the archives
+and using your CDR burner for externalizing your files.
+	<p>
+If you keep in mind that it was written to be simple and you are ok with that
+philosophy, you can follow up, there is a chance that &bmngr; will fit your
+needs...
+
+	<sect id="dependences">Dependencies
+	<p>
+The very last thing to say before we start is to list all the dependencies of
+&bmngr;. Indeed, a lot of actions it can perform are done thanks to well-known
+programs. If you plan to use some &bmngr;'s feature; please, be sure that the
+eventually dependence is installed on your system.
+
+<list>
+	<item><prgn>tar</prgn> or <prgn>zip</prgn> are used for generating the
+	archives according the filetype you choose. Be sure to have it when you
+	choose the filetype of the archives.
+	</item>
+
+	<item><prgn>mkisofs</prgn> is used for building the ISO image for
+	burning the data on a CDR/CDRW media.
+	</item>
+	
+	<item>
+	<prgn>cdrecord</prgn> is used for using your CDR burner. Be sure that 
+	your device is available in cdrecord else, obviously, &bmngr; won't be
+	able to burn data.
+	</item>
+</list>
+
+<chapt id="main-design">Main Design
+	<sect id="what-acrhive">What's an Archive
+	<sect id="archive-repo">The Archive Repository
+	<sect id="lifetime">Lifetime of an Archive
+	<sect id="contexts">Context and Configuration Files
+	<sect id="upload-systm">The Upload System
+	<sect id="burning-systm">The Burning System
+	<sect id="post-pre-commands">Dealing with <prgn>pre-command</prgn> and <prgn>post-command</prgn>
+	
+<chapt id="setting-context">Managing Configuration Files
+	<sect id="defining">Archives Name and Type
+	<sect id="what-backup">Choosing What to Backup
+	<sect id="upload-archives">Uploading Archives
+		<sect1 id="ftp">With FTP Accounts
+		<sect1 id="scp">With SSH Accounts
+	<sect id="burning">Burning Archives on CDR/CDRW Media
+
+<chapt id="examples">Examples
+	<sect id="desktop">Archiving a Desktop Box
+	<sect id="servers">Using &bmngr; on a LAN, Centralizing Archives.
+	<sect id="samba">Using SAMBA for Proving Archives to Windows Boxes.
+
+<appendix id="conffile">Overview of Configuration Keys
+	<sect id="archive-settings">Archive Settings
+		<sect1 id="BM_NAME_FORMAT">&BMNAMEFORMAT;
+		<sect1 id="BM_FILE_TYPE">&BMFILETYPE; 
+		<sect1 id="BM_MAX_TIME_TO_LIVE">&BMMAXTIMETOLIVE;
+		<sect1 id="BM_DUMP_SYMLINKS">&BMDUMPSYMLINKS;
+		<sect1 id="BM_ARCHIVES_PREFIX">&BMARCHIVESPREFIX;
+	<sect id="file-paths">File Paths
+		<sect1 id="BM_ARCHIVES_REPOSITORY">&BMARCHIVESREPOSITORY;
+		<sect1 id="BM_DIRECTORIES">&BMDIRECTORIES;
+		<sect1 id="BM_DIRECTORIES_BLACKLIST">&BMDIRECTORIESBLACKLIST;
+	<sect id="upload-settings">The Upload System Settings
+		<sect1 id="BM_UPLOAD_MODE">&BMUPLOADMODE;
+		<sect1 id="BM_UPLOAD_HOSTS">&BMUPLOADHOSTS;
+		<sect1 id="BM_UPLOAD_USER">&BMUPLOADUSER;
+		<sect1 id="BM_UPLOAD_PASSWD">&BMUPLOADPASSWD;
+		<sect1 id="BM_UPLOAD_KEY">&BMUPLOADKEY;
+		<sect1 id="BM_UPLOAD_DIR">&BMUPLOADDIR;
+	<sect id="burning-settings">The Burning System Settings
+		<sect1 id="BM_BURNING">&BMBURNING;
+		<sect1 id="BM_BURNING_MEDIA">&BMBURNINGMEDIA;
+		<sect1 id="BM_BURNING_DEVICE">&BMBURNINGDEVICE;
+		<sect1 id="BM_BURNING_METHOD">&BMBURNINGMETHOD;
+		<sect1 id="BM_BURNING_MAXSIZE">&BMBURNINGMAXSIZE;
+	<sect id="advanced-settings">Advanced Settings
+		<sect1 id="BM_PRE_BACKUP_COMMAND">&BMPREBACKUPCOMMAND;
+		<sect1 id="BM_POST_BACKUP_COMMAND">&BMPOSTBACKUPCOMMAND;
+
+</book>
+
+</debiandoc>
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:nil
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-declaration:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

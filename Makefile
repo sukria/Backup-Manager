@@ -1,4 +1,6 @@
 DESTDIR?=
+
+# For the backup-manager package
 PERL5DIR=$(DESTDIR)/usr/share/perl5
 LIBDIR=$(DESTDIR)/usr/share/backup-manager
 SHAREDIR=$(DESTDIR)/usr/share/backup-manager
@@ -10,7 +12,26 @@ SHFILES=lib/dialog.sh \
 	lib/gettext-dummy.sh \
 	lib/md5sum.sh 
 
-install: doc install_lib install_deb install_po
+# For the backup-manager-doc package
+DOCDIR		= $(DESTDIR)/usr/share/doc/backup-manager
+DOCHTMLDIR 	= $(DOCDIR)/user-guide.html
+DOCPDF		= doc/user-guide.pdf
+DOCHTMLFILES	= doc/user-guide.html/*.html
+DOCPDF		= doc/user-guide.pdf
+DOCTXT		= doc/user-guide.txt
+
+# The backup-manager package
+install_binary: doc install_lib install_deb install_po
+
+# The backup-manager-doc package
+install_doc: 
+	@echo -e "\n*** Building the User Guide ***\n"
+	$(MAKE) -C doc
+	install -d $(DOCDIR)
+	install --owner=root --group=root --mode=0644 $(DOCPDF) $(DOCDIR)
+	install --owner=root --group=root --mode=0644 $(DOCTXT) $(DOCDIR)
+	install -d $(DOCHTMLDIR)
+	install --owner=root --group=root --mode=0644 $(DOCHTMLFILES) $(DOCHTMLDIR)
 
 # The translation stuff
 install_po:

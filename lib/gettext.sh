@@ -3,7 +3,7 @@
 # If /usr/bin/gettext.sh is not found, we'll 
 # provide a dummy function.
 
-libdir="/usr/lib/backup-manager"
+libdir="/usr/share/backup-manager"
 libgettext="/usr/bin/gettext.sh"
 
 if [ ! -f $libgettext ]; then

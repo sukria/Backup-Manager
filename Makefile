@@ -1,6 +1,6 @@
 DESTDIR?=
 PERL5DIR=$(DESTDIR)/usr/share/perl5
-LIBDIR=$(DESTDIR)/usr/lib/backup-manager
+LIBDIR=$(DESTDIR)/usr/share/backup-manager
 SHAREDIR=$(DESTDIR)/usr/share/backup-manager
 SHFILES=lib/dialog.sh \
 	lib/files.sh \

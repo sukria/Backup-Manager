@@ -19,7 +19,7 @@
 set -e
 
 # All the path we'll need
-libdir="/usr/lib/backup-manager"
+libdir="/usr/share/backup-manager"
 zip="/usr/bin/zip"
 tar="/bin/tar"
 mkisofs="/usr/bin/mkisofs"

@@ -12,6 +12,10 @@ check_cdrom_md5_sums()
 {
 	has_error=0
 
+	if [ -z $BM_BURNING_DEVICE ]; then
+		error "MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE in $conffile."
+	fi
+
 	# first be sure that the mount point 
 	# is not already used.
 	if [ -d $mount_point ]; then
@@ -292,7 +296,7 @@ exec_pre_command()
 
 exec_post_command()
 {
-	if [ -n $BM_POST_BACKUP_COMMAND ]; then
+	if [ ! -z "$BM_POST_BACKUP_COMMAND" ]; then
 		info -n "Running post-command: \$BM_POST_BACKUP_COMMAND: "
 		RET=`$BM_POST_BACKUP_COMMAND` || RET="false"
 		case "$RET" in

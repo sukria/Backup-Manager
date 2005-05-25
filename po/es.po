@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-14 19:58+0100\n"
+"POT-Creation-Date: 2005-05-23 15:57+0200\n"
 "PO-Revision-Date: 2003-12-18 10:09+0100\n"
 "Last-Translator: Diego Brouard\n"
 "MIME-Version: 1.0\n"
@@ -35,7 +35,7 @@ msgid "unable to mount $BM_BURNING_DEVICE on $mount_point"
 msgstr "No ha sido posible montar BM_BURNING_DEVICE en mount_point"
 
 #: actions.sh.ext:29 actions.sh.ext:60 actions.sh.ext:136 actions.sh.ext:142
-#: actions.sh.ext:149 actions.sh.ext:290 actions.sh.ext:309 dialog.sh.ext:83
+#: actions.sh.ext:149 actions.sh.ext:301 actions.sh.ext:320 dialog.sh.ext:83
 #: dialog.sh.ext:90 files.sh.ext:158 files.sh.ext:169 files.sh.ext:192
 msgid "ok"
 msgstr "ok"
@@ -116,7 +116,7 @@ msgid "Blanking the CDRW in $BM_BURNING_DEVICE: "
 msgstr "Borrando el CDRW en ${BM_BURNING_DEVICE}: "
 
 #: actions.sh.ext:135 actions.sh.ext:141 actions.sh.ext:148 actions.sh.ext:208
-#: actions.sh.ext:284 actions.sh.ext:304
+#: actions.sh.ext:295 actions.sh.ext:315
 msgid "failed"
 msgstr "error"
 
@@ -144,39 +144,44 @@ msgstr "El tipo de fichero $BM_FILETYPE no está soportado."
 msgid "ok (${size}M, "
 msgstr "ok (${size}M, "
 
-#: actions.sh.ext:221
+#: actions.sh.ext:222
+#, fuzzy
+msgid "unable to purge duplicates"
+msgstr "Deshabilitar el proceso de borrado."
+
+#: actions.sh.ext:224
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "El fichero $file_to_create, ya existe. Se ignora."
 
-#: actions.sh.ext:230
+#: actions.sh.ext:233
 #, sh-format
 msgid "Cleaning $BM_ARCHIVES_REPOSITORY: "
 msgstr "Limpiando $BM_ARCHIVES_REPOSITORY: "
 
-#: actions.sh.ext:255 actions.sh.ext:267
+#: actions.sh.ext:266 actions.sh.ext:278
 msgid "unable to call backup-manager-upload"
 msgstr "no se ha podido llamar a backup-manager-upload"
 
-#: actions.sh.ext:270
+#: actions.sh.ext:281
 msgid "The upload system is disabled in the conf file."
 msgstr "El sistema de carga está deshabilitado en el fichero de configuración."
 
-#: actions.sh.ext:280
+#: actions.sh.ext:291
 #, sh-format
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
 msgstr "Ejecutando el comando previo al proceso: $BM_PRE_BACKUP_COMMAND: "
 
-#: actions.sh.ext:285
+#: actions.sh.ext:296
 msgid "pre-command returned false. Stopping the process."
 msgstr "el comando previo al proceso devolvió false. Parando el proceso."
 
-#: actions.sh.ext:300
+#: actions.sh.ext:311
 #, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND: "
 msgstr "Ejecutando el comando posterior al proceso: $BM_POST_BACKUP_COMMAND: "
 
-#: actions.sh.ext:305
+#: actions.sh.ext:316
 msgid "post-command returned false."
 msgstr "el comando posterior al proces devolvió false."
 
@@ -187,6 +192,14 @@ msgstr "Es necesario ser root para ejecutar backup-manager."
 #: backup-manager.ext:101
 msgid "-c option must be followed by an existing filename"
 msgstr "tras la opción -c debe especificarse un fichero que exista"
+
+#: backup-manager.ext:168
+msgid "Unable to exec the pre-command"
+msgstr ""
+
+#: backup-manager.ext:189
+msgid "Unable to exec post-command"
+msgstr ""
 
 #: dialog.sh.ext:14
 msgid "Output:"
@@ -325,6 +338,24 @@ msgstr "El directorio especificado no se ha encontrado"
 #, sh-format
 msgid "Entering directory $file."
 msgstr "Accediendo al directorio $file."
+
+#: files.sh.ext:235
+msgid "No file given"
+msgstr ""
+
+#: files.sh.ext:239
+#, fuzzy, sh-format
+msgid "The given file does not exist: $file_to_create"
+msgstr "El fichero especificado no existe en el repositorio: $archive"
+
+#: files.sh.ext:243
+#, fuzzy
+msgid "unable to get date from file"
+msgstr "Deshabilitar el proceso de borrado."
+
+#: files.sh.ext:244
+msgid "unable to find the pattern of the file"
+msgstr ""
 
 #: md5sum.sh.ext:14
 #, sh-format

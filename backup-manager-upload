@@ -95,6 +95,7 @@ my $g_list	= 0;
 my $g_host 	= undef;
 my $g_user 	= undef;
 my $g_pass 	= undef;
+my $g_ftpclean  = undef;
 my $g_protocol 	= 'scp';
 my $g_remote_dir= '/backup/uploads';
 my $g_root_dir	= '/backup';
@@ -111,6 +112,7 @@ BackupManager::Config::getopt("$0 -m=mode -h=host -u=user [options] date\n
 -d|--directory	: Directory on the remote host where files will go (default is /backup/uploads).
 -r|--root	: Root directory of your archives (default /backup).
 -l|--list	: Only prints which files would be uploaded.
+--ftp-purge	: Purge the remote directory before uploading files in FTP mode.
 date		: All files >= date will be uploaded. Either a valid date (YYYYMMDD) or one of this words : today, yesterday",
 'verbose'	=> \$g_verbose,
 'mode|m=s' 	=> \$g_protocol,
@@ -120,6 +122,7 @@ date		: All files >= date will be uploaded. Either a valid date (YYYYMMDD) or on
 'directory|d=s'	=> \$g_remote_dir,
 'key|k=s'	=> \$g_key_file,
 'root|r=s'	=> \$g_root_dir,
+'ftp-purge'	=> \$g_ftpclean,
 'list'		=> \$g_list,
 );
 
@@ -254,8 +257,20 @@ sub send_files_with_ftp($$$$$)
 			verbose "Connected to $host";
 			
 			if ($ftp->login($user, $passwd) and
+			    $ftp->binary() and
 			    $ftp->cwd($repository)) {
-				verbose "Logged on $host, in $repository";
+				verbose "Logged on $host, in $repository (binary mode)";
+
+				# Purge the FTP repository if needed
+				if ($g_ftpclean) {
+					verbose "Cleaning FTP folder $repository";
+					my $ra_files = $ftp->ls();
+					foreach my $file (@$ra_files) {
+						unless ($ftp->delete($file)) {
+							verbose_error "Unable to delete $file";
+						}
+					}
+				}
 			    
 				foreach my $file (@{$ra_files}) {
 					chomp $file;
@@ -273,7 +288,7 @@ sub send_files_with_ftp($$$$$)
 				$ftp->quit;
 			}
 			else {
-				verbose_error "unable to login and cwd on ${host}:${repository}";
+				verbose_error "unable to login and cwd on ${host}:${repository} in binary mode";
 			}
 		}
 		else {

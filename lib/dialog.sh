@@ -141,10 +141,23 @@ init_default_vars()
 
 create_archive_root_if_not_exists()
 {
+	if [ -z "$BM_USER" ]; then
+		BM_USER="root"
+	fi
+	if [ -z "$BM_GROUP" ]; then
+		BM_GROUP="root"
+	fi
+	
 	if [ ! -d $BM_ARCHIVES_REPOSITORY ]
 	then
 		info "\$BM_ARCHIVES_REPOSITORY does not exist, creating it"
 		mkdir $BM_ARCHIVES_REPOSITORY
 	fi
+
+	# for security reason, the repository should not be world readable
+	# only BM_USER:BM_GROUP can read/write it. 
+	# FIXME: maybe putting the umask in the conf woul be good...
+	chown $BM_USER:$BM_GROUP $BM_ARCHIVES_REPOSITORY
+	chmod 770 $BM_ARCHIVES_REPOSITORY
 }
 

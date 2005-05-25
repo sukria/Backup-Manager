@@ -223,4 +223,38 @@ clean_directory()
 	done
 }
 
+# This takes a file and the md5sum of that file.
+# It will look at every archives of the same source
+# and will replace duplicates (same size) by symlinks.
+purge_duplicate_archives()
+{
+	file_to_create="$1"
+	size_file=$(ls -l $file_to_create | awk '{print $5}')
+
+	if [ -z "$file_to_create" ]; then
+		error "No file given"
+	fi
+
+	if [ ! -e $file_to_create ]; then
+		error "The given file does not exist: \$file_to_create"
+	fi
+
+	# we'll parse all the files of the same source
+	date_of_file=$(get_date_from_file $file_to_create) || error "unable to get date from file"
+	file_pattern=$(echo $file_to_create | sed -e "s/$date_of_file.*$//") || error "unable to find the pattern of the file"
+	
+	for file in $file_pattern*
+	do
+		if [ ! -L $file ] && 
+		   [ "$file" != "$file_to_create" ]; then
+			size=$(ls -l $file | awk '{print $5}')
+
+			if [ "$size_file" = "$size" ]; then
+				info "$file is a duplicate of $file_to_create (using symlink)"
+				rm -f $file
+				ln -s $file_to_create $file
+			fi
+		fi
+	done
+}
 

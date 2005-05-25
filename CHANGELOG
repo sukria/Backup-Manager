@@ -1,3 +1,10 @@
+ 0.5.8
+ 	* When creating archive, backup-manager now replace any duplicate
+	  it found with symlink to the most recent archive for saving
+	  disk space.
+ 	* added BM_FTP_PURGE configuration key for rmeoving files 
+	  on ftp transfer before uploading files.
+ 
  0.5.7
  	* Removed the file TODO
 	* Added a COPYING file with the content of the GPL V2.

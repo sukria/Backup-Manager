@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-14 11:34+0100\n"
+"POT-Creation-Date: 2005-05-23 15:57+0200\n"
 "PO-Revision-Date: 2003-12-18 08:00-0500\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "MIME-Version: 1.0\n"
@@ -36,7 +36,7 @@ msgid "unable to mount $BM_BURNING_DEVICE on $mount_point"
 msgstr "Impossible de monter $BM_BURNING_DEVICE sur $mount_point"
 
 #: actions.sh.ext:29 actions.sh.ext:60 actions.sh.ext:136 actions.sh.ext:142
-#: actions.sh.ext:149 actions.sh.ext:290 actions.sh.ext:309 dialog.sh.ext:83
+#: actions.sh.ext:149 actions.sh.ext:301 actions.sh.ext:320 dialog.sh.ext:83
 #: dialog.sh.ext:90 files.sh.ext:158 files.sh.ext:169 files.sh.ext:192
 msgid "ok"
 msgstr "ok"
@@ -117,7 +117,7 @@ msgid "Blanking the CDRW in $BM_BURNING_DEVICE: "
 msgstr "Effacement de $BM_BURNING_DEVICE: "
 
 #: actions.sh.ext:135 actions.sh.ext:141 actions.sh.ext:148 actions.sh.ext:208
-#: actions.sh.ext:284 actions.sh.ext:304
+#: actions.sh.ext:295 actions.sh.ext:315
 msgid "failed"
 msgstr "échec"
 
@@ -145,41 +145,46 @@ msgstr "Le type de fichier $BM_FILETYPE n'est pas supporté."
 msgid "ok (${size}M, "
 msgstr "ok (${size}M, "
 
-#: actions.sh.ext:221
+#: actions.sh.ext:222
+#, fuzzy
+msgid "unable to purge duplicates"
+msgstr "Désactive la phase de nettoyage."
+
+#: actions.sh.ext:224
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Fichier $file_to_create existe, passage au suivant."
 
-#: actions.sh.ext:230
+#: actions.sh.ext:233
 #, sh-format
 msgid "Cleaning $BM_ARCHIVES_REPOSITORY: "
 msgstr "Nettoyage de $BM_ARCHIVES_REPOSITORY: "
 
-#: actions.sh.ext:255 actions.sh.ext:267
+#: actions.sh.ext:266 actions.sh.ext:278
 msgid "unable to call backup-manager-upload"
 msgstr "Impossible d'utiliser backup-manager-upload"
 
-#: actions.sh.ext:270
+#: actions.sh.ext:281
 msgid "The upload system is disabled in the conf file."
 msgstr ""
 "Le système d'envoi de fichiers est désactivé dans le fichier de "
 "configuration."
 
-#: actions.sh.ext:280
+#: actions.sh.ext:291
 #, sh-format
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
 msgstr "Lancement de la pre-commande: $BM_PRE_BACKUP_COMMAND"
 
-#: actions.sh.ext:285
+#: actions.sh.ext:296
 msgid "pre-command returned false. Stopping the process."
 msgstr "a pre-commande a échoué. Arrêt du processus."
 
-#: actions.sh.ext:300
+#: actions.sh.ext:311
 #, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND: "
 msgstr "Lancement de la post-commande: $BM_POST_BACKUP_COMMAND"
 
-#: actions.sh.ext:305
+#: actions.sh.ext:316
 msgid "post-command returned false."
 msgstr "La post-commande a échoué."
 
@@ -190,6 +195,14 @@ msgstr "backup-manager doit être lancé en tant que root."
 #: backup-manager.ext:101
 msgid "-c option must be followed by an existing filename"
 msgstr "L'option -c doit être suivie d'un nom de fichier"
+
+#: backup-manager.ext:168
+msgid "Unable to exec the pre-command"
+msgstr ""
+
+#: backup-manager.ext:189
+msgid "Unable to exec post-command"
+msgstr ""
 
 #: dialog.sh.ext:14
 msgid "Output:"
@@ -324,6 +337,24 @@ msgstr "Le répertoire donné n'est pas trouvable."
 #, sh-format
 msgid "Entering directory $file."
 msgstr "Entrée dans le répertoire $file."
+
+#: files.sh.ext:235
+msgid "No file given"
+msgstr ""
+
+#: files.sh.ext:239
+#, fuzzy, sh-format
+msgid "The given file does not exist: $file_to_create"
+msgstr "L'archive demandée n'existe pas dans le répertoire: $archive"
+
+#: files.sh.ext:243
+#, fuzzy
+msgid "unable to get date from file"
+msgstr "Désactive la phase de nettoyage."
+
+#: files.sh.ext:244
+msgid "unable to find the pattern of the file"
+msgstr ""
 
 #: md5sum.sh.ext:14
 #, sh-format

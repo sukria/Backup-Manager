@@ -1,42 +1,45 @@
 ##############################################################
-# Archive settings
+# Archives
 #############################################################
 
-# the archive filename format
+# Archive filename format
 # 	long  : host-full-path-to-folder.tar.gz
 # 	short : parentfolder.tar.gz
 export BM_NAME_FORMAT="long"
 
-# the type of archive to make (zip or tar.gz)
+# Type of archive to make (zip or tar.gz)
 export BM_FILETYPE="tar.gz"
 
-# the number of days we have to keep an archive
+# Number of days we have to keep an archive
 export BM_MAX_TIME_TO_LIVE="5"
 
-# do you want to dereference the files pointed by symlinks ? 
-# enter yes or no.
+# Do you want to dereference the files pointed by symlinks ? 
+# enter yes or no (yes can leed to huge archives, be careful).
 export BM_DUMP_SYMLINKS="no"
 
-# the prefix of every archive on that box (default is HOSTNAME)
+# Prefix of every archive on that box (default is HOSTNAME)
 export BM_ARCHIVES_PREFIX="$HOSTNAME"
 
-
-##############################################################
-# File paths
-#############################################################
-
-# the root directory where all the archives should live (default is /backup/)
-export BM_ARCHIVES_REPOSITORY="/backup"
-
-# the directories you want to backup
+# Files you want to backup
 export BM_DIRECTORIES="/etc /home"
 
-# Here the list of the directories you don't want to archive
+# Files to exclude when generating tarballs
 export BM_DIRECTORIES_BLACKLIST=""
 
+##############################################################
+# Repository
+#############################################################
+
+# Where to sotre the archives
+export BM_ARCHIVES_REPOSITORY="/var/archives"
+
+# The repository will be readable/writable only by a specific 
+# user:group pair for security reasons.
+export BM_USER="root"
+export BM_GROUP="root"
 
 ##############################################################
-# upload settings
+# Upload 
 #############################################################
 
 # you can set here a list of remote hosts where BM will upload
@@ -48,11 +51,14 @@ export BM_UPLOAD_MODE=""
 #"192.168.15.23 backup.company.com myhome.provider.net"
 export BM_UPLOAD_HOSTS=""
 
-#"bman"
+# User for opening the remote connection
 export BM_UPLOAD_USER=""
 
-#"secret", only needed for ftp transfert, scp is based on key identification.
+# Password, only needed for ftp transfert, scp is based on key identification.
 export BM_UPLOAD_PASSWD=""
+
+# cleans specified ftp folder before uploading (yes or no)
+export BM_FTP_PURGE=""
 
 # if scp mode is used, an identity file is needed
 export BM_UPLOAD_KEY=""
@@ -62,11 +68,11 @@ export BM_UPLOAD_DIR=""
 
 
 ##############################################################
-# Automatic CD/DVD burning settings 
+# Automatic CDR/CDRW burning
 #############################################################
 
 # set this to yes if you want automatic burning.
-export BM_BURNING="yes"
+export BM_BURNING="no"
 
 # which media to use (cdrom or dvd)
 # cd will use cdrecord, dvd will use growisofs

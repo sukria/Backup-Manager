@@ -4,6 +4,12 @@
 # Every major feature of backup-manager is here.
 #
 
+if [ -z "$BM_USER" ]; then
+	export BM_USER="root"
+fi
+if [ -z "$BM_GROUP" ]; then
+	export BM_GROUP="root"
+fi
 
 # This will get all the md5 sums of the day,
 # mount the BM_BURNING_DEVICE on /tmp/device and check 
@@ -163,8 +169,6 @@ burn_files()
 make_archives()
 {
 
-	# First, we read some conf keys.
-	
 	# Create the directories blacklist
 	blacklist=""
 	for pattern in $BM_DIRECTORIES_BLACKLIST
@@ -217,6 +221,13 @@ make_archives()
 			md5hash=$(get_md5sum $file_to_create)
 			info "${md5hash})"
 			echo "$md5hash $base" >> $BM_ARCHIVES_REPOSITORY/${BM_ARCHIVES_PREFIX}-${TODAY}.md5
+			
+			# Now that the file is created, remove previous duplicates if exists...
+			purge_duplicate_archives $file_to_create || error "unable to purge duplicates"
+
+			# security fixes
+			chown $BM_USER:$BM_GROUP $file_to_create
+			chmod 660 $file_to_create
 		else
 			warning "File \$file_to_create already exists, skipping."
 		fi
@@ -245,9 +256,17 @@ upload_files ()
 			v=""
 		fi
 		
+		if [ -z "$BM_FTP_PURGE" ] || 
+		   [ "$BM_FTP_PURGE" = "no" ]; then
+		   	ftp_purge=""
+		else
+			ftp_purge="--ftp-purge"
+		fi
+		
 		servers=`echo $BM_UPLOAD_HOSTS| sed 's/ /,/g'`
 		if [ "$BM_UPLOAD_MODE" == "ftp" ]; then
-			$bmu $v -m="$BM_UPLOAD_MODE" \
+			$bmu $v $ftp_purge \
+				-m="$BM_UPLOAD_MODE" \
 				-h="$servers" \
 				-u="$BM_UPLOAD_USER" \
 				-p="$BM_UPLOAD_PASSWD" \

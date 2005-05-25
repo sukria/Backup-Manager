@@ -173,6 +173,11 @@ if [ "$nopurge" != "true" ]; then
 fi
 
 # now generating new archives...
+# FIXME: here we will manage multiple archive method
+# like 
+#       make_tarballs
+#       make_rsync 
+#       ....
 make_archives
 
 # upload if needed

@@ -2,9 +2,8 @@
 # The backup-manager's dialog.sh library.
 #
 # This will handle every functions dedicated 
-# to cummunicate with the user.
+# to send feedback tothe user.
 #
-
 # print on STDOUT the usage 
 usage()
 {
@@ -36,63 +35,6 @@ usage()
 
 	exit 0
 }
-
-
-
-# this prints an error message and stops the program
-# with an error code.
-error()
-{
-	echo_translated "$@"	
-	_exit 1
-}
-
-debug()
-{
-	echo ""
-	echo_translated "$@"	
-	echo ""
-}
-
-# warning is just a wrapper to echo
-# it will always print the mesasge 
-# unless --no-warnings is given
-warning()
-{
-	if [ "$warnings" = "true" ]; then
-		echo_translated "$@"	
-	fi
-}
-
-# a useful functions to handle nicely 
-# communication with user according to 
-# the flag --verbose
-info() 
-{
-	if [ "$verbose" == "true" ]; then
-		echo_translated "$@"	
-	fi
-}
-
-# that's the way backup-manager should exit.
-# need to remove the lock before !
-_exit()
-{
-	info -n "Releasing lock: "
-	release_lock
-	info "ok"
-
-	if [ "$HAS_MOUNTED" = 1 ]; then
-		info -n "Unmounting \$BM_BURNING_DEVICE: "
-		sleep 2
-		umount $mount_point
-		rmdir $mount_point
-		info "ok"
-	fi
-
-	exit $@
-}
-
 
 # this is the callback wich is run when backup-manager
 # is stopped with a signal like SIGTERM or SIGKILL

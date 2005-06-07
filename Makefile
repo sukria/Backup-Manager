@@ -7,6 +7,7 @@ SHAREDIR=$(DESTDIR)/usr/share/backup-manager
 SHFILES=lib/dialog.sh \
 	lib/files.sh \
 	lib/actions.sh \
+	lib/logger.sh \
 	lib/gettext.sh \
 	lib/gettext-real.sh \
 	lib/gettext-dummy.sh \

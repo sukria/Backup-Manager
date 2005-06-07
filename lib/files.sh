@@ -53,13 +53,10 @@ size_of_path()
 
 	OLDIFS=$IFS
 	IFS=$'\n'
+	# The last size seen is the total.
 	for line in $out
 	do
-		size=$(echo $line | awk '{print $1}')
-		dir=$(echo $line | awk '{print $2}')
-		if [ "$dir" = "total" ]; then
-			total_size=$size
-		fi
+		total_size=$(echo $line | awk '{print $1}')
 	done
 	IFS=$OLDIFS
 	echo $total_size

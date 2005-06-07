@@ -1,8 +1,18 @@
  0.5.8
- 	* When creating archive, backup-manager now replace any duplicate
-	  it found with symlink to the most recent archive for saving
+ 	* Fixed a bug when calculating total disk usage of a specified 
+	  path when the locale is not en_EN or fr_FR.
+        * Added the possibility to log everything to syslog.
+	  A new configuration key is provided : BM_LOGGER for setting this 
+	  new feature on or off (default is on).
+	  Note that the user can choose which syslog facility he wants 
+	  (default is user).
+ 	* Added the facility to set BM_USER and BM_GROUP for providing a way
+	  to chmod and chown the repository and the archives.
+	  (closes a security issue)
+ 	* When creating archives, backup-manager now replaces any duplicate
+	  it founds with symlink to the most recent archive for saving
 	  disk space.
- 	* added BM_FTP_PURGE configuration key for rmeoving files 
+ 	* Added BM_FTP_PURGE configuration key for removing files 
 	  on ftp transfer before uploading files.
  
  0.5.7

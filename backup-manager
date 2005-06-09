@@ -22,6 +22,7 @@ set -e
 libdir="/usr/share/backup-manager"
 zip="/usr/bin/zip"
 tar="/bin/tar"
+rsync="/usr/bin/rsync"
 mkisofs="/usr/bin/mkisofs"
 cdrecord="/usr/bin/cdrecord"
 bmu="/usr/bin/backup-manager-upload"

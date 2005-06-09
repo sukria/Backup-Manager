@@ -74,7 +74,32 @@ backup_method_tarball()
 
 backup_method_rsync()
 {
-	error "backup_method_rsync is not yet supported"
+  # Not fully implemented, rsync is running in dry mode
+
+  # Set the rsync options according to the $BM_DUMP_SYMLINKS conf key
+  rsync_options="-van"
+  if [ ! -z $BM_DUMP_SYMLINKS ]; then
+    if [ "$BM_DUMP_SYMLINKS" = "yes" ] ||
+       [ "$BM_DUMP_SYMLINKS" = "true" ]; then
+      rsync_options="-vanL" 
+    fi
+  fi  
+  
+  for DIR in $BM_DIRECTORIES
+  do
+    if [ -n "$BM_UPLOAD_HOSTS" ]
+    then
+      if [ ! -z "$BM_UPLOAD_KEY" ]; then
+        servers=`echo $BM_UPLOAD_HOSTS| sed 's/ /,/g'`
+        for SERVER in $servers
+        do
+          ${rsync} ${rsync_options} -e "ssh -i ${BM_UPLOAD_KEY}" ${DIR} ${BM_UPLOAD_USER}@${SERVER}:${BM_UPLOAD_DIR}
+        done
+      else
+        info "Need a key to use rsync"
+      fi
+    fi
+  done
 }
 
 backup_method_mysql()

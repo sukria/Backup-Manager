@@ -37,6 +37,7 @@ mount_point="/tmp/bm-mnt"
 . $libdir/dialog.sh
 . $libdir/files.sh
 . $libdir/md5sum.sh
+. $libdir/backup-methods.sh
 . $libdir/actions.sh
 
 # Initialize defautls values of arguments

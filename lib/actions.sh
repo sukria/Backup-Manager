@@ -168,70 +168,36 @@ burn_files()
 
 make_archives()
 {
-
-	# Create the directories blacklist
-	blacklist=""
-	for pattern in $BM_DIRECTORIES_BLACKLIST
-	do
-		blacklist="$blacklist --exclude=$pattern"
-	done
-	
-	# Set the -h flag according to the $BM_DUMP_SYMLINKS conf key
-	h=""
-	if [ ! -z $BM_DUMP_SYMLINKS ]; then
-		if [ "$BM_DUMP_SYMLINKS" = "yes" ] ||
-		   [ "$BM_DUMP_SYMLINKS" = "true" ]; then
-			h="-h "
-		fi
+	if [ -z "$BM_BACKUP_METHOD" ]; then
+		BM_BACKUP_METHOD="default"
 	fi
 
-	for DIR in $BM_DIRECTORIES
-	do
-		dir_name=$(get_dir_name $DIR $BM_NAME_FORMAT)
-		file_to_create="$BM_ARCHIVES_REPOSITORY/$BM_ARCHIVES_PREFIX$dir_name.$TODAY.$BM_FILETYPE"
-		
-		
-		if [ ! -f $file_to_create ] ||
-		   [ $force = true ]; then
-		   	
-			info -n "Creating \$file_to_create: "
-			case $BM_FILETYPE in
-				tar.gz) # generate a tar.gz file if needed 
-					$tar $blacklist $h -c -z -f "$file_to_create" "$DIR" > /dev/null 2>&1 || info -n '~'
-				;;
-				tar.bz2|tar.bz) # generate a tar.bz2 file if needed
-					$tar $blacklist $h -c -j -f "$file_to_create" "$DIR" > /dev/null 2>&1 || info '~'
-				;;
-				tar) # generate a tar file if needed
-					$tar $blacklist $h -c -f "$file_to_create" "$DIR" > /dev/null 2>&1 || info '~'
-				;;
-				zip) # generate a zip file if needed
-					$zip -r "$file_to_create" "$DIR" > /dev/null 2>&1 || info '~'
-				;;
-				*) # unknown option
-					info "failed"
-					error "The filetype \$BM_FILETYPE is not spported."
-					_exit
-				;;
-			esac
-			size=$(size_of_path $file_to_create)
-			info -n "ok (\${size}M, "
-	 		
-			base=$(basename $file_to_create)
-			md5hash=$(get_md5sum $file_to_create)
-			info "${md5hash})"
-			echo "$md5hash $base" >> $BM_ARCHIVES_REPOSITORY/${BM_ARCHIVES_PREFIX}-${TODAY}.md5
-			
-			# Now that the file is created, remove previous duplicates if exists...
-			purge_duplicate_archives $file_to_create || error "unable to purge duplicates"
+	# do we have to use a pipe method? 
+	if [ $(expr match "$BM_BACKUP_METHOD" "|") -gt 0 ]; then
+		info "Using the \"pipe\" backup methdo"
+		backup_method_pipe
 
-			# security fixes
-			chown $BM_USER:$BM_GROUP $file_to_create
-			chmod 660 $file_to_create
-		else
-			warning "File \$file_to_create already exists, skipping."
-		fi
-	done
+	# The known methods
+	else
+		case $BM_BACKUP_METHOD in
+		
+		mysql)
+			info "Using the \"mysql\" backup method"
+			backup_method_mysql
+		;;
+		rsync)
+			info "Using the \"rsync\" backup method"
+			backup_method_rsync
+		;;
+
+		# default behaviour is to make a tarball with BM_FILETYPE 
+		*)
+			info "Using the \"tarball\" backup method"
+			backup_method_tarball
+		;;
+
+		esac
+	fi
 }
 
 # This will parse all the files contained in BM_ARCHIVES_REPOSITORY

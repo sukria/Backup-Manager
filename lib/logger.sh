@@ -83,7 +83,7 @@ log()
 		# output the message to STDOUT
 		message=$(echo_translated "$@")
 		if [ "$bm_log_switch" == "true" ]; then
-			echo "${BM_LOG_BUFFER}$message"
+			echo "$message"
 		fi
 		# log the message to syslog
 		syslog $bm_log_level "${BM_LOG_BUFFER}${message}"

@@ -7,8 +7,18 @@
 # 	short : parentfolder.tar.gz
 export BM_NAME_FORMAT="long"
 
-# Type of archive to make (zip or tar.gz)
+# Type of archives:
+#    - .tar
+#    - .tar.gz
+#    - .tar.bz2
 export BM_FILETYPE="tar.gz"
+
+# DEVEL
+# BM_BACKUP_METHOD
+#    - tarball
+#    - rsync
+#    - ...
+export BM_BACKUP_METHOD="tarball"
 
 # Number of days we have to keep an archive
 export BM_MAX_TIME_TO_LIVE="5"
@@ -97,6 +107,13 @@ export BM_BURNING_MAXSIZE="700"
 ##############################################################
 # Advanced settings, use this with care.
 #############################################################
+
+# Every output made can be sent to syslog
+# set this to "yes" or "no"
+export BM_LOGGER="yes"
+
+# You can choose which facility to use
+export BM_LOGGER_FACILITY="user"
 
 # Enter here some shell script.
 # It will be executed before the first action of backup-manager.

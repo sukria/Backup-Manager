@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-09 18:16+0200\n"
+"POT-Creation-Date: 2005-06-19 16:38+0200\n"
 "PO-Revision-Date: 2003-12-18 10:09+0100\n"
 "Last-Translator: Michael Prokop <mika@grml.org>\n"
 "MIME-Version: 1.0\n"
@@ -174,19 +174,19 @@ msgstr "post-command läuft: $BM_POST_BACKUP_COMMAND: "
 msgid "post-command returned false."
 msgstr "post-command lieferte einen negativen Returnwert."
 
-#: backup-manager.ext:55
+#: backup-manager.ext:56
 msgid "backup-manager must be run as root."
 msgstr "backup-manager muss als User root ausgeführt werden."
 
-#: backup-manager.ext:103
+#: backup-manager.ext:104
 msgid "-c option must be followed by an existing filename"
 msgstr "ein gültiger Dateiname muß der Option -c folgen"
 
-#: backup-manager.ext:170
+#: backup-manager.ext:171
 msgid "Unable to exec the pre-command"
 msgstr ""
 
-#: backup-manager.ext:196
+#: backup-manager.ext:197
 msgid "Unable to exec post-command"
 msgstr ""
 
@@ -205,30 +205,30 @@ msgstr "~"
 msgid "The filetype $BM_FILETYPE is not spported."
 msgstr "Der Dateityp $BM_FILETYPE wird nicht unterstützt."
 
-#: backup-methods.sh.ext:58
-#, sh-format
-msgid "ok (${size}M, "
-msgstr "ok (${size}M, "
-
-#: backup-methods.sh.ext:66
-#, fuzzy
-msgid "unable to purge duplicates"
-msgstr "Deaktivieren des Lösch-Vorgangs."
-
-#: backup-methods.sh.ext:71
+#: backup-methods.sh.ext:56
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Datei $file_to_create existiert bereits, abgebrochen."
 
-#: backup-methods.sh.ext:77
-msgid "backup_method_rsync is not yet supported"
+#: backup-methods.sh.ext:60
+#, sh-format
+msgid "ok (${size}M, "
+msgstr "ok (${size}M, "
+
+#: backup-methods.sh.ext:68
+#, fuzzy
+msgid "unable to purge duplicates"
+msgstr "Deaktivieren des Lösch-Vorgangs."
+
+#: backup-methods.sh.ext:100
+msgid "Need a key to use rsync"
 msgstr ""
 
-#: backup-methods.sh.ext:82
+#: backup-methods.sh.ext:108
 msgid "backup_method_mysql is not yet supported"
 msgstr ""
 
-#: backup-methods.sh.ext:87
+#: backup-methods.sh.ext:113
 msgid "backup_method_pipe is not yet supported"
 msgstr ""
 

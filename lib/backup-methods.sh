@@ -52,6 +52,9 @@ backup_method_tarball()
 					_exit
 				;;
 			esac
+		else
+			warning "File \$file_to_create already exists, skipping."
+			continue
 		fi
 			
 		size=$(size_of_path $file_to_create)
@@ -68,7 +71,6 @@ backup_method_tarball()
 		# security fixes
 		chown $BM_USER:$BM_GROUP $file_to_create
 		chmod 660 $file_to_create
-		warning "File \$file_to_create already exists, skipping."
 	done
 }
 
@@ -119,6 +121,5 @@ backup_method_pipe()
 #
 #		# now we have data in $file_to_create, maybe we have to compress the file
 #		# we look at BM_BACKUP_COMPRESS for that	
-
-
 }
+

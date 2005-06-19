@@ -1,3 +1,13 @@
+ 0.5.8a
+ 	* bug fix in the logger, the output is now clean.
+	* bug fix when making tarballs: we don't warn about an 
+	  already existing file if not true.
+	* New library for holding backup methods.
+	* first implementation of the rsync backup method 
+	  (experiemntal).
+  
+  - Alexis Sukrieh <sukria@sukria.net>  sun jun 19 16:48:07 CEST 2005
+
  0.5.8
  	* Fixed a bug when calculating total disk usage of a specified 
 	  path when the locale is not en_EN or fr_FR.
@@ -14,6 +24,7 @@
 	  disk space.
  	* Added BM_FTP_PURGE configuration key for removing files 
 	  on ftp transfer before uploading files.
+  
  
  0.5.7
  	* Removed the file TODO

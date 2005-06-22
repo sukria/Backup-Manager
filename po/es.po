@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-19 16:38+0200\n"
+"POT-Creation-Date: 2005-06-22 09:53+0200\n"
 "PO-Revision-Date: 2003-12-18 10:09+0100\n"
 "Last-Translator: Diego Brouard\n"
 "MIME-Version: 1.0\n"
@@ -126,7 +126,7 @@ msgid "Burning data to $BM_BURNING_DEVICE: "
 msgstr "Grabando los datos a $BM_BURNING_DEVICE: "
 
 #: actions.sh.ext:177
-msgid "Using the \"pipe\" backup methdo"
+msgid "Using the \"pipe\" backup method"
 msgstr ""
 
 #: actions.sh.ext:185
@@ -208,25 +208,25 @@ msgstr "El tipo de fichero $BM_FILETYPE no está soportado."
 msgid "File $file_to_create already exists, skipping."
 msgstr "El fichero $file_to_create, ya existe. Se ignora."
 
-#: backup-methods.sh.ext:60
+#: backup-methods.sh.ext:61
 #, sh-format
 msgid "ok (${size}M, "
 msgstr "ok (${size}M, "
 
-#: backup-methods.sh.ext:68
+#: backup-methods.sh.ext:69
 #, fuzzy
 msgid "unable to purge duplicates"
 msgstr "Deshabilitar el proceso de borrado."
 
-#: backup-methods.sh.ext:100
+#: backup-methods.sh.ext:101
 msgid "Need a key to use rsync"
 msgstr ""
 
-#: backup-methods.sh.ext:108
+#: backup-methods.sh.ext:109
 msgid "backup_method_mysql is not yet supported"
 msgstr ""
 
-#: backup-methods.sh.ext:113
+#: backup-methods.sh.ext:114
 msgid "backup_method_pipe is not yet supported"
 msgstr ""
 

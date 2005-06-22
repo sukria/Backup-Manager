@@ -1,39 +1,39 @@
-# Messages français pour backup-manager
-# Copyleft © 2004 Alexis Sukrieh..
+# Czech translation of backup-manager
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the backup-manager package.
+# Miroslav Kure <kurem@debian.cz>, 2005.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: backup-manager 0.5.5\n"
+"Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-06-22 09:53+0200\n"
-"PO-Revision-Date: 2003-12-18 08:00-0500\n"
-"Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
+"PO-Revision-Date: 2005-06-21 18:47+0200\n"
+"Last-Translator: Miroslav Kure <kurem@debiann.cz>\n"
+"Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: actions.sh.ext:28
 #, sh-format
 msgid "The mount point $mount_point is already there, remove it if needed"
-msgstr ""
-"Le point de montage $mount_point est déjà présent, effacez-le si besoin"
+msgstr "Pøípojný bod $mount_point ji¾ existuje, podle potøeb jej odstraòte"
 
 #: actions.sh.ext:32
 #, sh-format
 msgid "Mounting $BM_BURNING_DEVICE: "
-msgstr "Montage de $BM_BURNING_DEVICE: "
+msgstr "Pøipojuji $BM_BURNING_DEVICE: "
 
 #: actions.sh.ext:33
 #, sh-format
 msgid "unable to create the mount point $mount_point"
-msgstr "Impossible de créer le point de montage $mount_point"
+msgstr "nemohu vytvoøit pøípojný bod $mount_point"
 
 #: actions.sh.ext:34
 #, sh-format
 msgid "unable to mount $BM_BURNING_DEVICE on $mount_point"
-msgstr "Impossible de monter $BM_BURNING_DEVICE sur $mount_point"
+msgstr "nemohu pøipojit $BM_BURNING_DEVICE na $mount_point"
 
 #: actions.sh.ext:35 actions.sh.ext:66 actions.sh.ext:142 actions.sh.ext:148
 #: actions.sh.ext:155 actions.sh.ext:275 actions.sh.ext:294 files.sh.ext:155
@@ -44,27 +44,23 @@ msgstr "ok"
 #: actions.sh.ext:44
 #, sh-format
 msgid "Checking MD5 sum for $base_file: "
-msgstr "Vérification MD5 pour $base_file: "
+msgstr "Kontroluji MD5 souèet $base_file: "
 
 #: actions.sh.ext:69
 msgid "failed (read error)"
-msgstr "échec (erreur de lecture)"
+msgstr "selhalo (chyba ètení)"
 
 #: actions.sh.ext:73
 msgid "failed (MD5 hash mismatch)"
-msgstr "échec (la somme MD5 ne concorde pas)"
+msgstr "selhalo (MD5 nesouhlasí)"
 
 #: actions.sh.ext:80
 msgid "Error during MD5 controls. Run $0 --md5check --verbose for details"
-msgstr ""
-"Problème lors du contrôle des sommes MD5. Faîtes $0 --md5check --verbose "
-"pour plus de détails"
+msgstr "Chyba bìhem kontroly MD5. Pro detaily spus»te $0 --md5check --verbose"
 
 #: actions.sh.ext:98
 msgid "The automatic burning system is disabled in the conf file."
-msgstr ""
-"Le système de gravure automatique est déactivé dans le fichier de "
-"configuration."
+msgstr "Automatický systém vypalování je v konfiguraèním souboru zakázán."
 
 #: actions.sh.ext:101
 #, sh-format
@@ -72,8 +68,8 @@ msgid ""
 "Please set the BM_BURNING_MEDIA conf key in $conffile, I assume you want "
 "'cdrom'"
 msgstr ""
-"Il faut renseigner la clef BM_BURNING_MEDIA dans $conffile, valeur par "
-"défaut : 'cdrom'"
+"V souboru $conffile nastavte prosím konfiguraèní klíè BM_BURNING_MEDIA, "
+"pøedpokládám, ¾e chcete pou¾ít 'cdrom'"
 
 #: actions.sh.ext:106
 #, sh-format
@@ -81,8 +77,8 @@ msgid ""
 "Please set the BM_BURNING_DEVICE conf key in $conffile, I assume you want '/"
 "dev/cdrom'"
 msgstr ""
-"Il faut renseigner la clef BM_BURNING_DEVICE dans $conffile, valeur par "
-"défaut : /dev/cdrom"
+"V souboru $conffile nastavte prosím konfiguraèní klíè BM_BURNING_DEVICE, "
+"pøedpokládám, ¾e chcete pou¾ít '/dev/cdrom'"
 
 #: actions.sh.ext:111
 #, sh-format
@@ -90,8 +86,8 @@ msgid ""
 "Please set the BM_BURNING_METHOD conf key in $conffile, I assume you want "
 "'CDRW'"
 msgstr ""
-"Veuillez définir la clef BM_BURNING_METHOD dans $conffile, valeur par "
-"défaut: CDRW."
+"V souboru $conffile nastavte prosím konfiguraèní klíè BM_BURNING_METHOD, "
+"pøedpokládám, ¾e chcete pou¾ít 'CDRW'"
 
 #: actions.sh.ext:116
 #, sh-format
@@ -99,8 +95,8 @@ msgid ""
 "Please set the BM_BURNING_MAXSIZE conf key in $conffile, I assume you want "
 "'650'"
 msgstr ""
-"Veuillez définir la clef BM_BURNING_MAXSIZE dans $conffile, valeur par "
-"défaut: 650"
+"V souboru $conffile nastavte prosím konfiguraèní klíè BM_BURNING_MAXSIZE, "
+"pøedpokládám, ¾e chcete pou¾ít '650'"
 
 #: actions.sh.ext:126
 #, sh-format
@@ -108,93 +104,92 @@ msgid ""
 "Cannot burn archives of the $TODAY, too big : ${size}M, must fit in "
 "$BM_BURNING_MAXSIZE"
 msgstr ""
-"Impossible de graver les archives du ${TODAY}, trop encombrant : ${size}M, "
-"doit tenir dans ${BM_BURNING_MAXSIZE}M"
+"Nemohu vypálit archivy z $TODAY, proto¾e jsou pøíli¹ velké : ${size}M, se "
+"musí vejít do $BM_BURNING_MAXSIZE"
 
 #: actions.sh.ext:139
 #, sh-format
 msgid "Blanking the CDRW in $BM_BURNING_DEVICE: "
-msgstr "Effacement de $BM_BURNING_DEVICE: "
+msgstr "Ma¾u CDRW v $BM_BURNING_DEVICE: "
 
 #: actions.sh.ext:141 actions.sh.ext:147 actions.sh.ext:154 actions.sh.ext:269
 #: actions.sh.ext:289 backup-methods.sh.ext:50
 msgid "failed"
-msgstr "échec"
+msgstr "selhalo"
 
 #: actions.sh.ext:144 actions.sh.ext:151
 #, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE: "
-msgstr "Gravure des données dans $BM_BURNING_DEVICE: "
+msgstr "Vypaluji data na $BM_BURNING_DEVICE: "
 
 #: actions.sh.ext:177
+#, fuzzy
 msgid "Using the \"pipe\" backup method"
-msgstr ""
+msgstr "Pou¾ívám zálohovací metodu \"pipe\""
 
 #: actions.sh.ext:185
 msgid "Using the \"mysql\" backup method"
-msgstr ""
+msgstr "Pou¾ívám zálohovací metodu \"mysql\""
 
 #: actions.sh.ext:189
 msgid "Using the \"rsync\" backup method"
-msgstr ""
+msgstr "Pou¾ívám zálohovací metodu \"rsync\""
 
 #: actions.sh.ext:195
 msgid "Using the \"tarball\" backup method"
-msgstr ""
+msgstr "Pou¾ívám zálohovací metodu \"tarball\""
 
 #: actions.sh.ext:207
 #, sh-format
 msgid "Cleaning $BM_ARCHIVES_REPOSITORY: "
-msgstr "Nettoyage de $BM_ARCHIVES_REPOSITORY: "
+msgstr "Èistím $BM_ARCHIVES_REPOSITORY: "
 
 #: actions.sh.ext:240 actions.sh.ext:252
 msgid "unable to call backup-manager-upload"
-msgstr "Impossible d'utiliser backup-manager-upload"
+msgstr "nemohu zavolat backup-manager-upload"
 
 #: actions.sh.ext:255
 msgid "The upload system is disabled in the conf file."
-msgstr ""
-"Le système d'envoi de fichiers est désactivé dans le fichier de "
-"configuration."
+msgstr "Nahrávání na vzdálený poèítaè je v konfiguraèním souboru zakázáno."
 
 #: actions.sh.ext:265
 #, sh-format
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
-msgstr "Lancement de la pre-commande: $BM_PRE_BACKUP_COMMAND"
+msgstr "Spou¹tím úvodní pøíkaz: $BM_PRE_BACKUP_COMMAND: "
 
 #: actions.sh.ext:270
 msgid "pre-command returned false. Stopping the process."
-msgstr "a pre-commande a échoué. Arrêt du processus."
+msgstr "Úvodní pøíkaz vrátil chybu. Zastavuji proces."
 
 #: actions.sh.ext:285
 #, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND: "
-msgstr "Lancement de la post-commande: $BM_POST_BACKUP_COMMAND"
+msgstr "Spou¹tím závìreèný pøíkaz: $BM_POST_BACKUP_COMMAND: "
 
 #: actions.sh.ext:290
 msgid "post-command returned false."
-msgstr "La post-commande a échoué."
+msgstr "Závìreèný pøíkaz vrátil chybu."
 
 #: backup-manager.ext:56
 msgid "backup-manager must be run as root."
-msgstr "backup-manager doit être lancé en tant que root."
+msgstr "backup-manager musí být spu¹tìn pod u¾ivatelem root."
 
 #: backup-manager.ext:104
 msgid "-c option must be followed by an existing filename"
-msgstr "L'option -c doit être suivie d'un nom de fichier"
+msgstr "za volbou -c musí následovat jméno existujícího souboru"
 
 #: backup-manager.ext:171
 msgid "Unable to exec the pre-command"
-msgstr ""
+msgstr "Nemohu spustit úvodní pøíkaz"
 
 #: backup-manager.ext:197
 msgid "Unable to exec post-command"
-msgstr ""
+msgstr "Nemohu spustit závìreèný pøíkaz"
 
 #: backup-methods.sh.ext:34
 #, sh-format
 msgid "Creating $file_to_create: "
-msgstr "Création de $file_to_create: "
+msgstr "Vytváøím $file_to_create: "
 
 #: backup-methods.sh.ext:38 backup-methods.sh.ext:41 backup-methods.sh.ext:44
 #: backup-methods.sh.ext:47
@@ -204,12 +199,12 @@ msgstr "~"
 #: backup-methods.sh.ext:51
 #, sh-format
 msgid "The filetype $BM_FILETYPE is not spported."
-msgstr "Le type de fichier $BM_FILETYPE n'est pas supporté."
+msgstr "Typ souboru $BM_FILETYPE není podporován."
 
 #: backup-methods.sh.ext:56
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
-msgstr "Fichier $file_to_create existe, passage au suivant."
+msgstr "Soubor $file_to_create ji¾ existuje, pøeskakuji."
 
 #: backup-methods.sh.ext:61
 #, sh-format
@@ -217,109 +212,110 @@ msgid "ok (${size}M, "
 msgstr "ok (${size}M, "
 
 #: backup-methods.sh.ext:69
-#, fuzzy
 msgid "unable to purge duplicates"
-msgstr "Désactive la phase de nettoyage."
+msgstr "nemohu smazat duplikáty"
 
 #: backup-methods.sh.ext:101
 msgid "Need a key to use rsync"
-msgstr ""
+msgstr "Pro pou¾ití programu rsync potøebuji klíè"
 
 #: backup-methods.sh.ext:109
 msgid "backup_method_mysql is not yet supported"
-msgstr ""
+msgstr "backup_method_mysql zatím není podporována"
 
 #: backup-methods.sh.ext:114
 msgid "backup_method_pipe is not yet supported"
-msgstr ""
+msgstr "backup_method_pipe zatím není podporována"
 
 #: dialog.sh.ext:13
 msgid "Output:"
-msgstr "Affichage:"
+msgstr "Výstup:"
 
 #: dialog.sh.ext:14
 msgid "Print this short help message."
-msgstr "Affiche ce cours message d'aide."
+msgstr "Vytiskne tuto krátkou nápovìdu."
 
 #: dialog.sh.ext:15
 msgid "Print what happends on STDOUT."
-msgstr "Affiche ce qui se passe sur STDOUT."
+msgstr "Vytiskne na STDOUT provádìné kroky."
 
 #: dialog.sh.ext:16
 msgid "Disable warnings."
-msgstr "Désactive les avertissements."
+msgstr "Zaká¾e varování."
 
 #: dialog.sh.ext:19
 msgid "Single actions:"
-msgstr "Actions uniques:"
+msgstr "Samostatné akce:"
 
 #: dialog.sh.ext:20
 msgid "Just upload the files of the day."
-msgstr "Se contente d'envoyer les fichiers du jour."
+msgstr "Pouze nahraje denní soubory."
 
 #: dialog.sh.ext:21
 msgid "Just burn the files of the day."
-msgstr "Se contente de graver les fichiers du jour."
+msgstr "Pouze vypálí denní soubory."
 
 #: dialog.sh.ext:22
 msgid "Just test the md5 sums."
-msgstr "Se contente de tester les sommes MD5."
+msgstr "Pouze zkontroluje md5 souèty."
 
 #: dialog.sh.ext:23
 msgid "Just purge old archives."
-msgstr "Se contente de supprimer les vielles archives."
+msgstr "Pouze sma¾e staré archivy."
 
 #: dialog.sh.ext:26
 msgid "Behaviour:"
-msgstr "Comportement:"
+msgstr "Chování:"
 
 #: dialog.sh.ext:27
 msgid "Choose an alternate config file."
-msgstr "Choisi un fichier de configuration alternatif."
+msgstr "Pou¾ije alternativní konfiguraèní soubor."
 
 #: dialog.sh.ext:28
 msgid "Force overwrite of existing archives."
-msgstr "Oblige la ré-écriture d'archives déjà existantes."
+msgstr "Povolí pøepsání stávajících archivù."
 
 #: dialog.sh.ext:31
 msgid "Unwanted actions:"
-msgstr "Actions non désirées."
+msgstr "Zakazující akce:"
 
 #: dialog.sh.ext:32
 msgid "Disable the upload process."
-msgstr "Désactive la phase d'envoi de fichier."
+msgstr "Zaká¾e nahrání na jiný poèítaè."
 
 #: dialog.sh.ext:33
 msgid "Disable the burning process."
-msgstr "Désactive la phase de gravure de données."
+msgstr "Zaká¾e vypalování."
 
 #: dialog.sh.ext:34
 msgid "Disable the purge process."
-msgstr "Désactive la phase de nettoyage."
+msgstr "Zaká¾e promazání starých archivù."
 
 #: dialog.sh.ext:46
 msgid "Warning, I was stopped before ending my job. Archives may be corrupted."
 msgstr ""
-"Attention, interruption utilisateur. Les archives risquent d'être corrompues."
+"Varování, byl jsem zastaven pøed dokonèením svého úkolu. Archivy mohou být "
+"poru¹eny."
 
 #: dialog.sh.ext:58
 msgid "the BM_FILETYPE conf key is set to \"zip\" but zip is not installed."
-msgstr "La clef BM_FILETYPE vau \"zip\" mais zip n'est pas installé."
+msgstr ""
+"Konfiguraèní klíè BM_FILETYPE je nastaven na \"zip\" ale zip není instalován."
 
 #: dialog.sh.ext:68
 #, sh-format
 msgid "The BM_DIRECTORIES conf key is not set in $conffile"
-msgstr "La clef BM_DIRECTORIES n'est pas définie dans $conffile"
+msgstr "Konfiguraèní klíè BM_DIRECTORIES není v $conffile nastaven"
 
 #: dialog.sh.ext:95
 #, sh-format
 msgid "$BM_ARCHIVES_REPOSITORY does not exist, creating it"
-msgstr "$BM_ARCHIVES_REPOSITORY n'existe pas, création."
+msgstr "Adresáø $BM_ARCHIVES_REPOSITORY neexistuje, vytváøím jej"
 
 #: files.sh.ext:139
 #, sh-format
 msgid "Removing lock for old PID, $pid is not running."
-msgstr "Libération du lock pour un vieux PID, $pid ne tourne plus."
+msgstr "Odstraòuji zámek pro staré PID, $pid ji¾ nebì¾í."
 
 #: files.sh.ext:149
 #, sh-format
@@ -327,70 +323,68 @@ msgid ""
 "A backup-manager process ($pid) is already running with the conffile "
 "$conffile."
 msgstr ""
-"Un processus backup-manager ($pid) tourne déjà avec le fichier de "
-"configuration $conffile"
+"Proces backup-manageru ($pid) ji¾ bì¾í s konfiguraèním souborem $conffile."
 
 #: files.sh.ext:153 files.sh.ext:160
 #, sh-format
 msgid "Getting lock for backup-manager $pid with $conffile: "
-msgstr "Demande de vérou pour backup-manager, $pid avec $conffile: "
+msgstr "Získávám zámek pro backup-manager $pid s $conffile: "
 
 #: files.sh.ext:163
 msgid "failed (check the file permissions)"
-msgstr "échec (vérifiez les permissions du fichier)"
+msgstr "selhalo (zkontrolujte pøístupová práva souborù)"
 
 #: files.sh.ext:179
 #, sh-format
 msgid "$file is not a regular file."
-msgstr "$file n'est pas un fichier régulier."
+msgstr "$file není bì¾ný soubor."
 
 #: files.sh.ext:187
 #, sh-format
 msgid "Removing $file: "
-msgstr "Suppression de $file: "
+msgstr "Odstraòuji $file: "
 
 #: files.sh.ext:205
 msgid "Directory given is not found"
-msgstr "Le répertoire donné n'est pas trouvable."
+msgstr "Zadaný adresáø nebyl nalezen"
 
 #: files.sh.ext:215
 #, sh-format
 msgid "Entering directory $file."
-msgstr "Entrée dans le répertoire $file."
+msgstr "Vstupuji do adresáøe $file."
 
 #: files.sh.ext:232
 msgid "No file given"
-msgstr ""
+msgstr "Nebyl zadán ¾ádný soubor"
 
 #: files.sh.ext:236
-#, fuzzy, sh-format
+#, sh-format
 msgid "The given file does not exist: $file_to_create"
-msgstr "L'archive demandée n'existe pas dans le répertoire: $archive"
+msgstr "Zadaný soubor neexistuje: $file_to_create"
 
 #: files.sh.ext:240
-#, fuzzy
 msgid "unable to get date from file"
-msgstr "Désactive la phase de nettoyage."
+msgstr "nemohu ze souboru získat datum"
 
 #: files.sh.ext:241
 msgid "unable to find the pattern of the file"
-msgstr ""
+msgstr "nemohu najít vzor souboru"
 
 #: logger.sh.ext:127
 msgid "Releasing lock: "
-msgstr "Libération du vérou: "
+msgstr "Uvolòuji zámek: "
 
 #: logger.sh.ext:132
 #, sh-format
 msgid "Unmounting $BM_BURNING_DEVICE: "
-msgstr "Démontage de $BM_BURNING_DEVICE: "
+msgstr "Odpojuji $BM_BURNING_DEVICE: "
 
 #: md5sum.sh.ext:14
 #, sh-format
 msgid "No md5file found: $md5file"
-msgstr "Pas de fichier MD5: $md5file"
+msgstr "Nebyl nalezen soubor s md5 souèty: $md5file"
 
 #: md5sum.sh.ext:66
 #, sh-format
 msgid "Archive given does not exists in the repository: $archive"
-msgstr "L'archive demandée n'existe pas dans le répertoire: $archive"
+msgstr "Zadaný archiv v úlo¾i¹ti neexistuje: $archive"

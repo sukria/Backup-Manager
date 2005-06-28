@@ -12,7 +12,7 @@ usage()
 	echo ""
 	echo_translated "Output:"
 	echo -n "--help|-h           : "; echo_translated "Print this short help message."
-	echo -n "--verbose|-v        : "; echo_translated "Print what happends on STDOUT."
+	echo -n "--verbose|-v        : "; echo_translated "Print what happens on STDOUT."
 	echo -n "--no-warnings       : "; echo_translated "Disable warnings."
 
 	echo ""

@@ -1,11 +1,11 @@
-.TH backup-manager 3
+.TH backup-manager 8
 .SH NAME
 backup-manager - An easy to use backup tool for your Linux box.
 .SH SYNOPSIS
   backup-manager [options]
 .SH DESCRIPTION
 This is a smart tool written in Bash and Perl to provide an easy way for 
-backuping local directories.
+backing up local directories.
 .P
 All the behaviour of the tool will be determined by configuration files, 
 default one is /etc/backup-manager.conf.
@@ -17,7 +17,7 @@ using mkisofs and cdrecord.
 .SH OPTIONS
 .P
 .B --verbose|-v 
-Print what happends to STDOUT.
+Print what happens to STDOUT.
 .P
 .B --no-warnings
 Disable warnings.
@@ -52,22 +52,23 @@ Disable the burning process.
 .B --no-purge
 Disable the purging process.
 .SH UPLOADING SYSTEM
-If the scp transfert mode is used, no password will be prompted, ssh key
-authentification will be used instead. Be sure if you use this transfert
-mode to set the appropriate keys on your ssh accouts.
+If the scp transfer mode is used, no password will be prompted, ssh key
+authentication will be used instead. Be sure to set the appropriate
+keys on your ssh accounts if you use this transfer mode.
 .P
-backup-manager uses backup-manager-upload for uploading files.
+Backup manager uses backup-manager-upload for uploading files.
 Although backup-manager is run by root (from crond), backup-manager-upload
-will be launched with the upload user you choose. this means that the user 
+will be launched with the upload user you choose. This means that the user 
 should exist on both remote and local machines.
 Keep that in mind when editing the ssh authorized keys on remote hosts.
 .SH BURNING SYSTEM
-If the BM_BURNING vonfiguration key is set to "yes", backup-manager
-will try to burn the archives after generating it. 
+If the BM_BURNING configuration key is set to "yes", backup-manager
+will try to burn the archives after generating them.
 .SH NOTES
-On debian system the best way to configure backup-manager is to use dpkg-reconfigure.
+On debian systems the best way to configure backup-manager is to use dpkg-reconfigure,
+but you can also edit the configuration file by hand.
 .SH SEE ALSO
-.BR backup-manager-upload (3),
+.BR backup-manager-upload (1),
 .BR ssh-keygen (1)
 .SH AUTHOR
 Alexis Sukrieh <sukria@sukria.net>

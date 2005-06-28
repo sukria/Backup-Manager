@@ -123,7 +123,7 @@ burn_files()
 		if [ $size -gt $BM_BURNING_MAXSIZE ]; then
 			size=$(size_of_path "${BM_ARCHIVES_REPOSITORY}/*${TODAY}*")
 			if [ $size -gt $BM_BURNING_MAXSIZE ]; then
-				error "Cannot burn archives of the \$TODAY, too big : \${size}M, must fit in \$BM_BURNING_MAXSIZE"
+				error "Cannot burn archives of the \$TODAY, too big: \${size}M, must fit in \$BM_BURNING_MAXSIZE"
 			else
 				what_to_burn="${BM_ARCHIVES_REPOSITORY}/*${TODAY}*"
 			fi
@@ -137,7 +137,7 @@ burn_files()
 		case "$BM_BURNING_METHOD" in
 			"CDRW")
                                 info -n "Blanking the CDRW in \$BM_BURNING_DEVICE: "
-                                ${cdrecord} -tao dev=${BM_BURNING_DEVICE} blank=all > ${logfile} 2>&1 ||
+                                ${cdrecord} -tao dev=${BM_BURNING_DEVICE} blank=fast > ${logfile} 2>&1 ||
                                         error "failed"
 				info "ok"
 				
@@ -174,7 +174,7 @@ make_archives()
 
 	# do we have to use a pipe method? 
 	if [ $(expr match "$BM_BACKUP_METHOD" "|") -gt 0 ]; then
-		info "Using the \"pipe\" backup methdo"
+		info "Using the \"pipe\" backup method"
 		backup_method_pipe
 
 	# The known methods

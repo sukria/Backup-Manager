@@ -4,13 +4,6 @@
 # Every major feature of backup-manager is here.
 #
 
-if [ -z "$BM_USER" ]; then
-	export BM_USER="root"
-fi
-if [ -z "$BM_GROUP" ]; then
-	export BM_GROUP="root"
-fi
-
 # This will get all the md5 sums of the day,
 # mount the BM_BURNING_DEVICE on /tmp/device and check 
 # that the files are correct with md5 tests.
@@ -22,15 +15,14 @@ check_cdrom_md5_sums()
 		error "MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE in $conffile."
 	fi
 
-	# first be sure that the mount point 
-	# is not already used.
-	if [ -d $mount_point ]; then
-		error "The mount point \$mount_point is already there, remove it if needed"
+	# first create the mount point
+	mount_point="$(mktemp -d /tmp/bm-mnt.XXXXXX)"
+	if [ ! -d $mount_point ]; then
+		error "The mount point \$mount_point is not there"
 	fi
 	
 	# mount the device in /tmp/
 	info -n "Mounting \$BM_BURNING_DEVICE: "
-	mkdir $mount_point || error "unable to create the mount point \$mount_point"
 	mount $BM_BURNING_DEVICE $mount_point >& /dev/null || error "unable to mount \$BM_BURNING_DEVICE on \$mount_point"
 	info "ok"
 	export HAS_MOUNTED=1
@@ -77,12 +69,12 @@ check_cdrom_md5_sums()
 	done
 
 	if [ $has_error = 1 ]; then
-		error "Error during MD5 controls. Run \$0 --md5check --verbose for details"
+		error "Errors encountered during MD5 controls."
 	fi
 
 	# remove the mount point
-	umount $BM_BURNING_DEVICE
-	rmdir $mount_point
+	umount $BM_BURNING_DEVICE || error "unable to unmount the mount point \$mount_point"
+	rmdir $mount_point || error "unable to remove the mount point \$mount_point"
 }
 
 # this will try to burn the generated archives to the media
@@ -93,81 +85,92 @@ check_cdrom_md5_sums()
 # in this way, we prevent the use of preicous disk place.
 burn_files()
 {
-	if 	[ -z "$BM_BURNING" ] ||
-		[ "$BM_BURNING" = "no" ]; then
-		info "The automatic burning system is disabled in the conf file."
-	else
-		if [ -z "$BM_BURNING_MEDIA" ]; then
-			info "Please set the BM_BURNING_MEDIA conf key in \$conffile, I assume you want 'cdrom'"
-			export BM_BURNING_MEDIA="cdrom"
-		fi
-
-		if [ -z "$BM_BURNING_DEVICE" ]; then
-			info "Please set the BM_BURNING_DEVICE conf key in \$conffile, I assume you want '/dev/cdrom'"
-			export BM_BURNING_DEVICE="/dev/cdrom"
-		fi
-
-		if [ -z "$BM_BURNING_METHOD" ]; then
-			info "Please set the BM_BURNING_METHOD conf key in \$conffile, I assume you want 'CDRW'"
-			export BM_BURNING_METHOD="CDRW"
-		fi
-
-		if [ -z "$BM_BURNING_MAXSIZE" ]; then
-			info "Please set the BM_BURNING_MAXSIZE conf key in \$conffile, I assume you want '650'"
-			export BM_BURNING_MAXSIZE="650"
-		fi
-
-		# determine what to burn according to the size...
-		what_to_burn=""
-		size=$(size_of_path "$BM_ARCHIVES_REPOSITORY")
-		if [ $size -gt $BM_BURNING_MAXSIZE ]; then
-			size=$(size_of_path "${BM_ARCHIVES_REPOSITORY}/*${TODAY}*")
-			if [ $size -gt $BM_BURNING_MAXSIZE ]; then
-				error "Cannot burn archives of the \$TODAY, too big: \${size}M, must fit in \$BM_BURNING_MAXSIZE"
-			else
-				what_to_burn="${BM_ARCHIVES_REPOSITORY}/*${TODAY}*"
-			fi
-		else
-			what_to_burn="$BM_ARCHIVES_REPOSITORY"
-		fi
-
-		title="Backups_${TODAY}"
-		
-		# burning the iso with the user choosen method
-		case "$BM_BURNING_METHOD" in
-			"CDRW")
-                                info -n "Blanking the CDRW in \$BM_BURNING_DEVICE: "
-                                ${cdrecord} -tao dev=${BM_BURNING_DEVICE} blank=fast > ${logfile} 2>&1 ||
-                                        error "failed"
-				info "ok"
-				
-                                info -n "Burning data to \$BM_BURNING_DEVICE: "
-                                ${mkisofs} -V "${title}" -q -R -J ${what_to_burn} | \
-                                ${cdrecord} -tao dev=${BM_BURNING_DEVICE} - > ${logfile} 2>&1 ||
-                                        error "failed"
-				info "ok"
-			;;
-			"CDR")
-			        info -n "Burning data to \$BM_BURNING_DEVICE: "
-                                ${mkisofs} -V "${title}" -q -R -J ${what_to_burn} | \
-                                ${cdrecord} -tao dev=${BM_BURNING_DEVICE} - > ${logfile} 2>&1 ||
-                                        error "failed"
-				info "ok"
-			;;
-		esac
+	if [ "$BM_BURNING" != "yes" ]; then
+		info "The burning system is disabled in the conf file."
+		return 0
+	fi
 	
-		# checking the burnt files 
-		check_cdrom_md5_sums
-		
-		# cleaning 
-		rm -f $logfile
+	# determine what to burn according to the size...
+	what_to_burn=""
+	size=$(size_of_path "$BM_ARCHIVES_REPOSITORY")
+	if [ $size -gt $BM_BURNING_MAXSIZE ]; then
+		size=$(size_of_path "${BM_ARCHIVES_REPOSITORY}/*${TODAY}*")
+		if [ $size -gt $BM_BURNING_MAXSIZE ]; then
+			error "Cannot burn archives of the \$TODAY, too big: \${size}M, must fit in \$BM_BURNING_MAXSIZE"
+		else
+			# let's take all the regular files from today
+			for file in ${BM_ARCHIVES_REPOSITORY}/*${TODAY}*
+			do
+				# we only take the regular files, not the symlinks
+				if [ ! -L $file ]; then
+					what_to_burn="$what_to_burn $file"
+				fi
+			done		
+		fi
+	else
+		# let's take all the regular files from today
+		for file in ${BM_ARCHIVES_REPOSITORY}
+		do
+			# we only take the regular files, not the symlinks
+			if [ ! -L $file ]; then
+				what_to_burn="$what_to_burn $file"
+			fi
+		done		
 	fi
 
+	title="Backups_${TODAY}"
+	
+	# Let's un mount the device first
+	umount $BM_BURNING_DEVICE || warning "Unable to unmount the device \$BM_BURNING_DEVICE"
+	
+	# get a log file in a secure path
+	logfile="$(mktemp /tmp/bm-cdrecord.log.XXXXXX)"
+	info "Redirecting cdrecord logs into \$logfile"
+	
+	# set the cdrecord command 
+	devforced=""
+	if [ -n "$BM_BURNING_DEVFORCED" ]; then
+		info "Forcing dev=${BM_BURNING_DEVFORCED} for cdrecord commands"
+		devforced="dev=${BM_BURNING_DEVFORCED}"
+	fi
+	
+	# burning the iso with the user choosen method
+	case "$BM_BURNING_METHOD" in
+		"CDRW")
+			info -n "Blanking the CDRW in \$BM_BURNING_DEVICE: "
+			${cdrecord} -tao $devforced blank=fast > ${logfile} 2>&1 ||
+				error "failed, check \$logfile"
+			info "ok"
+			
+			info -n "Burning data to \$BM_BURNING_DEVICE: "
+			${mkisofs} -V "${title}" -q -R -J ${what_to_burn} | \
+			${cdrecord} -tao $devforced - > ${logfile} 2>&1 ||
+				error "failed, check \$logfile"
+			info "ok"
+		;;
+		"CDR")
+			info -n "Burning data to \$BM_BURNING_DEVICE: "
+			${mkisofs} -V "${title}" -q -R -J ${what_to_burn} | \
+			${cdrecord} -tao $devforced - > ${logfile} 2>&1 ||
+				error "failed, check \$logfile"
+			info "ok"
+		;;
+	esac
+	
+	# Cleaning the logile, everything was fine at this point.
+	rm -f $logfile
+
+	# checking the files in the CDR if wanted
+	if [ $BM_BURNING_CHKMD5 = yes ] 
+	then
+		check_cdrom_md5_sums
+	fi
 }
 
 
 make_archives()
 {
+	# FIXME currently, only one backup method is supported : default.
 	if [ -z "$BM_BACKUP_METHOD" ]; then
 		BM_BACKUP_METHOD="default"
 	fi

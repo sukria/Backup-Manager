@@ -1,6 +1,15 @@
+#    Backup Manager Configuration File
+#
+#  Global notes:
+#  Whenver you see aconfiguration key set to yes, you can 
+# safely change it to no. They are booleans.
+#
+##############################################################
+
+
 ##############################################################
 # Archives
-#############################################################
+##############################################################
 
 # Archive filename format
 # 	long  : host-full-path-to-folder.tar.gz
@@ -13,11 +22,8 @@ export BM_NAME_FORMAT="long"
 #    - .tar.bz2
 export BM_FILETYPE="tar.gz"
 
-# DEVEL
-# BM_BACKUP_METHOD
-#    - tarball
-#    - rsync
-#    - ...
+# The backup method to use.
+# Only one is supported in this release : "tarball"
 export BM_BACKUP_METHOD="tarball"
 
 # Number of days we have to keep an archive
@@ -26,6 +32,11 @@ export BM_MAX_TIME_TO_LIVE="5"
 # Do you want to dereference the files pointed by symlinks ? 
 # enter yes or no (yes can leed to huge archives, be careful).
 export BM_DUMP_SYMLINKS="no"
+
+# Do you want to replace duplicates by symlinks? 
+# (archive-DAY is a duplicates of archive-(DAY - 1) if they 
+# are both the same size).
+export BM_PURGE_DUPLICATES="yes"
 
 # Prefix of every archive on that box (default is HOSTNAME)
 export BM_ARCHIVES_PREFIX="$HOSTNAME"
@@ -43,8 +54,13 @@ export BM_DIRECTORIES_BLACKLIST=""
 # Where to sotre the archives
 export BM_ARCHIVES_REPOSITORY="/var/archives"
 
+# For security reasons, the archive repository and the generated 
+# archives will be readable/writable by a given user/group.
+# You can choose to disable this if you like.
+export BM_REPOSITORY_SECURE="yes"
+
 # The repository will be readable/writable only by a specific 
-# user:group pair for security reasons.
+# user:group pair if BM_REPOSITORY_SECURE is set to yes.
 export BM_USER="root"
 export BM_GROUP="root"
 
@@ -84,13 +100,18 @@ export BM_UPLOAD_DIR=""
 # set this to yes if you want automatic burning.
 export BM_BURNING="no"
 
-# which media to use (cdrom or dvd)
-# cd will use cdrecord, dvd will use growisofs
-# only cdrom is supported currently !
-export BM_BURNING_MEDIA="cdrom"
+# When the CD is burnt, it is possible to check every file's 
+# MD5 checksum to see if the CD is not corrupted.
+export BM_BURNING_CHKMD5="yes"
 
-# The device to use for cdrecord.
+# The device to use for mounting the cdrom
 export BM_BURNING_DEVICE="/dev/cdrom"
+
+# You can force cdrecord to use a specific device
+# Fill in the full path to the device to use or even
+# e.g. BM_BURNING_DEVFORCED="/dev/cdrom"
+# If none specified, the default cdrecord device will be used.
+export BM_BURNING_DEVFORCED=""
 
 # the method of burning archives from the list :
 #  - CDRW : blanking the CDRW and burning the all 

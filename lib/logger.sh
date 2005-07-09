@@ -75,7 +75,7 @@ log()
 		# output the message to STDOUT
 		message=$(echo_translated "$@")
 		if [ "$bm_log_switch" = "true" ]; then
-			echo -n $message
+			echo -n "${message}"
 		fi
 		BM_LOG_BUFFER="${BM_LOG_BUFFER}${message}"
 	
@@ -83,7 +83,7 @@ log()
 		# output the message to STDOUT
 		message=$(echo_translated "$@")
 		if [ "$bm_log_switch" == "true" ]; then
-			echo "$message"
+			echo "${message}"
 		fi
 		# log the message to syslog
 		syslog $bm_log_level "${BM_LOG_BUFFER}${message}"
@@ -102,8 +102,6 @@ error()
 {
 	bm_log_level="error"
 	log "$@"
-
-	# then exit (FIXME: still needed ?)
 	_exit 1
 }
 
@@ -121,19 +119,27 @@ warning()
 
 
 # that's the way backup-manager should exit.
-# need to remove the lock before !
+# need to remove the lock before, clean the mountpoint and 
+# remove the logfile
 _exit()
 {
 	info -n "Releasing lock: "
 	release_lock
 	info "ok"
 
-	if [ "$HAS_MOUNTED" = 1 ]; then
-		info -n "Unmounting \$BM_BURNING_DEVICE: "
-		sleep 2
-		umount $mount_point
-		rmdir $mount_point
-		info "ok"
+	if [ -n "$mount_point" ]; then
+		if [ -d $mount_point ] && [ "$HAS_MOUNTED" = "1" ]; then
+			info -n "Unmounting \$BM_BURNING_DEVICE: "
+			umount $mount_point || true
+			sleep 2
+			info "ok"
+		fi
+	
+		if [ -d $mount_point ]; then
+			info -n "Removing \$mount_point: "
+			rmdir $mount_point || true
+			info "ok"
+		fi
 	fi
 
 	exit $@

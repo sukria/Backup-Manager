@@ -16,13 +16,10 @@ backup_method_tarball()
 	
 	# Set the -h flag according to the $BM_DUMP_SYMLINKS conf key
 	h=""
-	if [ ! -z $BM_DUMP_SYMLINKS ]; then
-		if [ "$BM_DUMP_SYMLINKS" = "yes" ] ||
-		   [ "$BM_DUMP_SYMLINKS" = "true" ]; then
-			h="-h "
-		fi
+	if [ "$BM_DUMP_SYMLINKS" = "yes" ] ||
+	   [ "$BM_DUMP_SYMLINKS" = "true" ]; then
+		h="-h "
 	fi
-
 
 	for DIR in $BM_DIRECTORIES
 	do
@@ -68,12 +65,18 @@ backup_method_tarball()
 		# Now that the file is created, remove previous duplicates if exists...
 		purge_duplicate_archives $file_to_create || error "unable to purge duplicates"
 
-		# security fixes
-		chown $BM_USER:$BM_GROUP $file_to_create
-		chmod 660 $file_to_create
+		# security fixes if BM_REPOSITORY_SECURE is set to yes.
+		if [ $BM_REPOSITORY_SECURE = yes ]; then
+			chown $BM_USER:$BM_GROUP $file_to_create
+			chmod 660 $file_to_create
+		fi
 	done
 }
 
+# 
+# EXPERIMENTAL
+# this is a feature in develpment, for developers only.
+#
 backup_method_rsync()
 {
   # Not fully implemented, rsync is running in dry mode

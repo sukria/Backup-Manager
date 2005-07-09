@@ -33,7 +33,7 @@ usage()
 	echo -n "--no-burn           : "; echo_translated "Disable the burning process."
 	echo -n "--no-purge          : "; echo_translated "Disable the purge process."
 
-	exit 0
+	_exit 0
 }
 
 # this is the callback wich is run when backup-manager
@@ -48,16 +48,20 @@ stop_me()
 }
 
 # be sure that zip is supported.
-check_filetype()
+check_filetypes()
 {
-	if [ "$BM_FILETYPE" = "zip" ]
-	then
-	
-		if [ ! -x $zip ]
-		then
-			error "the BM_FILETYPE conf key is set to \"zip\" but zip is not installed."
-		fi
-	fi
+	case "$BM_FILETYPE" in
+		"zip")
+			if [ ! -x $zip ]; then
+				error "the BM_FILETYPE conf key is set to \"zip\" but zip is not installed."
+			fi
+		;;
+		"tar.bz2" )
+			if [ ! -x $bzip ]; then
+				error "the BM_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
+			fi
+		;;
+	esac
 }
 
 # get the list of directories to backup.
@@ -71,11 +75,6 @@ check_what_to_backup()
 
 init_default_vars()
 {
-	if [ ! -n "$BM_MAX_TIME_TO_LIVE" ]
-	then
-		export BM_MAX_TIME_TO_LIVE=5
-	fi
-
 	# set the date values 
 	export TODAY=`date +%Y%m%d`                  
 	export TOOMUCH_TIME_AGO=`date +%d --date "$BM_MAX_TIME_TO_LIVE days ago"`
@@ -83,13 +82,6 @@ init_default_vars()
 
 create_archive_root_if_not_exists()
 {
-	if [ -z "$BM_USER" ]; then
-		BM_USER="root"
-	fi
-	if [ -z "$BM_GROUP" ]; then
-		BM_GROUP="root"
-	fi
-	
 	if [ ! -d $BM_ARCHIVES_REPOSITORY ]
 	then
 		info "\$BM_ARCHIVES_REPOSITORY does not exist, creating it"
@@ -98,8 +90,9 @@ create_archive_root_if_not_exists()
 
 	# for security reason, the repository should not be world readable
 	# only BM_USER:BM_GROUP can read/write it. 
-	# FIXME: maybe putting the umask in the conf woul be good...
-	chown $BM_USER:$BM_GROUP $BM_ARCHIVES_REPOSITORY
-	chmod 770 $BM_ARCHIVES_REPOSITORY
+	if [ "$BM_REPOSITORY_SECURE" = "yes" ]; then
+		chown $BM_USER:$BM_GROUP $BM_ARCHIVES_REPOSITORY
+		chmod 770 $BM_ARCHIVES_REPOSITORY
+	fi
 }
 

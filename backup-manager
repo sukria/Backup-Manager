@@ -21,6 +21,7 @@ set -e
 # All the path we'll need
 libdir="/usr/share/backup-manager"
 zip="/usr/bin/zip"
+bzip="/usr/bin/bzip2"
 tar="/bin/tar"
 rsync="/usr/bin/rsync"
 mkisofs="/usr/bin/mkisofs"
@@ -29,17 +30,15 @@ bmu="/usr/bin/backup-manager-upload"
 lockfile="/var/run/backup-manager.pid"
 md5sum="/usr/bin/md5sum"
 bc="/usr/bin/bc"
-logfile="/tmp/bm-cdrecord.log"
-mount_point="/tmp/bm-mnt"
 
 # Load the backup-manager's library
-. $libdir/gettext.sh
-. $libdir/logger.sh
-. $libdir/dialog.sh
-. $libdir/files.sh
-. $libdir/md5sum.sh
-. $libdir/backup-methods.sh
-. $libdir/actions.sh
+source $libdir/gettext.sh
+source $libdir/logger.sh
+source $libdir/dialog.sh
+source $libdir/files.sh
+source $libdir/md5sum.sh
+source $libdir/backup-methods.sh
+source $libdir/actions.sh
 
 # Initialize defautls values of arguments
 verbose="false"
@@ -116,20 +115,26 @@ while [ $# -ge 1 ]; do
 	shift
 done
 
-# source the wanted conffile
-. $conffile
+# source the wanted conffile...
+source $conffile
+
+# ...And check that eveyr conf key is ok
+source $libdir/sanitize.sh
 
 # check that no other backup-manager is running
 get_lock
 
 # if the filetype is zip, check that $zip exists
-check_filetype
+check_filetypes
 
 # check the directories list to backup is not empty
 check_what_to_backup
 
 # set the default stuff
 init_default_vars
+
+# This is the time for pre-command
+exec_pre_command || error "Unable to exec the pre-command"
 
 # create $ARCHIVES_REPOSITORY if not exists
 create_archive_root_if_not_exists
@@ -166,9 +171,6 @@ fi
 # Default process : doing everything unless --no-flags 
 # are given.
 #############################################################
-
-# This is the time for pre-command
-exec_pre_command || error "Unable to exec the pre-command"
 
 # first cleanning up the repository 
 if [ "$nopurge" != "true" ]; then

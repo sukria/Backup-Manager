@@ -12,6 +12,7 @@ SHFILES=lib/dialog.sh \
 	lib/gettext.sh \
 	lib/gettext-real.sh \
 	lib/gettext-dummy.sh \
+	lib/sanitize.sh \
 	lib/md5sum.sh 
 
 # For the backup-manager-doc package

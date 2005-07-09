@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-08 22:45+0200\n"
+"POT-Creation-Date: 2005-07-09 15:32+0200\n"
 "PO-Revision-Date: 2003-12-18 10:09+0100\n"
 "Last-Translator: Michael Prokop <mika@grml.org>\n"
 "MIME-Version: 1.0\n"
@@ -396,31 +396,23 @@ msgstr "Keine MD5-Summe gefunden: $md5file"
 msgid "Archive given does not exists in the repository: $archive"
 msgstr "Angegebenes Archiv existiert nicht im Repository: $archive"
 
-#: sanitize.sh.ext:106
-msgid ""
-"The configuration key BM_UPLOAD_USER is not set but BM_UPLOAD_HOSTS is not "
-"empty."
+#: sanitize.sh.ext:16
+#, sh-format
+msgid "The configuration key $key is not set, using \"$default\"."
 msgstr ""
 
-#: sanitize.sh.ext:110
+#: sanitize.sh.ext:23
+#, sh-format
+msgid "The configuration key $key is not set but $keymandatory is enabled."
+msgstr ""
+
+#: sanitize.sh.ext:120
 msgid ""
 "The configuration key BM_UPLOAD_PASSWD is not set but BM_UPLOAD_MODE is set "
 "to \"ftp\"."
 msgstr ""
 
-#: sanitize.sh.ext:114
-msgid ""
-"The configuration key BM_UPLOAD_MODE is not set but BM_UPLOAD_HOSTS is not "
-"empty."
-msgstr ""
-
-#: sanitize.sh.ext:118
-msgid ""
-"The configuration key BM_UPLOAD_DIR is not set but BM_UPLOAD_HOSTS is not "
-"empty."
-msgstr ""
-
-#: sanitize.sh.ext:133
+#: sanitize.sh.ext:143
 #, sh-format
 msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "

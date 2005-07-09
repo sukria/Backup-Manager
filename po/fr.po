@@ -1,24 +1,19 @@
-# Messages français pour backup-manager
-# Copyleft © 2004 Alexis Sukrieh..
-# This file is distributed under the same license as the backup-manager package.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-09 15:05+0200\n"
-"PO-Revision-Date: 2005-06-28 14:14+0200\n"
-"Last-Translator: Cyril Brulebois <cyril.brulebois@enst-bretagne.fr>\n"
+"POT-Creation-Date: 2005-07-09 15:35+0200\n"
+"PO-Revision-Date: 2005-07-09 15:35+0100\n"
+"Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: actions.sh.ext:21
-#, fuzzy, sh-format
+#, sh-format
 msgid "The mount point $mount_point is not there"
-msgstr ""
-"Le point de montage $mount_point est déjà présent, effacez-le si besoin"
+msgstr "Le point de montage $mount_point n'est pas présent"
 
 #: actions.sh.ext:25
 #, sh-format
@@ -52,20 +47,19 @@ msgstr "échec (la somme MD5 ne concorde pas)"
 
 #: actions.sh.ext:72
 msgid "Errors encountered during MD5 controls."
-msgstr ""
+msgstr "Problèmes rencontrés lors des contrôles MD5."
 
 #: actions.sh.ext:76
-#, fuzzy, sh-format
+#, sh-format
 msgid "unable to unmount the mount point $mount_point"
-msgstr "Impossible de créer le point de montage $mount_point"
+msgstr "Impossible de démonter le point de montage $mount_point"
 
 #: actions.sh.ext:77
-#, fuzzy, sh-format
+#, sh-format
 msgid "unable to remove the mount point $mount_point"
-msgstr "Impossible de créer le point de montage $mount_point"
+msgstr "Impossible de supprimer le point de montage $mount_point"
 
 #: actions.sh.ext:89
-#, fuzzy
 msgid "The burning system is disabled in the conf file."
 msgstr ""
 "Le système de gravure automatique est désactivé dans le fichier de "
@@ -81,14 +75,14 @@ msgstr ""
 "doit tenir dans ${BM_BURNING_MAXSIZE}M"
 
 #: actions.sh.ext:124
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to unmount the device $BM_BURNING_DEVICE"
-msgstr "Démontage de $BM_BURNING_DEVICE : "
+msgstr "Impossible de démonter $BM_BURNING_DEVICE : "
 
 #: actions.sh.ext:128
 #, sh-format
 msgid "Redirecting cdrecord logs into $logfile"
-msgstr ""
+msgstr "Redirection des logs de cdrecord dans $logfile"
 
 #: actions.sh.ext:140
 #, sh-format
@@ -98,7 +92,7 @@ msgstr "Effacement de $BM_BURNING_DEVICE : "
 #: actions.sh.ext:142 actions.sh.ext:148 actions.sh.ext:155
 #, sh-format
 msgid "failed, check $logfile"
-msgstr ""
+msgstr "erreur, voir le fichier $logfile"
 
 #: actions.sh.ext:145 actions.sh.ext:152
 #, sh-format
@@ -107,19 +101,19 @@ msgstr "Gravure des données dans $BM_BURNING_DEVICE : "
 
 #: actions.sh.ext:180
 msgid "Using the \"pipe\" backup method"
-msgstr ""
+msgstr "Utilisation de la méthode de backup « pipe »"
 
 #: actions.sh.ext:188
 msgid "Using the \"mysql\" backup method"
-msgstr ""
+msgstr "Utilisation de la méthode de backup « mysql »"
 
 #: actions.sh.ext:192
 msgid "Using the \"rsync\" backup method"
-msgstr ""
+msgstr "Utilisation de la méthode de backup « rsync »"
 
 #: actions.sh.ext:198
 msgid "Using the \"tarball\" backup method"
-msgstr ""
+msgstr "Utilisation de la méthode de backup « tarball »"
 
 #: actions.sh.ext:210
 #, sh-format
@@ -200,21 +194,20 @@ msgid "ok (${size}M, "
 msgstr "ok (${size}M, "
 
 #: backup-methods.sh.ext:66
-#, fuzzy
 msgid "unable to purge duplicates"
-msgstr "impossible d'effectuer la phase de nettoyage."
+msgstr "impossible de supprimer les doublons"
 
 #: backup-methods.sh.ext:104
 msgid "Need a key to use rsync"
-msgstr ""
+msgstr "Une clef est nécessaire pour utiliser la méthode « rsync »"
 
 #: backup-methods.sh.ext:112
 msgid "backup_method_mysql is not yet supported"
-msgstr ""
+msgstr "La méthode de backup « mysql » n'est pas encore supportée."
 
 #: backup-methods.sh.ext:117
 msgid "backup_method_pipe is not yet supported"
-msgstr ""
+msgstr "La méthode de backup « pipe » n'est pas encore supportée."
 
 #: dialog.sh.ext:13
 msgid "Output:"
@@ -290,10 +283,9 @@ msgid "the BM_FILETYPE conf key is set to \"zip\" but zip is not installed."
 msgstr "La clef BM_FILETYPE vaut \"zip\" mais zip n'est pas installé."
 
 #: dialog.sh.ext:61
-#, fuzzy
 msgid ""
 "the BM_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
-msgstr "La clef BM_FILETYPE vaut \"zip\" mais zip n'est pas installé."
+msgstr "La clef BM_FILETYPE vaut \"bzip2\" mais bzip2 n'est pas installé."
 
 #: dialog.sh.ext:72
 #, sh-format
@@ -352,14 +344,13 @@ msgid "No file given"
 msgstr "Aucun fichier spécifié"
 
 #: files.sh.ext:242
-#, fuzzy, sh-format
+#, sh-format
 msgid "The given file does not exist: $file_to_create"
-msgstr "L'archive demandée n'existe pas dans le répertoire : $archive"
+msgstr "Le fichier donné n'existe pas : $file_to_create"
 
 #: files.sh.ext:246
-#, fuzzy
 msgid "unable to get date from file"
-msgstr "Désactive la phase de nettoyage."
+msgstr "Impossible de récupérer la date du fichier"
 
 #: files.sh.ext:247
 msgid "unable to find the pattern of the file"
@@ -375,9 +366,9 @@ msgid "Unmounting $BM_BURNING_DEVICE: "
 msgstr "Démontage de $BM_BURNING_DEVICE : "
 
 #: logger.sh.ext:139
-#, fuzzy, sh-format
+#, sh-format
 msgid "Removing $mount_point: "
-msgstr "Suppression de $file : "
+msgstr "Suppression de $mount_point : "
 
 #: md5sum.sh.ext:14
 #, sh-format
@@ -389,33 +380,32 @@ msgstr "Pas de fichier MD5 : $md5file"
 msgid "Archive given does not exists in the repository: $archive"
 msgstr "L'archive demandée n'existe pas dans le répertoire : $archive"
 
-#: sanitize.sh.ext:106
-msgid ""
-"The configuration key BM_UPLOAD_USER is not set but BM_UPLOAD_HOSTS is not "
-"empty."
+#: sanitize.sh.ext:16
+#, sh-format
+msgid "The configuration key $key is not set, using \"$default\"."
 msgstr ""
+"La clef de configuration $key n'est pas définie, utilisation de « $default »"
 
-#: sanitize.sh.ext:110
+#: sanitize.sh.ext:23
+#, sh-format
+msgid "The configuration key $key is not set but $keymandatory is enabled."
+msgstr ""
+"La clef de configuration $key n'est pas définie mais $keymandatory est "
+"activée."
+
+#: sanitize.sh.ext:120
 msgid ""
 "The configuration key BM_UPLOAD_PASSWD is not set but BM_UPLOAD_MODE is set "
 "to \"ftp\"."
 msgstr ""
+"La clef de configuration BM_UPLOAD_PASSWD n'est pas définie mais "
+"BM_UPLOAD_MODE est « ftp »"
 
-#: sanitize.sh.ext:114
-msgid ""
-"The configuration key BM_UPLOAD_MODE is not set but BM_UPLOAD_HOSTS is not "
-"empty."
-msgstr ""
-
-#: sanitize.sh.ext:118
-msgid ""
-"The configuration key BM_UPLOAD_DIR is not set but BM_UPLOAD_HOSTS is not "
-"empty."
-msgstr ""
-
-#: sanitize.sh.ext:133
+#: sanitize.sh.ext:143
 #, sh-format
 msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
 "found."
 msgstr ""
+"Lors de la validation du fichier de configuration $conffile, $nb_warnings "
+"avertissements ont été détectés."

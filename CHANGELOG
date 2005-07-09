@@ -1,3 +1,31 @@
+0.5.8b
+	* Security fixes 
+	  + When burning a CDR, mktemp is used to prevent attacks on the file
+	    system.
+	  + It is possible to make the archive repository readable/writable by
+	    a given user/group pair.
+	* Features	
+	  + The configuration file is now validated before running.
+	    Warnings are triggered if configuration keys are not set.
+	* Bug fixes
+	  + If the filetype "tar.bz2" is chosen, /usr/bin/bzip2 is mandatory.
+	  + The pre-command is run before the creation of the archive
+	    repository.
+	  + No trailing spaces are lost anymore when printing messages.
+	* New configuration keys:
+	  + BM_PURGE_DUPLICATES tells if duplicates should be replaced by
+	    symlinks (default is yes).
+	  + BM_REPOSITORY_SECURE tells if the archive repository and the
+	    archive should be readable/writable by a given user:group (default
+	    is yes).
+	  + If BM_REPOSITORY_SECURE is activated, BM_USER and BM_GROUP should
+	    be filled (default is root:root).
+	  + BM_BURNING_CHKMD5 tells if the MD5 checksums should be checked when 
+	    a CDR is burnt (default is yes).
+	  + BM_BURNING_DEVFORCED tells backup manager to force a device
+	    whenever a cdrecord command is performed, and then bypass the
+	    default cdrecord device (default is disabled).
+ 
  0.5.8a
  	* bug fix in the logger, the output is now clean.
 	* bug fix when making tarballs: we don't warn about an 
@@ -6,8 +34,6 @@
 	* first implementation of the rsync backup method 
 	  (experiemntal).
   
-  - Alexis Sukrieh <sukria@sukria.net>  sun jun 19 16:48:07 CEST 2005
-
  0.5.8
  	* Fixed a bug when calculating total disk usage of a specified 
 	  path when the locale is not en_EN or fr_FR.
@@ -24,7 +50,6 @@
 	  disk space.
  	* Added BM_FTP_PURGE configuration key for removing files 
 	  on ftp transfer before uploading files.
-  
  
  0.5.7
  	* Removed the file TODO
@@ -32,6 +57,4 @@
 	* Renamed backup-manager.conf.tpl backup-manager.conf.
 	* Better handling of pre and post commands.
 	* Added a file CHANGELOG.
-	
-  - Alexis Sukrieh <sukria@sukria.net>  Wed, 23 Mar 2005
 	

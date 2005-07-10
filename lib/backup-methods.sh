@@ -15,10 +15,13 @@ backup_method_tarball()
 	done
 	
 	# Set the -h flag according to the $BM_DUMP_SYMLINKS conf key
+	# or the -y flag for zip. 
 	h=""
+	y="-y"
 	if [ "$BM_DUMP_SYMLINKS" = "yes" ] ||
 	   [ "$BM_DUMP_SYMLINKS" = "true" ]; then
 		h="-h "
+		y=""
 	fi
 
 	for DIR in $BM_DIRECTORIES
@@ -41,7 +44,7 @@ backup_method_tarball()
 					$tar $blacklist $h -c -f "$file_to_create" "$DIR" > /dev/null 2>&1 || info '~'
 				;;
 				zip) # generate a zip file if needed
-					$zip -r "$file_to_create" "$DIR" > /dev/null 2>&1 || info '~'
+					ZIP="" ZIPOPT="" $zip $y -r "$file_to_create" "$DIR" > /dev/null 2>&1 || info '~'
 				;;
 				*) # unknown option
 					info "failed"

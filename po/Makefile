@@ -29,7 +29,7 @@ backup-manager.pot: $(POTFILES)
 	xgettext --language=Shell -o backup-manager.pot *.ext
 
 clean:
-	rm -f backup-manager.pot $(MOFILES) messages messages.mo *.ext messages.po tmp
+	rm -f backup-manager.pot $(MOFILES) messages messages.mo *.ext messages.po tmp .ext
 
 %.mo: %.po
 	msgfmt -o $@ $<

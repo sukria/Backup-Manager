@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-09 15:32+0200\n"
+"POT-Creation-Date: 2005-07-12 17:29+0200\n"
 "PO-Revision-Date: 2003-12-18 10:09+0100\n"
 "Last-Translator: Diego Brouard\n"
 "MIME-Version: 1.0\n"
@@ -138,7 +138,7 @@ msgstr "El sistema de carga está deshabilitado en el fichero de configuración."
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
 msgstr "Ejecutando el comando previo al proceso: $BM_PRE_BACKUP_COMMAND: "
 
-#: actions.sh.ext:272 actions.sh.ext:292 backup-methods.sh.ext:47
+#: actions.sh.ext:272 actions.sh.ext:292 backup-methods.sh.ext:50
 msgid "failed"
 msgstr "error"
 
@@ -171,45 +171,45 @@ msgstr ""
 msgid "Unable to exec post-command"
 msgstr ""
 
-#: backup-methods.sh.ext:31
+#: backup-methods.sh.ext:34
 #, sh-format
 msgid "Creating $file_to_create: "
 msgstr "Creando $file_to_create: "
 
-#: backup-methods.sh.ext:35 backup-methods.sh.ext:38 backup-methods.sh.ext:41
-#: backup-methods.sh.ext:44
+#: backup-methods.sh.ext:38 backup-methods.sh.ext:41 backup-methods.sh.ext:44
+#: backup-methods.sh.ext:47
 msgid "~"
 msgstr "~"
 
-#: backup-methods.sh.ext:48
+#: backup-methods.sh.ext:51
 #, sh-format
 msgid "The filetype $BM_FILETYPE is not spported."
 msgstr "El tipo de fichero $BM_FILETYPE no está soportado."
 
-#: backup-methods.sh.ext:53
+#: backup-methods.sh.ext:56
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "El fichero $file_to_create, ya existe. Se ignora."
 
-#: backup-methods.sh.ext:58
+#: backup-methods.sh.ext:61
 #, sh-format
 msgid "ok (${size}M, "
 msgstr "ok (${size}M, "
 
-#: backup-methods.sh.ext:66
+#: backup-methods.sh.ext:69
 #, fuzzy
 msgid "unable to purge duplicates"
 msgstr "Deshabilitar el proceso de borrado."
 
-#: backup-methods.sh.ext:104
+#: backup-methods.sh.ext:107
 msgid "Need a key to use rsync"
 msgstr ""
 
-#: backup-methods.sh.ext:112
+#: backup-methods.sh.ext:115
 msgid "backup_method_mysql is not yet supported"
 msgstr ""
 
-#: backup-methods.sh.ext:117
+#: backup-methods.sh.ext:120
 msgid "backup_method_pipe is not yet supported"
 msgstr ""
 

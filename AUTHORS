@@ -1,16 +1,12 @@
 
-Providing backup-manager is something possible thanks 
-to the following people:
-
-
-Main code :
+Main code and design:
 	- Alexis Sukrieh <sukria@sukria.net>
 
-Patches:
-	- Michael Prokop <mika@grml.org>
+Contributions:
+	- Adreas "Jimmy" Grelder: Implementation of the rsync 
+	  method (experimental).
 
-Translations:
-	- Spanish: Diego Brouard  
-	- German:  Michael Prokop <mika@grml.org> 
-	- French:  Alexis Sukrieh <sukria@sukria.net>
+Patches:
+	- Sven Joachim: symlink dumping support for zip archives.
+	- Michael Prokop: multiple configuration files.
 

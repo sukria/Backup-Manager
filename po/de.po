@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-09 15:32+0200\n"
+"POT-Creation-Date: 2005-07-12 17:29+0200\n"
 "PO-Revision-Date: 2003-12-18 10:09+0100\n"
-"Last-Translator: Michael Prokop <mika@grml.org>\n"
+"Last-Translator: Andreas Gredler <jimmy@grml.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -53,7 +53,7 @@ msgstr "fehlgeschlagen (MD5-Summe stimmt nicht überein)"
 
 #: actions.sh.ext:72
 msgid "Errors encountered during MD5 controls."
-msgstr ""
+msgstr "Fehler während der MD5 Überprüfung"
 
 #: actions.sh.ext:76
 #, fuzzy, sh-format
@@ -88,7 +88,7 @@ msgstr "Unmounten von $BM_BURNING_DEVICE: "
 #: actions.sh.ext:128
 #, sh-format
 msgid "Redirecting cdrecord logs into $logfile"
-msgstr ""
+msgstr "Umleiten der cdrecord logs nach $logfile"
 
 #: actions.sh.ext:140
 #, sh-format
@@ -98,7 +98,7 @@ msgstr "Löschen (blanking) der CDRW in ${BM_BURNING_DEVICE}: "
 #: actions.sh.ext:142 actions.sh.ext:148 actions.sh.ext:155
 #, sh-format
 msgid "failed, check $logfile"
-msgstr ""
+msgstr "fehlgeschlagen, siehe $logfile"
 
 #: actions.sh.ext:145 actions.sh.ext:152
 #, sh-format
@@ -107,19 +107,19 @@ msgstr "Brennen der Datei auf $BM_BURNING_DEVICE: "
 
 #: actions.sh.ext:180
 msgid "Using the \"pipe\" backup method"
-msgstr ""
+msgstr "Benutze \"pipe\" Backup Methode"
 
 #: actions.sh.ext:188
 msgid "Using the \"mysql\" backup method"
-msgstr ""
+msgstr "Benutze \"mysql\" Backup Methode"
 
 #: actions.sh.ext:192
 msgid "Using the \"rsync\" backup method"
-msgstr ""
+msgstr "Benutze \"rsync\" Backup Methode"
 
 #: actions.sh.ext:198
 msgid "Using the \"tarball\" backup method"
-msgstr ""
+msgstr "Benutze \"tarball\" Backup Methode"
 
 #: actions.sh.ext:210
 #, sh-format
@@ -139,7 +139,7 @@ msgstr "Das upload-System wurde in der Konfigurationsdatei deaktiviert."
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
 msgstr "pre-command läuft: $BM_PRE_BACKUP_COMMAND: "
 
-#: actions.sh.ext:272 actions.sh.ext:292 backup-methods.sh.ext:47
+#: actions.sh.ext:272 actions.sh.ext:292 backup-methods.sh.ext:50
 msgid "failed"
 msgstr "fehlgeschlagen"
 
@@ -167,53 +167,53 @@ msgstr "ein gültiger Dateiname muß der Option -c folgen"
 
 #: backup-manager.ext:137
 msgid "Unable to exec the pre-command"
-msgstr ""
+msgstr "Kann pre-command nicht ausführen"
 
 #: backup-manager.ext:199
 msgid "Unable to exec post-command"
-msgstr ""
+msgstr "Kann post-command nicht ausführen"
 
-#: backup-methods.sh.ext:31
+#: backup-methods.sh.ext:34
 #, sh-format
 msgid "Creating $file_to_create: "
 msgstr "Erstellen von $file_to_create:"
 
-#: backup-methods.sh.ext:35 backup-methods.sh.ext:38 backup-methods.sh.ext:41
-#: backup-methods.sh.ext:44
+#: backup-methods.sh.ext:38 backup-methods.sh.ext:41 backup-methods.sh.ext:44
+#: backup-methods.sh.ext:47
 msgid "~"
 msgstr "~"
 
-#: backup-methods.sh.ext:48
+#: backup-methods.sh.ext:51
 #, sh-format
 msgid "The filetype $BM_FILETYPE is not spported."
 msgstr "Der Dateityp $BM_FILETYPE wird nicht unterstützt."
 
-#: backup-methods.sh.ext:53
+#: backup-methods.sh.ext:56
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Datei $file_to_create existiert bereits, abgebrochen."
 
-#: backup-methods.sh.ext:58
+#: backup-methods.sh.ext:61
 #, sh-format
 msgid "ok (${size}M, "
 msgstr "ok (${size}M, "
 
-#: backup-methods.sh.ext:66
+#: backup-methods.sh.ext:69
 #, fuzzy
 msgid "unable to purge duplicates"
 msgstr "Deaktivieren des Lösch-Vorgangs."
 
-#: backup-methods.sh.ext:104
+#: backup-methods.sh.ext:107
 msgid "Need a key to use rsync"
-msgstr ""
+msgstr "Benötige einen Schlüssel um rsync auszuführen"
 
-#: backup-methods.sh.ext:112
+#: backup-methods.sh.ext:115
 msgid "backup_method_mysql is not yet supported"
-msgstr ""
+msgstr "backup_method_mysql wird noch nicht unterstützt"
 
-#: backup-methods.sh.ext:117
+#: backup-methods.sh.ext:120
 msgid "backup_method_pipe is not yet supported"
-msgstr ""
+msgstr "backup_method_pipe wird noch nicht unterstützt"
 
 #: dialog.sh.ext:13
 msgid "Output:"
@@ -356,7 +356,7 @@ msgstr "Betreten vom Verzeichnis $file."
 
 #: files.sh.ext:238
 msgid "No file given"
-msgstr ""
+msgstr "Keine Datei angegeben"
 
 #: files.sh.ext:242
 #, fuzzy, sh-format
@@ -370,7 +370,7 @@ msgstr "Deaktivieren des Lösch-Vorgangs."
 
 #: files.sh.ext:247
 msgid "unable to find the pattern of the file"
-msgstr ""
+msgstr "kann das Dateimuster nicht finden"
 
 #: logger.sh.ext:126
 msgid "Releasing lock: "
@@ -400,17 +400,22 @@ msgstr "Angegebenes Archiv existiert nicht im Repository: $archive"
 #, sh-format
 msgid "The configuration key $key is not set, using \"$default\"."
 msgstr ""
+"Die Konfigurationsvariable $key ist nicht gesetzt, benutze \"$default\"."
 
 #: sanitize.sh.ext:23
 #, sh-format
 msgid "The configuration key $key is not set but $keymandatory is enabled."
 msgstr ""
+"Die Konfigurationsvariable $key ist nicht gesetzt, $keymandatory ist aber "
+"aktiviert"
 
 #: sanitize.sh.ext:120
 msgid ""
 "The configuration key BM_UPLOAD_PASSWD is not set but BM_UPLOAD_MODE is set "
 "to \"ftp\"."
 msgstr ""
+"Die Konfigurationsvariable BM_UPLOAD_PASSWD ist nicht gesetzt, "
+"BM_UPLOAD_MODE ist aber auf \"ftp\" gesetzt."
 
 #: sanitize.sh.ext:143
 #, sh-format
@@ -418,6 +423,8 @@ msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
 "found."
 msgstr ""
+"Beim Validieren der Konfigurationsdatei $conffile wurden $nb_warnings "
+"Warnungen erkannt"
 
 #~ msgid "Error during MD5 controls. Run $0 --md5check --verbose for details"
 #~ msgstr ""

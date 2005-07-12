@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Check that every conffile is ok for a proper run.
+# Check that every key in the conffile is ok for a proper run.
 
 
 # we'll count the number of warnings, here

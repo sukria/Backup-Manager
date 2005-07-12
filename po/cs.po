@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-09 15:32+0200\n"
-"PO-Revision-Date: 2005-06-21 18:47+0200\n"
+"POT-Creation-Date: 2005-07-12 23:18+0200\n"
+"PO-Revision-Date: 2005-07-12 23:09+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debiann.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: actions.sh.ext:21
-#, fuzzy, sh-format
+#, sh-format
 msgid "The mount point $mount_point is not there"
-msgstr "Pøípojný bod $mount_point ji¾ existuje, podle potøeb jej odstraòte"
+msgstr "Pøípojný bod $mount_point neexistuje"
 
 #: actions.sh.ext:25
 #, sh-format
@@ -52,41 +52,40 @@ msgstr "selhalo (MD5 nesouhlasí)"
 
 #: actions.sh.ext:72
 msgid "Errors encountered during MD5 controls."
-msgstr ""
+msgstr "Bìhem MD5 kontrol byly zaznamenány chyby."
 
 #: actions.sh.ext:76
-#, fuzzy, sh-format
+#, sh-format
 msgid "unable to unmount the mount point $mount_point"
-msgstr "nemohu vytvoøit pøípojný bod $mount_point"
+msgstr "nemohu odpojit pøípojný bod $mount_point"
 
 #: actions.sh.ext:77
-#, fuzzy, sh-format
+#, sh-format
 msgid "unable to remove the mount point $mount_point"
-msgstr "nemohu vytvoøit pøípojný bod $mount_point"
+msgstr "nemohu odstranit pøípojný bod $mount_point"
 
 #: actions.sh.ext:89
-#, fuzzy
 msgid "The burning system is disabled in the conf file."
-msgstr "Automatický systém vypalování je v konfiguraèním souboru zakázán."
+msgstr "Vypalovací systém je v konfiguraèním souboru zakázán."
 
 #: actions.sh.ext:99
-#, fuzzy, sh-format
+#, sh-format
 msgid ""
 "Cannot burn archives of the $TODAY, too big: ${size}M, must fit in "
 "$BM_BURNING_MAXSIZE"
 msgstr ""
-"Nemohu vypálit archivy z $TODAY, proto¾e jsou pøíli¹ velké : ${size}M, se "
-"musí vejít do $BM_BURNING_MAXSIZE"
+"Nemohu vypálit archivy z $TODAY, jsou pøíli¹ velké: ${size}M, se musí vejít "
+"do $BM_BURNING_MAXSIZE"
 
 #: actions.sh.ext:124
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to unmount the device $BM_BURNING_DEVICE"
-msgstr "Odpojuji $BM_BURNING_DEVICE: "
+msgstr "Nemohu odpojit zaøízení $BM_BURNING_DEVICE"
 
 #: actions.sh.ext:128
 #, sh-format
 msgid "Redirecting cdrecord logs into $logfile"
-msgstr ""
+msgstr "Pøesmìrovávám hlá¹ení cdrecordu do $logfile"
 
 #: actions.sh.ext:140
 #, sh-format
@@ -96,7 +95,7 @@ msgstr "Ma¾u CDRW v $BM_BURNING_DEVICE: "
 #: actions.sh.ext:142 actions.sh.ext:148 actions.sh.ext:155
 #, sh-format
 msgid "failed, check $logfile"
-msgstr ""
+msgstr "selhalo, zkontrolujte $logfile"
 
 #: actions.sh.ext:145 actions.sh.ext:152
 #, sh-format
@@ -104,7 +103,6 @@ msgid "Burning data to $BM_BURNING_DEVICE: "
 msgstr "Vypaluji data na $BM_BURNING_DEVICE: "
 
 #: actions.sh.ext:180
-#, fuzzy
 msgid "Using the \"pipe\" backup method"
 msgstr "Pou¾ívám zálohovací metodu \"pipe\""
 
@@ -138,7 +136,7 @@ msgstr "Nahrávání na vzdálený poèítaè je v konfiguraèním souboru zakázáno."
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
 msgstr "Spou¹tím úvodní pøíkaz: $BM_PRE_BACKUP_COMMAND: "
 
-#: actions.sh.ext:272 actions.sh.ext:292 backup-methods.sh.ext:47
+#: actions.sh.ext:272 actions.sh.ext:292 backup-methods.sh.ext:50
 msgid "failed"
 msgstr "selhalo"
 
@@ -171,44 +169,44 @@ msgstr "Nemohu spustit úvodní pøíkaz"
 msgid "Unable to exec post-command"
 msgstr "Nemohu spustit závìreèný pøíkaz"
 
-#: backup-methods.sh.ext:31
+#: backup-methods.sh.ext:34
 #, sh-format
 msgid "Creating $file_to_create: "
 msgstr "Vytváøím $file_to_create: "
 
-#: backup-methods.sh.ext:35 backup-methods.sh.ext:38 backup-methods.sh.ext:41
-#: backup-methods.sh.ext:44
+#: backup-methods.sh.ext:38 backup-methods.sh.ext:41 backup-methods.sh.ext:44
+#: backup-methods.sh.ext:47
 msgid "~"
 msgstr "~"
 
-#: backup-methods.sh.ext:48
+#: backup-methods.sh.ext:51
 #, sh-format
 msgid "The filetype $BM_FILETYPE is not spported."
 msgstr "Typ souboru $BM_FILETYPE není podporován."
 
-#: backup-methods.sh.ext:53
+#: backup-methods.sh.ext:56
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Soubor $file_to_create ji¾ existuje, pøeskakuji."
 
-#: backup-methods.sh.ext:58
+#: backup-methods.sh.ext:61
 #, sh-format
 msgid "ok (${size}M, "
 msgstr "ok (${size}M, "
 
-#: backup-methods.sh.ext:66
+#: backup-methods.sh.ext:69
 msgid "unable to purge duplicates"
 msgstr "nemohu smazat duplikáty"
 
-#: backup-methods.sh.ext:104
+#: backup-methods.sh.ext:107
 msgid "Need a key to use rsync"
 msgstr "Pro pou¾ití programu rsync potøebuji klíè"
 
-#: backup-methods.sh.ext:112
+#: backup-methods.sh.ext:115
 msgid "backup_method_mysql is not yet supported"
 msgstr "backup_method_mysql zatím není podporována"
 
-#: backup-methods.sh.ext:117
+#: backup-methods.sh.ext:120
 msgid "backup_method_pipe is not yet supported"
 msgstr "backup_method_pipe zatím není podporována"
 
@@ -221,7 +219,6 @@ msgid "Print this short help message."
 msgstr "Vytiskne tuto krátkou nápovìdu."
 
 #: dialog.sh.ext:15
-#, fuzzy
 msgid "Print what happens on STDOUT."
 msgstr "Vytiskne na STDOUT provádìné kroky."
 
@@ -289,11 +286,11 @@ msgstr ""
 "Konfiguraèní klíè BM_FILETYPE je nastaven na \"zip\" ale zip není instalován."
 
 #: dialog.sh.ext:61
-#, fuzzy
 msgid ""
 "the BM_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
 msgstr ""
-"Konfiguraèní klíè BM_FILETYPE je nastaven na \"zip\" ale zip není instalován."
+"Konfiguraèní klíè BM_FILETYPE je nastaven na \"bzip2\" ale bzip2 není "
+"instalován."
 
 #: dialog.sh.ext:72
 #, sh-format
@@ -373,9 +370,9 @@ msgid "Unmounting $BM_BURNING_DEVICE: "
 msgstr "Odpojuji $BM_BURNING_DEVICE: "
 
 #: logger.sh.ext:139
-#, fuzzy, sh-format
+#, sh-format
 msgid "Removing $mount_point: "
-msgstr "Odstraòuji $file: "
+msgstr "Odstraòuji $mount_point: "
 
 #: md5sum.sh.ext:14
 #, sh-format
@@ -390,18 +387,20 @@ msgstr "Zadaný archiv v úlo¾i¹ti neexistuje: $archive"
 #: sanitize.sh.ext:16
 #, sh-format
 msgid "The configuration key $key is not set, using \"$default\"."
-msgstr ""
+msgstr "Konfiguraèní klíè $key není naastaven, pou¾ívám \"$default\"."
 
 #: sanitize.sh.ext:23
 #, sh-format
 msgid "The configuration key $key is not set but $keymandatory is enabled."
-msgstr ""
+msgstr "Konfiguraèní klíè $key není nastaven, ale $keymandatory je povolen."
 
 #: sanitize.sh.ext:120
 msgid ""
 "The configuration key BM_UPLOAD_PASSWD is not set but BM_UPLOAD_MODE is set "
 "to \"ftp\"."
 msgstr ""
+"Konfiguraèní klíè BM_UPLOAD_PASSWD není nastaven, ale BM_UPLOAD_MODE je "
+"nastaven na \"ftp\"."
 
 #: sanitize.sh.ext:143
 #, sh-format
@@ -409,6 +408,8 @@ msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
 "found."
 msgstr ""
+"Pøi ovìøování konfiguraèního souboru $conffile bylo nalezeno $nb_warnings "
+"varování."
 
 #~ msgid "Error during MD5 controls. Run $0 --md5check --verbose for details"
 #~ msgstr ""

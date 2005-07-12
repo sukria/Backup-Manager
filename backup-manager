@@ -118,13 +118,13 @@ done
 # source the wanted conffile...
 source $conffile
 
-# ...And check that eveyr conf key is ok
+# ...And check that every conf key is ok
 source $libdir/sanitize.sh
 
 # check that no other backup-manager is running
 get_lock
 
-# if the filetype is zip, check that $zip exists
+# check dependencies on zip, bzip2
 check_filetypes
 
 # check the directories list to backup is not empty

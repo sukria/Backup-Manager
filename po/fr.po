@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-09 15:35+0200\n"
+"POT-Creation-Date: 2005-07-12 17:29+0200\n"
 "PO-Revision-Date: 2005-07-09 15:35+0100\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "Language-Team: \n"
@@ -135,7 +135,7 @@ msgstr ""
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
 msgstr "Lancement de la pre-commande : $BM_PRE_BACKUP_COMMAND"
 
-#: actions.sh.ext:272 actions.sh.ext:292 backup-methods.sh.ext:47
+#: actions.sh.ext:272 actions.sh.ext:292 backup-methods.sh.ext:50
 msgid "failed"
 msgstr "échec"
 
@@ -168,44 +168,44 @@ msgstr "Impossible d'exécuter la pre-commande"
 msgid "Unable to exec post-command"
 msgstr "Impossible d'exécuter la post-commande"
 
-#: backup-methods.sh.ext:31
+#: backup-methods.sh.ext:34
 #, sh-format
 msgid "Creating $file_to_create: "
 msgstr "Création de $file_to_create : "
 
-#: backup-methods.sh.ext:35 backup-methods.sh.ext:38 backup-methods.sh.ext:41
-#: backup-methods.sh.ext:44
+#: backup-methods.sh.ext:38 backup-methods.sh.ext:41 backup-methods.sh.ext:44
+#: backup-methods.sh.ext:47
 msgid "~"
 msgstr "~"
 
-#: backup-methods.sh.ext:48
+#: backup-methods.sh.ext:51
 #, sh-format
 msgid "The filetype $BM_FILETYPE is not spported."
 msgstr "Le type de fichier $BM_FILETYPE n'est pas supporté."
 
-#: backup-methods.sh.ext:53
+#: backup-methods.sh.ext:56
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Fichier $file_to_create existe, passage au suivant."
 
-#: backup-methods.sh.ext:58
+#: backup-methods.sh.ext:61
 #, sh-format
 msgid "ok (${size}M, "
 msgstr "ok (${size}M, "
 
-#: backup-methods.sh.ext:66
+#: backup-methods.sh.ext:69
 msgid "unable to purge duplicates"
 msgstr "impossible de supprimer les doublons"
 
-#: backup-methods.sh.ext:104
+#: backup-methods.sh.ext:107
 msgid "Need a key to use rsync"
 msgstr "Une clef est nécessaire pour utiliser la méthode « rsync »"
 
-#: backup-methods.sh.ext:112
+#: backup-methods.sh.ext:115
 msgid "backup_method_mysql is not yet supported"
 msgstr "La méthode de backup « mysql » n'est pas encore supportée."
 
-#: backup-methods.sh.ext:117
+#: backup-methods.sh.ext:120
 msgid "backup_method_pipe is not yet supported"
 msgstr "La méthode de backup « pipe » n'est pas encore supportée."
 
@@ -399,7 +399,7 @@ msgid ""
 "to \"ftp\"."
 msgstr ""
 "La clef de configuration BM_UPLOAD_PASSWD n'est pas définie mais "
-"BM_UPLOAD_MODE est « ftp »"
+"BM_UPLOAD_MODE est « ftp »"
 
 #: sanitize.sh.ext:143
 #, sh-format

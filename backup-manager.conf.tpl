@@ -1,81 +1,106 @@
-#    Backup Manager Configuration File
+#  Backup Manager Configuration File
 #
 #  Global notes:
-#  Whenver you see aconfiguration key set to yes, you can 
-# safely change it to no. They are booleans.
+
+#  * Whenver you see a configuration key set to yes, you can 
+#    safely change it to no. They are booleans.
+#  * This configuration file is divided into sections.
+#    The 'global' section is mandatory, every keys defined in 
+#    this section are inherited in the other sections.
+#  * There are one section per "backup method", you have to 
+#    to fill the section of the chosen method.
 #
 ##############################################################
 
-
 ##############################################################
-# Archives
-##############################################################
-
-# Archive filename format
-# 	long  : host-full-path-to-folder.tar.gz
-# 	short : parentfolder.tar.gz
-export BM_NAME_FORMAT="long"
-
-# Type of archives:
-#    - .tar
-#    - .tar.gz
-#    - .tar.bz2
-export BM_FILETYPE="tar.gz"
-
-# The backup method to use.
-# Only one is supported in this release : "tarball"
-export BM_BACKUP_METHOD="tarball"
-
-# Number of days we have to keep an archive
-export BM_MAX_TIME_TO_LIVE="5"
-
-# Do you want to dereference the files pointed by symlinks ? 
-# enter yes or no (yes can leed to huge archives, be careful).
-export BM_DUMP_SYMLINKS="no"
-
-# Do you want to replace duplicates by symlinks? 
-# (archive-DAY is a duplicates of archive-(DAY - 1) if they 
-# are both the same size).
-export BM_PURGE_DUPLICATES="yes"
-
-# Prefix of every archive on that box (default is HOSTNAME)
-export BM_ARCHIVES_PREFIX="$HOSTNAME"
-
-# Files you want to backup
-export BM_DIRECTORIES="/etc /home"
-
-# Files to exclude when generating tarballs
-export BM_DIRECTORIES_BLACKLIST=""
-
-##############################################################
-# Repository
+# Repository - everything about where archives live
 #############################################################
 
-# Where to sotre the archives
-export BM_ARCHIVES_REPOSITORY="/var/archives"
+# Where to store the archives
+export BM_REPOSITORY_ROOT="/var/archives"
 
 # For security reasons, the archive repository and the generated 
 # archives will be readable/writable by a given user/group.
-# You can choose to disable this if you like.
+# This is recommanded to set this to yes.
 export BM_REPOSITORY_SECURE="yes"
 
 # The repository will be readable/writable only by a specific 
 # user:group pair if BM_REPOSITORY_SECURE is set to yes.
-export BM_USER="root"
-export BM_GROUP="root"
+export BM_REPOSITORY_USER="root"
+export BM_REPOSITORY_GROUP="root"
 
 ##############################################################
-# Upload 
+# Archives - let's focus on the precious tarballs...
+##############################################################
+
+# Number of days we have to keep an archive (Time To Live)
+export BM_ARCHIVE_TTL="5"
+
+# Do you want to replace duplicates by symlinks? 
+# (archive-DAY is a duplicate of archive-(DAY - 1) if they 
+# are both the same size).
+export BM_ARCHIVE_PURGEDUPS="yes"
+
+# Prefix of every archive on that box (default is HOSTNAME)
+export BM_ARCHIVE_PREFIX="$HOSTNAME"
+
+# The backup method to use.
+export BM_ARCHIVE_METHOD="tarball"
+
+##############################################################
+# Section "TARBALL"
+# - Backup method: tarball
 #############################################################
 
-# you can set here a list of remote hosts where BM will upload
-# the generated archives.
+# Archive filename format
+# 	long  : host-full-path-to-folder.tar.gz
+# 	short : parentfolder.tar.gz
+export BM_TARBALL_NAMEFORMAT="long"
+
+# Type of archives, available types are tar, tar.gz, tar.bz2, zip.
+export BM_TARBALL_FILETYPE="tar.gz"
+
+# Do you want to dereference the files pointed by symlinks ? 
+# enter yes or no (yes can leed to huge archives, be careful).
+export BM_TARBALL_DUMPSYMLINKS="no"
+
+# Directories you want to backup as tarballs (separated by spaces)
+export BM_TARBALL_DIRECTORIES="/etc /home"
+
+# Files to exclude when generating tarballs
+export BM_TARBALL_BLACKLIST=""
+
+##############################################################
+# Section "RSYNC"
+# Backup method: rsync
+#############################################################
+##############################################################
+# Backup method: mysql
+#############################################################
+##############################################################
+# Backup method: pipe
+#############################################################
+##############################################################
+# Burning system
+#############################################################
+##############################################################
+# Upload system
+#############################################################
+
+
+
+##############################################################
+# Section "UPLOAD"
+# - The upload system allow you to send the archives to 
+#   to remote hosts, either with FTP or SSH.
+#############################################################
+
+# The list of remote host, if you want to enable the upload
+# systemn jsut put some remote hosts here (fqdn or IPs)
+export BM_UPLOAD_HOSTS=""
 
 # which protocol to use for tranfert ? (scp or ftp)
 export BM_UPLOAD_MODE=""
-
-#"192.168.15.23 backup.company.com myhome.provider.net"
-export BM_UPLOAD_HOSTS=""
 
 # User for opening the remote connection
 export BM_UPLOAD_USER=""
@@ -84,7 +109,7 @@ export BM_UPLOAD_USER=""
 export BM_UPLOAD_PASSWD=""
 
 # cleans specified ftp folder before uploading (yes or no)
-export BM_FTP_PURGE=""
+export BM_UPLOAD_FTPPURGE=""
 
 # if scp mode is used, an identity file is needed
 export BM_UPLOAD_KEY=""
@@ -94,7 +119,8 @@ export BM_UPLOAD_DIR=""
 
 
 ##############################################################
-# Automatic CDR/CDRW burning
+# Section "BURNING" 
+# - Automatic CDR/CDRW burning
 #############################################################
 
 # set this to yes if you want automatic burning.

@@ -36,7 +36,7 @@ check_cdrom_md5_sums()
 		info -n "Checking MD5 sum for \$base_file: "
 		
 		# Which file should contain the MD5 hashes for that file ?
-		md5_file="$BM_ARCHIVES_REPOSITORY/${prefix_of_file}-${date_of_file}.md5"
+		md5_file="$BM_REPOSITORY_ROOT/${prefix_of_file}-${date_of_file}.md5"
 
 		# if it does not exists, we create it (yes that will take much time).
 		if [ ! -f $md5_file ]; then
@@ -92,14 +92,14 @@ burn_files()
 	
 	# determine what to burn according to the size...
 	what_to_burn=""
-	size=$(size_of_path "$BM_ARCHIVES_REPOSITORY")
+	size=$(size_of_path "$BM_REPOSITORY_ROOT")
 	if [ $size -gt $BM_BURNING_MAXSIZE ]; then
-		size=$(size_of_path "${BM_ARCHIVES_REPOSITORY}/*${TODAY}*")
+		size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${TODAY}*")
 		if [ $size -gt $BM_BURNING_MAXSIZE ]; then
 			error "Cannot burn archives of the \$TODAY, too big: \${size}M, must fit in \$BM_BURNING_MAXSIZE"
 		else
 			# let's take all the regular files from today
-			for file in ${BM_ARCHIVES_REPOSITORY}/*${TODAY}*
+			for file in ${BM_REPOSITORY_ROOT}/*${TODAY}*
 			do
 				# we only take the regular files, not the symlinks
 				if [ ! -L $file ]; then
@@ -109,7 +109,7 @@ burn_files()
 		fi
 	else
 		# let's take all the regular files from today
-		for file in ${BM_ARCHIVES_REPOSITORY}
+		for file in ${BM_REPOSITORY_ROOT}
 		do
 			# we only take the regular files, not the symlinks
 			if [ ! -L $file ]; then
@@ -171,18 +171,18 @@ burn_files()
 make_archives()
 {
 	# FIXME currently, only one backup method is supported : default.
-	if [ -z "$BM_BACKUP_METHOD" ]; then
-		BM_BACKUP_METHOD="default"
+	if [ -z "$BM_ARCHIVE_METHOD" ]; then
+		BM_ARCHIVE_METHOD="default"
 	fi
 
 	# do we have to use a pipe method? 
-	if [ $(expr match "$BM_BACKUP_METHOD" "|") -gt 0 ]; then
+	if [ $(expr match "$BM_ARCHIVE_METHOD" "|") -gt 0 ]; then
 		info "Using the \"pipe\" backup method"
 		backup_method_pipe
 
 	# The known methods
 	else
-		case $BM_BACKUP_METHOD in
+		case $BM_ARCHIVE_METHOD in
 		
 		mysql)
 			info "Using the \"mysql\" backup method"
@@ -193,7 +193,7 @@ make_archives()
 			backup_method_rsync
 		;;
 
-		# default behaviour is to make a tarball with BM_FILETYPE 
+		# default behaviour is to make a tarball with BM_TARBALL_FILETYPE 
 		*)
 			info "Using the \"tarball\" backup method"
 			backup_method_tarball
@@ -203,12 +203,12 @@ make_archives()
 	fi
 }
 
-# This will parse all the files contained in BM_ARCHIVES_REPOSITORY
+# This will parse all the files contained in BM_REPOSITORY_ROOT
 # and will clean them up. Using clean_directory() and clean_file().
 clean_repositories()
 {
-	info "Cleaning \$BM_ARCHIVES_REPOSITORY: "
-	clean_directory $BM_ARCHIVES_REPOSITORY
+	info "Cleaning \$BM_REPOSITORY_ROOT: "
+	clean_directory $BM_REPOSITORY_ROOT
 }
 
 
@@ -225,8 +225,8 @@ upload_files ()
 			v=""
 		fi
 		
-		if [ -z "$BM_FTP_PURGE" ] || 
-		   [ "$BM_FTP_PURGE" = "no" ]; then
+		if [ -z "$BM_UPLOAD_FTPPURGE" ] || 
+		   [ "$BM_UPLOAD_FTPPURGE" = "no" ]; then
 		   	ftp_purge=""
 		else
 			ftp_purge="--ftp-purge"
@@ -240,7 +240,7 @@ upload_files ()
 				-u="$BM_UPLOAD_USER" \
 				-p="$BM_UPLOAD_PASSWD" \
 				-d="$BM_UPLOAD_DIR" \
-				-r="$BM_ARCHIVES_REPOSITORY" today || error "unable to call backup-manager-upload"
+				-r="$BM_REPOSITORY_ROOT" today || error "unable to call backup-manager-upload"
 		else
 			if [ ! -z "$BM_UPLOAD_KEY" ]; then
 				key_opt="-k=\"$BM_UPLOAD_KEY\""
@@ -252,7 +252,7 @@ upload_files ()
 				-h="$servers" \
 				-u="$BM_UPLOAD_USER" $key_opt \
 				-d="$BM_UPLOAD_DIR" \
-				-r="$BM_ARCHIVES_REPOSITORY" today" || error "unable to call backup-manager-upload"
+				-r="$BM_REPOSITORY_ROOT" today" || error "unable to call backup-manager-upload"
 		fi
 	else
 		info "The upload system is disabled in the conf file."

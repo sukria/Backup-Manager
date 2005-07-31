@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-12 17:29+0200\n"
+"POT-Creation-Date: 2005-07-29 22:23+0200\n"
 "PO-Revision-Date: 2005-07-09 15:35+0100\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "Language-Team: \n"
@@ -380,20 +380,20 @@ msgstr "Pas de fichier MD5 : $md5file"
 msgid "Archive given does not exists in the repository: $archive"
 msgstr "L'archive demandée n'existe pas dans le répertoire : $archive"
 
-#: sanitize.sh.ext:16
+#: sanitize.sh.ext:18
 #, sh-format
 msgid "The configuration key $key is not set, using \"$default\"."
 msgstr ""
 "La clef de configuration $key n'est pas définie, utilisation de « $default »"
 
-#: sanitize.sh.ext:23
+#: sanitize.sh.ext:63
 #, sh-format
 msgid "The configuration key $key is not set but $keymandatory is enabled."
 msgstr ""
 "La clef de configuration $key n'est pas définie mais $keymandatory est "
 "activée."
 
-#: sanitize.sh.ext:120
+#: sanitize.sh.ext:126
 msgid ""
 "The configuration key BM_UPLOAD_PASSWD is not set but BM_UPLOAD_MODE is set "
 "to \"ftp\"."
@@ -401,7 +401,7 @@ msgstr ""
 "La clef de configuration BM_UPLOAD_PASSWD n'est pas définie mais "
 "BM_UPLOAD_MODE est « ftp »"
 
-#: sanitize.sh.ext:143
+#: sanitize.sh.ext:149
 #, sh-format
 msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "

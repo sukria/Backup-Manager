@@ -1,6 +1,8 @@
 #!/bin/sh
 #
 # Check that every key in the conffile is ok for a proper run.
+# Also manage deprecated confkeys the best as possible, so a deprecated
+# conffile just renders warnings but still works as before.
 
 
 # we'll count the number of warnings, here
@@ -16,6 +18,44 @@ confkey_warning()
 	warning "The configuration key \$key is not set, using \"\$default\"."	
 }
 
+confkey_warning_deprecated()
+{
+	deprecated_key="$1"
+	deprecated_value="$2"
+	new_key="$3"
+
+	nb_warnings=$(($nb_warnings + 1))
+	warning "The configuration key \"$deprecated_key\" is deprecated, you should rename it \"$new_key\". Using \"$deprecated_value\"."
+}
+
+# Look if the deprecated key exists, if so, warning and use it as 
+# a default value for the new key.
+confkey_hanlde_deprecated()
+{
+	deprecated_key="$1"
+	new_key="$2"
+	eval "deprecated_value=\"\$$deprecated_key\""
+
+	if [ -n "$deprecated_value" ]; then 
+		confkey_warning_deprecated "$deprecated_key" "$deprecated_value" "$new_key"
+		eval "$new_key=\"\$deprecated_value\""
+		eval "export $new_key"
+	fi
+}
+
+confkey_require()
+{
+	key="$1"
+	default="$2"
+	eval "value=\"\$$key\""
+
+	if [ -z "$value" ]; then
+		confkey_warning "$key" "$default"
+		eval "$key=\"\$default\""
+		eval "export $key"
+	fi
+}
+
 confkey_error()
 {
 	key="$1"
@@ -23,93 +63,57 @@ confkey_error()
 	error "The configuration key \$key is not set but \$keymandatory is enabled."
 }
 
-# Global stuff
-if [ -z "$BM_ARCHIVES_REPOSITORY" ]; then
-	confkey_warning "BM_ARCHIVES_REPOSITORY" "/var/archives"
-	export BM_ARCHIVES_REPOSITORY="/var/archives"
-fi
+##############################################################
+# Sanitizer - check mandatory configuration keys, hanlde them
+# the best possible, with default values and so on...
+#############################################################
 
-if [ -z "$BM_NAME_FORMAT" ]; then
-	confkey_warning "BM_NAME_FORMAT" "long"
-	export BM_NAME_FORMAT="long"
-fi
+confkey_hanlde_deprecated "BM_ARCHIVES_REPOSITORY" "BM_REPOSITORY_ROOT"
+confkey_require "BM_REPOSITORY_ROOT" "/var/archives" 
 
-if [ -z "$BM_FILETYPE" ]; then
-	confkey_warning "BM_FILETYPE" "tar.gz"
-	export BM_FILETYPE="tar.gz"
-fi
-
-if [ -z "$BM_MAX_TIME_TO_LIVE" ]; then
-	confkey_warning "BM_MAX_TIME_TO_LIVE" "5"
-	export BM_MAX_TIME_TO_LIVE="5"
-fi
-
-if [ -z "$BM_BACKUP_METHOD" ]; then
-	confkey_warning "BM_BACKUP_METHOD" "tarball"
-	export BM_BACKUP_METHOD="tarball"
-fi
-
-if [ -z "$BM_DUMP_SYMLINKS" ]; then
-	confkey_warning "BM_DUMP_SYMLINKS" "no"
-	export BM_DUMP_SYMLINKS="no"
-fi
-
-if [ -z "$BM_PURGE_DUPLICATES" ]; then
-	confkey_warning "BM_PURGE_DUPLICATES" "yes"
-	export BM_PURGE_DUPLICATES="yes"
-fi
-
-if [ -z "$BM_ARCHIVES_PREFIX" ]; then
-	confkey_warning "BM_ARCHIVES_PREFIX" "$HOSTNAME"
-	export BM_ARCHIVES_PREFIX="$HOSTNAME"
-fi
-
-if [ -z "$BM_REPOSITORY_SECURE" ]; then
-	confkey_warning "BM_REPOSITORY_SECURE" "yes"
-	export BM_REPOSITORY_SECURE="yes"
-fi
-
-# Secure repository
+confkey_require "BM_REPOSITORY_SECURE" "yes" 
 if [ "$BM_REPOSITORY_SECURE" = "yes" ]; then
-	if [ -z "$BM_USER" ]; then
-		confkey_warning "BM_USER" "root"
-		export BM_USER="root"
-	fi
-	if [ -z "$BM_GROUP" ]; then
-		confkey_warning "BM_GROUP" "root"
-		export BM_GROUP="root"
-	fi
+	confkey_hanlde_deprecated "BM_USER" "BM_REPOSITORY_USER"
+	confkey_require "BM_REPOSITORY_USER" "root"
+	confkey_hanlde_deprecated "BM_GROUP" "BM_REPOSITORY_GROUP"
+	confkey_require "BM_REPOSITORY_GROUP" "root"
 fi
+
+confkey_hanlde_deprecated "BM_MAX_TIME_TO_LIVE" "BM_ARCHIVE_TTL"
+confkey_require "BM_ARCHIVE_TTL" "5"
+
+confkey_hanlde_deprecated "BM_PURGE_DUPLICATES" "BM_ARCHIVE_PURGEDUPS"
+confkey_require "BM_ARCHIVE_PURGEDUPS" "yes"
+
+confkey_hanlde_deprecated "BM_ARCHIVES_PREFIX" "BM_ARCHIVE_PREFIX"
+confkey_require "BM_ARCHIVE_PREFIX" "$HOSTNAME"
+
+confkey_hanlde_deprecated "BM_FILETYPE" "BM_TARBALL_FILETYPE"
+confkey_require "BM_TARBALL_FILETYPE" "tar.gz"
+
+confkey_hanlde_deprecated "BM_BACKUP_METHOD" "BM_ARCHIVE_METHOD"
+confkey_require "BM_ARCHIVE_METHOD" "tarball"
+
+confkey_hanlde_deprecated "BM_NAME_FORMAT" "BM_TARBALL_NAMEFORMAT"
+confkey_require "BM_TARBALL_NAMEFORMAT" "long"
+
+confkey_hanlde_deprecated "BM_DUMP_SYMLINKS" "BM_TARBALL_DUMPSYMLINKS"
+confkey_require "BM_TARBALL_DUMPSYMLINKS" "no"
+
+confkey_hanlde_deprecated "BM_DIRECTORIES" "BM_TARBALL_DIRECTORIES"
+confkey_hanlde_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
 
 # Burning system
 if [ "$BM_BURNING" = "yes" ]; then
-	if [ -z "$BM_BURNING_DEVICE" ]; then
-		confkey_warning "BM_BURNING_DEVICE" "/dev/cdrom"
-		export BM_BURNING_DEVICE="/dev/cdrom"
-	fi
-
-	if [ -z "$BM_BURNING_METHOD" ]; then
-		confkey_warning "BM_BURNING_METHOD" "CDRW"
-		export BM_BURNING_METHOD="CDRW"
-	fi
-
-	if [ -z "$BM_BURNING_MAXSIZE" ]; then
-		confkey_warning "BM_BURNING_MAXSIZE" "650"
-		export BM_BURNING_MAXSIZE="650"
-	fi
-
-	if [ -z "$BM_BURNING_CHKMD5" ]; then
-		confkey_warning "BM_BURNING_CHKMD5" "yes"
-		export BM_BURNING_CHKMD5="yes"
-	fi
+	confkey_require "BM_BURNING_DEVICE" "/dev/cdrom"
+	confkey_require "BM_BURNING_METHOD" "CDRW"
+	confkey_require "BM_BURNING_MAXSIZE" "650"
+	confkey_require "BM_BURNING_CHKMD5" "yes"
 fi
 
 # the upload system
 if [ -n "$BM_UPLOAD_HOSTS" ]; then
-	if [ -z "$BM_FTP_PURGE" ]; then
-		confkey_warning "BM_FTP_PURGE" "no"
-		export BM_FTP_PURGE="no"
-	fi
+	confkey_hanlde_deprecated "BM_FTP_PURGE" "BM_UPLOAD_FTPPURGE"
 	
 	if [ -z "$BM_UPLOAD_USER" ]; then
 		confkey_error "BM_UPLOAD_USER" "BM_UPLOAD_HOSTS"

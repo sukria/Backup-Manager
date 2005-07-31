@@ -9,31 +9,31 @@ backup_method_tarball()
 {
 	# Create the directories blacklist
 	blacklist=""
-	for pattern in $BM_DIRECTORIES_BLACKLIST
+	for pattern in $BM_TARBALL_BLACKLIST
 	do
 		blacklist="$blacklist --exclude=$pattern"
 	done
 	
-	# Set the -h flag according to the $BM_DUMP_SYMLINKS conf key
+	# Set the -h flag according to the $BM_TARBALL_DUMPSYMLINKS conf key
 	# or the -y flag for zip. 
 	h=""
 	y="-y"
-	if [ "$BM_DUMP_SYMLINKS" = "yes" ] ||
-	   [ "$BM_DUMP_SYMLINKS" = "true" ]; then
+	if [ "$BM_TARBALL_DUMPSYMLINKS" = "yes" ] ||
+	   [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
 		h="-h "
 		y=""
 	fi
 
-	for DIR in $BM_DIRECTORIES
+	for DIR in $BM_TARBALL_DIRECTORIES
 	do
-		dir_name=$(get_dir_name $DIR $BM_NAME_FORMAT)
-		file_to_create="$BM_ARCHIVES_REPOSITORY/$BM_ARCHIVES_PREFIX$dir_name.$TODAY.$BM_FILETYPE"
+		dir_name=$(get_dir_name $DIR $BM_TARBALL_NAMEFORMAT)
+		file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY.$BM_TARBALL_FILETYPE"
 		
 		if [ ! -f $file_to_create ] || [ $force = true ]; then
 		   	
 			info -n "Creating \$file_to_create: "
 			
-			case $BM_FILETYPE in
+			case $BM_TARBALL_FILETYPE in
 				tar.gz) # generate a tar.gz file if needed 
 					$tar $blacklist $h -c -z -f "$file_to_create" "$DIR" > /dev/null 2>&1 || info -n '~'
 				;;
@@ -48,7 +48,7 @@ backup_method_tarball()
 				;;
 				*) # unknown option
 					info "failed"
-					error "The filetype \$BM_FILETYPE is not spported."
+					error "The filetype \$BM_TARBALL_FILETYPE is not spported."
 					_exit
 				;;
 			esac
@@ -63,14 +63,14 @@ backup_method_tarball()
 		base=$(basename $file_to_create)
 		md5hash=$(get_md5sum $file_to_create)
 		info "${md5hash})"
-		echo "$md5hash $base" >> $BM_ARCHIVES_REPOSITORY/${BM_ARCHIVES_PREFIX}-${TODAY}.md5
+		echo "$md5hash $base" >> $BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5
 		
 		# Now that the file is created, remove previous duplicates if exists...
 		purge_duplicate_archives $file_to_create || error "unable to purge duplicates"
 
 		# security fixes if BM_REPOSITORY_SECURE is set to yes.
 		if [ $BM_REPOSITORY_SECURE = yes ]; then
-			chown $BM_USER:$BM_GROUP $file_to_create
+			chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $file_to_create
 			chmod 660 $file_to_create
 		fi
 	done
@@ -84,16 +84,16 @@ backup_method_rsync()
 {
   # Not fully implemented, rsync is running in dry mode
 
-  # Set the rsync options according to the $BM_DUMP_SYMLINKS conf key
+  # Set the rsync options according to the $BM_TARBALL_DUMPSYMLINKS conf key
   rsync_options="-va"
-  if [ ! -z $BM_DUMP_SYMLINKS ]; then
-    if [ "$BM_DUMP_SYMLINKS" = "yes" ] ||
-       [ "$BM_DUMP_SYMLINKS" = "true" ]; then
+  if [ ! -z $BM_TARBALL_DUMPSYMLINKS ]; then
+    if [ "$BM_TARBALL_DUMPSYMLINKS" = "yes" ] ||
+       [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
       rsync_options="-vaL" 
     fi
   fi  
   
-  for DIR in $BM_DIRECTORIES
+  for DIR in $BM_TARBALL_DIRECTORIES
   do
     if [ -n "$BM_UPLOAD_HOSTS" ]
     then
@@ -119,7 +119,7 @@ backup_method_pipe()
 {
 	error "backup_method_pipe is not yet supported"
 #		# first extract the shell command
-#		bm_command=$(echo ${BM_BACKUP_METHOD/|/})
+#		bm_command=$(echo ${BM_ARCHIVE_METHOD/|/})
 #		info "Using a pipe method for backup: $bm_command"
 #		
 #		# now run the command and redirect the output in our $file_to_create

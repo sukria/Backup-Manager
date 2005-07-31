@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-12 23:18+0200\n"
+"POT-Creation-Date: 2005-07-29 22:23+0200\n"
 "PO-Revision-Date: 2005-07-12 23:09+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debiann.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -384,17 +384,17 @@ msgstr "Nebyl nalezen soubor s md5 souèty: $md5file"
 msgid "Archive given does not exists in the repository: $archive"
 msgstr "Zadaný archiv v úlo¾i¹ti neexistuje: $archive"
 
-#: sanitize.sh.ext:16
+#: sanitize.sh.ext:18
 #, sh-format
 msgid "The configuration key $key is not set, using \"$default\"."
 msgstr "Konfiguraèní klíè $key není naastaven, pou¾ívám \"$default\"."
 
-#: sanitize.sh.ext:23
+#: sanitize.sh.ext:63
 #, sh-format
 msgid "The configuration key $key is not set but $keymandatory is enabled."
 msgstr "Konfiguraèní klíè $key není nastaven, ale $keymandatory je povolen."
 
-#: sanitize.sh.ext:120
+#: sanitize.sh.ext:126
 msgid ""
 "The configuration key BM_UPLOAD_PASSWD is not set but BM_UPLOAD_MODE is set "
 "to \"ftp\"."
@@ -402,7 +402,7 @@ msgstr ""
 "Konfiguraèní klíè BM_UPLOAD_PASSWD není nastaven, ale BM_UPLOAD_MODE je "
 "nastaven na \"ftp\"."
 
-#: sanitize.sh.ext:143
+#: sanitize.sh.ext:149
 #, sh-format
 msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "

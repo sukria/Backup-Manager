@@ -50,15 +50,15 @@ stop_me()
 # be sure that zip is supported.
 check_filetypes()
 {
-	case "$BM_FILETYPE" in
+	case "$BM_TARBALL_FILETYPE" in
 		"zip")
 			if [ ! -x $zip ]; then
-				error "the BM_FILETYPE conf key is set to \"zip\" but zip is not installed."
+				error "the BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
 			fi
 		;;
 		"tar.bz2" )
 			if [ ! -x $bzip ]; then
-				error "the BM_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
+				error "the BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
 			fi
 		;;
 	esac
@@ -67,9 +67,9 @@ check_filetypes()
 # get the list of directories to backup.
 check_what_to_backup()
 {
-	if [ ! -n "$BM_DIRECTORIES" ] 
+	if [ ! -n "$BM_TARBALL_DIRECTORIES" ] 
 	then 
-		error "The BM_DIRECTORIES conf key is not set in \$conffile"
+		error "The BM_TARBALL_DIRECTORIES conf key is not set in \$conffile"
 	fi
 }
 
@@ -77,22 +77,22 @@ init_default_vars()
 {
 	# set the date values 
 	export TODAY=`date +%Y%m%d`                  
-	export TOOMUCH_TIME_AGO=`date +%d --date "$BM_MAX_TIME_TO_LIVE days ago"`
+	export TOOMUCH_TIME_AGO=`date +%d --date "$BM_ARCHIVE_TTL days ago"`
 }
 
 create_archive_root_if_not_exists()
 {
-	if [ ! -d $BM_ARCHIVES_REPOSITORY ]
+	if [ ! -d $BM_REPOSITORY_ROOT ]
 	then
-		info "\$BM_ARCHIVES_REPOSITORY does not exist, creating it"
-		mkdir $BM_ARCHIVES_REPOSITORY
+		info "\$BM_REPOSITORY_ROOT does not exist, creating it"
+		mkdir $BM_REPOSITORY_ROOT
 	fi
 
 	# for security reason, the repository should not be world readable
-	# only BM_USER:BM_GROUP can read/write it. 
+	# only BM_REPOSITORY_USER:BM_REPOSITORY_GROUP can read/write it. 
 	if [ "$BM_REPOSITORY_SECURE" = "yes" ]; then
-		chown $BM_USER:$BM_GROUP $BM_ARCHIVES_REPOSITORY
-		chmod 770 $BM_ARCHIVES_REPOSITORY
+		chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $BM_REPOSITORY_ROOT
+		chmod 770 $BM_REPOSITORY_ROOT
 	fi
 }
 

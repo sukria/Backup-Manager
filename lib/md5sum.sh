@@ -50,13 +50,13 @@ get_md5sum()
 # It will put the md5sum output inside.
 # Note that the base name is extracted from
 # the given archive path in order to get the 
-# MD5 hash from the BM_ARCHIVES_REPOSITORY.
+# MD5 hash from the BM_REPOSITORY_ROOT.
 # 
 save_md5_sum()
 {
 	archive="$1"
 	archive=$(basename $archive)
-	archive="$BM_ARCHIVES_REPOSITORY/$archive"
+	archive="$BM_REPOSITORY_ROOT/$archive"
 	md5file="$2"
 	if [ -f $archive ]; then
 		hash=$(get_md5sum $archive)

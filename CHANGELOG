@@ -1,3 +1,13 @@
+0.6
+	* TODO bug fixes of 0.5.9 => STABLE
+
+0.5.9
+	* Configuration keys have been drastically renamed.
+	* TODO A tool is given for validating the configuration file.
+	* TODO backup method rsync
+	* TODO backup method mysql
+	* TODO backup method pipe
+
 0.5.8b
 	* Security fixes 
 	  + When burning a CDR, mktemp is used to prevent attacks on the file

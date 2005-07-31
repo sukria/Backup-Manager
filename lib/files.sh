@@ -172,7 +172,7 @@ get_lock() {
 # date of expiration.
 clean_file()
 {
-	date_to_remove=`date +%Y%m%d --date "$BM_MAX_TIME_TO_LIVE days ago"`
+	date_to_remove=`date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago"`
 	file="$1"
 	
 	if [ ! -f $file ]; then
@@ -223,14 +223,14 @@ clean_directory()
 # This takes a file and the md5sum of that file.
 # It will look at every archives of the same source
 # and will replace duplicates (same size) by symlinks.
-# CONDITION: BM_PURGE_DUPLICATES = yes
+# CONDITION: BM_ARCHIVE_PURGEDUPS = yes
 purge_duplicate_archives()
 {
 	file_to_create="$1"
 	size_file=$(ls -l $file_to_create | awk '{print $5}')
 
-	# Only purge if BM_PURGE_DUPLICATES = yes
-	if [ -z $BM_PURGE_DUPLICATES ] || [ $BM_PURGE_DUPLICATES != yes ]; then
+	# Only purge if BM_ARCHIVE_PURGEDUPS = yes
+	if [ -z $BM_ARCHIVE_PURGEDUPS ] || [ $BM_ARCHIVE_PURGEDUPS != yes ]; then
 		return 0
 	fi
 

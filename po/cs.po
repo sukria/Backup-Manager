@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-05 19:58+0200\n"
+"POT-Creation-Date: 2005-09-10 18:30+0200\n"
 "PO-Revision-Date: 2005-07-12 23:09+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debiann.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -31,8 +31,8 @@ msgid "unable to mount $BM_BURNING_DEVICE on $mount_point"
 msgstr "nemohu pøipojit $BM_BURNING_DEVICE na $mount_point"
 
 #: actions.sh.ext:27 actions.sh.ext:58 actions.sh.ext:143 actions.sh.ext:149
-#: actions.sh.ext:156 actions.sh.ext:271 actions.sh.ext:290 files.sh.ext:155
-#: files.sh.ext:166 files.sh.ext:189 logger.sh.ext:128 logger.sh.ext:135
+#: actions.sh.ext:156 actions.sh.ext:271 actions.sh.ext:290 files.sh.ext:156
+#: files.sh.ext:167 files.sh.ext:190 logger.sh.ext:128 logger.sh.ext:135
 #: logger.sh.ext:141
 msgid "ok"
 msgstr "ok"
@@ -165,65 +165,70 @@ msgstr "Nemohu spustit úvodní pøíkaz"
 msgid "Unable to exec post-command"
 msgstr "Nemohu spustit závìreèný pøíkaz"
 
-#: backup-methods.sh.ext:12
-#, fuzzy, sh-format
-msgid "Unable to create $target, check $logfile"
-msgstr "nemohu ze souboru získat datum"
-
-#: backup-methods.sh.ext:84
-#, fuzzy, sh-format
-msgid "The filetype $BM_TARBALL_FILETYPE is not spported."
-msgstr "Typ souboru $BM_FILETYPE není podporován."
-
-#: backup-methods.sh.ext:89
-#, sh-format
-msgid "File $file_to_create already exists, skipping."
-msgstr "Soubor $file_to_create ji¾ existuje, pøeskakuji."
-
-#: backup-methods.sh.ext:94
+#: backup-methods.sh.ext:13
 #, fuzzy, sh-format
 msgid "$file_to_create: ok (${size}M, "
 msgstr "ok (${size}M, "
 
-#: backup-methods.sh.ext:102
+#: backup-methods.sh.ext:21
 msgid "unable to purge duplicates"
 msgstr "nemohu smazat duplikáty"
 
+#: backup-methods.sh.ext:35
+#, fuzzy, sh-format
+msgid "Unable to create $target, check $logfile"
+msgstr "nemohu ze souboru získat datum"
+
+#: backup-methods.sh.ext:107
+#, fuzzy, sh-format
+msgid "The filetype $BM_TARBALL_FILETYPE is not spported."
+msgstr "Typ souboru $BM_FILETYPE není podporován."
+
 #: backup-methods.sh.ext:112
+#, sh-format
+msgid "File $file_to_create already exists, skipping."
+msgstr "Soubor $file_to_create ji¾ existuje, pøeskakuji."
+
+#: backup-methods.sh.ext:120
 #, sh-format
 msgid "During the tarballs generation, $gettext error(s) occured."
 msgstr ""
 
-#: backup-methods.sh.ext:146
+#: backup-methods.sh.ext:154
 msgid "Need a key to use rsync"
 msgstr "Pro pou¾ití programu rsync potøebuji klíè"
 
-#: backup-methods.sh.ext:155
+#: backup-methods.sh.ext:163
 #, sh-format
 msgid "The \"mysql\" method is choosen, but $mysqldump is not found."
 msgstr ""
 
-#: backup-methods.sh.ext:162
+#: backup-methods.sh.ext:170
 #, fuzzy, sh-format
 msgid "Unable to dump the content of the database $database"
 msgstr "nemohu najít vzor souboru"
 
-#: backup-methods.sh.ext:168
+#: backup-methods.sh.ext:174
+#, fuzzy, sh-format
+msgid "The file $file_to_create was not created, skipping."
+msgstr "Soubor $file_to_create ji¾ existuje, pøeskakuji."
+
+#: backup-methods.sh.ext:181
 #, fuzzy, sh-format
 msgid "Unable to gzip $file_to_create"
 msgstr "Vytváøím $file_to_create: "
 
-#: backup-methods.sh.ext:173
+#: backup-methods.sh.ext:193
 #, fuzzy, sh-format
 msgid "Unable to bzip2 $file_to_create"
 msgstr "Vytváøím $file_to_create: "
 
-#: backup-methods.sh.ext:177
+#: backup-methods.sh.ext:206
 #, sh-format
 msgid "This compression format is not supported: $BM_MYSQL_FILETYPE"
 msgstr ""
 
-#: backup-methods.sh.ext:186
+#: backup-methods.sh.ext:216
 msgid "backup_method_pipe is not yet supported"
 msgstr "backup_method_pipe zatím není podporována"
 
@@ -292,7 +297,8 @@ msgid "Disable the purge process."
 msgstr "Zaká¾e promazání starých archivù."
 
 #: dialog.sh.ext:46
-msgid "Warning, I was stopped before ending my job. Archives may be corrupted."
+#, fuzzy
+msgid "Warning, process interupted, archives may be corrupted."
 msgstr ""
 "Varování, byl jsem zastaven pøed dokonèením svého úkolu. Archivy mohou být "
 "poru¹eny."
@@ -323,12 +329,22 @@ msgstr "Konfiguraèní klíè BM_DIRECTORIES není v $conffile nastaven"
 msgid "$BM_REPOSITORY_ROOT does not exist, creating it"
 msgstr "Adresáø $BM_ARCHIVES_REPOSITORY neexistuje, vytváøím jej"
 
-#: files.sh.ext:139
+#: files.sh.ext:10
+#, fuzzy, sh-format
+msgid "unable to unmount $mount_point"
+msgstr "nemohu odpojit pøípojný bod $mount_point"
+
+#: files.sh.ext:12
+#, fuzzy, sh-format
+msgid "unable to remove $mount_point"
+msgstr "nemohu odstranit pøípojný bod $mount_point"
+
+#: files.sh.ext:140
 #, sh-format
 msgid "Removing lock for old PID, $pid is not running."
 msgstr "Odstraòuji zámek pro staré PID, $pid ji¾ nebì¾í."
 
-#: files.sh.ext:149
+#: files.sh.ext:150
 #, sh-format
 msgid ""
 "A backup-manager process ($pid) is already running with the conffile "
@@ -336,48 +352,48 @@ msgid ""
 msgstr ""
 "Proces backup-manageru ($pid) ji¾ bì¾í s konfiguraèním souborem $conffile."
 
-#: files.sh.ext:153 files.sh.ext:160
+#: files.sh.ext:154 files.sh.ext:161
 #, sh-format
 msgid "Getting lock for backup-manager $pid with $conffile: "
 msgstr "Získávám zámek pro backup-manager $pid s $conffile: "
 
-#: files.sh.ext:163
+#: files.sh.ext:164
 msgid "failed (check the file permissions)"
 msgstr "selhalo (zkontrolujte pøístupová práva souborù)"
 
-#: files.sh.ext:179
+#: files.sh.ext:180
 #, sh-format
 msgid "$file is not a regular file."
 msgstr "$file není bì¾ný soubor."
 
-#: files.sh.ext:187
+#: files.sh.ext:188
 #, sh-format
 msgid "Removing $file: "
 msgstr "Odstraòuji $file: "
 
-#: files.sh.ext:205
+#: files.sh.ext:206
 msgid "Directory given is not found"
 msgstr "Zadaný adresáø nebyl nalezen"
 
-#: files.sh.ext:215
+#: files.sh.ext:216
 #, sh-format
 msgid "Entering directory $file."
 msgstr "Vstupuji do adresáøe $file."
 
-#: files.sh.ext:238
+#: files.sh.ext:239
 msgid "No file given"
 msgstr "Nebyl zadán ¾ádný soubor"
 
-#: files.sh.ext:242
+#: files.sh.ext:243
 #, sh-format
 msgid "The given file does not exist: $file_to_create"
 msgstr "Zadaný soubor neexistuje: $file_to_create"
 
-#: files.sh.ext:246
+#: files.sh.ext:247
 msgid "unable to get date from file"
 msgstr "nemohu ze souboru získat datum"
 
-#: files.sh.ext:247
+#: files.sh.ext:248
 msgid "unable to find the pattern of the file"
 msgstr "nemohu najít vzor souboru"
 

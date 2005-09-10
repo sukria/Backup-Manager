@@ -8,7 +8,7 @@ POFILES=$(wildcard *.po)
 MOFILES=$(POFILES:.po=.mo)
 
 
-all: backup-manager.pot $(MOFILES)
+all: backup-manager.pot $(POFILES) $(MOFILES)
 
 install: all
 	for file in $(MOFILES); do \
@@ -17,7 +17,7 @@ install: all
 		install -m 0644 $$file $(prefix)/usr/share/locale/$$lang/LC_MESSAGES/backup-manager.mo; \
 	done
 
-backup-manager.pot: $(POTFILES)
+backup-manager.pot: 
 	@echo "Generating ext files"
 	for file in $(POTFILES); do \
 		base=`basename $$file`; \

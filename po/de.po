@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-05 19:58+0200\n"
+"POT-Creation-Date: 2005-09-10 18:30+0200\n"
 "PO-Revision-Date: 2003-12-18 10:09+0100\n"
 "Last-Translator: Andreas Gredler <jimmy@grml.org>\n"
 "MIME-Version: 1.0\n"
@@ -32,8 +32,8 @@ msgid "unable to mount $BM_BURNING_DEVICE on $mount_point"
 msgstr "konnte $BM_BURNING_DEVICE nicht auf $mount_point binden (mounten)"
 
 #: actions.sh.ext:27 actions.sh.ext:58 actions.sh.ext:143 actions.sh.ext:149
-#: actions.sh.ext:156 actions.sh.ext:271 actions.sh.ext:290 files.sh.ext:155
-#: files.sh.ext:166 files.sh.ext:189 logger.sh.ext:128 logger.sh.ext:135
+#: actions.sh.ext:156 actions.sh.ext:271 actions.sh.ext:290 files.sh.ext:156
+#: files.sh.ext:167 files.sh.ext:190 logger.sh.ext:128 logger.sh.ext:135
 #: logger.sh.ext:141
 msgid "ok"
 msgstr "ok"
@@ -169,66 +169,71 @@ msgstr "Kann pre-command nicht ausführen"
 msgid "Unable to exec post-command"
 msgstr "Kann post-command nicht ausführen"
 
-#: backup-methods.sh.ext:12
-#, fuzzy, sh-format
-msgid "Unable to create $target, check $logfile"
-msgstr "Deaktivieren des Lösch-Vorgangs."
-
-#: backup-methods.sh.ext:84
-#, fuzzy, sh-format
-msgid "The filetype $BM_TARBALL_FILETYPE is not spported."
-msgstr "Der Dateityp $BM_FILETYPE wird nicht unterstützt."
-
-#: backup-methods.sh.ext:89
-#, sh-format
-msgid "File $file_to_create already exists, skipping."
-msgstr "Datei $file_to_create existiert bereits, abgebrochen."
-
-#: backup-methods.sh.ext:94
+#: backup-methods.sh.ext:13
 #, fuzzy, sh-format
 msgid "$file_to_create: ok (${size}M, "
 msgstr "ok (${size}M, "
 
-#: backup-methods.sh.ext:102
+#: backup-methods.sh.ext:21
 #, fuzzy
 msgid "unable to purge duplicates"
 msgstr "Deaktivieren des Lösch-Vorgangs."
 
+#: backup-methods.sh.ext:35
+#, fuzzy, sh-format
+msgid "Unable to create $target, check $logfile"
+msgstr "Deaktivieren des Lösch-Vorgangs."
+
+#: backup-methods.sh.ext:107
+#, fuzzy, sh-format
+msgid "The filetype $BM_TARBALL_FILETYPE is not spported."
+msgstr "Der Dateityp $BM_FILETYPE wird nicht unterstützt."
+
 #: backup-methods.sh.ext:112
+#, sh-format
+msgid "File $file_to_create already exists, skipping."
+msgstr "Datei $file_to_create existiert bereits, abgebrochen."
+
+#: backup-methods.sh.ext:120
 #, sh-format
 msgid "During the tarballs generation, $gettext error(s) occured."
 msgstr ""
 
-#: backup-methods.sh.ext:146
+#: backup-methods.sh.ext:154
 msgid "Need a key to use rsync"
 msgstr "Benötige einen Schlüssel um rsync auszuführen"
 
-#: backup-methods.sh.ext:155
+#: backup-methods.sh.ext:163
 #, sh-format
 msgid "The \"mysql\" method is choosen, but $mysqldump is not found."
 msgstr ""
 
-#: backup-methods.sh.ext:162
+#: backup-methods.sh.ext:170
 #, fuzzy, sh-format
 msgid "Unable to dump the content of the database $database"
 msgstr "kann das Dateimuster nicht finden"
 
-#: backup-methods.sh.ext:168
+#: backup-methods.sh.ext:174
+#, fuzzy, sh-format
+msgid "The file $file_to_create was not created, skipping."
+msgstr "Datei $file_to_create existiert bereits, abgebrochen."
+
+#: backup-methods.sh.ext:181
 #, fuzzy, sh-format
 msgid "Unable to gzip $file_to_create"
 msgstr "Erstellen von $file_to_create:"
 
-#: backup-methods.sh.ext:173
+#: backup-methods.sh.ext:193
 #, fuzzy, sh-format
 msgid "Unable to bzip2 $file_to_create"
 msgstr "Erstellen von $file_to_create:"
 
-#: backup-methods.sh.ext:177
+#: backup-methods.sh.ext:206
 #, sh-format
 msgid "This compression format is not supported: $BM_MYSQL_FILETYPE"
 msgstr ""
 
-#: backup-methods.sh.ext:186
+#: backup-methods.sh.ext:216
 msgid "backup_method_pipe is not yet supported"
 msgstr "backup_method_pipe wird noch nicht unterstützt"
 
@@ -298,7 +303,8 @@ msgid "Disable the purge process."
 msgstr "Deaktivieren des Lösch-Vorgangs."
 
 #: dialog.sh.ext:46
-msgid "Warning, I was stopped before ending my job. Archives may be corrupted."
+#, fuzzy
+msgid "Warning, process interupted, archives may be corrupted."
 msgstr ""
 "Warnung, ich wurde angehalten bevor ich meinen Job erfolgreich ausführen "
 "konnte. Archive könnten defekt sein."
@@ -330,13 +336,23 @@ msgstr "Die Konfigurationsvariable ist in $conffile nicht gesetzt"
 msgid "$BM_REPOSITORY_ROOT does not exist, creating it"
 msgstr "$BM_ARCHIVES_REPOSITORY existiert nicht, wird angelegt"
 
-#: files.sh.ext:139
+#: files.sh.ext:10
+#, fuzzy, sh-format
+msgid "unable to unmount $mount_point"
+msgstr "konnte folgenden Mountpunkt nicht erstellen: $mount_point"
+
+#: files.sh.ext:12
+#, fuzzy, sh-format
+msgid "unable to remove $mount_point"
+msgstr "konnte folgenden Mountpunkt nicht erstellen: $mount_point"
+
+#: files.sh.ext:140
 #, sh-format
 msgid "Removing lock for old PID, $pid is not running."
 msgstr ""
 "Löschen der Sperrdatei (lockfile) vom alten Prozess (pid), $pid läuft nicht."
 
-#: files.sh.ext:149
+#: files.sh.ext:150
 #, sh-format
 msgid ""
 "A backup-manager process ($pid) is already running with the conffile "
@@ -345,50 +361,50 @@ msgstr ""
 "Ein backup-manager-Prozess ($pid) läuft bereits mit der Konfigurationsdatei "
 "$conffile."
 
-#: files.sh.ext:153 files.sh.ext:160
+#: files.sh.ext:154 files.sh.ext:161
 #, sh-format
 msgid "Getting lock for backup-manager $pid with $conffile: "
 msgstr ""
 "Holen der Sperrdatei (lockfile) für backup-manager $pid mit $conffile: "
 
-#: files.sh.ext:163
+#: files.sh.ext:164
 msgid "failed (check the file permissions)"
 msgstr "fehlgeschlagen (prüfen Sie die Dateirechte)"
 
-#: files.sh.ext:179
+#: files.sh.ext:180
 #, sh-format
 msgid "$file is not a regular file."
 msgstr "$file ist keine reguläre Datei."
 
-#: files.sh.ext:187
+#: files.sh.ext:188
 #, sh-format
 msgid "Removing $file: "
 msgstr "Löschen von $file: "
 
-#: files.sh.ext:205
+#: files.sh.ext:206
 msgid "Directory given is not found"
 msgstr "Angegebenes Verzeichnis nicht gefunden"
 
-#: files.sh.ext:215
+#: files.sh.ext:216
 #, sh-format
 msgid "Entering directory $file."
 msgstr "Betreten vom Verzeichnis $file."
 
-#: files.sh.ext:238
+#: files.sh.ext:239
 msgid "No file given"
 msgstr "Keine Datei angegeben"
 
-#: files.sh.ext:242
+#: files.sh.ext:243
 #, fuzzy, sh-format
 msgid "The given file does not exist: $file_to_create"
 msgstr "Angegebenes Archiv existiert nicht im Repository: $archive"
 
-#: files.sh.ext:246
+#: files.sh.ext:247
 #, fuzzy
 msgid "unable to get date from file"
 msgstr "Deaktivieren des Lösch-Vorgangs."
 
-#: files.sh.ext:247
+#: files.sh.ext:248
 msgid "unable to find the pattern of the file"
 msgstr "kann das Dateimuster nicht finden"
 

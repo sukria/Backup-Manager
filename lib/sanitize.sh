@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/BIN/SH
 #
 # Check that every key in the conffile is ok for a proper run.
 # Also manage deprecated confkeys the best as possible, so a deprecated
@@ -25,7 +25,7 @@ confkey_warning_deprecated()
 	new_key="$3"
 
 	nb_warnings=$(($nb_warnings + 1))
-	warning "The configuration key \"$deprecated_key\" is deprecated, you should rename it \"$new_key\". Using \"$deprecated_value\"."
+	warning "The configuration key \"\$deprecated_key\" is deprecated, you should rename it \"\$new_key\". Using \"\$deprecated_value\"."
 }
 
 # Look if the deprecated key exists, if so, warning and use it as 
@@ -88,20 +88,32 @@ confkey_require "BM_ARCHIVE_PURGEDUPS" "yes"
 confkey_hanlde_deprecated "BM_ARCHIVES_PREFIX" "BM_ARCHIVE_PREFIX"
 confkey_require "BM_ARCHIVE_PREFIX" "$HOSTNAME"
 
-confkey_hanlde_deprecated "BM_FILETYPE" "BM_TARBALL_FILETYPE"
-confkey_require "BM_TARBALL_FILETYPE" "tar.gz"
-
 confkey_hanlde_deprecated "BM_BACKUP_METHOD" "BM_ARCHIVE_METHOD"
 confkey_require "BM_ARCHIVE_METHOD" "tarball"
 
-confkey_hanlde_deprecated "BM_NAME_FORMAT" "BM_TARBALL_NAMEFORMAT"
-confkey_require "BM_TARBALL_NAMEFORMAT" "long"
+if [ "$BM_ARCHIVE_METHOD" = "tarball" ]; then
 
-confkey_hanlde_deprecated "BM_DUMP_SYMLINKS" "BM_TARBALL_DUMPSYMLINKS"
-confkey_require "BM_TARBALL_DUMPSYMLINKS" "no"
+	confkey_hanlde_deprecated "BM_FILETYPE" "BM_TARBALL_FILETYPE"
+	confkey_require "BM_TARBALL_FILETYPE" "tar.gz"
 
-confkey_hanlde_deprecated "BM_DIRECTORIES" "BM_TARBALL_DIRECTORIES"
-confkey_hanlde_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
+	confkey_hanlde_deprecated "BM_NAME_FORMAT" "BM_TARBALL_NAMEFORMAT"
+	confkey_require "BM_TARBALL_NAMEFORMAT" "long"
+
+	confkey_hanlde_deprecated "BM_DUMP_SYMLINKS" "BM_TARBALL_DUMPSYMLINKS"
+	confkey_require "BM_TARBALL_DUMPSYMLINKS" "no"
+
+	confkey_hanlde_deprecated "BM_DIRECTORIES" "BM_TARBALL_DIRECTORIES"
+	confkey_hanlde_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
+fi
+
+
+if [ "$BM_ARCHIVE_METHOD" = "mysql" ]; then
+	confkey_require "BM_MYSQL_ADMINLOGIN" "root"
+	confkey_require "BM_MYSQL_ADMINPASS" ""
+	confkey_require "BM_MYSQL_HOST" "localhost"
+	confkey_require "BM_MYSQL_PORT" "3306"
+	confkey_require "BM_MYSQL_FILETYPE" "tar.gz"
+fi
 
 # Burning system
 if [ "$BM_BURNING" = "yes" ]; then

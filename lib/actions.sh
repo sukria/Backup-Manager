@@ -170,37 +170,30 @@ burn_files()
 
 make_archives()
 {
-	# FIXME currently, only one backup method is supported : default.
-	if [ -z "$BM_ARCHIVE_METHOD" ]; then
-		BM_ARCHIVE_METHOD="default"
-	fi
-
 	# do we have to use a pipe method? 
-	if [ $(expr match "$BM_ARCHIVE_METHOD" "|") -gt 0 ]; then
-		info "Using the \"pipe\" backup method"
-		backup_method_pipe
-
+	#if [ $(expr match "$BM_ARCHIVE_METHOD" "|") -gt 0 ]; then
+	#	info "Using the \"pipe\" backup method"
+	#	backup_method_pipe
+	#
 	# The known methods
-	else
-		case $BM_ARCHIVE_METHOD in
-		
-		mysql)
-			info "Using the \"mysql\" backup method"
-			backup_method_mysql
-		;;
-		rsync)
-			info "Using the \"rsync\" backup method"
-			backup_method_rsync
-		;;
+	case $BM_ARCHIVE_METHOD in
+	
+	mysql)
+		info "Using the \"mysql\" backup method"
+		backup_method_mysql
+	;;
+	rsync)
+		info "Using the \"rsync\" backup method"
+		backup_method_rsync
+	;;
 
-		# default behaviour is to make a tarball with BM_TARBALL_FILETYPE 
-		*)
-			info "Using the \"tarball\" backup method"
-			backup_method_tarball
-		;;
+	# default behaviour is to make a tarball with BM_TARBALL_FILETYPE 
+	*)
+		info "Using the \"tarball\" backup method"
+		backup_method_tarball
+	;;
 
-		esac
-	fi
+	esac
 }
 
 # This will parse all the files contained in BM_REPOSITORY_ROOT

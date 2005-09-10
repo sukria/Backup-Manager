@@ -1,11 +1,17 @@
-0.6
-	* TODO bug fixes of 0.5.9 => STABLE
-
 0.5.9
 	* Configuration keys have been drastically renamed.
-	* TODO A tool is given for validating the configuration file.
+	* Added a contrib script for upgrading the configuration files
+	  to the new format: upgrade-conffile.sh
+	* Upgraded the validation process, so deprecated variables trigger warnings
+	  and are used as default values for the right name.
+	* Better control of the tar commands, when an error occured, user is warned,
+	  and a temp logfile is given.
+	* Huge code cleanup for providing a modular implementation for several archive 
+	  methods.
+	* New archive method : mysql 
+	  + uses mysqldump on a list of given databases.
+	  + facility to choose a compression format for the resulting SQL file.
 	* TODO backup method rsync
-	* TODO backup method mysql
 	* TODO backup method pipe
 
 0.5.8b

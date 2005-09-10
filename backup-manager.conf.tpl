@@ -1,7 +1,7 @@
 #  Backup Manager Configuration File
 #
 #  Global notes:
-
+#
 #  * Whenver you see a configuration key set to yes, you can 
 #    safely change it to no. They are booleans.
 #  * This configuration file is divided into sections.
@@ -13,7 +13,7 @@
 ##############################################################
 
 ##############################################################
-# Repository - everything about where archives live
+# Repository - everything about where archives are
 #############################################################
 
 # Where to store the archives
@@ -74,12 +74,50 @@ export BM_TARBALL_BLACKLIST=""
 # Section "RSYNC"
 # Backup method: rsync
 #############################################################
+
 ##############################################################
-# Backup method: mysql
+# Backup method: MYSQl
 #############################################################
+# this method is dedicated to MySQL databses.
+# You should not use the tarball method for backuping database
+# directories or you may have corrupted archives.
+
+# Enter here the list of databses
+export BM_MYSQL_DATABASES="mysql"
+
+# The user who is allowed to read every databases filled in BM_MYSQL_DATABASES
+export BM_MYSQL_ADMINLOGIN="root"
+
+# its password
+export BM_MYSQL_ADMINPASS=""
+
+# the host where the databse is
+export BM_MYSQL_HOST="localhost"
+
+# the port where MySQL listen to on the host
+export BM_MYSQL_PORT="3306"
+
+# which compression format to use? (gzip or bzip2)
+export BM_MYSQL_FILETYPE="bzip2"
+
 ##############################################################
 # Backup method: pipe
 #############################################################
+# This is the generic method, everything on STDOUT will be used
+# as a content.
+
+# for each word in this list, BM_PIPE_COMMAND will be launched,
+# and the token "$looparg" will be expended to the current item
+# of BM_PIPE_LOOPARGS
+export BM_PIPE_LOOPARGS=""
+
+# the command to launch
+export BM_PIPE_COMMAND=""
+
+# should the content be compressed?
+export BM_PIPE_FILETYPE="bzip2"
+
+
 ##############################################################
 # Burning system
 #############################################################

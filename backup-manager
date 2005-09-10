@@ -22,6 +22,7 @@ set -e
 libdir="/usr/share/backup-manager"
 zip="/usr/bin/zip"
 bzip="/usr/bin/bzip2"
+gzip="/bin/gzip"
 tar="/bin/tar"
 rsync="/usr/bin/rsync"
 mkisofs="/usr/bin/mkisofs"
@@ -30,6 +31,7 @@ bmu="/usr/bin/backup-manager-upload"
 lockfile="/var/run/backup-manager.pid"
 md5sum="/usr/bin/md5sum"
 bc="/usr/bin/bc"
+mysqldump="/usr/bin/mysqldump"
 
 # Load the backup-manager's library
 source $libdir/gettext.sh
@@ -200,4 +202,6 @@ exec_post_command || error "Unable to exec post-command"
 
 # release the lock concerned by this conffile
 release_lock
+
+exit 0
 

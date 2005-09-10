@@ -43,7 +43,7 @@ usage()
 stop_me()
 {
 	echo ""
-	error "Warning, I was stopped before ending my job. Archives may be corrupted."
+	error "Warning, process interupted, archives may be corrupted."
 	release_lock
 }
 
@@ -67,8 +67,7 @@ check_filetypes()
 # get the list of directories to backup.
 check_what_to_backup()
 {
-	if [ ! -n "$BM_TARBALL_DIRECTORIES" ] 
-	then 
+	if [ ! -n "$BM_TARBALL_DIRECTORIES" ] && [ "$BM_ARCHIVE_METHOD" = "tarball" ]; then 
 		error "The BM_TARBALL_DIRECTORIES conf key is not set in \$conffile"
 	fi
 }

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-29 22:23+0200\n"
+"POT-Creation-Date: 2005-08-05 19:58+0200\n"
 "PO-Revision-Date: 2005-07-12 23:09+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debiann.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -31,7 +31,7 @@ msgid "unable to mount $BM_BURNING_DEVICE on $mount_point"
 msgstr "nemohu pøipojit $BM_BURNING_DEVICE na $mount_point"
 
 #: actions.sh.ext:27 actions.sh.ext:58 actions.sh.ext:143 actions.sh.ext:149
-#: actions.sh.ext:156 actions.sh.ext:278 actions.sh.ext:297 files.sh.ext:155
+#: actions.sh.ext:156 actions.sh.ext:271 actions.sh.ext:290 files.sh.ext:155
 #: files.sh.ext:166 files.sh.ext:189 logger.sh.ext:128 logger.sh.ext:135
 #: logger.sh.ext:141
 msgid "ok"
@@ -102,111 +102,128 @@ msgstr "selhalo, zkontrolujte $logfile"
 msgid "Burning data to $BM_BURNING_DEVICE: "
 msgstr "Vypaluji data na $BM_BURNING_DEVICE: "
 
-#: actions.sh.ext:180
-msgid "Using the \"pipe\" backup method"
-msgstr "Pou¾ívám zálohovací metodu \"pipe\""
-
-#: actions.sh.ext:188
+#: actions.sh.ext:182
 msgid "Using the \"mysql\" backup method"
 msgstr "Pou¾ívám zálohovací metodu \"mysql\""
 
-#: actions.sh.ext:192
+#: actions.sh.ext:186
 msgid "Using the \"rsync\" backup method"
 msgstr "Pou¾ívám zálohovací metodu \"rsync\""
 
-#: actions.sh.ext:198
+#: actions.sh.ext:192
 msgid "Using the \"tarball\" backup method"
 msgstr "Pou¾ívám zálohovací metodu \"tarball\""
 
-#: actions.sh.ext:210
-#, sh-format
-msgid "Cleaning $BM_ARCHIVES_REPOSITORY: "
+#: actions.sh.ext:203
+#, fuzzy, sh-format
+msgid "Cleaning $BM_REPOSITORY_ROOT: "
 msgstr "Èistím $BM_ARCHIVES_REPOSITORY: "
 
-#: actions.sh.ext:243 actions.sh.ext:255
+#: actions.sh.ext:236 actions.sh.ext:248
 msgid "unable to call backup-manager-upload"
 msgstr "nemohu zavolat backup-manager-upload"
 
-#: actions.sh.ext:258
+#: actions.sh.ext:251
 msgid "The upload system is disabled in the conf file."
 msgstr "Nahrávání na vzdálený poèítaè je v konfiguraèním souboru zakázáno."
 
-#: actions.sh.ext:268
+#: actions.sh.ext:261
 #, sh-format
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
 msgstr "Spou¹tím úvodní pøíkaz: $BM_PRE_BACKUP_COMMAND: "
 
-#: actions.sh.ext:272 actions.sh.ext:292 backup-methods.sh.ext:50
+#: actions.sh.ext:265 actions.sh.ext:285
 msgid "failed"
 msgstr "selhalo"
 
-#: actions.sh.ext:273
+#: actions.sh.ext:266
 msgid "pre-command returned false. Stopping the process."
 msgstr "Úvodní pøíkaz vrátil chybu. Zastavuji proces."
 
-#: actions.sh.ext:288
+#: actions.sh.ext:281
 #, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND: "
 msgstr "Spou¹tím závìreèný pøíkaz: $BM_POST_BACKUP_COMMAND: "
 
-#: actions.sh.ext:293
+#: actions.sh.ext:286
 msgid "post-command returned false."
 msgstr "Závìreèný pøíkaz vrátil chybu."
 
-#: backup-manager.ext:55
+#: backup-manager.ext:57
 msgid "backup-manager must be run as root."
 msgstr "backup-manager musí být spu¹tìn pod u¾ivatelem root."
 
-#: backup-manager.ext:103
+#: backup-manager.ext:105
 msgid "-c option must be followed by an existing filename"
 msgstr "za volbou -c musí následovat jméno existujícího souboru"
 
-#: backup-manager.ext:137
+#: backup-manager.ext:139
 msgid "Unable to exec the pre-command"
 msgstr "Nemohu spustit úvodní pøíkaz"
 
-#: backup-manager.ext:199
+#: backup-manager.ext:201
 msgid "Unable to exec post-command"
 msgstr "Nemohu spustit závìreèný pøíkaz"
 
-#: backup-methods.sh.ext:34
-#, sh-format
-msgid "Creating $file_to_create: "
-msgstr "Vytváøím $file_to_create: "
+#: backup-methods.sh.ext:12
+#, fuzzy, sh-format
+msgid "Unable to create $target, check $logfile"
+msgstr "nemohu ze souboru získat datum"
 
-#: backup-methods.sh.ext:38 backup-methods.sh.ext:41 backup-methods.sh.ext:44
-#: backup-methods.sh.ext:47
-msgid "~"
-msgstr "~"
-
-#: backup-methods.sh.ext:51
-#, sh-format
-msgid "The filetype $BM_FILETYPE is not spported."
+#: backup-methods.sh.ext:84
+#, fuzzy, sh-format
+msgid "The filetype $BM_TARBALL_FILETYPE is not spported."
 msgstr "Typ souboru $BM_FILETYPE není podporován."
 
-#: backup-methods.sh.ext:56
+#: backup-methods.sh.ext:89
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Soubor $file_to_create ji¾ existuje, pøeskakuji."
 
-#: backup-methods.sh.ext:61
-#, sh-format
-msgid "ok (${size}M, "
+#: backup-methods.sh.ext:94
+#, fuzzy, sh-format
+msgid "$file_to_create: ok (${size}M, "
 msgstr "ok (${size}M, "
 
-#: backup-methods.sh.ext:69
+#: backup-methods.sh.ext:102
 msgid "unable to purge duplicates"
 msgstr "nemohu smazat duplikáty"
 
-#: backup-methods.sh.ext:107
+#: backup-methods.sh.ext:112
+#, sh-format
+msgid "During the tarballs generation, $gettext error(s) occured."
+msgstr ""
+
+#: backup-methods.sh.ext:146
 msgid "Need a key to use rsync"
 msgstr "Pro pou¾ití programu rsync potøebuji klíè"
 
-#: backup-methods.sh.ext:115
-msgid "backup_method_mysql is not yet supported"
-msgstr "backup_method_mysql zatím není podporována"
+#: backup-methods.sh.ext:155
+#, sh-format
+msgid "The \"mysql\" method is choosen, but $mysqldump is not found."
+msgstr ""
 
-#: backup-methods.sh.ext:120
+#: backup-methods.sh.ext:162
+#, fuzzy, sh-format
+msgid "Unable to dump the content of the database $database"
+msgstr "nemohu najít vzor souboru"
+
+#: backup-methods.sh.ext:168
+#, fuzzy, sh-format
+msgid "Unable to gzip $file_to_create"
+msgstr "Vytváøím $file_to_create: "
+
+#: backup-methods.sh.ext:173
+#, fuzzy, sh-format
+msgid "Unable to bzip2 $file_to_create"
+msgstr "Vytváøím $file_to_create: "
+
+#: backup-methods.sh.ext:177
+#, sh-format
+msgid "This compression format is not supported: $BM_MYSQL_FILETYPE"
+msgstr ""
+
+#: backup-methods.sh.ext:186
 msgid "backup_method_pipe is not yet supported"
 msgstr "backup_method_pipe zatím není podporována"
 
@@ -281,25 +298,29 @@ msgstr ""
 "poru¹eny."
 
 #: dialog.sh.ext:56
-msgid "the BM_FILETYPE conf key is set to \"zip\" but zip is not installed."
+#, fuzzy
+msgid ""
+"the BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
 msgstr ""
 "Konfiguraèní klíè BM_FILETYPE je nastaven na \"zip\" ale zip není instalován."
 
 #: dialog.sh.ext:61
+#, fuzzy
 msgid ""
-"the BM_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
+"the BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
+"installed."
 msgstr ""
 "Konfiguraèní klíè BM_FILETYPE je nastaven na \"bzip2\" ale bzip2 není "
 "instalován."
 
-#: dialog.sh.ext:72
-#, sh-format
-msgid "The BM_DIRECTORIES conf key is not set in $conffile"
+#: dialog.sh.ext:71
+#, fuzzy, sh-format
+msgid "The BM_TARBALL_DIRECTORIES conf key is not set in $conffile"
 msgstr "Konfiguraèní klíè BM_DIRECTORIES není v $conffile nastaven"
 
-#: dialog.sh.ext:87
-#, sh-format
-msgid "$BM_ARCHIVES_REPOSITORY does not exist, creating it"
+#: dialog.sh.ext:86
+#, fuzzy, sh-format
+msgid "$BM_REPOSITORY_ROOT does not exist, creating it"
 msgstr "Adresáø $BM_ARCHIVES_REPOSITORY neexistuje, vytváøím jej"
 
 #: files.sh.ext:139
@@ -389,12 +410,19 @@ msgstr "Zadaný archiv v úlo¾i¹ti neexistuje: $archive"
 msgid "The configuration key $key is not set, using \"$default\"."
 msgstr "Konfiguraèní klíè $key není naastaven, pou¾ívám \"$default\"."
 
+#: sanitize.sh.ext:28
+#, sh-format
+msgid ""
+"The configuration key \"$deprecated_key\" is deprecated, you should rename "
+"it \"$new_key\". Using \"$deprecated_value\"."
+msgstr ""
+
 #: sanitize.sh.ext:63
 #, sh-format
 msgid "The configuration key $key is not set but $keymandatory is enabled."
 msgstr "Konfiguraèní klíè $key není nastaven, ale $keymandatory je povolen."
 
-#: sanitize.sh.ext:126
+#: sanitize.sh.ext:136
 msgid ""
 "The configuration key BM_UPLOAD_PASSWD is not set but BM_UPLOAD_MODE is set "
 "to \"ftp\"."
@@ -402,7 +430,7 @@ msgstr ""
 "Konfiguraèní klíè BM_UPLOAD_PASSWD není nastaven, ale BM_UPLOAD_MODE je "
 "nastaven na \"ftp\"."
 
-#: sanitize.sh.ext:149
+#: sanitize.sh.ext:159
 #, sh-format
 msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
@@ -410,6 +438,15 @@ msgid ""
 msgstr ""
 "Pøi ovìøování konfiguraèního souboru $conffile bylo nalezeno $nb_warnings "
 "varování."
+
+#~ msgid "Using the \"pipe\" backup method"
+#~ msgstr "Pou¾ívám zálohovací metodu \"pipe\""
+
+#~ msgid "backup_method_mysql is not yet supported"
+#~ msgstr "backup_method_mysql zatím není podporována"
+
+#~ msgid "~"
+#~ msgstr "~"
 
 #~ msgid "Error during MD5 controls. Run $0 --md5check --verbose for details"
 #~ msgstr ""

@@ -6,9 +6,10 @@
 
 unmount_tmp_dir()
 {
-	if [ -d $mount_point ]; then
-		umount $mount_point
-		rmdir $mount_point
+	if [ -n "$mount_point" ] && [ -d $mount_point ]; then
+		umount "$mount_point" > /dev/null 2>&1 || error "unable to unmount \$mount_point"
+		sleep 1
+		rmdir "$mount_point" > /dev/null 2>&1 || error "unable to remove \$mount_point"
 	fi
 }
 
@@ -16,8 +17,8 @@ unmount_tmp_dir()
 # make according to what the user choose in the conf.
 get_dir_name()
 {
-	base=$1
-	format=$2
+	base="$1"
+	format="$2"
 
 	if [ "$format" = "long" ]
 	then

@@ -3,6 +3,7 @@ DESTDIR?=
 # For the backup-manager package
 PERL5DIR=$(DESTDIR)/usr/share/perl5
 LIBDIR=$(DESTDIR)/usr/share/backup-manager
+CONTRIB=$(LIBDIR)/contrib
 SHAREDIR=$(DESTDIR)/usr/share/backup-manager
 SHFILES=lib/dialog.sh \
 	lib/files.sh \
@@ -15,6 +16,7 @@ SHFILES=lib/dialog.sh \
 	lib/sanitize.sh \
 	lib/md5sum.sh 
 
+
 # For the backup-manager-doc package
 DOCDIR		= $(DESTDIR)/usr/share/doc/backup-manager
 DOCHTMLDIR 	= $(DOCDIR)/user-guide.html
@@ -24,8 +26,13 @@ DOCPDF		= doc/user-guide.pdf
 DOCTXT		= doc/user-guide.txt
 
 # The backup-manager package
-install: install_lib install_deb install_po
-install_binary: doc install_lib install_deb install_po
+install: install_lib install_deb install_contrib
+install_binary: doc install_lib install_deb 
+
+install_contrib:
+	@echo -e "*** Contrib files ***\n"
+	install -d $(CONTRIB)
+	install -m0755 contrib/*.sh $(CONTRIB)
 
 # The backup-manager-doc package
 install_doc: 

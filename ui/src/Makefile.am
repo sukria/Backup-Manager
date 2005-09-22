@@ -10,9 +10,11 @@ bin_PROGRAMS = backup-manager-ui
 backup_manager_ui_SOURCES = \
 	main.c \
 	customconfig.h \
+	global_widgets.h \
 	support.c support.h \
 	mem_manager.c mem_manager.h \
 	interface.c interface.h \
+	dyn_interfaces.c dyn_interfaces.h \
 	bm.c bm.h \
 	strLcpy.c strLcpy.h \
 	callbacks.c callbacks.h

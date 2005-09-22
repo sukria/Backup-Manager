@@ -71,3 +71,8 @@ void
 on_confw_BM_REPOSITORY_SECURE_no_toggled
                                         (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
+
+void 
+on_confw_repository_filesel_ok_button 
+					(GtkWidget *widget, 
+					gpointer user_data);

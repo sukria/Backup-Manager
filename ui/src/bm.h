@@ -15,12 +15,30 @@ typedef	unsigned short int	BM_Bool;
 #define BM_BUFF_SIZE    1024
 
 //config_data* bm_load_conf();
-bm_variable_data* bm_load_conf(const char* conf_file);
-void bm_free_config();
-void bm_display_config();
-size_t bm_read_variable_data(char *dest, FILE *file);
-size_t bm_read_variable_name(char *dest, FILE *file);
-BM_Bool bm_is_variable_name (const char *variable, int *index );
-void strip_space(FILE *file);
-void go_to_next_line(FILE *file);
-BM_Bool read_export (FILE *file);
+
+bm_variable_data* 
+bm_load_conf(const char* conf_file);
+
+void 
+bm_free_config();
+
+void 
+bm_display_config();
+
+char *
+bm_read_variable_data(char *dest, FILE *file);
+
+char *
+bm_read_variable_name(char *dest, FILE *file);
+
+BM_Bool 
+bm_is_variable_name (const char *variable, int *index );
+
+void 
+strip_space(FILE *file);
+
+void 
+go_to_next_line(FILE *file);
+
+BM_Bool 
+read_export (FILE *file);

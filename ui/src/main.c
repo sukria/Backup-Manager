@@ -11,12 +11,13 @@
 
 #include "interface.h"
 #include "support.h"
+#include "bm.h";
+
+#include "global_widgets.h"
 
 int
 main (int argc, char *argv[])
 {
-  GtkWidget *configuration_window;
-  GtkWidget *filechooser;
   
 #ifdef ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
@@ -33,7 +34,10 @@ main (int argc, char *argv[])
   configuration_window = create_configuration_window();
   gtk_widget_show(configuration_window);
   
-  filechooser = create_filechooser();
+  filechooser = create_filechooser(); 
+  
+  /* test */
+   bm_load_conf("/etc/backup-manager.conf"); 
   
   gtk_main ();
   return 0;

@@ -50,7 +50,7 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am_backup_manager_ui_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) \
-	interface.$(OBJEXT) callbacks.$(OBJEXT)
+	mem_manager.$(OBJEXT) interface.$(OBJEXT) callbacks.$(OBJEXT)
 backup_manager_ui_OBJECTS = $(am_backup_manager_ui_OBJECTS)
 am__DEPENDENCIES_1 =
 backup_manager_ui_DEPENDENCIES = $(am__DEPENDENCIES_1)
@@ -59,7 +59,7 @@ depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 DEP_FILES = ./$(DEPDIR)/callbacks.Po \
 	./$(DEPDIR)/interface.Po ./$(DEPDIR)/main.Po \
-	./$(DEPDIR)/support.Po
+	./$(DEPDIR)/mem_manager.Po ./$(DEPDIR)/support.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
@@ -69,13 +69,13 @@ DIST_SOURCES = $(backup_manager_ui_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/sukria/src/backup-manager-ui/missing --run aclocal-1.8
+ACLOCAL = ${SHELL} /home/sukria/src/backup-manager/upstream/backup-manager/ui/missing --run aclocal-1.8
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/sukria/src/backup-manager-ui/missing --run tar
-AUTOCONF = ${SHELL} /home/sukria/src/backup-manager-ui/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/sukria/src/backup-manager-ui/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/sukria/src/backup-manager-ui/missing --run automake-1.8
+AMTAR = ${SHELL} /home/sukria/src/backup-manager/upstream/backup-manager/ui/missing --run tar
+AUTOCONF = ${SHELL} /home/sukria/src/backup-manager/upstream/backup-manager/ui/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/sukria/src/backup-manager/upstream/backup-manager/ui/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/sukria/src/backup-manager/upstream/backup-manager/ui/missing --run automake-1.8
 AWK = mawk
 CATALOGS = 
 CATOBJEXT = .gmo
@@ -109,7 +109,7 @@ LTLIBOBJS =
 MAINT = 
 MAINTAINER_MODE_FALSE = #
 MAINTAINER_MODE_TRUE = 
-MAKEINFO = ${SHELL} /home/sukria/src/backup-manager-ui/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/sukria/src/backup-manager/upstream/backup-manager/ui/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 OBJEXT = o
@@ -148,7 +148,7 @@ exec_prefix = ${prefix}
 host_alias = 
 includedir = ${prefix}/include
 infodir = ${prefix}/info
-install_sh = /home/sukria/src/backup-manager-ui/install-sh
+install_sh = /home/sukria/src/backup-manager/upstream/backup-manager/ui/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localstatedir = ${prefix}/var
@@ -169,6 +169,7 @@ INCLUDES = \
 backup_manager_ui_SOURCES = \
 	main.c \
 	support.c support.h \
+	mem_manager.c mem_manager.h \
 	interface.c interface.h \
 	callbacks.c callbacks.h
 
@@ -242,6 +243,7 @@ distclean-compile:
 include ./$(DEPDIR)/callbacks.Po
 include ./$(DEPDIR)/interface.Po
 include ./$(DEPDIR)/main.Po
+include ./$(DEPDIR)/mem_manager.Po
 include ./$(DEPDIR)/support.Po
 
 .c.o:

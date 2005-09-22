@@ -50,7 +50,7 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am_backup_manager_ui_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) \
-	interface.$(OBJEXT) callbacks.$(OBJEXT)
+	mem_manager.$(OBJEXT) interface.$(OBJEXT) callbacks.$(OBJEXT)
 backup_manager_ui_OBJECTS = $(am_backup_manager_ui_OBJECTS)
 am__DEPENDENCIES_1 =
 backup_manager_ui_DEPENDENCIES = $(am__DEPENDENCIES_1)
@@ -59,7 +59,7 @@ depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/callbacks.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/interface.Po ./$(DEPDIR)/main.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/support.Po
+@AMDEP_TRUE@	./$(DEPDIR)/mem_manager.Po ./$(DEPDIR)/support.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
@@ -169,6 +169,7 @@ INCLUDES = \
 backup_manager_ui_SOURCES = \
 	main.c \
 	support.c support.h \
+	mem_manager.c mem_manager.h \
 	interface.c interface.h \
 	callbacks.c callbacks.h
 
@@ -242,6 +243,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/callbacks.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/interface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mem_manager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/support.Po@am__quote@
 
 .c.o:

@@ -492,13 +492,13 @@ s,@INSTALL_DATA@,${INSTALL} -m 644,;t t
 s,@CYGPATH_W@,echo,;t t
 s,@PACKAGE@,backup-manager-ui,;t t
 s,@VERSION@,0.1,;t t
-s,@ACLOCAL@,${SHELL} /home/sukria/src/backup-manager-ui/missing --run aclocal-1.8,;t t
-s,@AUTOCONF@,${SHELL} /home/sukria/src/backup-manager-ui/missing --run autoconf,;t t
-s,@AUTOMAKE@,${SHELL} /home/sukria/src/backup-manager-ui/missing --run automake-1.8,;t t
-s,@AUTOHEADER@,${SHELL} /home/sukria/src/backup-manager-ui/missing --run autoheader,;t t
-s,@MAKEINFO@,${SHELL} /home/sukria/src/backup-manager-ui/missing --run makeinfo,;t t
-s,@AMTAR@,${SHELL} /home/sukria/src/backup-manager-ui/missing --run tar,;t t
-s,@install_sh@,/home/sukria/src/backup-manager-ui/install-sh,;t t
+s,@ACLOCAL@,${SHELL} /home/sukria/src/backup-manager/upstream/backup-manager/ui/missing --run aclocal-1.8,;t t
+s,@AUTOCONF@,${SHELL} /home/sukria/src/backup-manager/upstream/backup-manager/ui/missing --run autoconf,;t t
+s,@AUTOMAKE@,${SHELL} /home/sukria/src/backup-manager/upstream/backup-manager/ui/missing --run automake-1.8,;t t
+s,@AUTOHEADER@,${SHELL} /home/sukria/src/backup-manager/upstream/backup-manager/ui/missing --run autoheader,;t t
+s,@MAKEINFO@,${SHELL} /home/sukria/src/backup-manager/upstream/backup-manager/ui/missing --run makeinfo,;t t
+s,@AMTAR@,${SHELL} /home/sukria/src/backup-manager/upstream/backup-manager/ui/missing --run tar,;t t
+s,@install_sh@,/home/sukria/src/backup-manager/upstream/backup-manager/ui/install-sh,;t t
 s,@STRIP@,,;t t
 s,@ac_ct_STRIP@,,;t t
 s,@INSTALL_STRIP_PROGRAM@,${SHELL} $(install_sh) -c -s,;t t

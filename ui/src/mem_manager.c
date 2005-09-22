@@ -43,8 +43,8 @@ mem_alloc
 	extern struct mem_handler memory;
 	void*         new_pointer;
 	
-	if (memory.current_place == (MEM_MAX_ELEMENTS - 1)) {
-		printf ("[mem_handler] ERROR: not enough room, enlarge MEM_MAX_ELEMENTS, already %d elements allocated.\n", MEM_MAX_ELEMENTS - 1);
+	if ((memory.current_place) > (MEM_MAX_ELEMENTS - 1)) {
+		printf ("[mem_handler] ERROR: not enough room, enlarge MEM_MAX_ELEMENTS, already %d elements allocated.\n", MEM_MAX_ELEMENTS);
 		mem_print_status();
 		exit (0);
 	}
@@ -171,13 +171,6 @@ add_element
 		(void* pointer, int size) 
 {
 	extern struct mem_handler memory;
-	
-	if (memory.current_place == (MEM_MAX_ELEMENTS - 1)) {
-		printf ("[mem_handler] ERROR: not enough room, enlarge MEM_MAX_ELEMENTS (%d - current: %d)\n", 
-				MEM_MAX_ELEMENTS, 
-				memory.current_place);
-		exit (0);
-	}
 	
 	if (memory.elements[memory.current_place] != 0) {
 		printf ("[mem_handler] ERROR: the current field is not free [0x%x, index #%d]\n", 

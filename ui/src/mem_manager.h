@@ -23,7 +23,7 @@
 #define MEM_MANAGER 1
 
 /* This is the maximum number of allocatable variables. */
-#define MEM_MAX_ELEMENTS 2048
+#define MEM_MAX_ELEMENTS 2
 
 /* set MEM_DEBUG to 1 for printing on stdout what happens.
  * Obviously, this should be disabled for a stable release. then only 

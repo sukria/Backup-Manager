@@ -13,6 +13,8 @@ backup_manager_ui_SOURCES = \
 	support.c support.h \
 	mem_manager.c mem_manager.h \
 	interface.c interface.h \
+	bm.c bm.h \
+	strLcpy.c strLcpy.h \
 	callbacks.c callbacks.h
 
 backup_manager_ui_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)

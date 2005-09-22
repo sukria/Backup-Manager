@@ -48,7 +48,7 @@ bm_variable_data* bm_load_conf(const char* conf_file) {
 	char		tmp[BM_BUFF_SIZE];
 	int		bm_read_char;
 	int		offset = 0;
-	int		*index;
+	int		index = 0;
 	BM_Bool		next = BM_TRUE;
 	size_t		bm_variable_data_size;
 	
@@ -84,7 +84,7 @@ bm_variable_data* bm_load_conf(const char* conf_file) {
 				printf("la\n");
 				printf("variable lu : %s\n", bm_variable_name);
 
-				if ( !bm_is_variable_name(bm_variable_name, index) ) {
+				if ( !bm_is_variable_name(bm_variable_name, &index) ) {
 					continue;
 				}
 
@@ -95,9 +95,10 @@ bm_variable_data* bm_load_conf(const char* conf_file) {
 				strip_space(bm_file);
 			
 				bm_variable_data = bm_read_variable_data(bm_variable_data, bm_file);
+				bm_variable_data_size = strlen(bm_variable_data);
 				
-				bm_config_data[*index].BM_VARIABLE_DATA = (char*) mem_alloc( bm_variable_data_size * sizeof(char) );
-				strLcpy(bm_config_data[*index].BM_VARIABLE_DATA, bm_variable_data, bm_variable_data_size);
+				bm_config_data[index].BM_VARIABLE_DATA = (char*) mem_alloc( bm_variable_data_size * sizeof(char) );
+				strLcpy(bm_config_data[index].BM_VARIABLE_DATA, bm_variable_data, bm_variable_data_size);
 				
 				mem_free(bm_variable_data);
 				
@@ -203,14 +204,14 @@ bm_read_variable_name(char *dest ,FILE *file) {
 }
 
 BM_Bool 
-bm_is_variable_name (const char *variable, int *index ) {
+bm_is_variable_name (const char *variable, int *p_index ) {
 	int 	i;
 	BM_Bool	bm_variable_ok = BM_FALSE;
 	
 	for ( i = 0 ; i < BM_NB_VARIABLE ; i++ ) {
 		if ( strcmp(variable , bm_config_data[i].BM_VARIABLE_NAME) == 0 ) {
 			bm_variable_ok = BM_TRUE;
-			*index = i;
+			*p_index = i;
 		}
 	}
 

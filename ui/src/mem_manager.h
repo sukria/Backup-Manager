@@ -8,11 +8,9 @@
  * cvs tag : $Id$
  *************************************************/
 
-#ifndef CONFIG_H_DEFINED
-#  include "configuration.h"
-#endif
+#include "customconfig.h"
 #define MEM_MANAGER 1
-
+#define MEM_MAX_ELEMENTS 1024 
 
 /* mem_hadler is a structure to store each event related to memory usage */
 struct mem_handler {

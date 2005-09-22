@@ -9,7 +9,7 @@
  *************************************************/
 
 #include "mem_manager.h"
-#include "stdlib.h"
+#include <stdlib.h>
 
 /* initialize the memory handler */
 int	mem_handler_init	() {

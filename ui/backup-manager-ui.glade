@@ -72,11 +72,14 @@
 </widget>
 
 <widget class="GtkWindow" id="configuration_window">
+  <property name="border_width">1</property>
   <property name="visible">True</property>
   <property name="title" translatable="yes">Backup Manager - Configuration Editor</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
+  <property name="default_width">250</property>
+  <property name="default_height">250</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
   <property name="decorated">True</property>
@@ -619,7 +622,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkButton" id="confw_browse_button">
+		    <widget class="GtkButton" id="confw_file_button">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
 		      <property name="label" translatable="yes">...</property>

@@ -30,6 +30,9 @@ main (int argc, char *argv[])
 
   add_pixmap_directory (PACKAGE_DATA_DIR "/" PACKAGE "/pixmaps");
 
+  /* Init our mem_handler */
+  mem_handler_init();
+
   /* Some stuff to do with our objects */
   configuration_window = create_configuration_window();
   gtk_widget_show(configuration_window);
@@ -37,9 +40,13 @@ main (int argc, char *argv[])
   filechooser = create_filechooser(); 
   
   /* test */
-   bm_load_conf("/etc/backup-manager.conf"); 
+  bm_load_conf("/etc/backup-manager.conf"); 
+
+  mem_print_status();
   
   gtk_main ();
+  
+  mem_print_status();
   return 0;
 }
 

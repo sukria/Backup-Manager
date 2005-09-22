@@ -106,7 +106,7 @@ create_configuration_window (void)
   GtkWidget *confw_file_label;
   GtkWidget *hbox1;
   GtkWidget *confw_file_entry;
-  GtkWidget *confw_browse_button;
+  GtkWidget *confw_file_button;
   GtkWidget *hbuttonbox1;
   GtkWidget *confw_load_button;
   GtkWidget *confw_reset_button;
@@ -117,7 +117,9 @@ create_configuration_window (void)
 
   configuration_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_widget_set_name (configuration_window, "configuration_window");
+  gtk_container_set_border_width (GTK_CONTAINER (configuration_window), 1);
   gtk_window_set_title (GTK_WINDOW (configuration_window), _("Backup Manager - Configuration Editor"));
+  gtk_window_set_default_size (GTK_WINDOW (configuration_window), 250, 250);
 
   vbox2 = gtk_vbox_new (FALSE, 0);
   gtk_widget_set_name (vbox2, "vbox2");
@@ -293,10 +295,10 @@ create_configuration_window (void)
   gtk_box_pack_start (GTK_BOX (hbox1), confw_file_entry, TRUE, TRUE, 0);
   gtk_tooltips_set_tip (tooltips, confw_file_entry, _("Configuration file to edit"), NULL);
 
-  confw_browse_button = gtk_button_new_with_mnemonic (_("..."));
-  gtk_widget_set_name (confw_browse_button, "confw_browse_button");
-  gtk_widget_show (confw_browse_button);
-  gtk_box_pack_end (GTK_BOX (hbox1), confw_browse_button, FALSE, FALSE, 2);
+  confw_file_button = gtk_button_new_with_mnemonic (_("..."));
+  gtk_widget_set_name (confw_file_button, "confw_file_button");
+  gtk_widget_show (confw_file_button);
+  gtk_box_pack_end (GTK_BOX (hbox1), confw_file_button, FALSE, FALSE, 2);
 
   hbuttonbox1 = gtk_hbutton_box_new ();
   gtk_widget_set_name (hbuttonbox1, "hbuttonbox1");
@@ -376,7 +378,7 @@ create_configuration_window (void)
   GLADE_HOOKUP_OBJECT (configuration_window, confw_file_label, "confw_file_label");
   GLADE_HOOKUP_OBJECT (configuration_window, hbox1, "hbox1");
   GLADE_HOOKUP_OBJECT (configuration_window, confw_file_entry, "confw_file_entry");
-  GLADE_HOOKUP_OBJECT (configuration_window, confw_browse_button, "confw_browse_button");
+  GLADE_HOOKUP_OBJECT (configuration_window, confw_file_button, "confw_file_button");
   GLADE_HOOKUP_OBJECT (configuration_window, hbuttonbox1, "hbuttonbox1");
   GLADE_HOOKUP_OBJECT (configuration_window, confw_load_button, "confw_load_button");
   GLADE_HOOKUP_OBJECT (configuration_window, confw_reset_button, "confw_reset_button");

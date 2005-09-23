@@ -32,14 +32,13 @@
 
 /* mem_handler is a structure to store each event related to memory usage */
 struct mem_handler {
-	int		nb_alloc;
-	int		nb_free;
-	int		current_place;
-	int		total_bytes;
-	char*		start_adress;
-	char*		stop_adress;
-	void*		elements[MEM_MAX_ELEMENTS];
-	int		sizes[MEM_MAX_ELEMENTS];
+	int		nb_alloc;			/* counter */
+	int		nb_free;			/* counter */
+	int		current_place;			/* index of the current element*/
+	int		total_bytes;			/* bytes of all elements allocated */
+	void*		element[MEM_MAX_ELEMENTS];	/* addresses of allocated elements */
+	char*		name[MEM_MAX_ELEMENTS];		/* names of elements (if given) */
+	int		size[MEM_MAX_ELEMENTS];		/* size of elements*/
 } memory;
 
 /* wrap malloc() to trace what is allocated */
@@ -68,8 +67,7 @@ get_position
 		(void*	pointer); 
 
 int
-add_element	
-		(void* pointer, int size); 
+add_element (void* pointer, int size, const char *name);
 
 int
 remove_element

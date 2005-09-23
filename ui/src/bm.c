@@ -89,8 +89,8 @@ bm_variable_data* bm_load_conf(const char* conf_file) {
 				bm_variable_data = bm_read_variable_data(bm_file);
 				bm_variable_data_size = strlen(bm_variable_data) + 1;
 				
-				bm_config_data[index].BM_VARIABLE_DATA = (char*) mem_alloc( bm_variable_data_size * sizeof(char) );
-				strLcpy(bm_config_data[index].BM_VARIABLE_DATA, bm_variable_data, bm_variable_data_size);
+				bm_config_data[index].BM_VARIABLE_DATA = (char*) mem_alloc_with_name( bm_variable_data_size * sizeof(char), "bm_variable_data");
+				string_copy(bm_config_data[index].BM_VARIABLE_DATA, bm_variable_data, bm_variable_data_size);
 				
 				mem_free(bm_variable_data);
 			} 
@@ -159,9 +159,9 @@ bm_read_variable_data( FILE *file) {
 	tmp[offset-1] = '\0';
 	name_size = strlen(tmp) + 1;
 	
-	dest = (char*) mem_alloc(name_size * sizeof(char));
+	dest = (char*) mem_alloc_with_name (name_size * sizeof(char), "dest_variable_data");
 
-	strLcpy(dest, tmp, name_size);
+	string_copy(dest, tmp, name_size);
 	
 	return dest;
 }
@@ -191,8 +191,8 @@ bm_read_variable_name(FILE *file) {
 	tmp[(offset - 1)] = '\0';
 	
 	name_size = strlen(tmp) + 1;
-	dest = (char*) mem_alloc(name_size * sizeof(char));
-	strLcpy(dest, tmp, name_size);
+	dest = (char*) mem_alloc_with_name (name_size * sizeof(char), "dest_variable_name");
+	string_copy(dest, tmp, name_size);
 
 	return dest;
 }

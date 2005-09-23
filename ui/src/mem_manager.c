@@ -19,35 +19,54 @@
  *
  */
 
-#include "mem_manager.h"
+#include <sys/types.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "mem_manager.h"
+#include "strLcpy.h"
 
 /* initialize the memory handler */
 void*
-mem_handler_init
-			() 
+mem_handler_init () 
 {
 	extern struct mem_handler memory;
-	memory.current_place = 0;
+	int i = 0;
+	
+	memory.current_place = 0; /* where to add the next element */
 	memory.nb_alloc = 0;
 	memory.nb_free = 0;
 	memory.total_bytes = 0;
+
+	/* initialize all the arrays */
+	for (i=0; i<MEM_MAX_ELEMENTS; i++) {
+		memory.element[i] = (int) NULL;
+		memory.size[i] = (int) NULL;
+		memory.name[i] = NULL;
+	}
 }
 
-/* wrap malloc() to trace what is allocated */
-void*	
-mem_alloc
-		(int size) 
+void*
+has_enough_room (void)
 {
 	extern struct mem_handler memory;
-	void*         new_pointer;
 	
 	if ((memory.current_place + 1) == MEM_MAX_ELEMENTS) {
 		printf ("[mem_handler] ERROR: not enough room, enlarge MEM_MAX_ELEMENTS, already %d elements allocated.\n", MEM_MAX_ELEMENTS);
 		mem_print_status();
 		exit (0);
 	}
+}
+
+/* wrap malloc() to trace what is allocated */
+void*	
+mem_alloc (int size) 
+{
+	extern struct mem_handler memory;
+	void*         new_pointer;
+
+	has_enough_room();
 
 	if (size <= 0) {
 		printf ("[mem_handler] ERROR: cannot allocate a size == 0\n");
@@ -55,7 +74,25 @@ mem_alloc
 	}
 
 	new_pointer = malloc (size);
-	add_element (new_pointer, size);
+	add_element (new_pointer, size, "[unknown]");
+	return (new_pointer);
+}
+
+void*
+mem_alloc_with_name(int size, const char *name) 
+{
+	extern struct mem_handler memory;
+	void*         new_pointer;
+
+	has_enough_room();
+
+	if (size <= 0) {
+		printf ("[mem_handler] ERROR: cannot allocate a size == 0\n");
+		return (0);
+	}
+
+	new_pointer = malloc (size);
+	add_element (new_pointer, size, name);
 	return (new_pointer);
 }
 
@@ -84,8 +121,7 @@ mem_free
 
 /* free every remaining pointers */
 int	
-mem_free_all		
-		(void) 
+mem_free_all (void) 
 {
 	extern struct mem_handler memory;
 	int	current_element;
@@ -93,17 +129,23 @@ mem_free_all
 	int	bytes=0;
 	
 	for (current_element=memory.current_place-1; current_element>=0; current_element--) {
-		free (memory.elements[current_element]);
-		memory.total_bytes -= memory.sizes[current_element];
-		bytes += memory.sizes[current_element];
-		memory.elements[current_element] = 0;
+		
+		free (memory.element[current_element]);
+		memory.element[current_element] = NULL;
+		
+		free (memory.name[current_element]);
+		memory.name[current_element] = NULL;
+		
+		memory.total_bytes -= memory.size[current_element];
+		bytes += memory.size[current_element];
 		memory.current_place--;
+		
 		counter++;
 	}
 
 	if (DEBUG && counter>0) {
-		#ifdef MEM_DEBUG 
-		printf ("[mem_handler] DEBUG: there were still %d elements allocated (%d bytes).\n", counter, bytes);
+		#ifdef MEM_DEBUG
+		printf("[mem_handler] DEBUG: there were still %d elements allocated (%d bytes).\n", counter, bytes);
 		#endif
 	}
 	
@@ -118,16 +160,14 @@ mem_print_status
 	extern struct 	mem_handler memory;
 	int		i;
 	
-	#ifdef MEM_DEBUG 
 	printf ("---------------------------------\n");
 	printf ("****       m e m o r y       ****\n");
 	printf ("---------------------------------\n");
 	printf ("%d pointers for %d bytes\n", memory.current_place, memory.total_bytes);
 	printf ("---------------------------------\n");
 	for (i=0; i<memory.current_place; i++) {
-		printf ("Element #%03d - 0x%x (%d bytes)\n", i, (int) memory.elements[i], memory.sizes[i]);
+		printf ("Element #%03d @ 0x%x (%s, %d bytes)\n", i, (int) memory.element[i], memory.name[i], memory.size[i]);
 	}
-	#endif
 }
 
 
@@ -145,7 +185,7 @@ get_position
 	int           current_pos;	
 	
 	for (current_pos=0; current_pos<memory.current_place; current_pos++) {
-		if (pointer == memory.elements[current_pos]) {
+		if (pointer == memory.element[current_pos]) {
 			return (current_pos);
 		}
 	}
@@ -167,49 +207,91 @@ element_exists
 
 /* add the given value to the table */
 int	
-add_element
-		(void* pointer, int size) 
+add_element (void* pointer, int size, const char *name) 
 {
 	extern struct mem_handler memory;
 	
-	if (memory.elements[memory.current_place] != 0) {
+	if (memory.element[memory.current_place] != NULL) {
 		printf ("[mem_handler] ERROR: the current field is not free [0x%x, index #%d]\n", 
-				(int) memory.elements[memory.current_place], 
+				(int) memory.element[memory.current_place], 
 				memory.current_place);
 		return 0;
 	}
 	else {
-		memory.sizes[memory.current_place] = size;
-		memory.elements[memory.current_place] = pointer;
+		
+		/* save the pointer itself */
+		memory.element[memory.current_place] = pointer;
+
+		/* save the size allocated */
+		memory.size[memory.current_place] = size;
+		
+		/* save the name of the pointer */
+		memory.name[memory.current_place] = (char *) malloc (strlen(name) + 1);
+		string_copy (memory.name[memory.current_place], name, (strlen(name) + 1));
+
+		/* the current place is the next one */
 		memory.current_place++;
+
+		/* count the total bytes allocated */
 		memory.total_bytes += size;
 	}
 
 	return (1);
 }
 
-/* remove the given value from the table */
-int	remove_element		(void* ptr) {
+/* set an element to default empty values */
+void *
+purge_element(int position)
+{
+	extern struct mem_handler memory;
+	
+	memory.element[position] = (int) NULL;
+	memory.name[position] = NULL;	
+	memory.size[position] = (int) NULL;;
+}
+
+/* drop the given element from the elements array, and shift all the remainings */
+int	
+remove_element (void* ptr) {
 	extern struct mem_handler memory;
 	int		position;
 	
 	if (ptr <= 0) {
-		printf ("ERREUR : demande de libération d'un pointeur vide\n");
+		printf ("[mem_handler] ERROR: cannot free an empty pointer\n");
 		return (0);
 	}
-	
-	position = get_position (ptr);
-	memory.total_bytes -= memory.sizes[position];
 
+	/* get the index of the element to remove */
+	position = get_position (ptr);
+
+	/* decrease the total amount of bytes allocatd */
+	memory.total_bytes -= memory.size[position];
+
+	/* shift every elements from the remove candidate to the last one */
 	for (position; position<memory.current_place; position++) {
-		memory.elements[position] = memory.elements[position+1];
-		memory.sizes[position] = memory.sizes[position+1];
+		
+		if (memory.element[position + 1] != NULL) {
+			/* pointer */
+			memory.element[position] = memory.element[position + 1];
+		
+			/* size */
+			memory.size[position] = memory.size[position + 1];
+		}
+		
+		/* name */
+		if (memory.name[position] != NULL)
+			free (memory.name[position]);
+		
+		if (memory.name[position + 1] != NULL) {
+			memory.name[position] = (char *) malloc(strlen(memory.name[position + 1]) + 1);
+			string_copy(memory.name[position], memory.name[position + 1], strlen(memory.name[position + 1]) + 1);
+		}
 	}
 	
-	memory.elements[position] = 0;
-	memory.sizes[position] = 0;
+	/* free all the stuff for the current place */
 	memory.current_place--;
-	
+	purge_element(memory.current_place);
+
 	return (1);
 }
 

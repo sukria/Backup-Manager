@@ -18,34 +18,61 @@
 int
 main (int argc, char *argv[])
 {
-	
+	char *str1;
+	char *str2;
+	char *str3;
+	char *str4;
+
 #ifdef ENABLE_NLS
-  bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
+	bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	textdomain (GETTEXT_PACKAGE);
 #endif
 
-  gtk_set_locale ();
-  gtk_init (&argc, &argv);
+	gtk_set_locale ();
+	gtk_init (&argc, &argv);
 
-  add_pixmap_directory (PACKAGE_DATA_DIR "/" PACKAGE "/pixmaps");
+	add_pixmap_directory (PACKAGE_DATA_DIR "/" PACKAGE "/pixmaps");
 
-  /* Init our mem_handler */
-  mem_handler_init();
+	/* Init our mem_handler */
+	mem_handler_init();
 
-  /* Some stuff to do with our objects */
-  configuration_window = create_configuration_window();
-  gtk_widget_show(configuration_window);
-  
-  filechooser = create_filechooser(); 
-  
-  /* test */
-  bm_load_conf("/etc/backup-manager.conf"); 
+	/* Some stuff to do with our objects */
 
-  mem_print_status();
-  
-  gtk_main ();
+	configuration_window = create_configuration_window();
+	gtk_widget_show(configuration_window);
+	filechooser = create_filechooser(); 
+	
+	/* test */
+	bm_load_conf("/etc/backup-manager.conf"); 
+	mem_print_status();
+        bm_display_config();
+	bm_free_config();
+	mem_print_status();
+	
+	gtk_main ();
 
-  return 0;
+	
+	/* mem_handler test */
+	/*
+	printf("3 mem_alloc a la suite\n");
+	str1 = (char *) mem_alloc_with_name(10, "str1");
+	str2 = (char *) mem_alloc(3);
+	str4 = (char *) mem_alloc_with_name(3, "str4");
+	mem_print_status();
+	
+	printf("mem_free\n");
+	mem_free(str2);
+	mem_print_status();
+	
+	printf("mem_alloc_with_name(str3)\n");
+	str3 = (char *) mem_alloc_with_name(255, "str3");
+	mem_print_status();
+
+	mem_free_all();
+	mem_print_status();
+	*/
+	
+	return 0;
 }
 

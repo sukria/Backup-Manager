@@ -14,6 +14,9 @@
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
+ * This is the OpenBSD strlcpy, renamed to string_copy().
+ *
  */
 
 #include <sys/types.h>
@@ -24,7 +27,8 @@
  * will be copied.  Always NUL terminates (unless siz == 0).
  * Returns strlen(src); if retval >= siz, truncation occurred.
  */
-size_t strLcpy(char *dst, const char *src, size_t siz)
+int 
+string_copy (char *dst, const char *src, size_t siz)
 {
 	char *d = dst;
 	const char *s = src;

@@ -61,10 +61,6 @@ on_confw_BM_REPOSITORY_ROOT_button_clicked
 	
 	filesel = create_confw_repository_filesel();
 	gtk_widget_show(filesel);
-	/*
-	selected_filename = gtk_file_selection_get_filename(filesel);
-	printf ("fichier: %s\n", selected_filename);
-	*/
 }
 
 
@@ -102,8 +98,6 @@ on_confw_repository_filesel_ok_button
    
    /* Update the entry field */
    gtk_entry_set_text (repository_entry, selected_filename);
-   
-  /* g_print ("Selected filename: %s\n", selected_filename);*/
 }
 
 

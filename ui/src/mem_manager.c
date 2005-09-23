@@ -43,7 +43,7 @@ mem_alloc
 	extern struct mem_handler memory;
 	void*         new_pointer;
 	
-	if ((memory.current_place) > (MEM_MAX_ELEMENTS - 1)) {
+	if ((memory.current_place + 1) == MEM_MAX_ELEMENTS) {
 		printf ("[mem_handler] ERROR: not enough room, enlarge MEM_MAX_ELEMENTS, already %d elements allocated.\n", MEM_MAX_ELEMENTS);
 		mem_print_status();
 		exit (0);

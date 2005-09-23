@@ -74,19 +74,19 @@ bm_variable_data* bm_load_conf(const char* conf_file) {
 				strip_space(bm_file);
 				
 				// variable name
-				bm_variable_name = bm_read_variable_name(bm_variable_name,  bm_file);
+				bm_variable_name = bm_read_variable_name(bm_file);
 
 				if ( !bm_is_variable_name(bm_variable_name, &index) ) {
 					mem_free(bm_variable_name);
 					continue;
 				}
 
-				
+
 				mem_free(bm_variable_name);
 				
 				strip_space(bm_file);
 			
-				bm_variable_data = bm_read_variable_data(bm_variable_data, bm_file);
+				bm_variable_data = bm_read_variable_data(bm_file);
 				bm_variable_data_size = strlen(bm_variable_data) + 1;
 				
 				bm_config_data[index].BM_VARIABLE_DATA = (char*) mem_alloc( bm_variable_data_size * sizeof(char) );
@@ -122,13 +122,14 @@ void bm_display_config() {
 }
 
 char*
-bm_read_variable_data(char* dest, FILE *file) {
+bm_read_variable_data( FILE *file) {
 
 	char	tmp[BM_BUFF_SIZE];	
 	BM_Bool	next = BM_TRUE, data_start = BM_FALSE;
 	int 	offset	= 0;
 	int	read_char;
 	size_t	name_size;
+	char	*dest;
 	
 	while ( next && ( offset < BM_BUFF_SIZE ) ) {
 		
@@ -166,13 +167,14 @@ bm_read_variable_data(char* dest, FILE *file) {
 }
 
 char *
-bm_read_variable_name(char *dest ,FILE *file) {
+bm_read_variable_name(FILE *file) {
 
 	char	tmp[BM_BUFF_SIZE];	
 	BM_Bool	next	= BM_TRUE;
 	int 	offset	= 0;
 	int	read_char;
 	size_t	name_size;
+	char	*dest;
 	
 	while ( next && ( offset < BM_BUFF_SIZE - 1 ) ) {
 		if ( ( read_char = fgetc(file)) != EOF )  {

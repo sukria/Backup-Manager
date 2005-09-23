@@ -24,10 +24,10 @@ void
 bm_display_config();
 
 char *
-bm_read_variable_data(char *dest, FILE *file);
+bm_read_variable_data(FILE *file);
 
 char *
-bm_read_variable_name(char *dest, FILE *file);
+bm_read_variable_name(FILE *file);
 
 BM_Bool 
 bm_is_variable_name (const char *variable, int *index );

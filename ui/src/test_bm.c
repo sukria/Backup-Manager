@@ -1,4 +1,5 @@
 #include "bm.h"
+#include "mem_manager.h"
 
 int main (int argc, char **argv) {
 
@@ -10,5 +11,6 @@ int main (int argc, char **argv) {
 
 	bm_free_config();
 
-
+	mem_print_status();
+	
 }

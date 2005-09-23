@@ -11,10 +11,8 @@ typedef	unsigned short int	BM_Bool;
 
 #define	BM_TRUE		1
 #define	BM_FALSE	0
-#define BM_NB_VARIABLE	30
+#define BM_NB_VARIABLE	26	
 #define BM_BUFF_SIZE    1024
-
-//config_data* bm_load_conf();
 
 bm_variable_data* 
 bm_load_conf(const char* conf_file);

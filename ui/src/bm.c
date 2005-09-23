@@ -8,36 +8,32 @@
 #include "strLcpy.h"
 
 bm_variable_data bm_config_data[] = {
-        { "BM_NAME_FORMAT", "" },
-        { "BM_FILETYPE", ""},
-        { "BM_BACKUP_METHOD", ""},
-        { "BM_MAX_TIME_TO_LIVE", ""},
-        { "BM_DUMP_SYMLINKS", ""},
-        { "BM_PURGE_DUPLICATES", ""},
-        { "BM_ARCHIVES_PREFIX", ""},
-        { "BM_DIRECTORIES", ""},
-        { "BM_DIRECTORIES_BLACKLIST", ""},
-        { "BM_ARCHIVES_REPOSITORY", ""},
-        { "BM_REPOSITORY_SECURE", ""},
-        { "BM_USER", ""},
-        { "BM_GROUP", ""},
-        { "BM_UPLOAD_MODE", ""},
-        { "BM_UPLOAD_HOSTS", ""},
-        { "BM_UPLOAD_USER", ""},
-        { "BM_UPLOAD_PASSWD", ""},
-        { "BM_FTP_PURGE", ""},
-        { "BM_UPLOAD_KEY", ""},
-        { "BM_UPLOAD_DIR", ""},
-        { "BM_BURNING", ""},
-        { "BM_BURNING_CHKMD5", ""},
-        { "BM_BURNING_DEVICE", ""},
-        { "BM_BURNING_DEVFORCED", ""},
-        { "BM_BURNING_METHOD", ""},
-        { "BM_BURNING_MAXSIZE", ""},
-        { "BM_LOGGER", ""},
-        { "BM_LOGGER_FACILITY", ""},
-        { "BM_PRE_BACKUP_COMMAND", ""},
-        { "BM_POST_BACKUP_COMMAND", ""}
+	{ "BM_NAME_FORMAT", "" },
+	{ "BM_FILETYPE", "" },
+	{ "BM_MAX_TIME_TO_LIVE", "" },
+	{ "BM_DUMP_SYMLINKS", "" },
+	{ "BM_ARCHIVES_PREFIX", "" },
+	{ "BM_DIRECTORIES", "" },
+	{ "BM_DIRECTORIES_BLACKLIST", "" },
+	{ "BM_ARCHIVES_REPOSITORY", "" },
+	{ "BM_USER", "" },
+	{ "BM_GROUP", "" },
+	{ "BM_UPLOAD_MODE", "" },
+	{ "BM_UPLOAD_HOSTS", "" },
+	{ "BM_UPLOAD_USER", "" },
+	{ "BM_UPLOAD_PASSWD", "" },
+	{ "BM_FTP_PURGE", "" },
+	{ "BM_UPLOAD_KEY", "" },
+	{ "BM_UPLOAD_DIR", "" },
+	{ "BM_BURNING", "" },
+	{ "BM_BURNING_MEDIA", "" },
+	{ "BM_BURNING_DEVICE", "" },
+	{ "BM_BURNING_METHOD", "" },
+	{ "BM_BURNING_MAXSIZE", "" },
+	{ "BM_LOGGER", "" },
+	{ "BM_LOGGER_FACILITY", "" },
+	{ "BM_PRE_BACKUP_COMMAND", "" },
+	{ "BM_POST_BACKUP_COMMAND", "" }
 };
 
 bm_variable_data* bm_load_conf(const char* conf_file) {
@@ -61,13 +57,11 @@ bm_variable_data* bm_load_conf(const char* conf_file) {
 				// comment
 				if ( (char) bm_read_char == '#' ) {
 					go_to_next_line(bm_file);
-					printf("ligne de commentaire\n");
 					continue;
 				} 
 				
 				// empty line
 				if ( (char) bm_read_char == '\n' ) {
-					printf("fin de ligne\n");
 					continue;
 				}
 
@@ -81,29 +75,26 @@ bm_variable_data* bm_load_conf(const char* conf_file) {
 				
 				// variable name
 				bm_variable_name = bm_read_variable_name(bm_variable_name,  bm_file);
-				printf("la\n");
-				printf("variable lu : %s\n", bm_variable_name);
 
 				if ( !bm_is_variable_name(bm_variable_name, &index) ) {
+					mem_free(bm_variable_name);
 					continue;
 				}
 
-				printf("variable lu : %s\n", bm_variable_name);
 				
 				mem_free(bm_variable_name);
 				
 				strip_space(bm_file);
 			
 				bm_variable_data = bm_read_variable_data(bm_variable_data, bm_file);
-				bm_variable_data_size = strlen(bm_variable_data);
+				bm_variable_data_size = strlen(bm_variable_data) + 1;
 				
 				bm_config_data[index].BM_VARIABLE_DATA = (char*) mem_alloc( bm_variable_data_size * sizeof(char) );
 				strLcpy(bm_config_data[index].BM_VARIABLE_DATA, bm_variable_data, bm_variable_data_size);
 				
 				mem_free(bm_variable_data);
-				
 			} 
-	}
+		}
 
 		fclose(bm_file);
 	} else {
@@ -143,10 +134,13 @@ bm_read_variable_data(char* dest, FILE *file) {
 		
 		if ( ( read_char = fgetc(file) ) != EOF ) {
 			
-			if ( read_char == '"' && !data_start ) {
-				data_start = BM_TRUE;
-			} else {
-				continue;
+			if ( !data_start ) {
+				if ( read_char == '"' ) {
+					data_start = BM_TRUE;
+					continue;
+				} else {
+					continue;
+				}
 			}
 			
 			if ( (char)read_char == '"' ) {
@@ -161,7 +155,7 @@ bm_read_variable_data(char* dest, FILE *file) {
 		offset++;
 	}
 	
-	tmp[offset] = '\0';
+	tmp[offset-1] = '\0';
 	name_size = strlen(tmp) + 1;
 	
 	dest = (char*) mem_alloc(name_size * sizeof(char));
@@ -198,8 +192,6 @@ bm_read_variable_name(char *dest ,FILE *file) {
 	dest = (char*) mem_alloc(name_size * sizeof(char));
 	strLcpy(dest, tmp, name_size);
 
-	printf("lu : %s\n", dest);
-	
 	return dest;
 }
 
@@ -275,8 +267,6 @@ BM_Bool read_export (FILE *file) {
 		offset++;
 	}
 	tmp[offset - 1 ] = '\0';
-	
-	printf("dans export j'ai lu : %s\n", tmp);
 	
 	if ( strcmp(tmp, "export") == 0 ) {
 		return BM_TRUE;

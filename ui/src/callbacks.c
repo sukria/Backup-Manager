@@ -13,8 +13,6 @@
 #include "global_widgets.h"
 #include "dyn_interfaces.h"
 
-#include "mem_manager.h";
-
 void
 on_configuration_window_destroy        (GtkObject       *object,
                                         gpointer         user_data)
@@ -59,7 +57,7 @@ on_confw_BM_REPOSITORY_ROOT_button_clicked
 	const gchar *selected_filename;
         GtkWidget   *filesel;
 	
-	filesel = create_confw_repository_filesel();
+	filesel = (GtkWidget *) create_confw_repository_filesel();
 	gtk_widget_show(filesel);
 }
 

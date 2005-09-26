@@ -11,8 +11,6 @@
 
 #include "interface.h"
 #include "support.h"
-#include "bm.h";
-
 #include "global_widgets.h"
 
 int
@@ -38,40 +36,11 @@ main (int argc, char *argv[])
 	mem_handler_init();
 
 	/* Some stuff to do with our objects */
-
 	configuration_window = create_configuration_window();
 	gtk_widget_show(configuration_window);
 	filechooser = create_filechooser(); 
 	
-	/* test */
-	bm_load_conf("/etc/backup-manager.conf"); 
-	mem_print_status();
-        bm_display_config();
-	bm_free_config();
-	mem_print_status();
-	
 	gtk_main ();
-
-	
-	/* mem_handler test */
-	/*
-	printf("3 mem_alloc a la suite\n");
-	str1 = (char *) mem_alloc_with_name(10, "str1");
-	str2 = (char *) mem_alloc(3);
-	str4 = (char *) mem_alloc_with_name(3, "str4");
-	mem_print_status();
-	
-	printf("mem_free\n");
-	mem_free(str2);
-	mem_print_status();
-	
-	printf("mem_alloc_with_name(str3)\n");
-	str3 = (char *) mem_alloc_with_name(255, "str3");
-	mem_print_status();
-
-	mem_free_all();
-	mem_print_status();
-	*/
 	
 	return 0;
 }

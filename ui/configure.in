@@ -4,6 +4,7 @@ AC_INIT(configure.in)
 AM_INIT_AUTOMAKE(backup-manager-ui, 0.1)
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
+AC_PROG_RANLIB
 
 AC_ISC_POSIX
 AC_PROG_CC
@@ -26,6 +27,7 @@ AM_GLIB_GNU_GETTEXT
 AC_OUTPUT([
 Makefile
 src/Makefile
+src/t/Makefile
 po/Makefile.in
 ])
 

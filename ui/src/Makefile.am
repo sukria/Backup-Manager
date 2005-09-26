@@ -5,25 +5,26 @@ INCLUDES = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	@PACKAGE_CFLAGS@
 
-bin_PROGRAMS = backup-manager-ui test_bm
+bin_PROGRAMS = backup-manager-ui 
+noinst_LIBRARIES = libmem.a libstring.a libconffile.a
 
 backup_manager_ui_SOURCES = \
 	main.c \
 	customconfig.h \
 	global_widgets.h \
 	support.c support.h \
-	mem_manager.c mem_manager.h \
 	interface.c interface.h \
 	dyn_interfaces.c dyn_interfaces.h \
-	bm.c bm.h \
-	strLcpy.c strLcpy.h \
-	callbacks.c callbacks.h
+	callbacks.c callbacks.h 
 
-test_bm_SOURCES = \
-	test_bm.c \
-	bm.c bm.h \
-	mem_manager.c mem_manager.h \
+libmem_a_SOURCES = \
+	mem_manager.c mem_manager.h
+
+libstring_a_SOURCES = \
 	strLcpy.c strLcpy.h
 
-backup_manager_ui_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
+libconffile_a_SOURCES = \
+	bm_configuration_manager.c bm_configuration_manager.h
+
+backup_manager_ui_LDADD = @PACKAGE_LIBS@ $(INTLLIBS) libmem.a libconffile.a libstring.a
 

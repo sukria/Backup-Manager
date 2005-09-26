@@ -43,36 +43,29 @@ struct mem_handler {
 
 /* wrap malloc() to trace what is allocated */
 void*	
-mem_alloc	
-		(int size);
+mem_alloc (int size);
 
 /* wrap free() to trace what is freed */
 int	
-mem_free
-		(void* ptr);
+mem_free (void* ptr);
 
 /* free each pointer referenced */
 int	
-mem_free_all
-		(void);
+mem_free_all (void);
 
 /* print the content of the memory table */
 void	
-mem_print_status	
-		(void);
+mem_print_status (void);
 
 
 int	
-get_position	
-		(void*	pointer); 
+get_position (void* pointer); 
 
 int
 add_element (void* pointer, int size, const char *name);
 
 int
-remove_element
-		();
+remove_element ();
 
 void*
-mem_handler_init
-		();
+mem_handler_init ();

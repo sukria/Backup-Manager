@@ -14,7 +14,7 @@
 
 
 
-SOURCES = $(backup_manager_ui_SOURCES)
+SOURCES = $(backup_manager_ui_SOURCES) $(test_bm_SOURCES)
 
 srcdir = .
 top_srcdir = ..
@@ -36,7 +36,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = backup-manager-ui$(EXEEXT)
+bin_PROGRAMS = backup-manager-ui$(EXEEXT) test_bm$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -56,6 +56,10 @@ am_backup_manager_ui_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) \
 backup_manager_ui_OBJECTS = $(am_backup_manager_ui_OBJECTS)
 am__DEPENDENCIES_1 =
 backup_manager_ui_DEPENDENCIES = $(am__DEPENDENCIES_1)
+am_test_bm_OBJECTS = test_bm.$(OBJEXT) bm.$(OBJEXT) \
+	mem_manager.$(OBJEXT) strLcpy.$(OBJEXT)
+test_bm_OBJECTS = $(am_test_bm_OBJECTS)
+test_bm_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -63,13 +67,13 @@ DEP_FILES = ./$(DEPDIR)/bm.Po ./$(DEPDIR)/callbacks.Po \
 	./$(DEPDIR)/dyn_interfaces.Po \
 	./$(DEPDIR)/interface.Po ./$(DEPDIR)/main.Po \
 	./$(DEPDIR)/mem_manager.Po ./$(DEPDIR)/strLcpy.Po \
-	./$(DEPDIR)/support.Po
+	./$(DEPDIR)/support.Po ./$(DEPDIR)/test_bm.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(backup_manager_ui_SOURCES)
-DIST_SOURCES = $(backup_manager_ui_SOURCES)
+SOURCES = $(backup_manager_ui_SOURCES) $(test_bm_SOURCES)
+DIST_SOURCES = $(backup_manager_ui_SOURCES) $(test_bm_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -182,6 +186,12 @@ backup_manager_ui_SOURCES = \
 	strLcpy.c strLcpy.h \
 	callbacks.c callbacks.h
 
+test_bm_SOURCES = \
+	test_bm.c \
+	bm.c bm.h \
+	mem_manager.c mem_manager.h \
+	strLcpy.c strLcpy.h
+
 backup_manager_ui_LDADD = -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangoxft-1.0 -lpangox-1.0 -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0   $(INTLLIBS)
 all: all-am
 
@@ -242,6 +252,9 @@ clean-binPROGRAMS:
 backup-manager-ui$(EXEEXT): $(backup_manager_ui_OBJECTS) $(backup_manager_ui_DEPENDENCIES) 
 	@rm -f backup-manager-ui$(EXEEXT)
 	$(LINK) $(backup_manager_ui_LDFLAGS) $(backup_manager_ui_OBJECTS) $(backup_manager_ui_LDADD) $(LIBS)
+test_bm$(EXEEXT): $(test_bm_OBJECTS) $(test_bm_DEPENDENCIES) 
+	@rm -f test_bm$(EXEEXT)
+	$(LINK) $(test_bm_LDFLAGS) $(test_bm_OBJECTS) $(test_bm_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -257,6 +270,7 @@ include ./$(DEPDIR)/main.Po
 include ./$(DEPDIR)/mem_manager.Po
 include ./$(DEPDIR)/strLcpy.Po
 include ./$(DEPDIR)/support.Po
+include ./$(DEPDIR)/test_bm.Po
 
 .c.o:
 	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

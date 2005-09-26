@@ -29,32 +29,32 @@
 #include "strLcpy.h"
 
 bm_variable_data bm_config_data[] = {
-	{ "BM_NAME_FORMAT", "" },
-	{ "BM_FILETYPE", "" },
-	{ "BM_MAX_TIME_TO_LIVE", "" },
-	{ "BM_DUMP_SYMLINKS", "" },
-	{ "BM_ARCHIVES_PREFIX", "" },
-	{ "BM_DIRECTORIES", "" },
-	{ "BM_DIRECTORIES_BLACKLIST", "" },
-	{ "BM_ARCHIVES_REPOSITORY", "" },
-	{ "BM_USER", "" },
-	{ "BM_GROUP", "" },
-	{ "BM_UPLOAD_MODE", "" },
-	{ "BM_UPLOAD_HOSTS", "" },
-	{ "BM_UPLOAD_USER", "" },
-	{ "BM_UPLOAD_PASSWD", "" },
-	{ "BM_FTP_PURGE", "" },
-	{ "BM_UPLOAD_KEY", "" },
-	{ "BM_UPLOAD_DIR", "" },
-	{ "BM_BURNING", "" },
-	{ "BM_BURNING_MEDIA", "" },
-	{ "BM_BURNING_DEVICE", "" },
-	{ "BM_BURNING_METHOD", "" },
-	{ "BM_BURNING_MAXSIZE", "" },
-	{ "BM_LOGGER", "" },
-	{ "BM_LOGGER_FACILITY", "" },
-	{ "BM_PRE_BACKUP_COMMAND", "" },
-	{ "BM_POST_BACKUP_COMMAND", "" }
+	{ "BM_NAME_FORMAT", NULL },
+	{ "BM_FILETYPE", NULL },
+	{ "BM_MAX_TIME_TO_LIVE", NULL },
+	{ "BM_DUMP_SYMLINKS", NULL },
+	{ "BM_ARCHIVES_PREFIX", NULL },
+	{ "BM_DIRECTORIES", NULL },
+	{ "BM_DIRECTORIES_BLACKLIST", NULL },
+	{ "BM_ARCHIVES_REPOSITORY", NULL },
+	{ "BM_USER", NULL },
+	{ "BM_GROUP", NULL },
+	{ "BM_UPLOAD_MODE", NULL },
+	{ "BM_UPLOAD_HOSTS", NULL },
+	{ "BM_UPLOAD_USER", NULL },
+	{ "BM_UPLOAD_PASSWD", NULL },
+	{ "BM_FTP_PURGE", NULL },
+	{ "BM_UPLOAD_KEY", NULL },
+	{ "BM_UPLOAD_DIR", NULL },
+	{ "BM_BURNING", NULL },
+	{ "BM_BURNING_MEDIA", NULL },
+	{ "BM_BURNING_DEVICE", NULL },
+	{ "BM_BURNING_METHOD", NULL },
+	{ "BM_BURNING_MAXSIZE", NULL },
+	{ "BM_LOGGER", NULL },
+	{ "BM_LOGGER_FACILITY", NULL },
+	{ "BM_PRE_BACKUP_COMMAND", NULL },
+	{ "BM_POST_BACKUP_COMMAND", NULL }
 };
 
 void bm_load_conf(const char* conf_file) {
@@ -110,7 +110,9 @@ void bm_load_conf(const char* conf_file) {
 				bm_variable_data = bm_read_variable_data(bm_file);
 				bm_variable_data_size = strlen(bm_variable_data) + 1;
 				
-				bm_config_data[index].BM_VARIABLE_DATA = (char*) mem_alloc_with_name( bm_variable_data_size * sizeof(char), "bm_variable_data");
+				bm_config_data[index].BM_VARIABLE_DATA = (char*) mem_alloc_with_name(
+						bm_variable_data_size * sizeof(char), 
+						bm_config_data[index].BM_VARIABLE_NAME);
 				string_copy(bm_config_data[index].BM_VARIABLE_DATA, bm_variable_data, bm_variable_data_size);
 				
 				mem_free(bm_variable_data);
@@ -128,7 +130,8 @@ void bm_free_config () {
 
 	int i;
 	for ( i = 0 ; i < BM_NB_VARIABLE ; i++ ) {
-		mem_free(bm_config_data[i].BM_VARIABLE_DATA);
+		if (bm_config_data[i].BM_VARIABLE_DATA != NULL) 
+			mem_free(bm_config_data[i].BM_VARIABLE_DATA);
 	}
 
 }
@@ -315,7 +318,8 @@ void bm_set_variable_data (const char *bm_variable, const char *bm_dada) {
 	int index = 0;
 
 	if ( bm_is_variable_name(bm_variable, &index) ) {
-		mem_free(bm_config_data[index].BM_VARIABLE_DATA);
+		if (bm_config_data[index].BM_VARIABLE_DATA != NULL) 
+			mem_free(bm_config_data[index].BM_VARIABLE_DATA);
 		bm_config_data[index].BM_VARIABLE_DATA = (char*) mem_alloc( (strlen(bm_dada) + 1) * sizeof(char));
 		string_copy(bm_config_data[index].BM_VARIABLE_DATA, bm_dada, (strlen(bm_dada) + 1) );
 	}

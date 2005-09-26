@@ -1,3 +1,24 @@
+/*
+ * Memory Manager - a small library for handling malloc and free
+ *
+ * Copyright (C) 2003-2005 Alexis Sukrieh <sukria@sukria.net>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software              
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
+ *
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,7 +57,7 @@ bm_variable_data bm_config_data[] = {
 	{ "BM_POST_BACKUP_COMMAND", "" }
 };
 
-bm_variable_data* bm_load_conf(const char* conf_file) {
+void bm_load_conf(const char* conf_file) {
 
 	FILE		*bm_file;
 	char		*bm_variable_name;
@@ -178,7 +199,7 @@ bm_read_variable_name(FILE *file) {
 	
 	while ( next && ( offset < BM_BUFF_SIZE - 1 ) ) {
 		if ( ( read_char = fgetc(file)) != EOF )  {
-			if ( (char)read_char == ' ' || (char)read_char == '=' ) {
+			if ( (char)read_char == ' ' || (char)read_char == '=' || (char)read_char == '%' ) {
 				next = BM_FALSE;
 			} else {
 				tmp[offset] = (char) read_char;
@@ -276,3 +297,87 @@ BM_Bool read_export (FILE *file) {
 		return BM_FALSE;
 	}
 }
+
+char* bm_get_variable_data (const char *bm_variable) {
+
+	int index = 0;
+	
+	if ( bm_is_variable_name(bm_variable, &index) ) {
+		return bm_config_data[index].BM_VARIABLE_DATA;
+	} else {
+		return NULL;
+	}
+	
+}
+
+void bm_set_variable_data (const char *bm_variable, const char *bm_dada) {
+	
+	int index = 0;
+
+	if ( bm_is_variable_name(bm_variable, &index) ) {
+		mem_free(bm_config_data[index].BM_VARIABLE_DATA);
+		bm_config_data[index].BM_VARIABLE_DATA = (char*) mem_alloc( (strlen(bm_dada) + 1) * sizeof(char));
+		string_copy(bm_config_data[index].BM_VARIABLE_DATA, bm_dada, (strlen(bm_dada) + 1) );
+	}
+}
+
+void bm_write_conf (const char *dest_file_name) {
+
+	FILE	*fh_in, *fh_out;
+	char	*bm_variable_name;
+	int	read_char;
+	int	index 			= 0;
+	BM_Bool	write_variable		= BM_FALSE;
+	BM_Bool	read_variable		= BM_FALSE;
+	BM_Bool	find_tpl_special_char	= BM_FALSE;
+	
+	if ( fh_in = fopen(BM_TPL_FILE, "r") ) {
+		if ( fh_out = fopen(dest_file_name, "w") ) {
+			while( (read_char = fgetc(fh_in)) != EOF ) {
+				
+				printf("%c", (char)read_char);
+				if ( find_tpl_special_char ) {
+					if ( (char)read_char == '%' ) {
+						read_variable = BM_TRUE;
+					} else {
+						read_variable = BM_FALSE;
+					}
+					 
+				}
+
+				if ( read_variable ) {
+					bm_variable_name = bm_read_variable_name(fh_in);
+					if ( bm_is_variable_name( bm_variable_name, &index) ) {
+						write_variable= BM_TRUE;
+					}
+					mem_free(bm_variable_name);
+					
+				}
+
+				if ( write_variable ) {
+					fwrite(bm_config_data[index].BM_VARIABLE_DATA, sizeof(char), strlen(bm_config_data[index].BM_VARIABLE_DATA) , fh_out);
+					fputs("\"\n", fh_out);
+					read_variable = BM_FALSE;
+					write_variable = BM_FALSE;
+					find_tpl_special_char = BM_FALSE;
+					go_to_next_line(fh_in);
+					continue;
+				}
+				
+				if ( (char)read_char == '%' ) {
+					find_tpl_special_char = BM_TRUE;
+				} else {
+					fputc( read_char, fh_out);
+				}	
+				
+			}
+			fclose(fh_out);
+		} else {
+			perror("can't open sav file");
+		}
+		fclose(fh_in);
+	} else {
+		perror("can't open template file");
+	}
+
+} 

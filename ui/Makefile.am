@@ -1,5 +1,22 @@
 ## Process this file with automake to produce Makefile.in
 
+MAINTAINERCLEANFILES = \
+	aclocal.m4 \
+	config.h.in \
+	config.log \
+	config.status \
+	configure \
+	depcomp \
+	install-sh \
+	Makefile \
+	Makefile.in \
+	missing \
+	mkinstalldirs \
+	po/Makefile \
+	po/Makefile.in \
+	stamp-h.in \
+	stamp-h1
+
 SUBDIRS = src po
 
 EXTRA_DIST = \

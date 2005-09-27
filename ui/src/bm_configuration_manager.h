@@ -15,7 +15,7 @@ typedef	unsigned short int	BM_Bool;
 #define BM_BUFF_SIZE    1024
 #define BM_TPL_FILE	"/usr/share/backup-manager/backup-manager.conf.tpl"
 
-void
+BM_Bool
 bm_load_conf(const char* conf_file);
 
 void 
@@ -47,6 +47,9 @@ bm_get_variable_data (const char *bm_variable);
 
 void 
 bm_set_variable_data (const char *bm_variable, const char *bm_dada);
+
+BM_Bool
+bm_write_conf (const char *dest_file_name);
 
 void
 go_to_end_data(FILE *file);

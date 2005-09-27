@@ -57,7 +57,7 @@ bm_variable_data bm_config_data[] = {
 	{ "BM_POST_BACKUP_COMMAND", NULL }
 };
 
-void bm_load_conf(const char* conf_file) {
+BM_Bool bm_load_conf(const char* conf_file) {
 
 	FILE		*bm_file;
 	char		*bm_variable_name;
@@ -107,6 +107,10 @@ void bm_load_conf(const char* conf_file) {
 				strip_space(bm_file);
 			
 				bm_variable_data = bm_read_variable_data(bm_file);
+
+				if ( bm_variable_data == NULL )
+					return BM_FALSE;
+				
 				bm_variable_data_size = strlen(bm_variable_data) + 1;
 				
 				
@@ -122,8 +126,10 @@ void bm_load_conf(const char* conf_file) {
 		fclose(bm_file);
 	} else {
 		perror("can't open configuration file");
+		return BM_FALSE;
 	}
 
+	return BM_TRUE;
 }
 
 void bm_free_config () {
@@ -154,31 +160,35 @@ bm_read_variable_data( FILE *file) {
 	int	read_char;
 	size_t	name_size;
 	char	*dest;
+	char	last_read_char = '\0';
+
 	
 	while ( next && ( offset < BM_BUFF_SIZE ) ) {
 		
 		if ( ( read_char = fgetc(file) ) != EOF ) {
 			
 			if ( !data_start ) {
-				if ( read_char == '"' ) {
+				if ( read_char == '"' ) 
 					data_start = BM_TRUE;
-					continue;
-				} else {
-					continue;
-				}
+				continue;
 			}
 			
-			if ( (char)read_char == '"' ) {
+			if ( (char)read_char == '\n' ) 
+				break;
+			
+			if ( (char)read_char == '"' && last_read_char != '\\' ) {
 				next = BM_FALSE;
 			} else {
 				tmp[offset] = (char) read_char;
 			}
+			last_read_char = (char)read_char;
 		
-		} else {
-			next = BM_FALSE;
-		}
+		} 
 		offset++;
 	}
+
+	if ( next ) // FIXME le ficheir de conf est moisi 
+		return NULL;
 	
 	tmp[offset-1] = '\0';
 	name_size = strlen(tmp) + 1;
@@ -202,7 +212,7 @@ bm_read_variable_name(FILE *file) {
 	
 	while ( next && ( offset < BM_BUFF_SIZE - 1 ) ) {
 		if ( ( read_char = fgetc(file)) != EOF )  {
-			if ( (char)read_char == ' ' || (char)read_char == '=' || (char)read_char == '%' ) {
+			if ( (char)read_char == ' ' || (char)read_char == '=' || (char)read_char == '\n' ) {
 				next = BM_FALSE;
 			} else {
 				tmp[offset] = (char) read_char;
@@ -326,7 +336,7 @@ void bm_set_variable_data (const char *bm_variable, const char *bm_dada) {
 	}
 }
 
-void bm_write_conf (const char *dest_file_name) {
+BM_Bool bm_write_conf (const char *dest_file_name) {
 
 	FILE	*fh_in, *fh_out;
 	char	*bm_variable_name;
@@ -339,6 +349,7 @@ void bm_write_conf (const char *dest_file_name) {
 	BM_Bool	find_tpl_special_char	= BM_FALSE;
 	BM_Bool	in_comment		= BM_FALSE;
 	BM_Bool word_is_export		= BM_FALSE;
+	BM_Bool ret			= BM_TRUE;
 	
 	
 	if ( fh_in = fopen(BM_TPL_FILE, "r") ) {
@@ -355,7 +366,8 @@ void bm_write_conf (const char *dest_file_name) {
 				}
 				
 				if ( read_char >= BM_BUFF_SIZE ) {
-				 // FIXME error
+					ret = BM_FALSE;
+					break;
 				}
 				
 				if ( (char)read_char == ' ' || (char)read_char == '\n' ) { 
@@ -402,32 +414,42 @@ void bm_write_conf (const char *dest_file_name) {
 			fclose(fh_out);
 		} else {
 			perror("can't open sav file");
+			ret = BM_FALSE;
 		}
+
 		fclose(fh_in);
 	} else {
 		// printf("%s", BM_TPL_FILE);
 		perror("can't open template file");
+		ret = BM_FALSE;
 	}
 
+	return ret;
 } 
 
 void go_to_end_data(FILE *file) {
 
 	int	read_char;
-	char	last_read_char;
+	char	last_read_char = '\0';
 	BM_Bool	next, start_word;	
 	
 	next		= BM_TRUE;
 	start_word	= BM_FALSE;
-	last_read_char	= NULL;
 	
 	while ( next ) {
 		if ( (read_char = fgetc(file) ) != EOF ) {
+
+			if ( (char) read_char == '\n' ) {
+				next = BM_FALSE;
+				continue
+			}
+				
 			if ( (char) read_char == '"') {
-				if ( !start_word && last_read_char != '\\' ) {
+				if ( !start_word ) {
 					start_word = BM_TRUE;	
 				} else {
-					next = BM_FALSE;
+					if ( last_read_char != '\\' )
+						next = BM_FALSE;
 				}
 			}
 			last_read_char = (char)read_char;

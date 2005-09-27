@@ -102,13 +102,13 @@ void bm_load_conf(const char* conf_file) {
 					continue;
 				}
 
-
 				mem_free(bm_variable_name);
 				
 				strip_space(bm_file);
 			
 				bm_variable_data = bm_read_variable_data(bm_file);
 				bm_variable_data_size = strlen(bm_variable_data) + 1;
+				
 				
 				bm_config_data[index].BM_VARIABLE_DATA = (char*) mem_alloc_with_name(
 						bm_variable_data_size * sizeof(char), 
@@ -225,6 +225,7 @@ BM_Bool
 bm_is_variable_name (const char *variable, int *p_index ) {
 	int 	i;
 	BM_Bool	bm_variable_ok = BM_FALSE;
+	*p_index = 0;
 	
 	for ( i = 0 ; i < BM_NB_VARIABLE ; i++ ) {
 		if ( strcmp(variable , bm_config_data[i].BM_VARIABLE_NAME) == 0 ) {
@@ -282,7 +283,7 @@ BM_Bool read_export (FILE *file) {
 
 	while ( next && ( offset < BM_BUFF_SIZE - 1 ) ) {
 		if ( ( read_char = fgetc(file) ) != EOF ) {
-			if ( (char)read_char == ' ' ) {
+			if ( (char)read_char == ' ' || (char)read_char == '\n' || (char)read_char == '\t') {
 				next = BM_FALSE;
 			} else {
 				tmp[offset] = (char) read_char;	
@@ -337,12 +338,14 @@ void bm_write_conf (const char *dest_file_name) {
 	BM_Bool	read_variable		= BM_FALSE;
 	BM_Bool	find_tpl_special_char	= BM_FALSE;
 	BM_Bool	in_comment		= BM_FALSE;
+	BM_Bool word_is_export		= BM_FALSE;
+	
 	
 	if ( fh_in = fopen(BM_TPL_FILE, "r") ) {
 		if ( fh_out = fopen(dest_file_name, "w") ) {
 			while( (read_char = fgetc(fh_in)) != EOF ) {
 				
-				printf("%c", (char)read_char);
+				//printf("%c", (char)read_char);
 
 				fputc(read_char, fh_out);
 				if ( in_comment ) {
@@ -350,13 +353,30 @@ void bm_write_conf (const char *dest_file_name) {
 						in_comment = BM_FALSE;
 					continue;
 				}
+				
+				if ( read_char >= BM_BUFF_SIZE ) {
+				 // FIXME error
+				}
+				
+				if ( (char)read_char == ' ' || (char)read_char == '\n' ) { 
+					tmp[index_word] = '\0';
+				} else {
+					tmp[index_word] = (char)read_char;
+					index_word++;
+					continue;
+				}
 
-				if ( (char)read_char == ' ' ) 
+				if ( strcmp(tmp, "export") == 0 ) {
 					read_variable = BM_TRUE;
+				}
+
+				tmp[0] = '\0';
+				index_word = 0;
 
 				if ( read_variable ) {
 					bm_variable_name = bm_read_variable_name(fh_in);
 					fwrite(bm_variable_name, sizeof(char), strlen(bm_variable_name) , fh_out);
+					fputc('=', fh_out);
 					if ( bm_is_variable_name( bm_variable_name, &index_config) ) 
 						write_variable= BM_TRUE;
 					mem_free(bm_variable_name);
@@ -364,13 +384,13 @@ void bm_write_conf (const char *dest_file_name) {
 
 				if ( write_variable ) {
 
-					fputs("=\"", fh_out);
+					fputc('\"', fh_out);
 					if ( bm_config_data[index_config].BM_VARIABLE_DATA != NULL ) 
 						fwrite(bm_config_data[index_config].BM_VARIABLE_DATA, sizeof(char), strlen(bm_config_data[index_config].BM_VARIABLE_DATA) , fh_out);
-					fputs("\"", fh_out);				
+					
+					fputc('\"', fh_out);				
 					go_to_end_data(fh_in);
-				}
-
+				} 
 				write_variable = BM_FALSE;
 				read_variable = BM_FALSE;
 
@@ -394,20 +414,23 @@ void bm_write_conf (const char *dest_file_name) {
 void go_to_end_data(FILE *file) {
 
 	int	read_char;
+	char	last_read_char;
 	BM_Bool	next, start_word;	
 	
 	next		= BM_TRUE;
 	start_word	= BM_FALSE;
+	last_read_char	= NULL;
 	
 	while ( next ) {
 		if ( (read_char = fgetc(file) ) != EOF ) {
 			if ( (char) read_char == '"') {
-				if ( !start_word ) {
+				if ( !start_word && last_read_char != '\\' ) {
 					start_word = BM_TRUE;	
 				} else {
 					next = BM_FALSE;
 				}
 			}
+			last_read_char = (char)read_char;
 		} else {
 			next = BM_FALSE;
 		}

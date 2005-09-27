@@ -2,7 +2,7 @@
 
 MAINTAINERCLEANFILES = Makefile.in
 
-# SUBDIRS = t
+SUBDIRS = t
 
 INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \

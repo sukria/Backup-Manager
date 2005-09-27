@@ -24,7 +24,7 @@
 #include <string.h>
 #include <sys/types.h>
 
-#include "bm.h"
+#include "bm_configuration_manager.h"
 #include "mem_manager.h"
 #include "strLcpy.h"
 
@@ -329,50 +329,54 @@ void bm_write_conf (const char *dest_file_name) {
 
 	FILE	*fh_in, *fh_out;
 	char	*bm_variable_name;
+	char	tmp[BM_BUFF_SIZE];
 	int	read_char;
-	int	index 			= 0;
+	int	index_word		= 0;
+	int	index_config		= 0;
 	BM_Bool	write_variable		= BM_FALSE;
 	BM_Bool	read_variable		= BM_FALSE;
 	BM_Bool	find_tpl_special_char	= BM_FALSE;
+	BM_Bool	in_comment		= BM_FALSE;
 	
 	if ( fh_in = fopen(BM_TPL_FILE, "r") ) {
 		if ( fh_out = fopen(dest_file_name, "w") ) {
 			while( (read_char = fgetc(fh_in)) != EOF ) {
 				
 				printf("%c", (char)read_char);
-				if ( find_tpl_special_char ) {
-					if ( (char)read_char == '%' ) {
-						read_variable = BM_TRUE;
-					} else {
-						read_variable = BM_FALSE;
-					}
-					 
+
+				fputc(read_char, fh_out);
+				if ( in_comment ) {
+					if ( (char) read_char == '\n' ) 					
+						in_comment = BM_FALSE;
+					continue;
 				}
+
+				if ( (char)read_char == ' ' ) 
+					read_variable = BM_TRUE;
 
 				if ( read_variable ) {
 					bm_variable_name = bm_read_variable_name(fh_in);
-					if ( bm_is_variable_name( bm_variable_name, &index) ) {
+					fwrite(bm_variable_name, sizeof(char), strlen(bm_variable_name) , fh_out);
+					if ( bm_is_variable_name( bm_variable_name, &index_config) ) 
 						write_variable= BM_TRUE;
-					}
 					mem_free(bm_variable_name);
-					
 				}
 
 				if ( write_variable ) {
-					fwrite(bm_config_data[index].BM_VARIABLE_DATA, sizeof(char), strlen(bm_config_data[index].BM_VARIABLE_DATA) , fh_out);
-					fputs("\"\n", fh_out);
-					read_variable = BM_FALSE;
-					write_variable = BM_FALSE;
-					find_tpl_special_char = BM_FALSE;
-					go_to_next_line(fh_in);
-					continue;
+
+					fputs("=\"", fh_out);
+					if ( bm_config_data[index_config].BM_VARIABLE_DATA != NULL ) 
+						fwrite(bm_config_data[index_config].BM_VARIABLE_DATA, sizeof(char), strlen(bm_config_data[index_config].BM_VARIABLE_DATA) , fh_out);
+					fputs("\"", fh_out);				
+					go_to_end_data(fh_in);
 				}
+
+				write_variable = BM_FALSE;
+				read_variable = BM_FALSE;
+
 				
-				if ( (char)read_char == '%' ) {
-					find_tpl_special_char = BM_TRUE;
-				} else {
-					fputc( read_char, fh_out);
-				}	
+				if ( (char)read_char == '#' ) 
+					in_comment = BM_TRUE;
 				
 			}
 			fclose(fh_out);
@@ -381,7 +385,31 @@ void bm_write_conf (const char *dest_file_name) {
 		}
 		fclose(fh_in);
 	} else {
+		// printf("%s", BM_TPL_FILE);
 		perror("can't open template file");
 	}
 
 } 
+
+void go_to_end_data(FILE *file) {
+
+	int	read_char;
+	BM_Bool	next, start_word;	
+	
+	next		= BM_TRUE;
+	start_word	= BM_FALSE;
+	
+	while ( next ) {
+		if ( (read_char = fgetc(file) ) != EOF ) {
+			if ( (char) read_char == '"') {
+				if ( !start_word ) {
+					start_word = BM_TRUE;	
+				} else {
+					next = BM_FALSE;
+				}
+			}
+		} else {
+			next = BM_FALSE;
+		}
+	}
+}

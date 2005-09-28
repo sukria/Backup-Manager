@@ -9,15 +9,13 @@
 
 #include "support.h"
 
-#include "global_widgets.h"
-
 void
 on_configuration_window_destroy        (GtkObject       *object,
                                         gpointer         user_data)
 {
 	mem_free_all();
 	mem_print_status();
-	exit(0);
+	gtk_main_quit();
 }
 
 
@@ -78,18 +76,7 @@ on_confw_repository_filesel_ok_button
 					(GtkWidget *widget, 
 					gpointer user_data) 
 {
-   const gchar *selected_filename;
-   GtkWidget   *file_selector = GTK_WIDGET (user_data);
-   GtkEntry    *repository_entry; 
 
-   /* Grab the correct entry */
-   repository_entry = (GtkEntry *) lookup_widget (GTK_WIDGET (configuration_window), "confw_BM_REPOSITORY_ROOT_entry");
-   
-   /* Prompt the user for the repository */
-   selected_filename = gtk_file_selection_get_filename (GTK_FILE_SELECTION (file_selector));
-   
-   /* Update the entry field */
-   gtk_entry_set_text (repository_entry, selected_filename);
 }
 
 

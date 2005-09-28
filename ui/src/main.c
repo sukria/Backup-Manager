@@ -11,7 +11,6 @@
 #include <glade/glade.h>
 
 #include "support.h"
-#include "global_widgets.h"
 
 int
 main (int argc, char *argv[])
@@ -33,7 +32,7 @@ main (int argc, char *argv[])
 	mem_handler_init();
 
 	/* contruct and show main window */
-	xml = glade_xml_new ("../backup-manager-ui.glade", NULL, NULL);
+	xml = glade_xml_new ("data/backup-manager-preferences.glade", NULL, NULL);
 	glade_xml_signal_autoconnect (xml);
 	
 	gtk_main ();

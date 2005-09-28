@@ -14,7 +14,6 @@ noinst_LIBRARIES = libmem.a libstring.a libconffile.a
 backup_manager_ui_SOURCES = \
 	main.c \
 	customconfig.h \
-	global_widgets.h \
 	support.c support.h \
 	callbacks.c callbacks.h 
 

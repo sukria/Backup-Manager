@@ -10,7 +10,6 @@
 #include "support.h"
 
 #include "global_widgets.h"
-#include "dyn_interfaces.h"
 
 void
 on_configuration_window_destroy        (GtkObject       *object,
@@ -53,11 +52,7 @@ on_confw_BM_REPOSITORY_ROOT_button_clicked
                                         (GtkButton       *button,
                                         gpointer         user_data)
 {
-	const gchar *selected_filename;
-        GtkWidget   *filesel;
-	
-	filesel = (GtkWidget *) create_confw_repository_filesel();
-	gtk_widget_show(filesel);
+
 }
 
 

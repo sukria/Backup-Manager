@@ -15,5 +15,12 @@ t_bm_configuration_manager_SOURCES = \
 t_libmem_SOURCES = \
 	t_libmem.c
 
-t_bm_configuration_manager_LDADD = @PACKAGE_LIBS@ $(INTLLIBS) ../libmem.a ../libconffile.a ../libstring.a
-t_libmem_LDADD = @PACKAGE_LIBS@ $(INTLLIBS) ../libmem.a ../libstring.a
+t_bm_configuration_manager_LDADD = @PACKAGE_LIBS@ $(INTLLIBS) \
+	$(top_builddir)/src/libmem.a \
+	$(top_builddir)/src/libconffile.a \
+	$(top_builddir)/src/libstring.a
+
+t_libmem_LDADD = @PACKAGE_LIBS@ $(INTLLIBS) \
+	$(top_builddir)/src/libmem.a \
+	$(top_builddir)/src/libstring.a
+

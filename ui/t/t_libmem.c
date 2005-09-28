@@ -1,6 +1,6 @@
 
 #include <stdio.h>
-#include "../mem_manager.h"
+#include "../src/mem_manager.h"
 
 int
 main (int argc, char *argv[])

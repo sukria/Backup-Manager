@@ -1,7 +1,7 @@
 
 #include <stdio.h>
-#include "../bm_configuration_manager.h"
-#include "../mem_manager.h"
+#include "../src/bm_configuration_manager.h"
+#include "../src/mem_manager.h"
 
 int main (int argc, char **argv) 
 {

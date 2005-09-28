@@ -7,7 +7,6 @@
 #include "callbacks.h"
 #include <stdio.h>
 
-#include "interface.h"
 #include "support.h"
 
 #include "global_widgets.h"

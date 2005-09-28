@@ -12,7 +12,6 @@
 #include <gtk/gtk.h>
 
 #include "callbacks.h"
-#include "interface.h"
 #include "support.h"
 
 #define GLADE_HOOKUP_OBJECT(component,widget,name) \

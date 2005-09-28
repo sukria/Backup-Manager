@@ -10,7 +10,6 @@
 #include <gtk/gtk.h>
 #include <glade/glade.h>
 
-#include "interface.h"
 #include "support.h"
 #include "global_widgets.h"
 

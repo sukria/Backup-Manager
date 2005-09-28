@@ -441,7 +441,7 @@ void go_to_end_data(FILE *file) {
 
 			if ( (char) read_char == '\n' ) {
 				next = BM_FALSE;
-				continue
+				continue;
 			}
 				
 			if ( (char) read_char == '"') {

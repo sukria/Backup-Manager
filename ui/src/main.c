@@ -8,6 +8,7 @@
 #endif
 
 #include <gtk/gtk.h>
+#include <glade/glade.h>
 
 #include "interface.h"
 #include "support.h"
@@ -16,10 +17,7 @@
 int
 main (int argc, char *argv[])
 {
-	char *str1;
-	char *str2;
-	char *str3;
-	char *str4;
+	GladeXML *xml;
 
 #ifdef ENABLE_NLS
 	bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
@@ -35,10 +33,9 @@ main (int argc, char *argv[])
 	/* Init our mem_handler */
 	mem_handler_init();
 
-	/* Some stuff to do with our objects */
-	configuration_window = create_configuration_window();
-	gtk_widget_show(configuration_window);
-	filechooser = create_filechooser(); 
+	/* contruct and show main window */
+	xml = glade_xml_new ("../backup-manager-ui.glade", NULL, NULL);
+	glade_xml_signal_autoconnect (xml);
 	
 	gtk_main ();
 	

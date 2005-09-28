@@ -16,7 +16,6 @@ backup_manager_ui_SOURCES = \
 	customconfig.h \
 	global_widgets.h \
 	support.c support.h \
-	interface.c interface.h \
 	dyn_interfaces.c dyn_interfaces.h \
 	callbacks.c callbacks.h 
 

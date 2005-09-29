@@ -10,12 +10,36 @@
 #include <gtk/gtk.h>
 #include <glade/glade.h>
 
-#include "support.h"
+int configuration_modified = 2;
+
+static int
+__handle_cancel (GladeXML *xml)
+{
+	if (configuration_modified) {
+		return 1;
+	} else {
+		return 1;
+	}
+}
+
+static int
+__handle_confirm (GladeXML *xml)
+{
+	return 1;
+}
+
+static int
+__handle_help (GladeXML *xml)
+{
+	return 1;
+}
 
 int
 main (int argc, char *argv[])
 {
 	GladeXML *xml;
+	GtkWidget *conf_dialog;
+	int response, quit;
 
 #ifdef ENABLE_NLS
 	bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
@@ -26,16 +50,39 @@ main (int argc, char *argv[])
 	gtk_set_locale ();
 	gtk_init (&argc, &argv);
 
-	add_pixmap_directory (PACKAGE_DATA_DIR "/" PACKAGE "/pixmaps");
-
 	/* Init our mem_handler */
 	mem_handler_init();
 
 	/* contruct and show main window */
 	xml = glade_xml_new ("data/backup-manager-preferences.glade", NULL, NULL);
 	glade_xml_signal_autoconnect (xml);
+	conf_dialog = glade_xml_get_widget (xml, "configuration_dialog");
+
+	quit = 0;
+	while (!quit) {
+		response = gtk_dialog_run (GTK_DIALOG (conf_dialog));
+
+		switch (response) {
+			case GTK_RESPONSE_OK:
+				/* check and save conf */
+				quit = __handle_confirm (xml);
+				break;
+			case GTK_RESPONSE_CANCEL:
+				/* confirm and discard */
+				quit = __handle_confirm (xml);
+				break;
+			case GTK_RESPONSE_HELP:
+				/* launch help : unimplemented */
+				quit = __handle_help (xml);
+				break;
+			default:
+				g_assert_not_reached ();
+		}
+	}
 	
-	gtk_main ();
+	gtk_widget_destroy (conf_dialog);
+	
+	g_object_unref (G_OBJECT (xml));
 	
 	return 0;
 }

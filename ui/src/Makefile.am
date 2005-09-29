@@ -8,13 +8,12 @@ INCLUDES = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	@PACKAGE_CFLAGS@
 
-bin_PROGRAMS = backup-manager-ui 
+bin_PROGRAMS = backup-manager-preferences
 noinst_LIBRARIES = libmem.a libstring.a libconffile.a
 
-backup_manager_ui_SOURCES = \
+backup_manager_preferences_SOURCES = \
 	main.c \
 	customconfig.h \
-	support.c support.h \
 	callbacks.c callbacks.h 
 
 libmem_a_SOURCES = \
@@ -26,5 +25,5 @@ libstring_a_SOURCES = \
 libconffile_a_SOURCES = \
 	bm-libconf.c bm-libconf.h
 
-backup_manager_ui_LDADD = @PACKAGE_LIBS@ $(INTLLIBS) libmem.a libconffile.a libstring.a
+backup_manager_preferences_LDADD = @PACKAGE_LIBS@ $(INTLLIBS) libmem.a libconffile.a libstring.a
 

@@ -7,8 +7,6 @@
 #include "callbacks.h"
 #include <stdio.h>
 
-#include "support.h"
-
 void
 on_configuration_window_destroy        (GtkObject       *object,
                                         gpointer         user_data)

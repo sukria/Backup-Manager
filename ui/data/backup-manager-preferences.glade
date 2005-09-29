@@ -35,7 +35,6 @@
 	  <child>
 	    <widget class="GtkButton" id="helpbutton1">
 	      <property name="visible">True</property>
-	      <property name="sensitive">False</property>
 	      <property name="can_default">True</property>
 	      <property name="label">gtk-help</property>
 	      <property name="use_stock">True</property>

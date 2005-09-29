@@ -12,7 +12,7 @@ bin_PROGRAMS = backup-manager-preferences
 noinst_LIBRARIES = libmem.a libstring.a libconffile.a
 
 backup_manager_preferences_SOURCES = \
-	main.c \
+	bm-preferences-main.c \
 	customconfig.h \
 	callbacks.c callbacks.h 
 

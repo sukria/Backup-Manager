@@ -23,7 +23,7 @@ libstring_a_SOURCES = \
 	strLcpy.c strLcpy.h
 
 libconffile_a_SOURCES = \
-	bm-libconf.c bm-libconf.h
+	bm-libconfig.c bm-libconfig.h
 
 backup_manager_preferences_LDADD = @PACKAGE_LIBS@ $(INTLLIBS) libmem.a libconffile.a libstring.a
 

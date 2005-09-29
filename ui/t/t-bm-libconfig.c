@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../src/bm-libconf.h"
+#include "../src/bm-libconfig.h"
 #include "../src/mem_manager.h"
 
 int main (int argc, char **argv) 
@@ -10,12 +10,13 @@ int main (int argc, char **argv)
 	mem_handler_init();
 
 	/*
-	add_slashes("ceci est \" un test", &toto);
+	__add_slashes("ceci est \" un test", &toto);
 	printf("toto : '%s'\n", toto);
 	mem_free(toto);
-	add_slashes("ceci est \\\\\" un test", &toto);
+	__strip_slashes("ceci est \\\" un test", &toto);
 	printf("toto : '%s'\n", toto);
 	mem_free(toto);
+	return 0;
 	*/
 	
 	if ( bm_load_config(conf_file) ) {
@@ -30,6 +31,9 @@ int main (int argc, char **argv)
 		
 		mem_print_status();
 		bm_free_config();
+	} else {
+		printf("impossible de lire la conf\n");
 	}
+	
 	mem_print_status();
 }

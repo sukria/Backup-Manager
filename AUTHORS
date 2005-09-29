@@ -1,12 +1,22 @@
+Backup Manager Authors are:
 
-Main code and design:
-	- Alexis Sukrieh <sukria@sukria.net>
+* Backup Manager 
 
-Contributions:
-	- Adreas "Jimmy" Grelder: Implementation of the rsync 
-	  method (experimental).
+  Alexis Sukrieh <sukria@sukria.net>
 
-Patches:
-	- Sven Joachim: symlink dumping support for zip archives.
-	- Michael Prokop: multiple configuration files.
+* The Backup Manager User Interface
+
+  Alexis Sukrieh <sukria@sukria.net>
+  Jérôme Bourgeois <melkor@backup-manager.org>
+  Rached Ben Mustapha <benmur@rached.net>
+
+* Contributions
+  
+  Adreas "Jimmy" Grelder: Implementation of the rsync 
+  method (experimental).
+
+* Patches:
+  
+  Sven Joachim: symlink dumping support for zip archives.
+  Michael Prokop: multiple configuration files.
 

@@ -17,7 +17,7 @@ MAINTAINERCLEANFILES = \
 	stamp-h.in \
 	stamp-h1
 
-SUBDIRS = src t po
+SUBDIRS = src t
 
 EXTRA_DIST = \
 	autogen.sh \

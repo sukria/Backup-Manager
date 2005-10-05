@@ -26,8 +26,8 @@ DOCPDF		= doc/user-guide.pdf
 DOCTXT		= doc/user-guide.txt
 
 # The backup-manager package
-install: install_lib install_deb install_contrib
-install_binary: doc install_lib install_deb 
+install: install_lib install_deb install_contrib install_man
+install_binary: install_lib install_deb 
 
 install_contrib:
 	@echo -e "*** Contrib files ***\n"
@@ -69,16 +69,13 @@ install_deb:
 	mkdir -p $(PERL5DIR)/BackupManager
 	install --owner=root --group=root --mode=0644 BackupManager/*.pm $(PERL5DIR)/BackupManager
 
-# generating the manpage from the perl scripts.
-doc:
-	@echo -e "\n*** generating manpages ***\n"
-	PERL5LIB=. pod2man --center="backup-manager-upload" backup-manager-upload > man/backup-manager-upload.3
-
 # Installing the man pages.
-install_man:
+install_man: 
+	@echo -e "\n*** generating manpages ***\n"
+	PERL5LIB=. pod2man --center="backup-manager-upload" backup-manager-upload > man/backup-manager-upload.8
 	@echo -e "\n*** Installing man pages ***\n"
-	install -d /usr/share/man/man3/
-	install --owner=root --group=root --mode=0644 man/*.3 /usr/share/man/man3/
+	install -d /usr/share/man/man8/
+	install --owner=root --group=root --mode=0644 man/*.8 /usr/share/man/man8/
 
 # Quick :)
 deb:

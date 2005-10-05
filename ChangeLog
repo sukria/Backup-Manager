@@ -1,4 +1,10 @@
-0.5.9
+2005-10-05  Alexis Sukrieh <sukria@backup-manager.org>
+
+	* AUTHORS: fixed the name of "jimmy".
+	* Makefile: man pages are generated and isntalled in the good section.
+	* backup-manager.conf.tpl: Several typos.
+
+0.5.9 Alexis Sukrieh <sukria@backup-manager.org>
 	* Configuration keys have been drastically renamed.
 	* Added a contrib script for upgrading the configuration files
 	  to the new format: upgrade-conffile.sh
@@ -14,7 +20,8 @@
 	* TODO backup method rsync
 	* TODO backup method pipe
 
-0.5.8b
+0.5.8b Alexis Sukrieh <sukria@backup-manager.org>
+	* Configuration keys have been drastically renamed.
 	* Security fixes 
 	  + When burning a CDR, mktemp is used to prevent attacks on the file
 	    system.
@@ -41,34 +48,37 @@
 	  + BM_BURNING_DEVFORCED tells backup manager to force a device
 	    whenever a cdrecord command is performed, and then bypass the
 	    default cdrecord device (default is disabled).
- 
- 0.5.8a
- 	* bug fix in the logger, the output is now clean.
+
+0.5.8a Alexis Sukrieh <sukria@backup-manager.org>
+
+	* bug fix in the logger, the output is now clean.
 	* bug fix when making tarballs: we don't warn about an 
 	  already existing file if not true.
 	* New library for holding backup methods.
 	* first implementation of the rsync backup method 
 	  (experiemntal).
-  
- 0.5.8
- 	* Fixed a bug when calculating total disk usage of a specified 
+
+0.5.8  Alexis Sukrieh <sukria@backup-manager.org>
+
+	* Fixed a bug when calculating total disk usage of a specified 
 	  path when the locale is not en_EN or fr_FR.
-        * Added the possibility to log everything to syslog.
+	* Added the possibility to log everything to syslog.
 	  A new configuration key is provided : BM_LOGGER for setting this 
 	  new feature on or off (default is on).
 	  Note that the user can choose which syslog facility he wants 
 	  (default is user).
- 	* Added the facility to set BM_USER and BM_GROUP for providing a way
+	* Added the facility to set BM_USER and BM_GROUP for providing a way
 	  to chmod and chown the repository and the archives.
 	  (closes a security issue)
- 	* When creating archives, backup-manager now replaces any duplicate
+	* When creating archives, backup-manager now replaces any duplicate
 	  it founds with symlink to the most recent archive for saving
 	  disk space.
- 	* Added BM_FTP_PURGE configuration key for removing files 
+	* Added BM_FTP_PURGE configuration key for removing files 
 	  on ftp transfer before uploading files.
- 
- 0.5.7
- 	* Removed the file TODO
+
+0.5.7 Alexis Sukrieh <sukria@backup-manage.org>
+
+	* Removed the file TODO
 	* Added a COPYING file with the content of the GPL V2.
 	* Renamed backup-manager.conf.tpl backup-manager.conf.
 	* Better handling of pre and post commands.

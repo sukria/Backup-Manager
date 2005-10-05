@@ -2,13 +2,13 @@
 #
 #  Global notes:
 #
-#  * Whenver you see a configuration key set to yes, you can 
+#  * Whenever you see a configuration key set to yes, you can 
 #    safely change it to no. They are booleans.
 #  * This configuration file is divided into sections.
 #    The 'global' section is mandatory, every keys defined in 
 #    this section are inherited in the other sections.
-#  * There are one section per "backup method", you have to 
-#    to fill the section of the chosen method.
+#  * There is one section per "backup method", you have to 
+#    fill the section of the chosen method.
 #
 ##############################################################
 
@@ -21,7 +21,7 @@ export BM_REPOSITORY_ROOT="/var/archives"
 
 # For security reasons, the archive repository and the generated 
 # archives will be readable/writable by a given user/group.
-# This is recommanded to set this to yes.
+# This is recommended to set this to yes.
 export BM_REPOSITORY_SECURE="yes"
 
 # The repository will be readable/writable only by a specific 
@@ -61,7 +61,7 @@ export BM_TARBALL_NAMEFORMAT="long"
 export BM_TARBALL_FILETYPE="tar.gz"
 
 # Do you want to dereference the files pointed by symlinks ? 
-# enter yes or no (yes can leed to huge archives, be careful).
+# enter yes or no (yes can lead to huge archives, be careful).
 export BM_TARBALL_DUMPSYMLINKS="no"
 
 # Directories you want to backup as tarballs (separated by spaces)
@@ -78,11 +78,11 @@ export BM_TARBALL_BLACKLIST=""
 ##############################################################
 # Backup method: MYSQl
 #############################################################
-# this method is dedicated to MySQL databses.
-# You should not use the tarball method for backuping database
+# This method is dedicated to MySQL databases.
+# You should not use the tarball method for backing up database
 # directories or you may have corrupted archives.
 
-# Enter here the list of databses
+# Enter here the list of databases
 export BM_MYSQL_DATABASES="mysql"
 
 # The user who is allowed to read every databases filled in BM_MYSQL_DATABASES
@@ -91,7 +91,7 @@ export BM_MYSQL_ADMINLOGIN="root"
 # its password
 export BM_MYSQL_ADMINPASS=""
 
-# the host where the databse is
+# the host where the database is
 export BM_MYSQL_HOST="localhost"
 
 # the port where MySQL listen to on the host
@@ -119,31 +119,22 @@ export BM_PIPE_FILETYPE="bzip2"
 
 
 ##############################################################
-# Burning system
-#############################################################
-##############################################################
-# Upload system
-#############################################################
-
-
-
-##############################################################
 # Section "UPLOAD"
 # - The upload system allow you to send the archives to 
 #   to remote hosts, either with FTP or SSH.
 #############################################################
 
-# The list of remote host, if you want to enable the upload
-# systemn jsut put some remote hosts here (fqdn or IPs)
+# The list of remote hosts, if you want to enable the upload
+# system, just put some remote hosts here (fqdn or IPs)
 export BM_UPLOAD_HOSTS=""
 
-# which protocol to use for tranfert ? (scp or ftp)
+# which protocol to use for tranfers? (scp or ftp)
 export BM_UPLOAD_MODE=""
 
 # User for opening the remote connection
 export BM_UPLOAD_USER=""
 
-# Password, only needed for ftp transfert, scp is based on key identification.
+# Password, only needed for ftp transfer, scp is based on key authentication
 export BM_UPLOAD_PASSWD=""
 
 # cleans specified ftp folder before uploading (yes or no)

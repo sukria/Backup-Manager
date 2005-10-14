@@ -33,7 +33,7 @@ handle_tarball_error()
 	logfile="$2"
 
 	warning "Unable to create \$target, check \$logfile"
-	error=$(($error + 1))
+	nb_err=$(($nb_err + 1))
 }
 
 backup_method_tarball()
@@ -55,13 +55,13 @@ backup_method_tarball()
 		y=""
 	fi
 
-	error=0
+	nb_err=0
 	for DIR in $BM_TARBALL_DIRECTORIES
 	do
 		# first be sure the target exists
 		if [ ! -e $DIR ] || [ ! -r $DIR ]; then
 			warning "Target $DIR does not exist, skipping."
-			error=$(($error + 1))
+			nb_err=$(($nb_err + 1))
 			continue
 		fi
 		
@@ -116,8 +116,8 @@ backup_method_tarball()
 		commit_archive "$file_to_create"
 	done
 
-	if [ $error -gt 0 ]; then
-		error "During the tarballs generation, \$error error(s) occured."
+	if [ $nb_err -gt 0 ]; then
+		error "During the tarballs generation, \$nb_err error(s) occured."
 	else
 		rm -f $tarball_logfile
 	fi

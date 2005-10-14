@@ -1,3 +1,11 @@
+2005-10-14  Alexis Sukrieh <sukria@sukria.net>
+
+	* lib/backup-methods.sh: renamed a variable for gettext specific
+	needs (s/error/nb_err).
+	* lib/md5sum.sh: Fix a typo in a message.
+	* po/.ext: removed, non needs to be archived.
+	* po/fr.po: New version of the French translations.
+
 2005-10-05  Alexis Sukrieh <sukria@backup-manager.org>
 
 	* AUTHORS: fixed the name of "jimmy".

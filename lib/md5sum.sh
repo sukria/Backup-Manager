@@ -63,7 +63,7 @@ save_md5_sum()
 		base=$(basename $archive)
 		echo "$hash $base" >> $md5file
 	else
-		warning "Archive given does not exists in the repository: \$archive"
+		warning "Archive given does not exist in the repository: \$archive"
 	fi
 }
 

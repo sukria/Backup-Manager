@@ -1,0 +1,442 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-10-17 10:42+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: actions.sh.ext:21
+#, sh-format
+msgid "The mount point $mount_point is not there"
+msgstr ""
+
+#: actions.sh.ext:25
+#, sh-format
+msgid "Mounting $BM_BURNING_DEVICE: "
+msgstr ""
+
+#: actions.sh.ext:26
+#, sh-format
+msgid "unable to mount $BM_BURNING_DEVICE on $mount_point"
+msgstr ""
+
+#: actions.sh.ext:27 actions.sh.ext:58 actions.sh.ext:143 actions.sh.ext:149
+#: actions.sh.ext:156 actions.sh.ext:271 actions.sh.ext:290 files.sh.ext:156
+#: files.sh.ext:167 files.sh.ext:190 logger.sh.ext:128 logger.sh.ext:135
+#: logger.sh.ext:141
+msgid "ok"
+msgstr ""
+
+#: actions.sh.ext:36
+#, sh-format
+msgid "Checking MD5 sum for $base_file: "
+msgstr ""
+
+#: actions.sh.ext:61
+msgid "failed (read error)"
+msgstr ""
+
+#: actions.sh.ext:65
+msgid "failed (MD5 hash mismatch)"
+msgstr ""
+
+#: actions.sh.ext:72
+msgid "Errors encountered during MD5 controls."
+msgstr ""
+
+#: actions.sh.ext:76
+#, sh-format
+msgid "unable to unmount the mount point $mount_point"
+msgstr ""
+
+#: actions.sh.ext:77
+#, sh-format
+msgid "unable to remove the mount point $mount_point"
+msgstr ""
+
+#: actions.sh.ext:89
+msgid "The burning system is disabled in the conf file."
+msgstr ""
+
+#: actions.sh.ext:99
+#, sh-format
+msgid ""
+"Cannot burn archives of the $TODAY, too big: ${size}M, must fit in "
+"$BM_BURNING_MAXSIZE"
+msgstr ""
+
+#: actions.sh.ext:124
+#, sh-format
+msgid "Unable to unmount the device $BM_BURNING_DEVICE"
+msgstr ""
+
+#: actions.sh.ext:128
+#, sh-format
+msgid "Redirecting cdrecord logs into $logfile"
+msgstr ""
+
+#: actions.sh.ext:140
+#, sh-format
+msgid "Blanking the CDRW in $BM_BURNING_DEVICE: "
+msgstr ""
+
+#: actions.sh.ext:142 actions.sh.ext:148 actions.sh.ext:155
+#, sh-format
+msgid "failed, check $logfile"
+msgstr ""
+
+#: actions.sh.ext:145 actions.sh.ext:152
+#, sh-format
+msgid "Burning data to $BM_BURNING_DEVICE: "
+msgstr ""
+
+#: actions.sh.ext:182
+msgid "Using the \"mysql\" backup method"
+msgstr ""
+
+#: actions.sh.ext:186
+msgid "Using the \"rsync\" backup method"
+msgstr ""
+
+#: actions.sh.ext:192
+msgid "Using the \"tarball\" backup method"
+msgstr ""
+
+#: actions.sh.ext:203
+#, sh-format
+msgid "Cleaning $BM_REPOSITORY_ROOT: "
+msgstr ""
+
+#: actions.sh.ext:236 actions.sh.ext:248
+msgid "unable to call backup-manager-upload"
+msgstr ""
+
+#: actions.sh.ext:251
+msgid "The upload system is disabled in the conf file."
+msgstr ""
+
+#: actions.sh.ext:261
+#, sh-format
+msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
+msgstr ""
+
+#: actions.sh.ext:265 actions.sh.ext:285
+msgid "failed"
+msgstr ""
+
+#: actions.sh.ext:266
+msgid "pre-command returned false. Stopping the process."
+msgstr ""
+
+#: actions.sh.ext:281
+#, sh-format
+msgid "Running post-command: $BM_POST_BACKUP_COMMAND: "
+msgstr ""
+
+#: actions.sh.ext:286
+msgid "post-command returned false."
+msgstr ""
+
+#: backup-manager.ext:57
+msgid "backup-manager must be run as root."
+msgstr ""
+
+#: backup-manager.ext:105
+msgid "-c option must be followed by an existing filename"
+msgstr ""
+
+#: backup-manager.ext:139
+msgid "Unable to exec the pre-command"
+msgstr ""
+
+#: backup-manager.ext:201
+msgid "Unable to exec post-command"
+msgstr ""
+
+#: backup-methods.sh.ext:13
+#, sh-format
+msgid "$file_to_create: ok (${size}M, "
+msgstr ""
+
+#: backup-methods.sh.ext:21
+msgid "unable to purge duplicates"
+msgstr ""
+
+#: backup-methods.sh.ext:35
+#, sh-format
+msgid "Unable to create $target, check $logfile"
+msgstr ""
+
+#: backup-methods.sh.ext:107
+#, sh-format
+msgid "The filetype $BM_TARBALL_FILETYPE is not spported."
+msgstr ""
+
+#: backup-methods.sh.ext:112
+#, sh-format
+msgid "File $file_to_create already exists, skipping."
+msgstr ""
+
+#: backup-methods.sh.ext:120
+#, sh-format
+msgid "During the tarballs generation, $nb_err error(s) occured."
+msgstr ""
+
+#: backup-methods.sh.ext:154
+msgid "Need a key to use rsync"
+msgstr ""
+
+#: backup-methods.sh.ext:163
+#, sh-format
+msgid "The \"mysql\" method is choosen, but $mysqldump is not found."
+msgstr ""
+
+#: backup-methods.sh.ext:170
+#, sh-format
+msgid "Unable to dump the content of the database $database"
+msgstr ""
+
+#: backup-methods.sh.ext:174
+#, sh-format
+msgid "The file $file_to_create was not created, skipping."
+msgstr ""
+
+#: backup-methods.sh.ext:181
+#, sh-format
+msgid "Unable to gzip $file_to_create"
+msgstr ""
+
+#: backup-methods.sh.ext:193
+#, sh-format
+msgid "Unable to bzip2 $file_to_create"
+msgstr ""
+
+#: backup-methods.sh.ext:206
+#, sh-format
+msgid "This compression format is not supported: $BM_MYSQL_FILETYPE"
+msgstr ""
+
+#: backup-methods.sh.ext:216
+msgid "backup_method_pipe is not yet supported"
+msgstr ""
+
+#: dialog.sh.ext:13
+msgid "Output:"
+msgstr ""
+
+#: dialog.sh.ext:14
+msgid "Print this short help message."
+msgstr ""
+
+#: dialog.sh.ext:15
+msgid "Print what happens on STDOUT."
+msgstr ""
+
+#: dialog.sh.ext:16
+msgid "Disable warnings."
+msgstr ""
+
+#: dialog.sh.ext:19
+msgid "Single actions:"
+msgstr ""
+
+#: dialog.sh.ext:20
+msgid "Just upload the files of the day."
+msgstr ""
+
+#: dialog.sh.ext:21
+msgid "Just burn the files of the day."
+msgstr ""
+
+#: dialog.sh.ext:22
+msgid "Just test the md5 sums."
+msgstr ""
+
+#: dialog.sh.ext:23
+msgid "Just purge old archives."
+msgstr ""
+
+#: dialog.sh.ext:26
+msgid "Behaviour:"
+msgstr ""
+
+#: dialog.sh.ext:27
+msgid "Choose an alternate config file."
+msgstr ""
+
+#: dialog.sh.ext:28
+msgid "Force overwrite of existing archives."
+msgstr ""
+
+#: dialog.sh.ext:31
+msgid "Unwanted actions:"
+msgstr ""
+
+#: dialog.sh.ext:32
+msgid "Disable the upload process."
+msgstr ""
+
+#: dialog.sh.ext:33
+msgid "Disable the burning process."
+msgstr ""
+
+#: dialog.sh.ext:34
+msgid "Disable the purge process."
+msgstr ""
+
+#: dialog.sh.ext:46
+msgid "Warning, process interupted, archives may be corrupted."
+msgstr ""
+
+#: dialog.sh.ext:56
+msgid ""
+"the BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
+msgstr ""
+
+#: dialog.sh.ext:61
+msgid ""
+"the BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
+"installed."
+msgstr ""
+
+#: dialog.sh.ext:71
+#, sh-format
+msgid "The BM_TARBALL_DIRECTORIES conf key is not set in $conffile"
+msgstr ""
+
+#: dialog.sh.ext:86
+#, sh-format
+msgid "$BM_REPOSITORY_ROOT does not exist, creating it"
+msgstr ""
+
+#: files.sh.ext:10
+#, sh-format
+msgid "unable to unmount $mount_point"
+msgstr ""
+
+#: files.sh.ext:12
+#, sh-format
+msgid "unable to remove $mount_point"
+msgstr ""
+
+#: files.sh.ext:140
+#, sh-format
+msgid "Removing lock for old PID, $pid is not running."
+msgstr ""
+
+#: files.sh.ext:150
+#, sh-format
+msgid ""
+"A backup-manager process ($pid) is already running with the conffile "
+"$conffile."
+msgstr ""
+
+#: files.sh.ext:154 files.sh.ext:161
+#, sh-format
+msgid "Getting lock for backup-manager $pid with $conffile: "
+msgstr ""
+
+#: files.sh.ext:164
+msgid "failed (check the file permissions)"
+msgstr ""
+
+#: files.sh.ext:180
+#, sh-format
+msgid "$file is not a regular file."
+msgstr ""
+
+#: files.sh.ext:188
+#, sh-format
+msgid "Removing $file: "
+msgstr ""
+
+#: files.sh.ext:206
+msgid "Directory given is not found"
+msgstr ""
+
+#: files.sh.ext:216
+#, sh-format
+msgid "Entering directory $file."
+msgstr ""
+
+#: files.sh.ext:239
+msgid "No file given"
+msgstr ""
+
+#: files.sh.ext:243
+#, sh-format
+msgid "The given file does not exist: $file_to_create"
+msgstr ""
+
+#: files.sh.ext:247
+msgid "unable to get date from file"
+msgstr ""
+
+#: files.sh.ext:248
+msgid "unable to find the pattern of the file"
+msgstr ""
+
+#: logger.sh.ext:126
+msgid "Releasing lock: "
+msgstr ""
+
+#: logger.sh.ext:132
+#, sh-format
+msgid "Unmounting $BM_BURNING_DEVICE: "
+msgstr ""
+
+#: logger.sh.ext:139
+#, sh-format
+msgid "Removing $mount_point: "
+msgstr ""
+
+#: md5sum.sh.ext:14
+#, sh-format
+msgid "No md5file found: $md5file"
+msgstr ""
+
+#: md5sum.sh.ext:66
+#, sh-format
+msgid "Archive given does not exist in the repository: $archive"
+msgstr ""
+
+#: sanitize.sh.ext:18
+#, sh-format
+msgid "The configuration key $key is not set, using \"$default\"."
+msgstr ""
+
+#: sanitize.sh.ext:28
+#, sh-format
+msgid ""
+"The configuration key \"$deprecated_key\" is deprecated, you should rename "
+"it \"$new_key\". Using \"$deprecated_value\"."
+msgstr ""
+
+#: sanitize.sh.ext:63
+#, sh-format
+msgid "The configuration key $key is not set but $keymandatory is enabled."
+msgstr ""
+
+#: sanitize.sh.ext:136
+msgid ""
+"The configuration key BM_UPLOAD_PASSWD is not set but BM_UPLOAD_MODE is set "
+"to \"ftp\"."
+msgstr ""
+
+#: sanitize.sh.ext:159
+#, sh-format
+msgid ""
+"When validating the configuration file $conffile, $nb_warnings warnings were "
+"found."
+msgstr ""

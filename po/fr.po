@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.9a\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-14 11:22+0200\n"
+"POT-Creation-Date: 2005-10-17 10:38+0200\n"
 "PO-Revision-Date: 2005-10-14 00:26+0100\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "Language-Team: Debian l10n French Team <debian-l10n-french@lists.debian."
@@ -44,11 +44,11 @@ msgstr "Vérification de la somme MD5 pour $base_file : "
 
 #: actions.sh.ext:61
 msgid "failed (read error)"
-msgstr "échec (erreur de lecture)"
+msgstr "Échec (erreur de lecture)"
 
 #: actions.sh.ext:65
 msgid "failed (MD5 hash mismatch)"
-msgstr "échec (les sommes MD5 ne concordent pas)"
+msgstr "Échec (les sommes MD5 ne concordent pas)"
 
 #: actions.sh.ext:72
 msgid "Errors encountered during MD5 controls."
@@ -87,7 +87,7 @@ msgstr "Impossible de démonter $BM_BURNING_DEVICE : "
 #: actions.sh.ext:128
 #, sh-format
 msgid "Redirecting cdrecord logs into $logfile"
-msgstr "Redirection des logs de cdrecord dans $logfile"
+msgstr "Redirection des journaux de cdrecord dans $logfile"
 
 #: actions.sh.ext:140
 #, sh-format
@@ -97,7 +97,7 @@ msgstr "Effacement du CD-RW sur $BM_BURNING_DEVICE : "
 #: actions.sh.ext:142 actions.sh.ext:148 actions.sh.ext:155
 #, sh-format
 msgid "failed, check $logfile"
-msgstr "erreur, voir le fichier $logfile"
+msgstr "Erreur, voir le fichier $logfile"
 
 #: actions.sh.ext:145 actions.sh.ext:152
 #, sh-format
@@ -106,15 +106,15 @@ msgstr "Gravure des données sur $BM_BURNING_DEVICE : "
 
 #: actions.sh.ext:182
 msgid "Using the \"mysql\" backup method"
-msgstr "Utilisation de la méthode de backup « mysql »"
+msgstr "Utilisation de la méthode de sauvegarde « mysql »"
 
 #: actions.sh.ext:186
 msgid "Using the \"rsync\" backup method"
-msgstr "Utilisation de la méthode de backup « rsync »"
+msgstr "Utilisation de la méthode de sauvegarde « rsync »"
 
 #: actions.sh.ext:192
 msgid "Using the \"tarball\" backup method"
-msgstr "Utilisation de la méthode de backup « tarball »"
+msgstr "Utilisation de la méthode de sauvegarde « tarball »"
 
 #: actions.sh.ext:203
 #, sh-format
@@ -138,7 +138,7 @@ msgstr "Lancement de la précommande : $BM_PRE_BACKUP_COMMAND"
 
 #: actions.sh.ext:265 actions.sh.ext:285
 msgid "failed"
-msgstr "échec"
+msgstr "Échec"
 
 #: actions.sh.ext:266
 msgid "pre-command returned false. Stopping the process."
@@ -163,7 +163,7 @@ msgstr "L'option -c doit être suivie d'un nom de fichier existant"
 
 #: backup-manager.ext:139
 msgid "Unable to exec the pre-command"
-msgstr "Impossible d'exécuter la pre-commande"
+msgstr "Impossible d'exécuter la précommande"
 
 #: backup-manager.ext:201
 msgid "Unable to exec post-command"
@@ -176,7 +176,7 @@ msgstr "$file_to_create : OK (${size} Mo, "
 
 #: backup-methods.sh.ext:21
 msgid "unable to purge duplicates"
-msgstr "impossible de supprimer les doublons"
+msgstr "Impossible de supprimer les doublons"
 
 #: backup-methods.sh.ext:35
 #, sh-format
@@ -186,7 +186,7 @@ msgstr "Impossible de créer $target, voir $logfile pour les détails."
 #: backup-methods.sh.ext:107
 #, sh-format
 msgid "The filetype $BM_TARBALL_FILETYPE is not spported."
-msgstr "Le type de fichier $BM_TARBALL_FILETYPE n'est pas supporté."
+msgstr "Le type de fichier $BM_TARBALL_FILETYPE n'est pas géré."
 
 #: backup-methods.sh.ext:112
 #, sh-format
@@ -232,11 +232,11 @@ msgstr "Impossible de compresser $file_to_create avec « bzip2 »."
 #: backup-methods.sh.ext:206
 #, sh-format
 msgid "This compression format is not supported: $BM_MYSQL_FILETYPE"
-msgstr "Ce format de compression n'est pas supporté: $BM_MYSQL_FILETYPE"
+msgstr "Ce format de compression n'est pas géré : $BM_MYSQL_FILETYPE"
 
 #: backup-methods.sh.ext:216
 msgid "backup_method_pipe is not yet supported"
-msgstr "La méthode de backup « pipe » n'est pas encore supportée."
+msgstr "La méthode de sauvegarde « pipe » n'est pas encore gérée."
 
 #: dialog.sh.ext:13
 msgid "Output:"
@@ -292,7 +292,7 @@ msgstr "Actions non désirées :"
 
 #: dialog.sh.ext:32
 msgid "Disable the upload process."
-msgstr "Désactive la phase d'envoi de fichier."
+msgstr "Désactive la phase d'envoi de fichiers."
 
 #: dialog.sh.ext:33
 msgid "Disable the burning process."
@@ -310,14 +310,14 @@ msgstr ""
 #: dialog.sh.ext:56
 msgid ""
 "the BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
-msgstr "La clef BM_TARBALL_FILETYPE vaut \"zip\" mais zip n'est pas installé."
+msgstr "La clef BM_TARBALL_FILETYPE vaut « zip » mais zip n'est pas installé."
 
 #: dialog.sh.ext:61
 msgid ""
 "the BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
 "installed."
 msgstr ""
-"La clef BM_TARBALL_FILETYPE vaut \"bzip2\" mais bzip2 n'est pas installé."
+"La clef BM_TARBALL_FILETYPE vaut « bzip2 » mais bzip2 n'est pas installé."
 
 #: dialog.sh.ext:71
 #, sh-format
@@ -360,7 +360,7 @@ msgstr "Demande de verrou pour backup-manager, $pid avec $conffile : "
 
 #: files.sh.ext:164
 msgid "failed (check the file permissions)"
-msgstr "échec (vérifiez les permissions du fichier)"
+msgstr "Échec (vérifiez les permissions du fichier)"
 
 #: files.sh.ext:180
 #, sh-format
@@ -400,7 +400,7 @@ msgstr "Impossible de trouver le motif du fichier"
 
 #: logger.sh.ext:126
 msgid "Releasing lock: "
-msgstr "Libération du vérou : "
+msgstr "Libération du verrou : "
 
 #: logger.sh.ext:132
 #, sh-format
@@ -434,15 +434,15 @@ msgid ""
 "The configuration key \"$deprecated_key\" is deprecated, you should rename "
 "it \"$new_key\". Using \"$deprecated_value\"."
 msgstr ""
-"La clef de configuration « $deprecated_key » est obsolète, vous devez la "
-"renommer « $new_key ». Utilisation de « $deprecated_value »."
+"La clef de configuration « $deprecated_key » est obsolète, vous devez la "
+"renommer « $new_key ». Utilisation de « $deprecated_value »."
 
 #: sanitize.sh.ext:63
 #, sh-format
 msgid "The configuration key $key is not set but $keymandatory is enabled."
 msgstr ""
-"La clef de configuration $key n'est pas définie mais $keymandatory est "
-"activée."
+"La clef de configuration « $key » n'est pas définie mais « $keymandatory » "
+"est activée."
 
 #: sanitize.sh.ext:136
 msgid ""

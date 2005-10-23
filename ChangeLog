@@ -1,3 +1,17 @@
+2005-10-23  Alexis Sukrieh  <sukria@sukria.net>
+
+	* backup-manager.conf.tpl: 
+	  + added examples about the backup method "pipe".
+	* lib/actions.sh: 
+	  + The backup switch now call backup_method_pipe() if needed.
+	  + "tarball" method is not the default one anymore, must be called
+	  explicitly.
+	  + No default method anymore, trigger an error if unknown method
+	  given.
+	* lib/backup-methods.sh:
+	  + new method: "pipe". Generic method which can make archives from
+	  any commandline (the command should produce output on stdout).
+
 2005-10-14  Alexis Sukrieh <sukria@sukria.net>
 
 	* lib/backup-methods.sh: renamed a variable for gettext specific

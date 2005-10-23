@@ -211,18 +211,85 @@ backup_method_mysql()
 	done
 }
 
+__exec_meta_command()
+{
+        command="$1"
+        file_to_create="$2"
+        compress="$3"
+        logfile=$(mktemp /tmp/bm-$archive.stderr.XXXXXX)
+        
+        # execute the command, grab the output
+        $($command 1> $file_to_create 2>$logfile) || 
+        error "Unable to exec \$command for \$archive; check \$logfile."
+
+        # our $file_to_create should be created now
+        if [ ! -e $file_to_create ]; then
+               error "\$command ended, but \$file_to_create not found; check \$logfile" 
+        fi
+        rm -f $logfile
+       
+        if [ -n $compress ]; then
+                case "$compress" in
+                "gzip"|"gz")
+                        if [ -x $gzip ]; then
+                                $gzip -f $file_to_create || error "Error while using \$gzip."
+                                file_to_create="$file_to_create.gz"
+                        else
+                                error "Compressor \$compress require \$gzip"
+                        fi
+                ;;
+                "bzip"|"bzip2")
+                        if [ -x $bzip ]; then
+                                $bzip -f $file_to_create || error "Error while using \$bzip."
+                                file_to_create="$file_to_create.bz2"
+                        else
+                                error "Compressor \$compress require \$bzip"
+                        fi
+
+                ;;
+                "")
+                ;;
+                *)
+                        error "No such compressor supported: \$compress"
+                ;;
+                esac
+        fi
+       
+        # make sure we didn't loose the archive
+        if [ ! -e $file_to_create ]; then
+                error "Unable to find \$file_to_create" 
+        fi
+        
+        export BM_RET="$file_to_create"
+}
+
 backup_method_pipe()
 {
-	error "backup_method_pipe is not yet supported"
-#		# first extract the shell command
-#		bm_command=$(echo ${BM_ARCHIVE_METHOD/|/})
-#		info "Using a pipe method for backup: $bm_command"
-#		
-#		# now run the command and redirect the output in our $file_to_create
-#		$($bm_command > $file_to_create) || error "Unable to run the custom backup command: \$bm_command"
-#
-#		# now we have data in $file_to_create, maybe we have to compress the file
-#		# we look at BM_BACKUP_COMPRESS for that	
+        index=0
 
+        # parse each BM_PIPE_NAME's
+        for archive in ${BM_PIPE_NAME[*]}
+        do
+                # make sure everything is here for this archive
+                if [ -z "${BM_PIPE_COMMAND[$index]}" ] || 
+                   [ -z "${BM_PIPE_FILETYPE[$index]}" ]; then
+                        warning "Not enough args for this archive (\$archive), skipping."
+                        continue
+                fi
+                command="${BM_PIPE_COMMAND[$index]}"
+                filetype="${BM_PIPE_FILETYPE[$index]}"
+                file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX-$archive.$TODAY.$filetype"
+                compress="${BM_PIPE_COMPRESS[$index]}"
+                
+                # the magic stuff! 
+                __exec_meta_command "$command" "$file_to_create" "$compress"
+                file_to_create="$BM_RET"
+                
+                # commit the archive
+                commit_archive "$file_to_create"
+
+                # update the index mark 
+                index=$(($index + 1))
+        done
 }
 

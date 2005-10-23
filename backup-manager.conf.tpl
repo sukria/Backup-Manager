@@ -103,19 +103,40 @@ export BM_MYSQL_FILETYPE="bzip2"
 ##############################################################
 # Backup method: pipe
 #############################################################
-# This is the generic method, everything on STDOUT will be used
-# as a content.
+# The "pipe" method is a generic way of making archive.
+# Its concept is simple, for every kind of archive you want
+# to make, you give: a command which will send output on stdout,
+# a name, a file type and optionnaly, a compressor. 
 
-# for each word in this list, BM_PIPE_COMMAND will be launched,
-# and the token "$looparg" will be expended to the current item
-# of BM_PIPE_LOOPARGS
-export BM_PIPE_LOOPARGS=""
+# Be careful, this feature uses arrays!
+declare -a BM_PIPE_COMMAND
+declare -a BM_PIPE_NAME
+declare -a BM_PIPE_FILETYPE
+declare -a BM_PIPE_COMPRESS
 
-# the command to launch
-export BM_PIPE_COMMAND=""
+# You can virtually implement whatever backup scenario you like 
+# with this method.
+#
+# The resulting archives will be named like this: 
+# $BM_ARCHIVE_PREFIX-$BM_PIPE_NAME.$DATE.$BM_PIPE_FILETYPE
+# If you specified a BM_PIPE_COMPRESS option, the resulting filename 
+# will change as expected (eg, .gz if "gzip").
+#
+# Here are a couple of examples for using this method:
 
-# should the content be compressed?
-export BM_PIPE_FILETYPE="bzip2"
+# Archive a remote MySQL database through SSH:
+#    export BM_PIPE_COMMAND[0]="ssh host -c \"mysqldump -ufoo -pbar base\"" 
+#    export BM_PIPE_NAME[0]="base" 
+#    export BM_PIPE_FILETYPE[0]="sql"
+#    export BM_PIPE_COMPRESS[0]="gzip"
+# This will make somthing like: localhost-base.20050421.sql.gz
+
+# Archive a specific directory, on a remote server through SSH:
+#    export BM_PIPE_COMMAND[0]="ssh host -c \"tar -c -z /home/user\"" 
+#    export BM_PIPE_NAME[0]="host.home.user" 
+#    export BM_PIPE_FILETYPE[0]="tar.gz"
+#    export BM_PIPE_COMPRESS[0]=""
+# This will make somthing like: localhost-host.home.user.20050421.tar.gz
 
 
 ##############################################################

@@ -170,29 +170,28 @@ burn_files()
 
 make_archives()
 {
-	# do we have to use a pipe method? 
-	#if [ $(expr match "$BM_ARCHIVE_METHOD" "|") -gt 0 ]; then
-	#	info "Using the \"pipe\" backup method"
-	#	backup_method_pipe
-	#
-	# The known methods
 	case $BM_ARCHIVE_METHOD in
 	
 	mysql)
-		info "Using the \"mysql\" backup method"
+		info "Using the \"mysql\" backup method."
 		backup_method_mysql
 	;;
 	rsync)
-		info "Using the \"rsync\" backup method"
+		info "Using the \"rsync\" backup method."
 		backup_method_rsync
 	;;
 
-	# default behaviour is to make a tarball with BM_TARBALL_FILETYPE 
-	*)
-		info "Using the \"tarball\" backup method"
+	tarball)
+		info "Using the \"tarball\" backup method."
 		backup_method_tarball
 	;;
-
+        pipe)
+                info "Using the \"pipe\" backup method."
+                backup_method_pipe
+        ;;
+        *)
+                error "No such backup method: \$BM_ARCHIVE_METHOD"
+        ;;
 	esac
 }
 

@@ -189,6 +189,10 @@ make_archives()
                 info "Using the \"pipe\" backup method."
                 backup_method_pipe
         ;;
+        svn)
+                info "Using the \"svn\" backup method."
+                backup_method_svn
+        ;;
         *)
                 error "No such backup method: \$BM_ARCHIVE_METHOD"
         ;;
@@ -199,7 +203,7 @@ make_archives()
 # and will clean them up. Using clean_directory() and clean_file().
 clean_repositories()
 {
-	info "Cleaning \$BM_REPOSITORY_ROOT: "
+	info "Cleaning \$BM_REPOSITORY_ROOT"
 	clean_directory $BM_REPOSITORY_ROOT
 }
 

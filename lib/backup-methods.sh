@@ -222,12 +222,31 @@ backup_method_mysql()
 		command="$mysqldump -u$BM_MYSQL_ADMINLOGIN -p$BM_MYSQL_ADMINPASS -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT $database"
                 compress="$BM_MYSQL_FILETYPE"	
          
-                __exec_meta_command "$command" "$file_to_create" "$compress" || 
-                        error "Execution of command '$command' failed."
+                __exec_meta_command "$command" "$file_to_create" "$compress"
                 file_to_create="$BM_RET"
 
 		commit_archive "$file_to_create"
 	done
+}
+
+backup_method_svn()
+{
+        if [ ! -x $svnadmin ]; then
+                error "The \"svn\" method is choosen, but \$svnadmin is not found."
+        fi
+
+        for repository in $BM_SVN_REPOSITORIES
+        do
+                archive_name=$(get_dir_name $repository "long")
+                file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$archive_name.$TODAY.svn"
+                command="$svnadmin dump $repository"
+                compress="$BM_SVN_COMPRESSWITH"
+                
+                __exec_meta_command "$command" "$file_to_create" "$compress"
+                file_to_create="$BM_RET"
+
+                commit_archive "$file_to_create"
+        done
 }
 
 backup_method_pipe()

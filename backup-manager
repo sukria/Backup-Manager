@@ -32,6 +32,7 @@ lockfile="/var/run/backup-manager.pid"
 md5sum="/usr/bin/md5sum"
 bc="/usr/bin/bc"
 mysqldump="/usr/bin/mysqldump"
+svnadmin="/usr/bin/svnadmin"
 
 # Load the backup-manager's library
 source $libdir/gettext.sh

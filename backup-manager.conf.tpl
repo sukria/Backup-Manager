@@ -125,19 +125,23 @@ declare -a BM_PIPE_COMPRESS
 # Here are a couple of examples for using this method:
 
 # Archive a remote MySQL database through SSH:
-#    export BM_PIPE_COMMAND[0]="ssh host -c \"mysqldump -ufoo -pbar base\"" 
-#    export BM_PIPE_NAME[0]="base" 
-#    export BM_PIPE_FILETYPE[0]="sql"
-#    export BM_PIPE_COMPRESS[0]="gzip"
+#    BM_PIPE_COMMAND[0]="ssh host -c \"mysqldump -ufoo -pbar base\"" 
+#    BM_PIPE_NAME[0]="base" 
+#    BM_PIPE_FILETYPE[0]="sql"
+#    BM_PIPE_COMPRESS[0]="gzip"
 # This will make somthing like: localhost-base.20050421.sql.gz
 
 # Archive a specific directory, on a remote server through SSH:
-#    export BM_PIPE_COMMAND[0]="ssh host -c \"tar -c -z /home/user\"" 
-#    export BM_PIPE_NAME[0]="host.home.user" 
-#    export BM_PIPE_FILETYPE[0]="tar.gz"
-#    export BM_PIPE_COMPRESS[0]=""
+#    BM_PIPE_COMMAND[0]="ssh host -c \"tar -c -z /home/user\"" 
+#    BM_PIPE_NAME[0]="host.home.user" 
+#    BM_PIPE_FILETYPE[0]="tar.gz"
+#    BM_PIPE_COMPRESS[0]=""
 # This will make somthing like: localhost-host.home.user.20050421.tar.gz
 
+export BM_PIPE_COMMAND
+export BM_PIPE_NAME
+export BM_PIPE_FILETYPE
+export BM_PIPE_COMPRESS
 
 ##############################################################
 # Section "UPLOAD"

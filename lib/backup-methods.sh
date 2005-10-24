@@ -36,6 +36,93 @@ handle_tarball_error()
 	nb_err=$(($nb_err + 1))
 }
 
+# 
+# EXPERIMENTAL
+# this is a feature in develpment, for developers only.
+#
+backup_method_rsync()
+{
+  # Not fully implemented, rsync is running in dry mode
+
+  # Set the rsync options according to the $BM_TARBALL_DUMPSYMLINKS conf key
+  rsync_options="-va"
+  if [ ! -z $BM_TARBALL_DUMPSYMLINKS ]; then
+    if [ "$BM_TARBALL_DUMPSYMLINKS" = "yes" ] ||
+       [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
+      rsync_options="-vaL" 
+    fi
+  fi  
+  
+  for DIR in $BM_TARBALL_DIRECTORIES
+  do
+    if [ -n "$BM_UPLOAD_HOSTS" ]
+    then
+      if [ ! -z "$BM_UPLOAD_KEY" ]; then
+        servers=`echo $BM_UPLOAD_HOSTS| sed 's/ /,/g'`
+        for SERVER in $servers
+        do
+          ${rsync} ${rsync_options} -e "ssh -i ${BM_UPLOAD_KEY}" ${DIR} ${BM_UPLOAD_USER}@${SERVER}:${BM_UPLOAD_DIR}/${TODAY}/
+        done
+      else
+        info "Need a key to use rsync"
+      fi
+    fi
+  done
+}
+
+__exec_meta_command()
+{
+        command="$1"
+        file_to_create="$2"
+        compress="$3"
+        logfile=$(mktemp /tmp/bm-command.stderr.XXXXXX)
+        
+        # execute the command, grab the output
+        $($command 1> $file_to_create 2>$logfile) || 
+        error "Unable to exec \$command; check \$logfile."
+
+        # our $file_to_create should be created now
+        if [ ! -e $file_to_create ]; then
+               error "\$command ended, but \$file_to_create not found; check \$logfile" 
+        fi
+        rm -f $logfile
+       
+        if [ -n $compress ]; then
+                case "$compress" in
+                "gzip"|"gz")
+                        if [ -x $gzip ]; then
+                                $gzip -f -q -9 $file_to_create || error "Error while using \$gzip."
+                                file_to_create="$file_to_create.gz"
+                        else
+                                error "Compressor \$compress require \$gzip"
+                        fi
+                ;;
+                "bzip"|"bzip2")
+                        if [ -x $bzip ]; then
+                                $bzip -f -q -9 $file_to_create || error "Error while using \$bzip."
+                                file_to_create="$file_to_create.bz2"
+                        else
+                                error "Compressor \$compress require \$bzip"
+                        fi
+
+                ;;
+                ""|"uncompressed"|"none")
+                ;;
+                *)
+                        error "No such compressor supported: \$compress"
+                ;;
+                esac
+        fi
+       
+        # make sure we didn't loose the archive
+        if [ ! -e $file_to_create ]; then
+                error "Unable to find \$file_to_create" 
+        fi
+        
+        export BM_RET="$file_to_create"
+}
+
+
 backup_method_tarball()
 {
 	# Create the directories blacklist
@@ -123,40 +210,6 @@ backup_method_tarball()
 	fi
 }
 
-# 
-# EXPERIMENTAL
-# this is a feature in develpment, for developers only.
-#
-backup_method_rsync()
-{
-  # Not fully implemented, rsync is running in dry mode
-
-  # Set the rsync options according to the $BM_TARBALL_DUMPSYMLINKS conf key
-  rsync_options="-va"
-  if [ ! -z $BM_TARBALL_DUMPSYMLINKS ]; then
-    if [ "$BM_TARBALL_DUMPSYMLINKS" = "yes" ] ||
-       [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
-      rsync_options="-vaL" 
-    fi
-  fi  
-  
-  for DIR in $BM_TARBALL_DIRECTORIES
-  do
-    if [ -n "$BM_UPLOAD_HOSTS" ]
-    then
-      if [ ! -z "$BM_UPLOAD_KEY" ]; then
-        servers=`echo $BM_UPLOAD_HOSTS| sed 's/ /,/g'`
-        for SERVER in $servers
-        do
-          ${rsync} ${rsync_options} -e "ssh -i ${BM_UPLOAD_KEY}" ${DIR} ${BM_UPLOAD_USER}@${SERVER}:${BM_UPLOAD_DIR}/${TODAY}/
-        done
-      else
-        info "Need a key to use rsync"
-      fi
-    fi
-  done
-}
-
 backup_method_mysql()
 {
 	if [ ! -x $mysqldump ]; then
@@ -166,101 +219,15 @@ backup_method_mysql()
 	for database in $BM_MYSQL_DATABASES
 	do
 		file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${database}.$TODAY.sql"
-		if ! $mysqldump -u"$BM_MYSQL_ADMINLOGIN" -p"$BM_MYSQL_ADMINPASS" -h"$BM_MYSQL_HOST" -P$BM_MYSQL_PORT "$database" > "$file_to_create" ; then
-			warning "Unable to dump the content of the database \$database"
-		fi
-	
-		if [ ! -e "$file_to_create" ]; then
-			warning "The file \$file_to_create was not created, skipping."
-			continue
-		fi
-	
-		case $BM_MYSQL_FILETYPE in
-		gzip|gz)
-			if ! $gzip -f -q -9 "$file_to_create" ; then
-				warning "Unable to gzip \$file_to_create"
-				continue
-			fi
-			if [ -f "${file_to_create}.gz" ]; then
-				file_to_create="${file_to_create}.gz"
-			else
-				warning "Strangely, gzip succeeded but $file_to_create.gz does not exist."
-				continue
-			fi
-		;;
-		bzip2|bzip|bz2)
-			if ! $bzip -f -q -9 "$file_to_create" ; then
-				warning "Unable to bzip2 \$file_to_create"
-				continue
-			fi
-			if [ -f "${file_to_create}.bz2" ]; then
-				file_to_create="${file_to_create}.bz2"
-			else
-				warning "Strangely, bzip2 succeeded but $file_to_create.bz2 does not exist."
-				continue
-			fi
-		;;
-		uncompressed)
-		;;
-		*)
-			error "This compression format is not supported: \$BM_MYSQL_FILETYPE"
-		;;
-		esac
+		command="$mysqldump -u$BM_MYSQL_ADMINLOGIN -p$BM_MYSQL_ADMINPASS -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT $database"
+                compress="$BM_MYSQL_FILETYPE"	
+         
+                __exec_meta_command "$command" "$file_to_create" "$compress" || 
+                        error "Execution of command '$command' failed."
+                file_to_create="$BM_RET"
 
 		commit_archive "$file_to_create"
 	done
-}
-
-__exec_meta_command()
-{
-        command="$1"
-        file_to_create="$2"
-        compress="$3"
-        logfile=$(mktemp /tmp/bm-$archive.stderr.XXXXXX)
-        
-        # execute the command, grab the output
-        $($command 1> $file_to_create 2>$logfile) || 
-        error "Unable to exec \$command for \$archive; check \$logfile."
-
-        # our $file_to_create should be created now
-        if [ ! -e $file_to_create ]; then
-               error "\$command ended, but \$file_to_create not found; check \$logfile" 
-        fi
-        rm -f $logfile
-       
-        if [ -n $compress ]; then
-                case "$compress" in
-                "gzip"|"gz")
-                        if [ -x $gzip ]; then
-                                $gzip -f $file_to_create || error "Error while using \$gzip."
-                                file_to_create="$file_to_create.gz"
-                        else
-                                error "Compressor \$compress require \$gzip"
-                        fi
-                ;;
-                "bzip"|"bzip2")
-                        if [ -x $bzip ]; then
-                                $bzip -f $file_to_create || error "Error while using \$bzip."
-                                file_to_create="$file_to_create.bz2"
-                        else
-                                error "Compressor \$compress require \$bzip"
-                        fi
-
-                ;;
-                "")
-                ;;
-                *)
-                        error "No such compressor supported: \$compress"
-                ;;
-                esac
-        fi
-       
-        # make sure we didn't loose the archive
-        if [ ! -e $file_to_create ]; then
-                error "Unable to find \$file_to_create" 
-        fi
-        
-        export BM_RET="$file_to_create"
 }
 
 backup_method_pipe()

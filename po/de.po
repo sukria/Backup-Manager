@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: backup-manager 0.5.5\n"
+"Project-Id-Version: backup-manager 0.5.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-10 18:30+0200\n"
+"POT-Creation-Date: 2005-10-26 12:36+0200\n"
 "PO-Revision-Date: 2003-12-18 10:09+0100\n"
 "Last-Translator: Andreas Gredler <jimmy@grml.org>\n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: actions.sh.ext:21
-#, fuzzy, sh-format
+#, sh-format
 msgid "The mount point $mount_point is not there"
 msgstr ""
 "Der Mountpunkt $mount_point existiert bereits, bitte entfernen Sie ihn wenn "
@@ -32,7 +32,7 @@ msgid "unable to mount $BM_BURNING_DEVICE on $mount_point"
 msgstr "konnte $BM_BURNING_DEVICE nicht auf $mount_point binden (mounten)"
 
 #: actions.sh.ext:27 actions.sh.ext:58 actions.sh.ext:143 actions.sh.ext:149
-#: actions.sh.ext:156 actions.sh.ext:271 actions.sh.ext:290 files.sh.ext:156
+#: actions.sh.ext:156 actions.sh.ext:274 actions.sh.ext:293 files.sh.ext:156
 #: files.sh.ext:167 files.sh.ext:190 logger.sh.ext:128 logger.sh.ext:135
 #: logger.sh.ext:141
 msgid "ok"
@@ -56,23 +56,22 @@ msgid "Errors encountered during MD5 controls."
 msgstr "Fehler während der MD5 Überprüfung"
 
 #: actions.sh.ext:76
-#, fuzzy, sh-format
+#, sh-format
 msgid "unable to unmount the mount point $mount_point"
 msgstr "konnte folgenden Mountpunkt nicht erstellen: $mount_point"
 
 #: actions.sh.ext:77
-#, fuzzy, sh-format
+#, sh-format
 msgid "unable to remove the mount point $mount_point"
 msgstr "konnte folgenden Mountpunkt nicht erstellen: $mount_point"
 
 #: actions.sh.ext:89
-#, fuzzy
 msgid "The burning system is disabled in the conf file."
 msgstr ""
-"Das automatische Brennsystem ist in der Konfigurationsdatei deaktiviert."
+" Das automatische Brennsystem ist in der Konfigurationsdatei deaktiviert."
 
 #: actions.sh.ext:99
-#, fuzzy, sh-format
+#, sh-format
 msgid ""
 "Cannot burn archives of the $TODAY, too big: ${size}M, must fit in "
 "$BM_BURNING_MAXSIZE"
@@ -81,7 +80,7 @@ msgstr ""
 "laut Konfiguration aber nur $BM_BURNING_MAXSIZE"
 
 #: actions.sh.ext:124
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to unmount the device $BM_BURNING_DEVICE"
 msgstr "Unmounten von $BM_BURNING_DEVICE: "
 
@@ -105,137 +104,180 @@ msgstr "fehlgeschlagen, siehe $logfile"
 msgid "Burning data to $BM_BURNING_DEVICE: "
 msgstr "Brennen der Datei auf $BM_BURNING_DEVICE: "
 
-#: actions.sh.ext:182
-msgid "Using the \"mysql\" backup method"
+#: actions.sh.ext:176
+#, fuzzy
+msgid "Using the \"mysql\" backup method."
 msgstr "Benutze \"mysql\" Backup Methode"
 
-#: actions.sh.ext:186
-msgid "Using the \"rsync\" backup method"
+#: actions.sh.ext:180
+#, fuzzy
+msgid "Using the \"rsync\" backup method."
 msgstr "Benutze \"rsync\" Backup Methode"
 
-#: actions.sh.ext:192
-msgid "Using the \"tarball\" backup method"
+#: actions.sh.ext:185
+#, fuzzy
+msgid "Using the \"tarball\" backup method."
 msgstr "Benutze \"tarball\" Backup Methode"
 
-#: actions.sh.ext:203
+#: actions.sh.ext:189
+#, fuzzy
+msgid "Using the \"pipe\" backup method."
+msgstr "Benutze \"pipe\" Backup Methode"
+
+#: actions.sh.ext:193
+#, fuzzy
+msgid "Using the \"svn\" backup method."
+msgstr "Benutze \"rsync\" Backup Methode"
+
+#: actions.sh.ext:197
+#, sh-format
+msgid "No such backup method: $BM_ARCHIVE_METHOD"
+msgstr ""
+
+#: actions.sh.ext:206
 #, fuzzy, sh-format
-msgid "Cleaning $BM_REPOSITORY_ROOT: "
+msgid "Cleaning $BM_REPOSITORY_ROOT"
 msgstr "Aufräumen von $BM_ARCHIVES_REPOSITORY: "
 
-#: actions.sh.ext:236 actions.sh.ext:248
+#: actions.sh.ext:239 actions.sh.ext:251
 msgid "unable to call backup-manager-upload"
 msgstr "konnte backup-manager-upload nicht ausführen"
 
-#: actions.sh.ext:251
+#: actions.sh.ext:254
 msgid "The upload system is disabled in the conf file."
 msgstr "Das upload-System wurde in der Konfigurationsdatei deaktiviert."
 
-#: actions.sh.ext:261
+#: actions.sh.ext:264
 #, sh-format
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
 msgstr "pre-command läuft: $BM_PRE_BACKUP_COMMAND: "
 
-#: actions.sh.ext:265 actions.sh.ext:285
+#: actions.sh.ext:268 actions.sh.ext:288
 msgid "failed"
 msgstr "fehlgeschlagen"
 
-#: actions.sh.ext:266
+#: actions.sh.ext:269
 msgid "pre-command returned false. Stopping the process."
 msgstr ""
 "pre-command lieferte einen negativen Returnwert. Prozess wurde gestoppt."
 
-#: actions.sh.ext:281
+#: actions.sh.ext:284
 #, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND: "
 msgstr "post-command läuft: $BM_POST_BACKUP_COMMAND: "
 
-#: actions.sh.ext:286
+#: actions.sh.ext:289
 msgid "post-command returned false."
 msgstr "post-command lieferte einen negativen Returnwert."
 
-#: backup-manager.ext:57
+#: backup-manager.ext:58
 msgid "backup-manager must be run as root."
 msgstr "backup-manager muss als User root ausgeführt werden."
 
-#: backup-manager.ext:105
+#: backup-manager.ext:106
 msgid "-c option must be followed by an existing filename"
 msgstr "ein gültiger Dateiname muß der Option -c folgen"
 
-#: backup-manager.ext:139
+#: backup-manager.ext:140
 msgid "Unable to exec the pre-command"
 msgstr "Kann pre-command nicht ausführen"
 
-#: backup-manager.ext:201
+#: backup-manager.ext:202
 msgid "Unable to exec post-command"
 msgstr "Kann post-command nicht ausführen"
 
 #: backup-methods.sh.ext:13
-#, fuzzy, sh-format
+#, sh-format
 msgid "$file_to_create: ok (${size}M, "
-msgstr "ok (${size}M, "
+msgstr "Zu erstellende Datei: ok (${size}M, "
 
 #: backup-methods.sh.ext:21
-#, fuzzy
 msgid "unable to purge duplicates"
-msgstr "Deaktivieren des Lösch-Vorgangs."
+msgstr "Kann Duplikate nicht löschen"
 
 #: backup-methods.sh.ext:35
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to create $target, check $logfile"
-msgstr "Deaktivieren des Lösch-Vorgangs."
+msgstr "Kann $target nicht erstellen, siehe $logfile"
 
-#: backup-methods.sh.ext:107
+#: backup-methods.sh.ext:67
+msgid "Need a key to use rsync"
+msgstr "Benötige einen Schlüssel um rsync auszuführen"
+
+#: backup-methods.sh.ext:82
 #, fuzzy, sh-format
+msgid "Unable to exec $command; check $logfile."
+msgstr "Kann $target nicht erstellen, siehe $logfile"
+
+#: backup-methods.sh.ext:86
+#, sh-format
+msgid "$command ended, but $file_to_create not found; check $logfile"
+msgstr ""
+
+#: backup-methods.sh.ext:94
+#, sh-format
+msgid "Error while using $gzip."
+msgstr ""
+
+#: backup-methods.sh.ext:97
+#, sh-format
+msgid "Compressor $compress require $gzip"
+msgstr ""
+
+#: backup-methods.sh.ext:102
+#, sh-format
+msgid "Error while using $bzip."
+msgstr ""
+
+#: backup-methods.sh.ext:105
+#, sh-format
+msgid "Compressor $compress require $bzip"
+msgstr ""
+
+#: backup-methods.sh.ext:112
+#, sh-format
+msgid "No such compressor supported: $compress"
+msgstr ""
+
+#: backup-methods.sh.ext:119
+#, fuzzy, sh-format
+msgid "Unable to find $file_to_create"
+msgstr "Erstellen von $file_to_create fehlgeschlagen"
+
+#: backup-methods.sh.ext:194
+#, sh-format
 msgid "The filetype $BM_TARBALL_FILETYPE is not spported."
 msgstr "Der Dateityp $BM_FILETYPE wird nicht unterstützt."
 
-#: backup-methods.sh.ext:112
+#: backup-methods.sh.ext:199
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Datei $file_to_create existiert bereits, abgebrochen."
 
-#: backup-methods.sh.ext:120
+#: backup-methods.sh.ext:207
 #, sh-format
-msgid "During the tarballs generation, $gettext error(s) occured."
+msgid "During the tarballs generation, $nb_err error(s) occured."
 msgstr ""
+"Während des Erstellens der tarball Archive sind $nb_err  Fehler aufgetreten."
 
-#: backup-methods.sh.ext:154
-msgid "Need a key to use rsync"
-msgstr "Benötige einen Schlüssel um rsync auszuführen"
-
-#: backup-methods.sh.ext:163
+#: backup-methods.sh.ext:216
 #, sh-format
 msgid "The \"mysql\" method is choosen, but $mysqldump is not found."
 msgstr ""
+"Es wurde die \"mysql\" Methode ausgewählt, $mysqldump wurde aber nicht "
+"gefunden"
 
-#: backup-methods.sh.ext:170
+#: backup-methods.sh.ext:235
 #, fuzzy, sh-format
-msgid "Unable to dump the content of the database $database"
-msgstr "kann das Dateimuster nicht finden"
-
-#: backup-methods.sh.ext:174
-#, fuzzy, sh-format
-msgid "The file $file_to_create was not created, skipping."
-msgstr "Datei $file_to_create existiert bereits, abgebrochen."
-
-#: backup-methods.sh.ext:181
-#, fuzzy, sh-format
-msgid "Unable to gzip $file_to_create"
-msgstr "Erstellen von $file_to_create:"
-
-#: backup-methods.sh.ext:193
-#, fuzzy, sh-format
-msgid "Unable to bzip2 $file_to_create"
-msgstr "Erstellen von $file_to_create:"
-
-#: backup-methods.sh.ext:206
-#, sh-format
-msgid "This compression format is not supported: $BM_MYSQL_FILETYPE"
+msgid "The \"svn\" method is choosen, but $svnadmin is not found."
 msgstr ""
+"Es wurde die \"mysql\" Methode ausgewählt, $mysqldump wurde aber nicht "
+"gefunden"
 
-#: backup-methods.sh.ext:216
-msgid "backup_method_pipe is not yet supported"
-msgstr "backup_method_pipe wird noch nicht unterstützt"
+#: backup-methods.sh.ext:262
+#, sh-format
+msgid "Not enough args for this archive ($archive), skipping."
+msgstr ""
 
 #: dialog.sh.ext:13
 msgid "Output:"
@@ -246,7 +288,6 @@ msgid "Print this short help message."
 msgstr "Ausgeben dieses kurzen Hilfetextes."
 
 #: dialog.sh.ext:15
-#, fuzzy
 msgid "Print what happens on STDOUT."
 msgstr "Ausgeben was auf STDOUT passiert ist."
 
@@ -288,7 +329,7 @@ msgstr "Überschreiben des existierenden Archives erzwingen."
 
 #: dialog.sh.ext:31
 msgid "Unwanted actions:"
-msgstr "Ungewollte Aktionen:"
+msgstr "Deaktivieren von Aktionen:"
 
 #: dialog.sh.ext:32
 msgid "Disable the upload process."
@@ -303,48 +344,45 @@ msgid "Disable the purge process."
 msgstr "Deaktivieren des Lösch-Vorgangs."
 
 #: dialog.sh.ext:46
-#, fuzzy
 msgid "Warning, process interupted, archives may be corrupted."
-msgstr ""
-"Warnung, ich wurde angehalten bevor ich meinen Job erfolgreich ausführen "
-"konnte. Archive könnten defekt sein."
+msgstr "Warnung, Prozeß unterbrochen, Archive könnten defekt sein."
 
 #: dialog.sh.ext:56
-#, fuzzy
 msgid ""
 "the BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
 msgstr ""
-"Die Konfigurationsvariable BM_FILETYPE ist auf \"zip\" gesetzt, das Programm "
-"zip ist aber nicht installiert."
+"Die Konfigurationsvariable BM_TARBALL_FILETYPE ist auf \"zip\" gesetzt,  das "
+"Programm zip ist aber nicht installiert."
 
 #: dialog.sh.ext:61
-#, fuzzy
 msgid ""
 "the BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
 "installed."
 msgstr ""
-"Die Konfigurationsvariable BM_FILETYPE ist auf \"zip\" gesetzt, das Programm "
-"zip ist aber nicht installiert."
+"Die Konfigurationsvariable BM_TARBALL_FILETYPE ist auf \"bzip2\" gesetzt,  "
+"das Programm bzip2 ist aber nicht installiert."
 
 #: dialog.sh.ext:71
-#, fuzzy, sh-format
+#, sh-format
 msgid "The BM_TARBALL_DIRECTORIES conf key is not set in $conffile"
-msgstr "Die Konfigurationsvariable ist in $conffile nicht gesetzt"
+msgstr ""
+"Die Konfigurationsvariable BM_TARBALL_DIRECTORIES ist in $conffile nicht "
+"gesetzt"
 
 #: dialog.sh.ext:86
-#, fuzzy, sh-format
+#, sh-format
 msgid "$BM_REPOSITORY_ROOT does not exist, creating it"
-msgstr "$BM_ARCHIVES_REPOSITORY existiert nicht, wird angelegt"
+msgstr "$BM_REPOSITORY_ROOT existiert nicht, wird angelegt"
 
 #: files.sh.ext:10
-#, fuzzy, sh-format
+#, sh-format
 msgid "unable to unmount $mount_point"
-msgstr "konnte folgenden Mountpunkt nicht erstellen: $mount_point"
+msgstr "Unmount von $mount_point fehlgeschlagen"
 
 #: files.sh.ext:12
-#, fuzzy, sh-format
+#, sh-format
 msgid "unable to remove $mount_point"
-msgstr "konnte folgenden Mountpunkt nicht erstellen: $mount_point"
+msgstr "Konnte folgenden Mountpunkt nicht löschen: $mount_point"
 
 #: files.sh.ext:140
 #, sh-format
@@ -395,14 +433,13 @@ msgid "No file given"
 msgstr "Keine Datei angegeben"
 
 #: files.sh.ext:243
-#, fuzzy, sh-format
+#, sh-format
 msgid "The given file does not exist: $file_to_create"
-msgstr "Angegebenes Archiv existiert nicht im Repository: $archive"
+msgstr "Angegebene Datei existiert nicht: $file_to_create"
 
 #: files.sh.ext:247
-#, fuzzy
 msgid "unable to get date from file"
-msgstr "Deaktivieren des Lösch-Vorgangs."
+msgstr "Kann das Datum der Datei nicht ermitteln."
 
 #: files.sh.ext:248
 msgid "unable to find the pattern of the file"
@@ -418,9 +455,9 @@ msgid "Unmounting $BM_BURNING_DEVICE: "
 msgstr "Unmounten von $BM_BURNING_DEVICE: "
 
 #: logger.sh.ext:139
-#, fuzzy, sh-format
+#, sh-format
 msgid "Removing $mount_point: "
-msgstr "Löschen von $file: "
+msgstr "Löschen des Mountpoints $mount_point: "
 
 #: md5sum.sh.ext:14
 #, sh-format
@@ -429,7 +466,7 @@ msgstr "Keine MD5-Summe gefunden: $md5file"
 
 #: md5sum.sh.ext:66
 #, sh-format
-msgid "Archive given does not exists in the repository: $archive"
+msgid "Archive given does not exist in the repository: $archive"
 msgstr "Angegebenes Archiv existiert nicht im Repository: $archive"
 
 #: sanitize.sh.ext:18
@@ -444,6 +481,8 @@ msgid ""
 "The configuration key \"$deprecated_key\" is deprecated, you should rename "
 "it \"$new_key\". Using \"$deprecated_value\"."
 msgstr ""
+"Die Konfigrationsvariable \"$deprecated_key\" ist varaltet. Sie sollten sie "
+"in \"$new_key\" umbenennen. Benutze \"$deprecated_value\"."
 
 #: sanitize.sh.ext:63
 #, sh-format
@@ -469,8 +508,21 @@ msgstr ""
 "Beim Validieren der Konfigurationsdatei $conffile wurden $nb_warnings "
 "Warnungen erkannt"
 
-#~ msgid "Using the \"pipe\" backup method"
-#~ msgstr "Benutze \"pipe\" Backup Methode"
+#~ msgid "Unable to dump the content of the database $database"
+#~ msgstr "Kann den Inhalt der Datenbank $database nicht auslesen"
+
+#~ msgid "The file $file_to_create was not created, skipping."
+#~ msgstr "Datei $file_to_create konnte nicht erstellt werden, abgebrochen."
+
+#~ msgid "Unable to bzip2 $file_to_create"
+#~ msgstr "Erstellen von $file_to_create fehlgeschlagen"
+
+#~ msgid "This compression format is not supported: $BM_MYSQL_FILETYPE"
+#~ msgstr ""
+#~ "Dieses Kompressionsformat wird nicht unterstützt: $BM_MYSQL_FILETYPE"
+
+#~ msgid "backup_method_pipe is not yet supported"
+#~ msgstr "backup_method_pipe wird noch nicht unterstützt"
 
 #~ msgid "backup_method_mysql is not yet supported"
 #~ msgstr "backup_method_mysql wird noch nicht unterstützt"

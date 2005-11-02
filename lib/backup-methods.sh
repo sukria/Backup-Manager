@@ -15,7 +15,7 @@ commit_archive()
 	base=$(basename $file_to_create)
 	md5hash=$(get_md5sum $file_to_create)
 	info "${md5hash})"
-	echo "$md5hash $base" >> $BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5
+	echo "$md5hash  $base" >> $BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5
 		
 	# Now that the file is created, remove previous duplicates if exists...
 	purge_duplicate_archives $file_to_create || error "unable to purge duplicates"

@@ -1,3 +1,9 @@
+2005-11-02  Alexis Sukrieh <sukria@sukria.net>
+
+	* Closes bug #3
+	  + .md5 files now have two spaces between the hash and the file name so
+	    the file is now usable with md5sum --check.
+
 2005-10-24  Alexis Sukrieh <sukria@sukria.net>
 
 	* backup-manager:

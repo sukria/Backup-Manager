@@ -118,14 +118,14 @@ burn_files()
 		done		
 	fi
 
-	title="Backups_${TODAY}"
+	title="Backups of ${TODAY}"
 	
 	# Let's un mount the device first
 	umount $BM_BURNING_DEVICE || warning "Unable to unmount the device \$BM_BURNING_DEVICE"
 	
 	# get a log file in a secure path
 	logfile="$(mktemp /tmp/bm-cdrecord.log.XXXXXX)"
-	info "Redirecting cdrecord logs into \$logfile"
+	info "Redirecting burning logs into \$logfile"
 	
 	# set the cdrecord command 
 	devforced=""
@@ -136,7 +136,21 @@ burn_files()
 	
 	# burning the iso with the user choosen method
 	case "$BM_BURNING_METHOD" in
+		"DVD")
+                        if [ ! -x $growisofs ]; then
+                                error "DVD burning requires $growisofs, aborting."
+                        fi
+                        
+			info -n "Exporting archives to the DVD media in \$BM_BURNING_DEVICE: "
+			$growisofs -Z ${BM_BURNING_DEVICE} -R -J -V "${title}" ${what_to_burn} > ${logfile} 2>&1 ||
+                                error "failed, check \$logfile"
+			info "ok"
+		;;
 		"CDRW")
+                        if [ ! -x $cdrecord ]; then
+                                error "CDROM burning requires $cdrecord, aborting."
+                        fi
+                        
 			info -n "Blanking the CDRW in \$BM_BURNING_DEVICE: "
 			${cdrecord} -tao $devforced blank=fast > ${logfile} 2>&1 ||
 				error "failed, check \$logfile"
@@ -149,12 +163,19 @@ burn_files()
 			info "ok"
 		;;
 		"CDR")
+                        if [ ! -x $cdrecord ]; then
+                                error "CDROM burning requires $cdrecord, aborting."
+                        fi
+
 			info -n "Burning data to \$BM_BURNING_DEVICE: "
 			${mkisofs} -V "${title}" -q -R -J ${what_to_burn} | \
 			${cdrecord} -tao $devforced - > ${logfile} 2>&1 ||
 				error "failed, check \$logfile"
 			info "ok"
 		;;
+                *)
+                        error "The requested burning method is not supported, check BM_BURNING_METHOD in \$conffile"
+                ;;
 	esac
 	
 	# Cleaning the logile, everything was fine at this point.

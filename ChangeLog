@@ -1,3 +1,10 @@
+2005-11-07  Alexis Sukrieh  <sukria@sukria.net>
+
+	* backup-manager: 
+	  + added growisofs path
+	* lib/actions.sh:
+	  + burn_files() can handle DVD burning with growisofs.
+
 2005-11-02  Alexis Sukrieh <sukria@sukria.net>
 
 	* Closes bug #3

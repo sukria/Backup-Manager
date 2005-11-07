@@ -16,6 +16,8 @@
 #
 ######################################################
 
+VERSION="0.5.9b"
+
 set -e
 
 # All the path we'll need
@@ -26,6 +28,7 @@ gzip="/bin/gzip"
 tar="/bin/tar"
 rsync="/usr/bin/rsync"
 mkisofs="/usr/bin/mkisofs"
+growisofs="/usr/bin/growisofs"
 cdrecord="/usr/bin/cdrecord"
 bmu="/usr/bin/backup-manager-upload"
 lockfile="/var/run/backup-manager.pid"
@@ -45,6 +48,7 @@ source $libdir/actions.sh
 
 # Initialize defautls values of arguments
 verbose="false"
+version="false"
 warnings="true"
 force="false"
 upload="false"
@@ -92,6 +96,10 @@ while [ $# -ge 1 ]; do
 		-v|--verbose) 
 			verbose="true"
 		;;
+                --version)
+                        echo "Backup Manager $VERSION"
+                        _exit 0
+                ;;
 		--no-warnings)
 			warnings="false"
 		;;

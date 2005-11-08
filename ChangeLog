@@ -1,65 +1,29 @@
-2005-11-08  Alexis Sukrieh <sukria@sukria.net>
+2005-11-07 (0.5.9b)  Alexis Sukrieh <sukria@sukria.net>
 
-	* backup-manager: moved the VERSION definition.
-	* backup-manager.conf.tpl: new comments, better.
-	* man/backup-manager.8: added the --version option.
-
-2005-11-07  Alexis Sukrieh  <sukria@sukria.net>
-
-	* backup-manager: 
-	  + added growisofs path
-	* lib/actions.sh:
-	  + burn_files() can handle DVD burning with growisofs.
-
-2005-11-02  Alexis Sukrieh <sukria@sukria.net>
-
-	* Closes bug #3
-	  + .md5 files now have two spaces between the hash and the file name so
-	    the file is now usable with md5sum --check.
-
-2005-10-24  Alexis Sukrieh <sukria@sukria.net>
-
-	* backup-manager:
-	  + added $svnadmin in the paths.
-	* lib/actions.sh:
-	  + The backup methdo switch now handles "svn" method.
-	* lib/backup-methods.sh:
-	  + backup_method_svn() implemeted using the pipe method mechanism.
-
-2005-10-24  Alexis Sukrieh  <sukria@sukria.net>
-
-	* backup-manager.conf.tpl:
-	  + better comments for the pipe array.
-	* lib/backup-methods.sh:
-	  + "mysql" method now uses the pipe mechanism.
-
-2005-10-23  Alexis Sukrieh  <sukria@sukria.net>
-
-	* backup-manager.conf.tpl: 
-	  + added examples about the backup method "pipe".
-	* lib/actions.sh: 
+	* New Features:
+	  + New method "svn", SubVersioNs repositories can be archived safely
+	    with svnadmin.
+	  + New method "pipe", Generic method for making archive with an external
+	    command, athe content sent to stdout will be used.
+	  + DVD burning support is available. You can choose to burn your
+	    archive repository on a DVD media, growisofs is used for this
+	    purpose.
+	* Changes:
+	  + Added a switch in the command line for the version number "--version".
+	  + Some more comments in the configuration file.
+	  + No default backup method anymore, trigger an error if unknown method
+	    given.
+	  + AUTHORS: fixed the name of "jimmy".
+	  + Makefile: man pages are generated and isntalled in the good section.
+	  + backup-manager.conf.tpl: Several typos.
+	* Bugs closed:
+	  +  md5 files now have two spaces between the hash and the file name so
+	    the file is now usable with md5sum --check. (closes: #3)
 	  + The backup switch now call backup_method_pipe() if needed.
 	  + "tarball" method is not the default one anymore, must be called
 	  explicitly.
-	  + No default method anymore, trigger an error if unknown method
-	  given.
-	* lib/backup-methods.sh:
-	  + new method: "pipe". Generic method which can make archives from
-	  any commandline (the command should produce output on stdout).
-
-2005-10-14  Alexis Sukrieh <sukria@sukria.net>
-
-	* lib/backup-methods.sh: renamed a variable for gettext specific
-	needs (s/error/nb_err).
-	* lib/md5sum.sh: Fix a typo in a message.
-	* po/.ext: removed, non needs to be archived.
-	* po/fr.po: New version of the French translations.
-
-2005-10-05  Alexis Sukrieh <sukria@backup-manager.org>
-
-	* AUTHORS: fixed the name of "jimmy".
-	* Makefile: man pages are generated and isntalled in the good section.
-	* backup-manager.conf.tpl: Several typos.
+	* Translations:
+	  + po/fr.po: New version of the French translations.  
 
 0.5.9 Alexis Sukrieh <sukria@backup-manager.org>
 	* Configuration keys have been drastically renamed.

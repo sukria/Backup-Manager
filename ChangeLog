@@ -1,3 +1,9 @@
+2005-11-08  Alexis Sukrieh <sukria@sukria.net>
+
+	* backup-manager: moved the VERSION definition.
+	* backup-manager.conf.tpl: new comments, better.
+	* man/backup-manager.8: added the --version option.
+
 2005-11-07  Alexis Sukrieh  <sukria@sukria.net>
 
 	* backup-manager: 

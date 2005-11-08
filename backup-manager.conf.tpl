@@ -1,9 +1,5 @@
 #  Backup Manager Configuration File
 #
-#  Global notes:
-#
-#  * Whenever you see a configuration key set to yes, you can 
-#    safely change it to no. They are booleans.
 #  * This configuration file is divided into sections.
 #    The 'global' section is mandatory, every keys defined in 
 #    this section are inherited in the other sections.
@@ -69,11 +65,6 @@ export BM_TARBALL_DIRECTORIES="/etc /home"
 
 # Files to exclude when generating tarballs
 export BM_TARBALL_BLACKLIST=""
-
-##############################################################
-# Section "RSYNC"
-# Backup method: rsync
-#############################################################
 
 ##############################################################
 # Backup method: MYSQl
@@ -194,14 +185,18 @@ export BM_BURNING_DEVICE="/dev/cdrom"
 export BM_BURNING_DEVFORCED=""
 
 # the method of burning archives from the list :
-#  - CDRW : blanking the CDRW and burning the all 
+#  - DVD  : burn archives on a DVD media.
+#
+#  - CDRW : blank the CDRW and burn the whole 
 #           ARCHIVES_REPOSITORY or only 
 #           the generated archives.
-#  - CDR  : burning all the ARCHIVES_REPOSITORY or 
+#
+#  - CDR  : burn the whole ARCHIVES_REPOSITORY or 
 #           only the generated archives.
 export BM_BURNING_METHOD="CDRW"
 
-# enter here the max size of your media
+# enter here the max size of your media 
+# (usal sizes are 4200 for DVD media and 700 or 800 for CDR media)
 export BM_BURNING_MAXSIZE="700"
 
 

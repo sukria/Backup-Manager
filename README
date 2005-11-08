@@ -1,17 +1,40 @@
 
-			backup-manager
+                      Backup Manager
 
-
-	*    A really simple to use backup manager    *
+         *    A really simple to use backup tool    *
 	
+                http://www.backup-manager.org
 
-The idea is to specify all the important directories of the system.
-backup-manager will generate tarballs (or zipped files) of all the
-specified directories.
+Description
+---------------------------------------------------------------------
 
-Archives can be uploaded daily to a list of remote hosts.
-Cleaning is done with purging each too old archive according to a 
-specified number of days.
+Backup Manager is a command line backup tool for GNU/Linux, designed 
+to help you make daily archives of your file system.
 
-http://www.sukria.net/packages/backup-manager/
+Written in bash and perl, it can make tar, tar.gz, tar.bz2, and zip 
+archives and can be run in a parallel mode with different 
+configuration files.
+
+Archives are kept for a given number of days and the upload system can
+use ftp or scp to transfer the generated archives to a list of remote 
+hosts. 
+The configuration file is very simple and basic and gettext is used 
+for internationalization.
+
+Installation
+---------------------------------------------------------------------
+
+See the file INSTALL
+
+Rporting Bugs
+---------------------------------------------------------------------
+
+Use the bug tracking system: http://bugzilla.backup-manager.org
+
+
+Mailing Lists
+---------------------------------------------------------------------
+
+You can subscribe to mailing lists at the following url:
+http://www.backup-manager.org/mailinglists/
 

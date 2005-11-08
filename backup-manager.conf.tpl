@@ -41,6 +41,11 @@ export BM_ARCHIVE_PURGEDUPS="yes"
 export BM_ARCHIVE_PREFIX="$HOSTNAME"
 
 # The backup method to use.
+# Available methods are:
+# - tarball
+# - mysql
+# - svn
+# - pipe
 export BM_ARCHIVE_METHOD="tarball"
 
 ##############################################################
@@ -90,6 +95,17 @@ export BM_MYSQL_PORT="3306"
 
 # which compression format to use? (gzip or bzip2)
 export BM_MYSQL_FILETYPE="bzip2"
+
+##############################################################
+# Backup method: svn
+#############################################################
+
+# Absolute paths to the svn repositories to archive
+export BM_SVN_REPOSITORIES=""
+
+# You can compress the resulting XML files 
+# Supported compressor are: bzip2 and gzip
+export BM_SVN_COMPRESSWITH="bzip2"
 
 ##############################################################
 # Backup method: pipe

@@ -8,6 +8,6 @@ How to install backup-manager
 
 You can then edit /etc/backup-manager.conf to fit your needs.
 
-see man backup-manager for details.
+see backup-manager(8) for details.
 
 

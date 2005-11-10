@@ -86,7 +86,6 @@ check_cdrom_md5_sums()
 burn_files()
 {
 	if [ "$BM_BURNING" != "yes" ]; then
-		info "The burning system is disabled in the conf file."
 		return 0
 	fi
 	
@@ -191,27 +190,23 @@ burn_files()
 
 make_archives()
 {
+        info "Using the \"\$BM_ARCHIVE_METHOD\" backup method..."
 	case $BM_ARCHIVE_METHOD in
 	
 	mysql)
-		info "Using the \"mysql\" backup method."
 		backup_method_mysql
 	;;
 	rsync)
-		info "Using the \"rsync\" backup method."
 		backup_method_rsync
 	;;
 
-	tarball)
-		info "Using the \"tarball\" backup method."
+	tarball|tarball-incremental)
 		backup_method_tarball
 	;;
         pipe)
-                info "Using the \"pipe\" backup method."
                 backup_method_pipe
         ;;
         svn)
-                info "Using the \"svn\" backup method."
                 backup_method_svn
         ;;
         *)
@@ -271,8 +266,6 @@ upload_files ()
 				-d="$BM_UPLOAD_DIR" \
 				-r="$BM_REPOSITORY_ROOT" today" || error "unable to call backup-manager-upload"
 		fi
-	else
-		info "The upload system is disabled in the conf file."
 	fi
 }
 

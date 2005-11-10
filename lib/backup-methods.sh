@@ -77,6 +77,10 @@ __exec_meta_command()
         compress="$3"
         logfile=$(mktemp /tmp/bm-command.stderr.XXXXXX)
         
+	if [ -f $file_to_create ] && [ $force != true ]; then
+                warning "File \$file_to_create already exists, skipping."
+        fi
+        
         # execute the command, grab the output
         $($command 1> $file_to_create 2>$logfile) || 
         error "Unable to exec \$command; check \$logfile."
@@ -122,7 +126,8 @@ __exec_meta_command()
         export BM_RET="$file_to_create"
 }
 
-
+# This manages both "tarball" and "tarball-incremental" methods.
+# configuration keys: BM_TARBALL_* and BM_TARBALLINC_*
 backup_method_tarball()
 {
 	# Create the directories blacklist
@@ -154,13 +159,52 @@ backup_method_tarball()
 		
 		dir_name=$(get_dir_name $DIR $BM_TARBALL_NAMEFORMAT)
 		file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY.$BM_TARBALL_FILETYPE"
+
+                # needed for the incremental method
+                incremental_list="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.incremental-list.txt"
 		
+                # handling of incremental options
+                if [ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ]; then
+        
+                        incremental=""
+                        is_master_day="false"
+
+                        case $BM_TARBALLINC_MASTERDATETYPE in
+                        weekly)
+                                master_day=$(date +'%w')
+                        ;;
+                        monthly)
+                                master_day=$(date +'%d')
+                        ;;
+                        *)
+                                error "Unknown frequency: \$BM_TARBALLINC_MASTERDATETYPE"
+                        ;;
+                        esac
+                        
+                        if [ -z "$BM_TARBALLINC_MASTERDATEVALUE" ]; then
+                                BM_TARBALLINC_MASTERDATEVALUE="1"
+                        fi
+                        if [ $master_day = $BM_TARBALLINC_MASTERDATEVALUE ]; then
+                                is_master_day="true"
+                        fi
+
+                        # if not masterday, let's use the incremental list
+                        if [ "$is_master_day" = "false" ]; then 
+                                incremental="--listed-incremental $incremental_list"
+                        # if master day, we have to purge the incremental list if exists
+                        else
+                                if [ -e $incremental_list ]; then
+                                        rm -f $incremental_list
+                                fi
+                        fi
+                fi
+
 		if [ ! -f $file_to_create ] || [ $force = true ]; then
 		   	
 			case $BM_TARBALL_FILETYPE in
 				tar.gz) # generate a tar.gz file if needed 
 					tarball_logfile=$(mktemp /tmp/bm-tar.log.XXXXXX)
-					if ! $tar $blacklist $h -c -z -f "$file_to_create" "$DIR" > $tarball_logfile 2>&1 ; then
+					if ! $tar $incremental $blacklist $h -p -c -z -f "$file_to_create" "$DIR" > $tarball_logfile 2>&1 ; then
 						handle_tarball_error "$file_to_create" "$tarball_logfile"
 					else
 						rm -f $tarball_logfile
@@ -168,7 +212,7 @@ backup_method_tarball()
 				;;
 				tar.bz2|tar.bz) # generate a tar.bz2 file if needed
 					tarball_logfile=$(mktemp /tmp/bm-tar.log.XXXXXX)
-					if ! $tar $blacklist $h -c -j -f "$file_to_create" "$DIR" > $tarball_logfile 2>&1 ; then
+					if ! $tar $incremental $blacklist $h -p -c -j -f "$file_to_create" "$DIR" > $tarball_logfile 2>&1 ; then
 						handle_tarball_error "$file_to_create" "$tarball_logfile"
 					else
 						rm -f $tarball_logfile
@@ -176,7 +220,7 @@ backup_method_tarball()
 				;;
 				tar) # generate a tar file if needed
 					tarball_logfile=$(mktemp /tmp/bm-tar.log.XXXXXX)
-					if ! $tar $blacklist $h -c -f "$file_to_create" "$DIR" > $tarball_logfile 2>&1 ; then
+					if ! $tar $incremental $blacklist $h -p -c -f "$file_to_create" "$DIR" > $tarball_logfile 2>&1 ; then
 						handle_tarball_error "$file_to_create" "$tarball_logfile"
 					else 
 						rm -f $tarball_logfile

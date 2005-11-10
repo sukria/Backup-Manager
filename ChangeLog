@@ -1,0 +1,10 @@
+2005-11-10  Alexis Sukrieh <sukria@sukria.net>
+
+	* lib/actions.sh:
+	  + support the tarball-incremental method.
+	* lib/backup-methods.sh:
+	  + patched the "tarball" method so it can handle incremental backups.
+	* lib/sanitize.sh:
+	  + some sanitize checks for the new configuration keys related to
+	  incremental backups.
+

@@ -91,6 +91,11 @@ confkey_require "BM_ARCHIVE_PREFIX" "$HOSTNAME"
 confkey_hanlde_deprecated "BM_BACKUP_METHOD" "BM_ARCHIVE_METHOD"
 confkey_require "BM_ARCHIVE_METHOD" "tarball"
 
+if [ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ] && 
+   [ -z "$BM_TARBALLINC_MASTERDATETYPE" ]; then
+        confkey_require "BM_TARBALLINC_MASTERDATETYPE" "weekly"
+fi
+
 if [ "$BM_ARCHIVE_METHOD" = "tarball" ]; then
 
 	confkey_hanlde_deprecated "BM_FILETYPE" "BM_TARBALL_FILETYPE"

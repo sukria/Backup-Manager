@@ -1,5 +1,11 @@
 2005-11-10  Alexis Sukrieh  <sukria@sukria.net>
 
+	* backup-manager.conf.tpl:
+	  + details about the new configuration keys for the incremental
+	  backup method.
+
+2005-11-10  Alexis Sukrieh  <sukria@sukria.net>
+
 	* lib/backup-methods.sh:
 	  + bug fixed, always give the --listed-incremental flag when performing
 	  an incremental backup (even when doing a master tarball).

@@ -43,6 +43,7 @@ export BM_ARCHIVE_PREFIX="$HOSTNAME"
 # The backup method to use.
 # Available methods are:
 # - tarball
+# - tarball-incremental
 # - mysql
 # - svn
 # - pipe
@@ -70,6 +71,27 @@ export BM_TARBALL_DIRECTORIES="/etc /home"
 
 # Files to exclude when generating tarballs
 export BM_TARBALL_BLACKLIST=""
+
+##############################################################
+# The tarball-incremental method uses the same keys as the 
+# tarball method, plus two others.
+#############################################################
+
+# Which frequency to use for the master tarball?
+# possible values: weekly, monthly
+export BM_TARBALLINC_MASTERDATETYPE="weekly"
+
+# Number of the day, in the BM_TARBALLINC_MASTERDATETYPE frequency
+# when master tarballs should be made
+export BM_TARBALLINC_MASTERDATEVALUE="1"
+
+# Examples: you want to make maser tarballs every friday:
+# BM_TARBALLINC_MASTERDATETYPE="weekly"
+# BM_TARBALLINC_MASTERDATEVALUE="5"
+#
+# Or every first day of the month:
+# BM_TARBALLINC_MASTERDATETYPE="monthly"
+# BM_TARBALLINC_MASTERDATEVALUE="1"
 
 ##############################################################
 # Backup method: MYSQl

@@ -18,7 +18,7 @@
 
 set -e
 
-VERSION="0.5.9b"
+VERSION="0.5.9c"
 
 # All the path we'll need
 libdir="/usr/share/backup-manager"

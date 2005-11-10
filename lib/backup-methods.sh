@@ -188,15 +188,13 @@ backup_method_tarball()
                                 is_master_day="true"
                         fi
 
-                        # if not masterday, let's use the incremental list
-                        if [ "$is_master_day" = "false" ]; then 
-                                incremental="--listed-incremental $incremental_list"
                         # if master day, we have to purge the incremental list if exists
-                        else
-                                if [ -e $incremental_list ]; then
-                                        rm -f $incremental_list
-                                fi
+                        # so we'll generate a new one (and then, a full backup).
+                        if [ "$is_master_day" = "true" ] && 
+                           [ -e $incremental_list ]; then
+                                rm -f $incremental_list
                         fi
+                        incremental="--listed-incremental $incremental_list"
                 fi
 
 		if [ ! -f $file_to_create ] || [ $force = true ]; then

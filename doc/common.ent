@@ -18,7 +18,7 @@
 
 <!-- Backup Manager related information -->
 <!ENTITY bmngr "Backup Manager">
-<!ENTITY bmngr-version "0.5.6">
+<!ENTITY bmngr-version "0.6">
 
 <!-- Email addresses -->
 <!ENTITY doc-email "<email>backup-manager-doc@sukria.net</email>">

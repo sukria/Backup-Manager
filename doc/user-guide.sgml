@@ -5,9 +5,6 @@
   <!-- common, language independent entities -->
   <!ENTITY % commondata  SYSTEM "common.ent" > %commondata;
 
-  <!-- CVS revision of this document -->
-  <!ENTITY cvs-rev "$Revision$">
-
   <!-- if you are translating this document, please notate the CVS
        revision of the original developer's reference in cvs-en-rev -->
   <!-- <!ENTITY cvs-en-rev "X.YZW"> -->
@@ -22,7 +19,7 @@
 
 		<author>Alexis Sukrieh
 		
-		<version>ver. &version;, &date-en;
+		<version>&version; - &date-en; 
 
 		<copyright>
 			<copyrightsummary>
@@ -46,177 +43,275 @@ it by writing to the &fsf-addr;.
 
 <toc detail="sect1">
 
-<chapt id="before-we-start">Before We Start
+<chapt id="about">About this manual
 
-	<sect id="scope">Scope of This Document
-	<p>
-This user guide has been written for everyone who want to use &bmngr; 
-for archiving data. Reading this documentation should provide 
-all the information a user could ask for. If you find a point that is not
-detailed in this documentation, please report it to &doc-email;. 
-	<p>
-As &bmngr; is a sysadmin tool, the wording <em>User</em> in the title of this
-documentation could be understood by <em>a system administrator who want to use
-&bmngr;</em>.  This guide will explain you the global design of &bmngr; as well as
-every important features this tool provides. 
-	<p>
-To begin with, the chapter you are reading, <em>Before We Start</em>, is an 
-introduction to the understanding of this tool, explaining how &bmngr; came, 
-why it was written as there was yet a lot of backup tools and what you need 
-if you want to use it at its full capacities.
-	<p>
-Then, you will have a global description of the <em>Main Design</em> of the program,
-explaining what are the ideas behind the code, how the tool behaves
-and what are the kind of features you can expect from it.
-	<p>
-When the main design would be clear to your mind, you will be interested in
-learning how you can precisely configure the tool in order to use a given
-feature, this will be detailed in the next part <em>Managing Configuration
-Files</em>.
-	<p>
-At this point, the next chapter, <em>Examples</em>, will give a set of precise
-configuration files that can be used to provide a particular archiving strategy.
-Most of those examples are taken from the real life, thanks to &bmngr; users. If
-you think the way you use &bmngr; should be quoted here as an example, feel free
-to submit it to &doc-email;.
-	<p>
-You will also find at the end of this documentation, an appendix which will
-describe all the configuration keys you can use in a &bmngr; configuration file.
+<sect id="about-scope">Scope
+<p>
+&bmngr; is a system tool designed to hanlde backups. It is written with
+simplicity in mind. 
 
-	<sect id="history">Some History
-	<p>
-The first thing to explain before entering the technical part of this documentation
-is to underline why &bmngr; was written. Indeed, when it came on the Open Source
-scene, there were still several backup tools, all of them powerful, well known
-and appreciated by users. So why having re-invented the wheel? Was there really
-a need for another Linux Backup Tool? I thought so, and I will tell you why.
-	<p>
-All began when I wanted to archive my important data at home, there were some
-important directories I wanted to backup and I then first wrote a small shell
-script that did the job. It was small, dirty and really not portable, but it was
-a simple script to do a simple thing: generating a couple of tarballs.
-	<p>
-One day, I don't know why, but I decided to host my webpage at home, I had a
-small Linux box with a permanent Internet access and a public IP address so it
-was possible and I did it. You can imagine that from that day, my backup strategy 
-grew up and thus my backup script needed to be upgraded. I had then two boxes: the server
-and my desktop machine. I then realized that I had to make a choice: using a
-<em>real</em> backup tool or enhancing my own script to make it well written,
-and easy to maintain. I choose the second alternative for only one reason: I did
-not find any backup tool that could fit my needs without requesting me to learn
-a lot of documentation, installing a server and a couple of agents or even hack a
-configuration file that is hundreds lines long.
-	<p>
-In short, there wasn't any <em>easy-to-use</em> backup tool, and I wanted to
-write it.
+<p>
+If you want to handle a couple of tarballs, reading the
+default configuration file might be enough to understand the main design.
+On the other hand, if you want to know more about the global design of the
+program, how to write your own backup methods or even look at some real life
+examples, this guide is for you.
 
-	<sect id="why-using-it">Why Using &bmngr;?
-	<p>
-&FIXME;
-	<p>
-&bmngr; is designed for a kind of Linux users: those who want a simple
-tool to manage a set of tarballs.
-	<p>
-Before I decided to write my own backup tool, either it was necessary to use complex tools, 
-or it was necessary to write one's own script to handle tar. It's now possible
-to use &bmngr; instead of writing your own Shell script and learning how to use
-it won't take you more time than writing your own backup tool.
-	<p>
-As the ease of use was a real aim...
+<p>
+This document describes the main design of the software and gives informations
+about supported configuration keys. Every backup methods are described, with
+a sample configuration file as illustration. Whenever possible, advices and best
+practices are given. 
 
-	<sect id="dependencies">Dependencies
-	<p>
-The very last thing to say before we start is to list all the dependencies of
-&bmngr;. Indeed, some actions it can perform are done thanks to well-known
-programs. If you plan to use some &bmngr;'s feature; please, be sure that the
-corresponding program is installed on your system.
+<p>
+This manual also describes every configuration variables supported in the
+version &bmngr-version;, these are available in appendices for a quick reference.
 
+<sect id="about-version">Version
+
+<p>
+This is the first version of this document, it was first released with 
+the release 0.6 of &bmngr;.
+
+
+<sect id="about-authors">Authors
+<p>
+The first version of this document was made in late 2005, by Alexis Sukrieh.
+
+<p>
+While the author of this document has tried hard to avoid typos and other 
+errors, these do still occur. If you discover an error in this manual or if
+you want to give any comments, suggestions, or criticisms please send an 
+email to the development list, backup-manager-devel@backup-manager.org, or submit
+a bug report against the "Documentation" product, in the bug tracking system.
+
+<chapt id="design">Global Design
+
+<p>
+&bmngr; stores <em>archives</em> it builds in a <em>repository</em>.
+<em>Archives</em> are built by using a <em>backup method</em>. Each
+<em>method</em> has a special meaning and behaviour.
+A <em>backup scenario</em> is described in a configuration file that contains
+<em>configuration keys</em>.
+
+<sect id="archive-repo">The Repository
+
+<p>
+The repository is the place in your filesystem
+where every archives are stored.
+This is a particular place for &bmngr;, it will be cleaned during backup
+sessions: archives older than the authorized lifetime will be purged.
+This place is defined with the configuration key <tt>BM_REPOSITORY_ROOT</tt>.
+
+<p>
+Example:
+
+<p>
+<tt>export BM_REPOSITORY_ROOT="/var/archives"</tt>
+
+<p>
+For security reasons, the repository can be accessible by a specific user/group
+pair. This will prevent the archives from being readable (and writable) by any user
+in the system. This mode is enabled by default (owned by <tt>root:root</tt>).
+To enable this mode, set the configuration key <tt>BM_REPOSITORY_SECURE</tt> 
+to <tt>yes</tt>, then update <tt>BM_REPOSITORY_USER</tt> and
+<tt>BM_REPOSITORY_GROUP</tt> to your needs.
+
+<p>
+Example:
+
+<example>
+export BM_REPOSITORY_SECURE="yes"
+export BM_REPOSITORY_USER="root"
+export BM_REPOSITORY_GROUP="root"
+</example>
+
+<p>
+Isolating the repository on a dedicated partition is a good idea. This can
+prevent the repository from eating all the disk space of the parent partition
+(<tt>/var</tt> for insance) if the configuration file leads to huge archives.
+
+<sect id="archives">Archives
+
+<p>
+<em>Archives are produced by backup methods, they can be virtually anything, but
+will always be named like the following: <tt>prefix-name-date.filetype</tt>.
+An archive is a file that contains data, it can be compressed or not, in a binary
+form or not.</em>
+
+<p>
+If disk usage matters in your backup strategy, you might find useful to use
+&bmngr;'s duplicates purging feature. When an archive is generated, &bmngr;
+looks at the previous versions of this archive. 
+If it finds that a previous archive is the same file as the one it
+has just built, the previous one is replaced by a symlink to the new one.
+This is useful if you don't want to have twice the same archive in the
+repository.
+
+<p>
+One of the main concept behind the handling of the repository is to purge
+deprecated archives automatically. The purge session is always performed
+when you launch &bmngr;. During this phase, every archives older than the
+authorized lifetime are droped.
+
+<p>
 <list>
-	<item><prgn>tar</prgn> or <prgn>zip</prgn> are used for generating the
-	archives according the filetype you choose. Be sure to have it when you
-	choose the filetype of the archives.
-	</item>
-
-	<item><prgn>mkisofs</prgn> is used for building the ISO image for
-	burning the data on a CDR/CDRW media.
-	</item>
-	
-	<item>
-	<prgn>cdrecord</prgn> is used for using your CDR burner. Be sure that 
-	your device is available in cdrecord else, obviously, &bmngr; won't be
-	able to burn data.
-	</item>
+<item><tt>BM_ARCHIVE_PREFIX</tt>: String. This is the prefix used for naming
+archives (Default is the hostname).
+<item><tt>BM_ARCHIVE_TTL</tt>: Integer. The authorized lifetime (in days) for an archive.
+Every archive older than this age are droped during the purge phase.
+<item><tt>BM_ARCHIVE_PURGEDUPS</tt>: Boolean. If set to <tt>yes</tt> the
+duplicates purging feature is enabled.
 </list>
 
-	<p>
-All the internationalization efforts have been possible thanks to
-<prgn>gettext</prgn>, so be sure to have it on your system and to use a
-supported locale<footnote>French, German and Spanish locales are supported in
-the &bmngr-version;</footnote> if you want to have localized messages.
+<chapt id="methods">Backup Methods
 
-<chapt id="main-design">Main Design
-	<p>
-Before explaining precise technical points, we will describe the main ideas that
-led to the current implementation of the tool. 
+<p>
+The core feature of &bmngr; is to make archives, for doing this, a
+<em>method</em> is used. Each method can require a set of configuration keys.
+We will describe here every method supported in the version &version;.
 
-	<sect id="what-acrhive">What's an Archive
-	<p>
-An archive is obviously either a tarball or a zip file, it is a backup of a part
-of your filesystem. For instance, archiving the <file>/home</file> directory
-could be made in a file like the following: <file>home.tar.gz</file>. This is
-what we'll call an <em>archive</em> in this dcumentation.
+<p>
+The method you choose must be defined in the configuration key
+<tt>BM_ARCHIVE_METHOD</tt>. You can put here a list of all the different methods 
+you want to use. Take care to put every configuration keys needed by all the 
+methods you choose.
 
-	<sect id="archive-repo">The Archive Repository
-	<p>
-We need a place to keep all the archives we generate.
+<sect id="tarball">Tarballs
 
-	<sect id="lifetime">Lifetime of an Archive
-	<sect id="contexts">Context and Configuration Files
-	<sect id="upload-systm">The Upload System
-	<sect id="burning-systm">The Burning System
-	<sect id="post-pre-commands">Dealing with <prgn>pre-command</prgn> and <prgn>post-command</prgn>
-	
-<chapt id="setting-context">Managing Configuration Files
-	<sect id="defining">Archives Name and Type
-	<sect id="what-backup">Choosing What to Backup
-	<sect id="upload-archives">Uploading Archives
-		<sect1 id="ftp">With FTP Accounts
-		<sect1 id="scp">With SSH Accounts
-	<sect id="burning">Burning Archives on CDR/CDRW Media
+<sect1 id="tarball-desc">Description
 
-<chapt id="examples">Examples
-	<sect id="desktop">Archiving a Desktop Box
-	<sect id="servers">Using &bmngr; on a LAN, Centralizing Archives.
-	<sect id="samba">Using SAMBA for Proving Archives to Windows Boxes.
+<p>
+<em>Method name: <tt>tarball</tt>, configuration keys prefix: <tt>BM_TARBALL</tt>.</em>
 
-<appendix id="conffile">Overview of Configuration Keys
-	<sect id="archive-settings">Archive Settings
-		<sect1 id="BM_NAME_FORMAT">&BMNAMEFORMAT;
-		<sect1 id="BM_FILE_TYPE">&BMFILETYPE; 
-		<sect1 id="BM_MAX_TIME_TO_LIVE">&BMMAXTIMETOLIVE;
-		<sect1 id="BM_DUMP_SYMLINKS">&BMDUMPSYMLINKS;
-		<sect1 id="BM_ARCHIVES_PREFIX">&BMARCHIVESPREFIX;
-	<sect id="file-paths">File Paths
-		<sect1 id="BM_ARCHIVES_REPOSITORY">&BMARCHIVESREPOSITORY;
-		<sect1 id="BM_DIRECTORIES">&BMDIRECTORIES;
-		<sect1 id="BM_DIRECTORIES_BLACKLIST">&BMDIRECTORIESBLACKLIST;
-	<sect id="upload-settings">The Upload System Settings
-		<sect1 id="BM_UPLOAD_MODE">&BMUPLOADMODE;
-		<sect1 id="BM_UPLOAD_HOSTS">&BMUPLOADHOSTS;
-		<sect1 id="BM_UPLOAD_USER">&BMUPLOADUSER;
-		<sect1 id="BM_UPLOAD_PASSWD">&BMUPLOADPASSWD;
-		<sect1 id="BM_UPLOAD_KEY">&BMUPLOADKEY;
-		<sect1 id="BM_UPLOAD_DIR">&BMUPLOADDIR;
-	<sect id="burning-settings">The Burning System Settings
-		<sect1 id="BM_BURNING">&BMBURNING;
-		<sect1 id="BM_BURNING_MEDIA">&BMBURNINGMEDIA;
-		<sect1 id="BM_BURNING_DEVICE">&BMBURNINGDEVICE;
-		<sect1 id="BM_BURNING_METHOD">&BMBURNINGMETHOD;
-		<sect1 id="BM_BURNING_MAXSIZE">&BMBURNINGMAXSIZE;
-	<sect id="advanced-settings">Advanced Settings
-		<sect1 id="BM_PRE_BACKUP_COMMAND">&BMPREBACKUPCOMMAND;
-		<sect1 id="BM_POST_BACKUP_COMMAND">&BMPOSTBACKUPCOMMAND;
+<p>
+If all you want to do is to handle a couple of tarballs of your file system, you
+can use this method.  This method takes a list of directories
+and builds the corresponding tarballs.  
+This method is the default one, this is the easiest to use, it just
+builds tarballs as you could do with your own tar script. Its main drawback is
+to eat a lot of disk space: archives can be big from a day to another, even if
+there is no changes in their content. See the <tt>tarball-incremental</tt>
+method if you want to optimize archives' size.
 
+<p>
+A couple of options are available: the name format
+of the archive, the compression type (gzip, zip, bzip2, none) and the
+facility to dereference symlinks when building the tarball.
+
+<sect1 id="BM_TARBALL_NAMEFORMAT"><tt>BM_TARBALL_NAMEFORMAT</tt>
+<p>
+This configuration key defines how to perform the naming of the archive. Two
+values are possible:
+
+<list>
+<item><tt>long</tt>: the name will be made with the absolute path of the directory
+(eg: <tt>var-log-apache</tt> for <tt>/var/log/apache</tt>).
+<item><tt>short</tt>: the name will just contains the directory (eg:
+<tt>apache</tt> for <tt>/var/log/apache</tt>). 
+</list>
+
+<p>
+Suggested value: <tt>long</tt>.
+
+<sect1 id="BM_TARBALL_FILETYPE"><tt>BM_TARBALL_FILETYPE</tt>
+
+<p>Type: enum.
+
+<p>
+Basically, this configuration key defines the filetype of the resulting archive.
+In a way, it defines which compressor to use (zip, gzip or bzip2).
+Here are the supported values: <tt>tar</tt>, <tt>tar.gz</tt>, <tt>tar.bz2</tt>,
+<tt>zip</tt>. Note that depending on the filetype you choose, you will have to
+make sure you have the corresponding compressor.
+
+<p>
+For the best compression rate, choose <tt>tar.bz2</tt>.
+
+<sect1 id="BM_TARBALL_DUMPSYMLINKS"><tt>BM_TARBALL_DUMPSYMLINKS</tt>
+
+<p>Type: boolean, to enable put "<tt>true</tt>", to disable put "<tt>false</tt>".
+
+<p>
+It is possible, when generating the tarball (or the zip file) to dereference the
+symlinks. If you enable this feature, every symbolic links in the file system
+will be replaced in the archive by the file the point to. Use this feature with
+care, it can quickly leads to huge archive, or even worse: if you have a
+circular symlink somewhere, this will lead to an infinite archive!
+
+<p>
+In most of the cases, you should not use this feature.
+
+<sect1 id="BM_TARBALL_DIRECTORIES"><tt>BM_TARBALL_DIRECTORIES</tt>
+
+<p>Type: space separated list.
+
+<p>
+You certainly want to backup something, don't you? So here is the place where
+you put that precious list of locations. 
+
+<p>
+Example: 
+<example>
+export BM_TARBALL_DIRECTORIES="/etc /home /var/log/apache"
+</example>
+
+<sect id="tarballinc">Incremental tarballs
+
+<p>
+<em>Method name: <tt>tarball-incremental</tt>, configuration keys prefix:
+<tt>BM_TARBALLINC</tt>.</em>
+
+<p>
+If you want to handle tarballs without wasting disk space, you should use this
+method. The concept of this method is simple: You choose a frequency when a full
+backup is made (exactly like the one made by the tarball mehod). All the days
+between two full backups, archives contain only the files that have changed from
+the previous archive.
+
+<p>
+For instance, let's say you want to backup /home with this method. Your /home
+directory is composed by two sub-directories: /home/foo and /home/bar.
+You choose a weekly frequency and say that monday will be the "fullbackup" day.
+Obviously, you will have a full tarball of /home on monday. 
+Then, if a file changed inside /home/foo and if /home/bar
+remains unchanged, tuesday's archive will only contains the modified files of
+/home/foo. Using this method will save a lot of disk space.
+
+<p>
+This method uses all the tarball's configuration keys and adds two more. One to
+define the kind of frequency, the other to choose on which day should the full
+backups be made. 
+
+<sect1 id="BM_TARBALLINC_MASTERDATETYPE"><tt>BM_TARBALLINC_MASTERDATETYPE</tt>
+
+<p>Type: <tt>enum(weekly, monthly)</tt>.
+
+<p>
+This is the type of frequency you want to use. If you choose <tt>weekly</tt>,
+you'll have to choose a day number between 1 and 7 for the
+BM_TARBALLINC_MASTERDATEVALUE configuration key, if you choose <tt>monthly</tt>,
+the day number will be between 1 and 31.
+
+
+<sect1 id="BM_TARBALLINC_MASTERDATEVALUE"><tt>BM_TARBALLINC_MASTERDATEVALUE</tt>
+
+<p>Type: <tt>integer</tt>.
+
+<p>
+The number of the day when making full backups. Note that its meaning directly
+depends on the <tt>BM_TARBALLINC_MASTERDATETYPE</tt>. 
+For instance, 1 means <em>"monday"</em> if you
+choose a weekly frequency, but it means <em>"the first day of the month"</em>
+if you choose a monthly frequency.
+
+<sect id="mysql">MySQL databases
+<sect id="svn">Subversion repositories
+<sect id="pipe">Generic methods
+
+<chapt id="exports">Exports
+<sect id="media">Media
+<sect id="network">Network
 </book>
 
 </debiandoc>

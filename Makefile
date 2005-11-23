@@ -85,4 +85,5 @@ clean:
 	rm -f build-stamp
 	rm -rf debian/backup-manager
 	$(MAKE) -C po clean
+	$(MAKE) -C doc clean
 

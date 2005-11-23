@@ -1,3 +1,12 @@
+2005-11-23  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* backup-manager:
+	  + Added the copyright/licence notice.
+	* doc/user-guide.sgml:
+	  + Better (really better) structure, that begins to be something...
+	* Makefile
+	  + The clean target now cleans doc/
+
 2005-11-10  Alexis Sukrieh  <sukria@sukria.net>
 
 	* backup-manager.conf.tpl:

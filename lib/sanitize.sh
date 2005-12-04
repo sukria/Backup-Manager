@@ -111,6 +111,15 @@ if [ "$BM_ARCHIVE_METHOD" = "tarball" ]; then
 	confkey_hanlde_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
 fi
 
+if [ "$BM_ARCHIVE_METHOD" = "rsync" ]; then
+	confkey_hanlde_deprecated "BM_TARBALL_DUMPSYMLINKS" "BM_RSYNC_DUMPSYMLINKS"
+	confkey_require "BM_RSYNC_DUMPSYMLINKS" "no"
+
+	confkey_hanlde_deprecated "BM_TARBALL_DIRECTORIES" "BM_RSYNC_DIRECTORIES"
+	confkey_hanlde_deprecated "BM_UPLOAD_HOSTS" "BM_RSYNC_HOSTS"
+	confkey_hanlde_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
+	confkey_hanlde_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
+fi
 
 if [ "$BM_ARCHIVE_METHOD" = "mysql" ]; then
 	confkey_require "BM_MYSQL_ADMINLOGIN" "root"

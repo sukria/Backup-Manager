@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.9a\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-17 10:38+0200\n"
+"POT-Creation-Date: 2005-10-26 12:36+0200\n"
 "PO-Revision-Date: 2005-10-14 00:26+0100\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "Language-Team: Debian l10n French Team <debian-l10n-french@lists.debian."
@@ -31,7 +31,7 @@ msgid "unable to mount $BM_BURNING_DEVICE on $mount_point"
 msgstr "Impossible de monter $BM_BURNING_DEVICE sur $mount_point"
 
 #: actions.sh.ext:27 actions.sh.ext:58 actions.sh.ext:143 actions.sh.ext:149
-#: actions.sh.ext:156 actions.sh.ext:271 actions.sh.ext:290 files.sh.ext:156
+#: actions.sh.ext:156 actions.sh.ext:274 actions.sh.ext:293 files.sh.ext:156
 #: files.sh.ext:167 files.sh.ext:190 logger.sh.ext:128 logger.sh.ext:135
 #: logger.sh.ext:141
 msgid "ok"
@@ -104,68 +104,86 @@ msgstr "Erreur, voir le fichier $logfile"
 msgid "Burning data to $BM_BURNING_DEVICE: "
 msgstr "Gravure des données sur $BM_BURNING_DEVICE : "
 
-#: actions.sh.ext:182
-msgid "Using the \"mysql\" backup method"
+#: actions.sh.ext:176
+#, fuzzy
+msgid "Using the \"mysql\" backup method."
 msgstr "Utilisation de la méthode de sauvegarde « mysql »"
 
-#: actions.sh.ext:186
-msgid "Using the \"rsync\" backup method"
+#: actions.sh.ext:180
+#, fuzzy
+msgid "Using the \"rsync\" backup method."
 msgstr "Utilisation de la méthode de sauvegarde « rsync »"
 
-#: actions.sh.ext:192
-msgid "Using the \"tarball\" backup method"
+#: actions.sh.ext:185
+#, fuzzy
+msgid "Using the \"tarball\" backup method."
 msgstr "Utilisation de la méthode de sauvegarde « tarball »"
 
-#: actions.sh.ext:203
+#: actions.sh.ext:189
+#, fuzzy
+msgid "Using the \"pipe\" backup method."
+msgstr "Utilisation de la méthode de sauvegarde « mysql »"
+
+#: actions.sh.ext:193
+#, fuzzy
+msgid "Using the \"svn\" backup method."
+msgstr "Utilisation de la méthode de sauvegarde « rsync »"
+
+#: actions.sh.ext:197
 #, sh-format
-msgid "Cleaning $BM_REPOSITORY_ROOT: "
+msgid "No such backup method: $BM_ARCHIVE_METHOD"
+msgstr ""
+
+#: actions.sh.ext:206
+#, fuzzy, sh-format
+msgid "Cleaning $BM_REPOSITORY_ROOT"
 msgstr "Nettoyage de $BM_REPOSITORY_ROOT : "
 
-#: actions.sh.ext:236 actions.sh.ext:248
+#: actions.sh.ext:239 actions.sh.ext:251
 msgid "unable to call backup-manager-upload"
 msgstr "Impossible d'utiliser backup-manager-upload"
 
-#: actions.sh.ext:251
+#: actions.sh.ext:254
 msgid "The upload system is disabled in the conf file."
 msgstr ""
 "Le système d'envoi de fichiers est désactivé dans le fichier de "
 "configuration."
 
-#: actions.sh.ext:261
+#: actions.sh.ext:264
 #, sh-format
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
 msgstr "Lancement de la précommande : $BM_PRE_BACKUP_COMMAND"
 
-#: actions.sh.ext:265 actions.sh.ext:285
+#: actions.sh.ext:268 actions.sh.ext:288
 msgid "failed"
 msgstr "Échec"
 
-#: actions.sh.ext:266
+#: actions.sh.ext:269
 msgid "pre-command returned false. Stopping the process."
 msgstr "La précommande a échoué. Arrêt du processus."
 
-#: actions.sh.ext:281
+#: actions.sh.ext:284
 #, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND: "
 msgstr "Lancement de la post-commande : $BM_POST_BACKUP_COMMAND"
 
-#: actions.sh.ext:286
+#: actions.sh.ext:289
 msgid "post-command returned false."
 msgstr "La post-commande a échoué."
 
-#: backup-manager.ext:57
+#: backup-manager.ext:58
 msgid "backup-manager must be run as root."
 msgstr "backup-manager doit être lancé en tant que superutilisateur."
 
-#: backup-manager.ext:105
+#: backup-manager.ext:106
 msgid "-c option must be followed by an existing filename"
 msgstr "L'option -c doit être suivie d'un nom de fichier existant"
 
-#: backup-manager.ext:139
+#: backup-manager.ext:140
 msgid "Unable to exec the pre-command"
 msgstr "Impossible d'exécuter la précommande"
 
-#: backup-manager.ext:201
+#: backup-manager.ext:202
 msgid "Unable to exec post-command"
 msgstr "Impossible d'exécuter la post-commande"
 
@@ -183,60 +201,80 @@ msgstr "Impossible de supprimer les doublons"
 msgid "Unable to create $target, check $logfile"
 msgstr "Impossible de créer $target, voir $logfile pour les détails."
 
-#: backup-methods.sh.ext:107
+#: backup-methods.sh.ext:67
+msgid "Need a key to use rsync"
+msgstr "Une clef est nécessaire pour utiliser la méthode « rsync »"
+
+#: backup-methods.sh.ext:82
+#, fuzzy, sh-format
+msgid "Unable to exec $command; check $logfile."
+msgstr "Impossible de créer $target, voir $logfile pour les détails."
+
+#: backup-methods.sh.ext:86
+#, sh-format
+msgid "$command ended, but $file_to_create not found; check $logfile"
+msgstr ""
+
+#: backup-methods.sh.ext:94
+#, sh-format
+msgid "Error while using $gzip."
+msgstr ""
+
+#: backup-methods.sh.ext:97
+#, sh-format
+msgid "Compressor $compress require $gzip"
+msgstr ""
+
+#: backup-methods.sh.ext:102
+#, sh-format
+msgid "Error while using $bzip."
+msgstr ""
+
+#: backup-methods.sh.ext:105
+#, sh-format
+msgid "Compressor $compress require $bzip"
+msgstr ""
+
+#: backup-methods.sh.ext:112
+#, sh-format
+msgid "No such compressor supported: $compress"
+msgstr ""
+
+#: backup-methods.sh.ext:119
+#, fuzzy, sh-format
+msgid "Unable to find $file_to_create"
+msgstr "Impossible de compresser $file_to_create avec « gzip »."
+
+#: backup-methods.sh.ext:194
 #, sh-format
 msgid "The filetype $BM_TARBALL_FILETYPE is not spported."
 msgstr "Le type de fichier $BM_TARBALL_FILETYPE n'est pas géré."
 
-#: backup-methods.sh.ext:112
+#: backup-methods.sh.ext:199
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Fichier $file_to_create existe déjà ; ignoré."
 
-#: backup-methods.sh.ext:120
+#: backup-methods.sh.ext:207
 #, sh-format
 msgid "During the tarballs generation, $nb_err error(s) occured."
 msgstr ""
 "Lors de la génération des archives, $nb_err erreur(s) se sont produite(s)."
 
-#: backup-methods.sh.ext:154
-msgid "Need a key to use rsync"
-msgstr "Une clef est nécessaire pour utiliser la méthode « rsync »"
-
-#: backup-methods.sh.ext:163
+#: backup-methods.sh.ext:216
 #, sh-format
 msgid "The \"mysql\" method is choosen, but $mysqldump is not found."
 msgstr "La méthode « mysql » est choisie, mais $mysqldump n'est pas présent."
 
-#: backup-methods.sh.ext:170
+#: backup-methods.sh.ext:235
+#, fuzzy, sh-format
+msgid "The \"svn\" method is choosen, but $svnadmin is not found."
+msgstr "La méthode « mysql » est choisie, mais $mysqldump n'est pas présent."
+
+#: backup-methods.sh.ext:262
 #, sh-format
-msgid "Unable to dump the content of the database $database"
+msgid "Not enough args for this archive ($archive), skipping."
 msgstr ""
-"Impossible de récupérer le contenu de la base de données « $database »."
-
-#: backup-methods.sh.ext:174
-#, sh-format
-msgid "The file $file_to_create was not created, skipping."
-msgstr "Fichier $file_to_create non créé, passage au suivant."
-
-#: backup-methods.sh.ext:181
-#, sh-format
-msgid "Unable to gzip $file_to_create"
-msgstr "Impossible de compresser $file_to_create avec « gzip »."
-
-#: backup-methods.sh.ext:193
-#, sh-format
-msgid "Unable to bzip2 $file_to_create"
-msgstr "Impossible de compresser $file_to_create avec « bzip2 »."
-
-#: backup-methods.sh.ext:206
-#, sh-format
-msgid "This compression format is not supported: $BM_MYSQL_FILETYPE"
-msgstr "Ce format de compression n'est pas géré : $BM_MYSQL_FILETYPE"
-
-#: backup-methods.sh.ext:216
-msgid "backup_method_pipe is not yet supported"
-msgstr "La méthode de sauvegarde « pipe » n'est pas encore gérée."
 
 #: dialog.sh.ext:13
 msgid "Output:"
@@ -460,3 +498,19 @@ msgid ""
 msgstr ""
 "Lors de la validation du fichier de configuration $conffile, $nb_warnings "
 "avertissements ont été détectés."
+
+#~ msgid "Unable to dump the content of the database $database"
+#~ msgstr ""
+#~ "Impossible de récupérer le contenu de la base de données « $database »."
+
+#~ msgid "The file $file_to_create was not created, skipping."
+#~ msgstr "Fichier $file_to_create non créé, passage au suivant."
+
+#~ msgid "Unable to bzip2 $file_to_create"
+#~ msgstr "Impossible de compresser $file_to_create avec « bzip2 »."
+
+#~ msgid "This compression format is not supported: $BM_MYSQL_FILETYPE"
+#~ msgstr "Ce format de compression n'est pas géré : $BM_MYSQL_FILETYPE"
+
+#~ msgid "backup_method_pipe is not yet supported"
+#~ msgstr "La méthode de sauvegarde « pipe » n'est pas encore gérée."

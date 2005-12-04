@@ -40,34 +40,46 @@ handle_tarball_error()
 # EXPERIMENTAL
 # this is a feature in develpment, for developers only.
 #
-backup_method_rsync()
+rsync_common()
 {
   # Not fully implemented, rsync is running in dry mode
 
-  # Set the rsync options according to the $BM_TARBALL_DUMPSYMLINKS conf key
+  # Set the rsync options according to the $BM_RSYNC_DUMPSYMLINKS conf key
   rsync_options="-va"
-  if [ ! -z $BM_TARBALL_DUMPSYMLINKS ]; then
-    if [ "$BM_TARBALL_DUMPSYMLINKS" = "yes" ] ||
-       [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
+  if [ ! -z $BM_RSYNC_DUMPSYMLINKS ]; then
+    if [ "$BM_RSYNC_DUMPSYMLINKS" = "yes" ] ||
+       [ "$BM_RSYNC_DUMPSYMLINKS" = "true" ]; then
       rsync_options="-vaL" 
     fi
   fi  
   
-  for DIR in $BM_TARBALL_DIRECTORIES
+  for DIR in $BM_RSYNC_DIRECTORIES
   do
-    if [ -n "$BM_UPLOAD_HOSTS" ]
+    if [ -n "$BM_RSYNC_HOSTS" ]
     then
-      if [ ! -z "$BM_UPLOAD_KEY" ]; then
-        servers=`echo $BM_UPLOAD_HOSTS| sed 's/ /,/g'`
+      if [ ! -z "$BM_UPLOAD_SSH_KEY" ]; then
+        servers=`echo $BM_RSYNC_HOSTS| sed 's/ /,/g'`
         for SERVER in $servers
         do
-          ${rsync} ${rsync_options} -e "ssh -i ${BM_UPLOAD_KEY}" ${DIR} ${BM_UPLOAD_USER}@${SERVER}:${BM_UPLOAD_DIR}/${TODAY}/
+          ${rsync} ${rsync_options} -e "ssh -i ${BM_UPLOAD_SSH_KEY}" ${DIR} ${BM_UPLOAD_SSH_USER}@${SERVER}:${BM_UPLOAD_DIR}/${RSYNC_SUBDIR}/
         done
       else
         info "Need a key to use rsync"
       fi
     fi
   done
+}
+
+backup_method_rsync()
+{
+  RSYNC_SUBDIR=""
+  rsync_common
+}
+
+backup_method_rsync-snapshots()
+{
+  RSYNC_SUBDIR=${TODAY}
+  rsync_common
 }
 
 __exec_meta_command()

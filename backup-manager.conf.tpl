@@ -200,6 +200,28 @@ export BM_UPLOAD_KEY=""
 #"/backup/upload/"
 export BM_UPLOAD_DIR=""
 
+##############################################################
+# Upload method: RSYNC
+#############################################################
+
+# Which directories should be backuped with rsync
+BM_RSYNC_DIRECTORIES=""
+
+# The list of remote hosts, if you want to enable the upload
+# system, just put some remote hosts here (fqdn or IPs)
+export BM_RSYNC_HOSTS=""
+
+# User for opening the remote connection
+export BM_UPLOAD_SSH_USER=""
+
+# Rsync needs an identity file
+export BM_UPLOAD_SSH_KEY=""
+
+# Do you want to dereference the files pointed by symlinks? 
+# enter yes or no (yes can lead to huge archives, be careful).
+export BM_TARBALL_DUMPSYMLINKS="no"
+
+
 
 ##############################################################
 # Section "BURNING" 

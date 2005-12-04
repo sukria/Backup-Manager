@@ -199,7 +199,9 @@ make_archives()
 	rsync)
 		backup_method_rsync
 	;;
-
+	rsync-snapshots)
+		backup_method_rsync-snapshots
+	;;
 	tarball|tarball-incremental)
 		backup_method_tarball
 	;;

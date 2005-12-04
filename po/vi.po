@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.8b\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-10 18:30+0200\n"
+"POT-Creation-Date: 2005-10-26 12:36+0200\n"
 "PO-Revision-Date: 2005-07-13 16:50+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -34,7 +34,7 @@ msgstr ""
 "«$mount_point»"
 
 #: actions.sh.ext:27 actions.sh.ext:58 actions.sh.ext:143 actions.sh.ext:149
-#: actions.sh.ext:156 actions.sh.ext:271 actions.sh.ext:290 files.sh.ext:156
+#: actions.sh.ext:156 actions.sh.ext:274 actions.sh.ext:293 files.sh.ext:156
 #: files.sh.ext:167 files.sh.ext:190 logger.sh.ext:128 logger.sh.ext:135
 #: logger.sh.ext:141
 msgid "ok"
@@ -105,66 +105,84 @@ msgstr "thất bại, hãy kiểm tra xem bản ghi «$logfile»"
 msgid "Burning data to $BM_BURNING_DEVICE: "
 msgstr "Đang ghi dữ liệu vào «$BM_BURNING_DEVICE»:"
 
-#: actions.sh.ext:182
-msgid "Using the \"mysql\" backup method"
+#: actions.sh.ext:176
+#, fuzzy
+msgid "Using the \"mysql\" backup method."
 msgstr "Đang dùng phương pháp lưu trữ «mysql» (loại cơ sở dữ liệu)"
 
-#: actions.sh.ext:186
-msgid "Using the \"rsync\" backup method"
+#: actions.sh.ext:180
+#, fuzzy
+msgid "Using the \"rsync\" backup method."
 msgstr "Đang dùng phương pháp lưu trữ «rsync» (chương trình đồng bộ)"
 
-#: actions.sh.ext:192
-msgid "Using the \"tarball\" backup method"
+#: actions.sh.ext:185
+#, fuzzy
+msgid "Using the \"tarball\" backup method."
 msgstr "Đang dùng phương pháp lưu trữ «tarball» (loại kho)"
 
-#: actions.sh.ext:203
+#: actions.sh.ext:189
+#, fuzzy
+msgid "Using the \"pipe\" backup method."
+msgstr "Đang dùng phương pháp lưu trữ «pipe» (ống dẫn)"
+
+#: actions.sh.ext:193
+#, fuzzy
+msgid "Using the \"svn\" backup method."
+msgstr "Đang dùng phương pháp lưu trữ «rsync» (chương trình đồng bộ)"
+
+#: actions.sh.ext:197
+#, sh-format
+msgid "No such backup method: $BM_ARCHIVE_METHOD"
+msgstr ""
+
+#: actions.sh.ext:206
 #, fuzzy, sh-format
-msgid "Cleaning $BM_REPOSITORY_ROOT: "
+msgid "Cleaning $BM_REPOSITORY_ROOT"
 msgstr "Đang xóa sạch nơi kho «$BM_ARCHIVES_REPOSITORY»:"
 
-#: actions.sh.ext:236 actions.sh.ext:248
+#: actions.sh.ext:239 actions.sh.ext:251
 msgid "unable to call backup-manager-upload"
 msgstr "không gọi được tiến trình tải lên «backup-manager-upload»"
 
-#: actions.sh.ext:251
+#: actions.sh.ext:254
 msgid "The upload system is disabled in the conf file."
 msgstr "Hệ thống tải lên bị vô hiệu hóa trong tập tin cấu hình."
 
-#: actions.sh.ext:261
+#: actions.sh.ext:264
 #, sh-format
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND: "
 msgstr "Đang chạy «pre-command» lệnh trước: $BM_PRE_BACKUP_COMMAND: "
 
-#: actions.sh.ext:265 actions.sh.ext:285
+#: actions.sh.ext:268 actions.sh.ext:288
 msgid "failed"
 msgstr "thất bại"
 
-#: actions.sh.ext:266
+#: actions.sh.ext:269
 msgid "pre-command returned false. Stopping the process."
 msgstr "«pre-command» đã trả gởi Không đúng nên ngừng tiến trình."
 
-#: actions.sh.ext:281
+#: actions.sh.ext:284
 #, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND: "
 msgstr "Đang chạy «post-command» (lệnh sau): $BM_POST_BACKUP_COMMAND:"
 
-#: actions.sh.ext:286
+#: actions.sh.ext:289
 msgid "post-command returned false."
 msgstr "«post-command» đã trả gởi Không đúng"
 
-#: backup-manager.ext:57
+#: backup-manager.ext:58
 msgid "backup-manager must be run as root."
 msgstr "phải chạy trình backup-manager với tư cách người chủ (root)"
 
-#: backup-manager.ext:105
+#: backup-manager.ext:106
 msgid "-c option must be followed by an existing filename"
 msgstr "tùy chọn «-c» phải có một tên tập tin tồn tại theo sau"
 
-#: backup-manager.ext:139
+#: backup-manager.ext:140
 msgid "Unable to exec the pre-command"
 msgstr "Không thực hiện được «pre-command» (lệnh trước)"
 
-#: backup-manager.ext:201
+#: backup-manager.ext:202
 msgid "Unable to exec post-command"
 msgstr "Không thực hiện được «post-command» (lệnh sau)"
 
@@ -182,58 +200,79 @@ msgstr "không tẩy được nhân sao"
 msgid "Unable to create $target, check $logfile"
 msgstr "không gọi được ngày từ tập tin"
 
-#: backup-methods.sh.ext:107
+#: backup-methods.sh.ext:67
+msgid "Need a key to use rsync"
+msgstr "Cần một khóa để dùng trình rsync"
+
+#: backup-methods.sh.ext:82
+#, fuzzy, sh-format
+msgid "Unable to exec $command; check $logfile."
+msgstr "không gọi được ngày từ tập tin"
+
+#: backup-methods.sh.ext:86
+#, sh-format
+msgid "$command ended, but $file_to_create not found; check $logfile"
+msgstr ""
+
+#: backup-methods.sh.ext:94
+#, sh-format
+msgid "Error while using $gzip."
+msgstr ""
+
+#: backup-methods.sh.ext:97
+#, sh-format
+msgid "Compressor $compress require $gzip"
+msgstr ""
+
+#: backup-methods.sh.ext:102
+#, sh-format
+msgid "Error while using $bzip."
+msgstr ""
+
+#: backup-methods.sh.ext:105
+#, sh-format
+msgid "Compressor $compress require $bzip"
+msgstr ""
+
+#: backup-methods.sh.ext:112
+#, sh-format
+msgid "No such compressor supported: $compress"
+msgstr ""
+
+#: backup-methods.sh.ext:119
+#, fuzzy, sh-format
+msgid "Unable to find $file_to_create"
+msgstr "Đang tạo tập tin «$file_to_create»:"
+
+#: backup-methods.sh.ext:194
 #, fuzzy, sh-format
 msgid "The filetype $BM_TARBALL_FILETYPE is not spported."
 msgstr "Không hỗ trợ kiểu tập tin «$BM_FILETYPE»."
 
-#: backup-methods.sh.ext:112
+#: backup-methods.sh.ext:199
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Tập tin «$file_to_create» tồn tại nên bỏ qua."
 
-#: backup-methods.sh.ext:120
+#: backup-methods.sh.ext:207
 #, sh-format
-msgid "During the tarballs generation, $gettext error(s) occured."
+msgid "During the tarballs generation, $nb_err error(s) occured."
 msgstr ""
 
-#: backup-methods.sh.ext:154
-msgid "Need a key to use rsync"
-msgstr "Cần một khóa để dùng trình rsync"
-
-#: backup-methods.sh.ext:163
+#: backup-methods.sh.ext:216
 #, sh-format
 msgid "The \"mysql\" method is choosen, but $mysqldump is not found."
 msgstr ""
 
-#: backup-methods.sh.ext:170
-#, fuzzy, sh-format
-msgid "Unable to dump the content of the database $database"
-msgstr "không tìm thấy mẫu của tập tin ấy"
-
-#: backup-methods.sh.ext:174
-#, fuzzy, sh-format
-msgid "The file $file_to_create was not created, skipping."
-msgstr "Tập tin «$file_to_create» tồn tại nên bỏ qua."
-
-#: backup-methods.sh.ext:181
-#, fuzzy, sh-format
-msgid "Unable to gzip $file_to_create"
-msgstr "Đang tạo tập tin «$file_to_create»:"
-
-#: backup-methods.sh.ext:193
-#, fuzzy, sh-format
-msgid "Unable to bzip2 $file_to_create"
-msgstr "Đang tạo tập tin «$file_to_create»:"
-
-#: backup-methods.sh.ext:206
+#: backup-methods.sh.ext:235
 #, sh-format
-msgid "This compression format is not supported: $BM_MYSQL_FILETYPE"
+msgid "The \"svn\" method is choosen, but $svnadmin is not found."
 msgstr ""
 
-#: backup-methods.sh.ext:216
-msgid "backup_method_pipe is not yet supported"
-msgstr "chưa hỗ trợ «backup_method_pipe» (phương pháp lưu trữ ống dẫn)"
+#: backup-methods.sh.ext:262
+#, sh-format
+msgid "Not enough args for this archive ($archive), skipping."
+msgstr ""
 
 #: dialog.sh.ext:13
 msgid "Output:"
@@ -417,8 +456,8 @@ msgid "No md5file found: $md5file"
 msgstr "Không tìm thấy tập tin MD5: $md5file"
 
 #: md5sum.sh.ext:66
-#, sh-format
-msgid "Archive given does not exists in the repository: $archive"
+#, fuzzy, sh-format
+msgid "Archive given does not exist in the repository: $archive"
 msgstr "Không có kho đã cho trong nơi kho: $archive"
 
 #: sanitize.sh.ext:18
@@ -454,8 +493,20 @@ msgid ""
 msgstr ""
 "Khi hợp lệ hóa tập tin cấu hình «$conffile», gặp «$nb_warnings» cảnh báo."
 
-#~ msgid "Using the \"pipe\" backup method"
-#~ msgstr "Đang dùng phương pháp lưu trữ «pipe» (ống dẫn)"
+#, fuzzy
+#~ msgid "Unable to dump the content of the database $database"
+#~ msgstr "không tìm thấy mẫu của tập tin ấy"
+
+#, fuzzy
+#~ msgid "The file $file_to_create was not created, skipping."
+#~ msgstr "Tập tin «$file_to_create» tồn tại nên bỏ qua."
+
+#, fuzzy
+#~ msgid "Unable to bzip2 $file_to_create"
+#~ msgstr "Đang tạo tập tin «$file_to_create»:"
+
+#~ msgid "backup_method_pipe is not yet supported"
+#~ msgstr "chưa hỗ trợ «backup_method_pipe» (phương pháp lưu trữ ống dẫn)"
 
 #~ msgid "backup_method_mysql is not yet supported"
 #~ msgstr "chưa hỗ trợ «backup_method_mysql» (phương pháp lưu trữ MySQL)"

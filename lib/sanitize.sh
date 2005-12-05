@@ -116,7 +116,7 @@ if [ "$BM_ARCHIVE_METHOD" = "rsync" ]; then
 	confkey_require "BM_RSYNC_DUMPSYMLINKS" "no"
 
 	confkey_handle_deprecated "BM_TARBALL_DIRECTORIES" "BM_RSYNC_DIRECTORIES"
-	confkey_handle_deprecated "BM_UPLOAD_HOSTS" "BM_RSYNC_HOSTS"
+	confkey_handle_deprecated "BM_UPLOAD_HOSTS" "BM_UPLOAD_RSYNC_HOSTS"
 	confkey_handle_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
 	confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
 fi

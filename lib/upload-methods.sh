@@ -100,8 +100,54 @@ bm_upload_ftp()
 }
 
 # Manages RSYNC uploads
-bm_upload_rsync()
+bm_upload_rsync_common()
 {
-    error "The upload method \"rsync\" is not supported."
+    
+    bm_upload_hosts="$BM_UPLOAD_HOSTS $BM_UPLOAD_RSYNC_HOSTS"
+    bm_upload_init "$bm_upload_hosts"
+
+    if [ -z "$BM_UPLOAD_RSYNC_DESTINATION" ]; then
+        BM_UPLOAD_RSYNC_DESTINATION="$BM_UPLOAD_DESTINATION"
+    fi        
+    if [ -z "$BM_UPLOAD_RSYNC_DESTINATION" ]; then
+        error "No valid destination found, RSYNC upload not possible."
+    fi
+
+  rsync_options="-va"
+  if [ ! -z $BM_RSYNC_DUMPSYMLINKS ]; then
+    if [ "$BM_RSYNC_DUMPSYMLINKS" = "yes" ] ||
+       [ "$BM_RSYNC_DUMPSYMLINKS" = "true" ]; then
+      rsync_options="-vaL"
+    fi
+  fi
+
+  for DIR in $BM_RSYNC_DIRECTORIES
+  do
+    if [ -n "$bm_upload_hosts" ]
+    then
+      if [ ! -z "$BM_UPLOAD_SSH_KEY" ]; then
+        servers=`echo $bm_upload_hosts| sed 's/ /,/g'`
+        for SERVER in $servers
+        do
+          ${rsync} ${rsync_options} -e "ssh -i ${BM_UPLOAD_SSH_KEY}" ${DIR} ${BM_UPLOAD_SSH_USER}@${SERVER}:$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR}/
+        done
+      else
+        info "Need a key to use rsync"
+      fi
+    fi
+  done
 }
 
+bm_upload_rsync()
+{
+  info "Using the upload method \"rsync\"."
+  RSYNC_SUBDIR=""
+  bm_upload_rsync_common
+}
+
+bm_upload_rsync-snapshots()
+{
+  info "Using the upload method \"rsync-snapshots\"."
+  RSYNC_SUBDIR=${TODAY}
+  bm_upload_rsync_common
+}

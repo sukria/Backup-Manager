@@ -27,9 +27,6 @@ make_archives()
 		mysql)
 			backup_method_mysql
 		;;
-		rsync)
-			backup_method_rsync
-		;;
 		tarball|tarball-incremental)
 			backup_method_tarball
 		;;
@@ -60,6 +57,9 @@ upload_files ()
         ;;
         rsync|RSYNC)
             bm_upload_rsync
+        ;;
+        rsync-snapshots|RSYNC-SNAPSHOTS)
+            bm_upload_rsync-snapshots
         ;;
         *)
             warning "The upload method \"\$method\" is not supported; skipping."

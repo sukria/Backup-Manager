@@ -1,5 +1,23 @@
 2005-12-05  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* added the t/ directory for handling tests. 
+	+ t/confs/base.conf
+	+ t/confs/burning.conf
+	+ t/confs/mysql.conf
+	+ t/confs/pipe.conf
+	+ t/confs/svn.conf
+	+ t/confs/tarball-incremental.conf
+	+ t/confs/tarball.conf
+	+ t/confs/upload-ftp.conf
+	+ t/confs/upload-global.conf
+	+ t/confs/upload-rsync.conf
+	+ t/confs/upload-ssh.conf
+	+ t/run-tests.sh
+	+ t/t01.sh
+	+ t/testlib.sh
+
+2005-12-05  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* lib/sanitize.sh:
 	  + typo, hanlde -> handle.
 

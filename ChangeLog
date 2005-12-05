@@ -1,3 +1,16 @@
+2005-12-05  Jimmy Gredler  <jimmy@backup-manager.org>
+
+	* t/confs/tarball-incremental.conf:
+	  + Changed the tarball directory to $PWD
+	* t/confs/tarball.conf:
+	  + Changed the tarball directory to $PWD
+	* t/confs/upload-global.conf:
+	  + Create an upload directory if it doesn't exist
+	* t/confs/upload-rsync.conf:
+	  + Changed the rsync directory to $PWD
+	  + Use the current user as  BM_UPLOAD_SSH_USER and the ssh identity
+		  bm-test
+
 2005-12-05  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* backup-manager.conf.tpl:

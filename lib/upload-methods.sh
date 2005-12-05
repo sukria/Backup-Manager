@@ -102,7 +102,6 @@ bm_upload_ftp()
 # Manages RSYNC uploads
 bm_upload_rsync_common()
 {
-    
     bm_upload_hosts="$BM_UPLOAD_HOSTS $BM_UPLOAD_RSYNC_HOSTS"
     bm_upload_init "$bm_upload_hosts"
 
@@ -113,29 +112,40 @@ bm_upload_rsync_common()
         error "No valid destination found, RSYNC upload not possible."
     fi
 
-  rsync_options="-va"
-  if [ ! -z $BM_RSYNC_DUMPSYMLINKS ]; then
-    if [ "$BM_RSYNC_DUMPSYMLINKS" = "yes" ] ||
-       [ "$BM_RSYNC_DUMPSYMLINKS" = "true" ]; then
-      rsync_options="-vaL"
+    rsync_options="-va"
+    if [ ! -z $BM_UPLOAD_RSYNC_DUMPSYMLINKS ]; then
+        if [ "$BM_UPLOAD_RSYNC_DUMPSYMLINKS" = "yes" ] ||
+           [ "$BM_UPLOAD_RSYNC_DUMPSYMLINKS" = "true" ]; then
+            rsync_options="-vaL"
+        fi
     fi
-  fi
 
-  for DIR in $BM_RSYNC_DIRECTORIES
-  do
-    if [ -n "$bm_upload_hosts" ]
-    then
-      if [ ! -z "$BM_UPLOAD_SSH_KEY" ]; then
-        servers=`echo $bm_upload_hosts| sed 's/ /,/g'`
-        for SERVER in $servers
-        do
-          ${rsync} ${rsync_options} -e "ssh -i ${BM_UPLOAD_SSH_KEY}" ${DIR} ${BM_UPLOAD_SSH_USER}@${SERVER}:$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR}/
-        done
-      else
-        info "Need a key to use rsync"
-      fi
-    fi
-  done
+    logfile=$(mktemp /tmp/bm-rsync.XXXXXX)
+    for DIR in $BM_UPLOAD_RSYNC_DIRECTORIES
+    do
+        if [ -n "$bm_upload_hosts" ]; then
+            if [ -n "$BM_UPLOAD_SSH_KEY" ] && 
+               [ -n "$BM_UPLOAD_SSH_USER" ]; then
+                servers=`echo $bm_upload_hosts| sed 's/ /,/g'`
+
+                for SERVER in $servers
+                do
+                    if ! su $BM_UPLOAD_SSH_USER -c \
+                       "${rsync} ${rsync_options} -e \
+                       \"ssh -o BatchMode=yes -i ${BM_UPLOAD_SSH_KEY}\" ${DIR} \
+                       ${BM_UPLOAD_SSH_USER}@${SERVER}:$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR}/" >/dev/null 2>$logfile; then
+                        error "Upload of \$DIR with rsync failed; check \$logfile."
+                    else
+                        rm -f $logfile
+                    fi
+                done
+            else
+                error "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)"
+            fi
+        else
+            warning "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
+        fi
+      done
 }
 
 bm_upload_rsync()
@@ -145,7 +155,7 @@ bm_upload_rsync()
   bm_upload_rsync_common
 }
 
-bm_upload_rsync-snapshots()
+bm_upload_rsync_snapshots()
 {
   info "Using the upload method \"rsync-snapshots\"."
   RSYNC_SUBDIR=${TODAY}

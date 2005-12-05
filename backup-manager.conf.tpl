@@ -196,7 +196,7 @@ export BM_UPLOAD_FTP_DESTINATION=""
 #############################################################
 
 # Which directories should be backuped with rsync
-BM_RSYNC_DIRECTORIES=""
+export BM_UPLOAD_RSYNC_DIRECTORIES=""
 
 # Destination for rsync uploads (overrides BM_UPLOAD_DESTINATION) 
 export BM_UPLOAD_RSYNC_DESTINATION=""
@@ -209,7 +209,7 @@ export BM_UPLOAD_RSYNC_HOSTS=""
 
 # Do you want to dereference the files pointed by symlinks?   
 # enter yes or no (yes can lead to huge archives, be careful).    
-export BM_RSYNC_DUMPSYMLINKS="no"
+export BM_UPLOAD_RSYNC_DUMPSYMLINKS="no"
 
 ##############################################################
 # Section "BURNING" 

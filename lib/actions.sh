@@ -59,7 +59,7 @@ upload_files ()
             bm_upload_rsync
         ;;
         rsync-snapshots|RSYNC-SNAPSHOTS)
-            bm_upload_rsync-snapshots
+            bm_upload_rsync_snapshots
         ;;
         *)
             warning "The upload method \"\$method\" is not supported; skipping."

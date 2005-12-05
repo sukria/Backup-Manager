@@ -1,4 +1,4 @@
-#!/BIN/SH
+#!/bin/sh
 #
 # Check that every key in the conffile is ok for a proper run.
 # Also manage deprecated confkeys the best as possible, so a deprecated
@@ -111,12 +111,8 @@ if [ "$BM_ARCHIVE_METHOD" = "tarball" ]; then
 	confkey_handle_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
 fi
 
-if [ "$BM_ARCHIVE_METHOD" = "rsync" ]; then
-	confkey_handle_deprecated "BM_TARBALL_DUMPSYMLINKS" "BM_RSYNC_DUMPSYMLINKS"
-	confkey_require "BM_RSYNC_DUMPSYMLINKS" "no"
-
-	confkey_handle_deprecated "BM_TARBALL_DIRECTORIES" "BM_RSYNC_DIRECTORIES"
-	confkey_handle_deprecated "BM_UPLOAD_HOSTS" "BM_UPLOAD_RSYNC_HOSTS"
+if [ "$BM_UPLOAD_METHOD" = "rsync" ]; then
+	confkey_require "BM_UPLOAD_RSYNC_DUMPSYMLINKS" "no"
 	confkey_handle_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
 	confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
 fi

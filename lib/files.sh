@@ -52,6 +52,10 @@ get_dir_name()
 size_of_path()
 {
 	path="$1"
+    if [ ! -e $path ]; then
+            error "unable to stat $path"
+            return 1
+    fi            
 	out=$(du -m -c $path)
 
 	OLDIFS=$IFS
@@ -230,6 +234,10 @@ clean_directory()
 purge_duplicate_archives()
 {
 	file_to_create="$1"
+    if [ ! -e $file_to_create ]; then
+        error "No such file $file_to_create"
+        return 1
+    fi    
 	size_file=$(ls -l $file_to_create | awk '{print $5}')
 
 	# Only purge if BM_ARCHIVE_PURGEDUPS = yes

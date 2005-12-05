@@ -1,5 +1,22 @@
 2005-12-05  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* backup-manager.conf.tpl:
+	  + replaced BM_RSYNC by BM_UPLOAD_RSYNC
+	* lib/actions.sh:
+	  + Renamed -snapshot by _snaphot
+	* lib/files.sh:
+	  + Some more checks.
+	* lib/sanitize.sh:
+	  + Better sanitizers for the RSYNC stuff.
+	* lib/upload-methods.sh:
+	  + bm_upload_rsync_common() now managed rsync transfers with
+	  BM_UPLOAD_SSH_USER and call SSH in BatchMode.
+	  + Logs errors in a temp logfile.
+	* t/t02.sh:
+	  + test script for RSYNC stuff.
+
+2005-12-05  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* added the t/ directory for handling tests. 
 	+ t/confs/base.conf
 	+ t/confs/burning.conf

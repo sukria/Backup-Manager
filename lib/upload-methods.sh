@@ -99,6 +99,34 @@ bm_upload_ftp()
 
 }
 
+# this is done for behaving the right way depending on who is calling us
+# root should use su $BM_UPLOAD_SSH_USER -c ... and a regular user can just pray for being
+# $BM_UPLOAD_SSH_USER...
+_exec_rsync_command()
+{
+    info "Uploading $directory to $host:$BM_UPLOAD_RSYNC_DESTINATION"
+    logfile=$(mktemp /tmp/bm-rsync.XXXXXX)
+    if [ "$UID" != 0 ]; then
+        if ! ${rsync} ${rsync_options} \
+             -e "ssh -o BatchMode=yes -i ${BM_UPLOAD_SSH_KEY}" ${directory} \
+                 ${BM_UPLOAD_SSH_USER}@${host}:$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR}/\
+                 >/dev/null 2>$logfile; then
+            error "Upload of \$directory with rsync failed; check \$logfile."
+        else
+            rm -f $logfile
+        fi
+    else
+        if ! su $BM_UPLOAD_SSH_USER -c "${rsync} ${rsync_options} \
+             -e \"ssh -o BatchMode=yes -i ${BM_UPLOAD_SSH_KEY}\" ${directory} \
+                 ${BM_UPLOAD_SSH_USER}@${host}:$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR}/" \
+                 >/dev/null 2>$logfile; then
+            error "Upload of \$directory with rsync failed; check \$logfile."
+        else
+            rm -f $logfile
+        fi
+    fi
+}
+
 # Manages RSYNC uploads
 bm_upload_rsync_common()
 {
@@ -120,24 +148,16 @@ bm_upload_rsync_common()
         fi
     fi
 
-    logfile=$(mktemp /tmp/bm-rsync.XXXXXX)
-    for DIR in $BM_UPLOAD_RSYNC_DIRECTORIES
+    for directory in $BM_UPLOAD_RSYNC_DIRECTORIES
     do
         if [ -n "$bm_upload_hosts" ]; then
             if [ -n "$BM_UPLOAD_SSH_KEY" ] && 
                [ -n "$BM_UPLOAD_SSH_USER" ]; then
                 servers=`echo $bm_upload_hosts| sed 's/ /,/g'`
 
-                for SERVER in $servers
+                for host in $servers
                 do
-                    if ! su $BM_UPLOAD_SSH_USER -c \
-                       "${rsync} ${rsync_options} -e \
-                       \"ssh -o BatchMode=yes -i ${BM_UPLOAD_SSH_KEY}\" ${DIR} \
-                       ${BM_UPLOAD_SSH_USER}@${SERVER}:$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR}/" >/dev/null 2>$logfile; then
-                        error "Upload of \$DIR with rsync failed; check \$logfile."
-                    else
-                        rm -f $logfile
-                    fi
+                    _exec_rsync_command
                 done
             else
                 error "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)"

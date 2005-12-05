@@ -1,6 +1,26 @@
 2005-12-05  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* backup-manager.conf.tpl:
+	  + added the "none" methods in backup and upload sections.
+	* lib/actions.sh:
+	  + it's possible to choose none of the backup methods.
+	  + it's possible to choose none of the upload methods.
+	* t/t01.sh:
+	  + This test now uses the tarball method for building and archive of
+	  /etc, if it manages to build the archives, the test succeeds.
+	* t/t02.sh:
+	  + Upload some stuff with rsync (to be updated)...
+	* t/t03.sh:
+	  + Test that "none" is possible in the methods keys.
+
+2005-12-05  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* lib/upload-methods.sh:
+	  + rsync stuff works properly with root and with BM_UPLOAD_SSH_USER.
+
+2005-12-05  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* backup-manager.conf.tpl:
 	  + replaced BM_RSYNC by BM_UPLOAD_RSYNC
 	* lib/actions.sh:
 	  + Renamed -snapshot by _snaphot

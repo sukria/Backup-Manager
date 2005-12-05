@@ -22,19 +22,22 @@
 make_archives()
 {
 	for method in $BM_ARCHIVE_METHOD
-	do		
-		case $method in
-		mysql)
-			backup_method_mysql
-		;;
-		tarball|tarball-incremental)
-			backup_method_tarball
-		;;
+    do      
+        case $method in
+        mysql)
+            backup_method_mysql
+        ;;
+        tarball|tarball-incremental)
+            backup_method_tarball
+        ;;
         pipe)
             backup_method_pipe
         ;;
         svn)
             backup_method_svn
+        ;;
+        none|disabled)
+            info "No backup method used."
         ;;
         *)
             error "No such backup method: \$BM_ARCHIVE_METHOD"
@@ -60,6 +63,9 @@ upload_files ()
         ;;
         rsync-snapshots|RSYNC-SNAPSHOTS)
             bm_upload_rsync_snapshots
+        ;;
+        none|disabled)
+            info "No upload method used."
         ;;
         *)
             warning "The upload method \"\$method\" is not supported; skipping."

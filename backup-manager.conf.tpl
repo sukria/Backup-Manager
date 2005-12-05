@@ -41,6 +41,9 @@ export BM_ARCHIVE_PREFIX="$HOSTNAME"
 # - mysql
 # - svn
 # - pipe
+# - none
+# If you don't want to use any backup method (you don't want to
+# build archives) then choose "none"
 export BM_ARCHIVE_METHOD="tarball"
 
 ##############################################################
@@ -155,9 +158,15 @@ export BM_PIPE_COMPRESS
 # You can upload archives to remote hosts with different 
 # methods.
 #############################################################
-# Which method to use for uploading archives
-# For only the SSH method: BM_UPLOAD_METHOD="ssh"
-# For both SSH and FTP methods: BM_UPLOAD_METHOD="ssh ftp"
+# Which method to use for uploading archives, you can put 
+# multiple methods here.
+# Available methods:
+# - scp
+# - ftp
+# - rsync
+# - none
+# If you don't want to use any upload method (you don't want to
+# upload files to remote hosts) then choose "none"
 export BM_UPLOAD_METHOD=""
 # where to upload (global to all methods)
 export BM_UPLOAD_HOSTS=""

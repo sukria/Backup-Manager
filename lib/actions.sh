@@ -1,8 +1,72 @@
+# Copyright (C) 2005 The Backup Manager Authors
 #
-# The backup-manager's actions.sh library.
+# See the AUTHORS file for details.
 #
-# Every major feature of backup-manager is here.
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# Major features of backup manager are here.
+
+# Loop on the backup methods
+make_archives()
+{
+	for method in $BM_ARCHIVE_METHOD
+	do		
+		case $method in
+		mysql)
+			backup_method_mysql
+		;;
+		rsync)
+			backup_method_rsync
+		;;
+		tarball|tarball-incremental)
+			backup_method_tarball
+		;;
+        pipe)
+            backup_method_pipe
+        ;;
+        svn)
+            backup_method_svn
+        ;;
+        *)
+            error "No such backup method: \$BM_ARCHIVE_METHOD"
+        ;;
+    esac
+done
+}
+
+# Loop on the upload methods
+upload_files ()
+{
+    for method in $BM_UPLOAD_METHOD
+    do            
+        case $method in
+        ftp|FTP)
+            bm_upload_ftp
+        ;;
+        ssh|SSH|scp|SCP)
+            bm_upload_ssh
+        ;;
+        rsync|RSYNC)
+            bm_upload_rsync
+        ;;
+        *)
+            warning "The upload method \"\$method\" is not supported; skipping."
+        ;;
+        esac
+    done        
+}
 
 # This will get all the md5 sums of the day,
 # mount the BM_BURNING_DEVICE on /tmp/device and check 
@@ -119,8 +183,11 @@ burn_files()
 
 	title="Backups of ${TODAY}"
 	
-	# Let's un mount the device first
-	umount $BM_BURNING_DEVICE || warning "Unable to unmount the device \$BM_BURNING_DEVICE"
+	# Let's unmount the device first
+	if grep $BM_BURNING_DEVICE /etc/mtab >/dev/null 2>&1; then
+		info "\$BM_BURNING_DEVICE is mounted, unmounting before the burning session."
+		umount $BM_BURNING_DEVICE || warning "Unable to unmount the device \$BM_BURNING_DEVICE"
+	fi
 	
 	# get a log file in a secure path
 	logfile="$(mktemp /tmp/bm-cdrecord.log.XXXXXX)"
@@ -136,9 +203,9 @@ burn_files()
 	# burning the iso with the user choosen method
 	case "$BM_BURNING_METHOD" in
 		"DVD")
-                        if [ ! -x $growisofs ]; then
-                                error "DVD burning requires $growisofs, aborting."
-                        fi
+            if [ ! -x $growisofs ]; then
+            error "DVD burning requires $growisofs, aborting."
+            fi
                         
 			info -n "Exporting archives to the DVD media in \$BM_BURNING_DEVICE: "
 			$growisofs -Z ${BM_BURNING_DEVICE} -R -J -V "${title}" ${what_to_burn} > ${logfile} 2>&1 ||
@@ -146,9 +213,9 @@ burn_files()
 			info "ok"
 		;;
 		"CDRW")
-                        if [ ! -x $cdrecord ]; then
-                                error "CDROM burning requires $cdrecord, aborting."
-                        fi
+            if [ ! -x $cdrecord ]; then
+                error "CDROM burning requires $cdrecord, aborting."
+            fi
                         
 			info -n "Blanking the CDRW in \$BM_BURNING_DEVICE: "
 			${cdrecord} -tao $devforced blank=fast > ${logfile} 2>&1 ||
@@ -162,9 +229,10 @@ burn_files()
 			info "ok"
 		;;
 		"CDR")
-                        if [ ! -x $cdrecord ]; then
-                                error "CDROM burning requires $cdrecord, aborting."
-                        fi
+
+        if [ ! -x $cdrecord ]; then
+            error "CDROM burning requires $cdrecord, aborting."
+        fi
 
 			info -n "Burning data to \$BM_BURNING_DEVICE: "
 			${mkisofs} -V "${title}" -q -R -J ${what_to_burn} | \
@@ -172,9 +240,9 @@ burn_files()
 				error "failed, check \$logfile"
 			info "ok"
 		;;
-                *)
-                        error "The requested burning method is not supported, check BM_BURNING_METHOD in \$conffile"
-                ;;
+        *)
+            error "The requested burning method is not supported, check BM_BURNING_METHOD in \$conffile"
+        ;;
 	esac
 	
 	# Cleaning the logile, everything was fine at this point.
@@ -187,36 +255,6 @@ burn_files()
 	fi
 }
 
-
-make_archives()
-{
-        info "Using the \"\$BM_ARCHIVE_METHOD\" backup method..."
-	case $BM_ARCHIVE_METHOD in
-	
-	mysql)
-		backup_method_mysql
-	;;
-	rsync)
-		backup_method_rsync
-	;;
-	rsync-snapshots)
-		backup_method_rsync-snapshots
-	;;
-	tarball|tarball-incremental)
-		backup_method_tarball
-	;;
-        pipe)
-                backup_method_pipe
-        ;;
-        svn)
-                backup_method_svn
-        ;;
-        *)
-                error "No such backup method: \$BM_ARCHIVE_METHOD"
-        ;;
-	esac
-}
-
 # This will parse all the files contained in BM_REPOSITORY_ROOT
 # and will clean them up. Using clean_directory() and clean_file().
 clean_repositories()
@@ -225,51 +263,6 @@ clean_repositories()
 	clean_directory $BM_REPOSITORY_ROOT
 }
 
-
-# This is the call to backup-manager-upload 
-# with the appropriate options.
-# This will upload the files with scp or ftp.
-upload_files ()
-{
-	if [ -n "$BM_UPLOAD_HOSTS" ] 
-	then
-		if [ "$verbose" == "true" ]; then
-			v="-v"
-		else
-			v=""
-		fi
-		
-		if [ -z "$BM_UPLOAD_FTPPURGE" ] || 
-		   [ "$BM_UPLOAD_FTPPURGE" = "no" ]; then
-		   	ftp_purge=""
-		else
-			ftp_purge="--ftp-purge"
-		fi
-		
-		servers=`echo $BM_UPLOAD_HOSTS| sed 's/ /,/g'`
-		if [ "$BM_UPLOAD_MODE" == "ftp" ]; then
-			$bmu $v $ftp_purge \
-				-m="$BM_UPLOAD_MODE" \
-				-h="$servers" \
-				-u="$BM_UPLOAD_USER" \
-				-p="$BM_UPLOAD_PASSWD" \
-				-d="$BM_UPLOAD_DIR" \
-				-r="$BM_REPOSITORY_ROOT" today || error "unable to call backup-manager-upload"
-		else
-			if [ ! -z "$BM_UPLOAD_KEY" ]; then
-				key_opt="-k=\"$BM_UPLOAD_KEY\""
-			else
-				key_opt=""
-			fi
-			su $BM_UPLOAD_USER -s /bin/sh -c \
-			"$bmu $v -m="$BM_UPLOAD_MODE" \
-				-h="$servers" \
-				-u="$BM_UPLOAD_USER" $key_opt \
-				-d="$BM_UPLOAD_DIR" \
-				-r="$BM_REPOSITORY_ROOT" today" || error "unable to call backup-manager-upload"
-		fi
-	fi
-}
 
 # This will run the pre-command given.
 # If this command prints on STDOUT "false", 

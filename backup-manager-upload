@@ -79,16 +79,9 @@ use strict;
 use warnings;
 use BackupManager::Config;
 use BackupManager::Logger;
-
 use POSIX qw(strftime);
 
-
-
-#
 # global vars
-#
-
-
 my $scp = '/usr/bin/scp';
 my $g_verbose	= 0;
 my $g_list	= 0;
@@ -103,7 +96,7 @@ my $g_key_file	= undef;
 
 # first get the args
 BackupManager::Config::getopt("$0 -m=mode -h=host -u=user [options] date\n
--v|--verbose	: Print on STDOUT what happends.
+-v|--verbose	: Print on STDOUT what happens.
 -m|--mode	: Transfer mode to use : ftp or scp.
 -h|--host	: Remote hosts to connect to (separated by commas).
 -u|--user	: User to use for connection.
@@ -168,29 +161,42 @@ sub send_file_with_scp($$$$)
 		defined $user and
 		defined $host and
 		defined $location;
-
+    
+    # look for a port to use
+    my $port_switch="";
+    if ($ENV{BM_UPLOAD_SSH_PORT}) {
+        $port_switch = "-P ".$ENV{BM_UPLOAD_SSH_PORT};
+    }
+    
+    my $log_file = `mktemp /tmp/bm-upload.XXXXXX`;
+    chomp $log_file;
+    unless (-f $log_file) {
+        error "cannot create log file: '$log_file'";
+    }
+    
 	my $cmd;
 	if (defined $g_key_file and -f $g_key_file) {
-		$cmd = "$scp -i $g_key_file -B $file $user".'@'.$host.':'.$location." >/dev/null 2>&1";
+		$cmd = "$scp -i $g_key_file $port_switch -B $file $user".'@'.$host.':'.$location." >$log_file 2>&1";
 	}
 	else {
-		$cmd = "$scp -B $file $user".'@'.$host.':'.$location." >/dev/null 2>&1";
+		$cmd = "$scp $port_switch -B $file $user".'@'.$host.':'.$location." >$log_file 2>&1";
 	}
-
 
 	# we use eval here to avoid crash with bad keys
 	my $ret = eval "system('$cmd')";
 	if ($@ or $ret) {
-		error "$scp failed for $file : $@ (command was : $cmd)" if $@;
-		error "$scp failed for $file (command was : $cmd)" if $ret;
+		error "$scp failed for $file : $@ (command was : $cmd). " if $@;
+		error "$scp failed for $file (command was : $cmd). Check logs in $log_file" if $ret;
+        verbose_error "Unable to upload $file, check $log_file";
 		return 0;
 	}
+    unlink $log_file;
 
 	return 1;
 }
 
 
-# How to uplaod files with scp.
+# How to upload files with scp.
 # Note that Key Authentification is used, see man ssh-keygen.
 sub send_files_with_scp($$$$)
 {
@@ -206,7 +212,7 @@ sub send_files_with_scp($$$$)
 
 	# is scp here ?
 	unless (-x $scp) {
-		verbose_error "$scp is not here, cannot use this mode for transfert";
+		verbose_error "$scp is not here, cannot use this mode for transfer.";
 		exit 1;
 	}
 
@@ -217,16 +223,37 @@ sub send_files_with_scp($$$$)
 			if (-f $file and send_file_with_scp($file, $user, $host, $repository)) {
 				verbose "File $file uploaded successfully.";
 			}
-			elsif (-f $file) {
-				verbose_error "File $file cannot be uploaded, check ${user}'s ssh keys on host $host";
-			}
-			else {
+			elsif (! -f $file) {
 				verbose_error "File $file cannot be uploaded, it does not exist locally.";
 			}
 		}
 	}
 }
 
+# Function for purging a directory
+# over FTP, the same way as the repository is purged.
+# Every files with a date field too old according to BM_ARCHIVE_TTL
+# will be deleted.
+sub ftp_clean_directory($)
+{
+    my $ftp = shift;
+    my $BM_ARCHIVE_TTL = $ENV{BM_ARCHIVE_TTL};
+    return 0 unless defined $BM_ARCHIVE_TTL;
+    my $date_to_remove = `date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago"`;
+   
+    my $ra_files = $ftp->ls();
+    foreach my $file (@$ra_files) {
+        my $date = undef;
+        if ($file =~ /\.(\d{8})\./) {
+            $date = $1;
+            if ($date and ($date <= $date_to_remove)) {
+                verbose "$file has to be deleted, too old ($date <= $date_to_remove).";
+                $ftp->delete ($file) or error "Unable to delete $file.";
+            }
+        }
+    }
+    return 1;
+}
 
 # How to upload files with ftp.
 # We'll use the Net::FTP module here.
@@ -235,7 +262,7 @@ sub send_files_with_ftp($$$$$)
 	# trying to get Net::FTP.
 	eval "use Net::FTP";
 	if ($@) {
-		error "Net::FTP is not available, cannot use ftp transfert mode";
+		error "Net::FTP is not available, cannot use ftp transfer mode";
 		return 0;
 	}
 	
@@ -261,16 +288,7 @@ sub send_files_with_ftp($$$$$)
 			    $ftp->cwd($repository)) {
 				verbose "Logged on $host, in $repository (binary mode)";
 
-				# Purge the FTP repository if needed
-				if ($g_ftpclean) {
-					verbose "Cleaning FTP folder $repository";
-					my $ra_files = $ftp->ls();
-					foreach my $file (@$ra_files) {
-						unless ($ftp->delete($file)) {
-							verbose_error "Unable to delete $file";
-						}
-					}
-				}
+                ftp_clean_directory($ftp) if ($g_ftpclean);
 			    
 				foreach my $file (@{$ra_files}) {
 					chomp $file;
@@ -332,6 +350,17 @@ sub get_files_list_from_date($)
 		print STDERR $msg."\n";
 		exit 1;
 	}
+
+    # make sure we can read the root dir, when the secure mode is 
+    # enabled, the repository might not be readable by us...
+    unless (-r $g_root_dir) {
+        verbose_error "The repository $g_root_dir is not readable by user \"$ENV{USER}\".";
+        if ($ENV{BM_REPOSITORY_SECURE} eq "yes") {
+            verbose_error "The secure mode is enabled (BM_REPOSITORY_SECURE),";
+            verbose_error "the upload user ($g_user) must be in the group \"BM_REPOSITORY_GROUP\".";
+        }
+        exit 1;
+    }
 
 	while (<$g_root_dir/*$date*>) {
 		push @{$ra_files}, $_;

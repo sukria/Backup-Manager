@@ -137,27 +137,23 @@ if [ "$BM_BURNING" = "yes" ]; then
 	confkey_require "BM_BURNING_CHKMD5" "yes"
 fi
 
-# the upload system
-if [ -n "$BM_UPLOAD_HOSTS" ]; then
-	confkey_hanlde_deprecated "BM_FTP_PURGE" "BM_UPLOAD_FTPPURGE"
-	
-	if [ -z "$BM_UPLOAD_USER" ]; then
-		confkey_error "BM_UPLOAD_USER" "BM_UPLOAD_HOSTS"
-	fi
+# The SSH stuff
 
-	if [ "$BM_UPLOAD_MODE" = "ftp" ] && [ -z "$BM_UPLOAD_PASSWD" ]; then
-		# This one is not globalizable, the message is a real specific one.
-		error "The configuration key BM_UPLOAD_PASSWD is not set but BM_UPLOAD_MODE is set to \"ftp\"."
-	fi
+# The FTP stuff
 
-	if [ -z "$BM_UPLOAD_MODE" ]; then
-		confkey_error "BM_UPLOAD_MODE" "BM_UPLOAD_HOSTS"
-	fi
-	
-	if [ -z "$BM_UPLOAD_DIR" ]; then
-		confkey_error "BM_UPLOAD_DIR" "BM_UPLOAD_HOSTS"
-	fi
-fi
+if [ -n "$BM_UPLOAD_MODE" ]; then
+	confkey_hanlde_deprecated "BM_UPLOAD_MODE" "BM_UPLOAD_METHOD"
+   
+    confkey_hanlde_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
+    confkey_hanlde_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
+
+    confkey_hanlde_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_FTP_USER"
+    confkey_hanlde_deprecated "BM_UPLOAD_PASSWD" "BM_UPLOAD_FTP_PASSWORD"
+	confkey_hanlde_deprecated "BM_FTP_PURGE" "BM_UPLOAD_FTP_PURGE"
+	confkey_hanlde_deprecated "BM_UPLOAD_FTPPURGE" "BM_UPLOAD_FTP_PURGE"
+
+    confkey_hanlde_deprecated "BM_UPLOAD_DIR" "BM_UPLOAD_DESTINATION"
+fi        
 
 if [ -z "$BM_LOGGER" ]; then
 	confkey_warning "BM_LOGGER" "yes"

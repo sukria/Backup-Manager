@@ -47,6 +47,7 @@ source $libdir/dialog.sh
 source $libdir/files.sh
 source $libdir/md5sum.sh
 source $libdir/backup-methods.sh
+source $libdir/upload-methods.sh
 source $libdir/actions.sh
 
 # Initialize defautls values of arguments
@@ -129,90 +130,57 @@ while [ $# -ge 1 ]; do
 	shift
 done
 
-# source the wanted conffile...
 source $conffile
-
-# ...And check that every conf key is ok
 source $libdir/sanitize.sh
 
-# check that no other backup-manager is running
 get_lock
-
-# check dependencies on zip, bzip2
 check_filetypes
-
-# check the directories list to backup is not empty
 check_what_to_backup
-
-# set the default stuff
 init_default_vars
 
-# This is the time for pre-command
 exec_pre_command || error "Unable to exec the pre-command"
 
-# create $ARCHIVES_REPOSITORY if not exists
 create_archive_root_if_not_exists
 
-##############################################################
-# Single actions handling
-#############################################################
-
-# only the uploading system
 if [ "$upload" == "true" ]; then
 	upload_files
 	_exit 0
 fi
 
-# only the burning system
 if [ "$burn" == "true" ]; then
 	burn_files
 	_exit 0
 fi
 
-# only the md5 checkup
 if [ "$md5check" == "true" ]; then
 	check_cdrom_md5_sums
 	_exit 0
 fi
 
-# only purge old archives
 if [ "$purge" == "true" ]; then
 	clean_repositories
 	_exit 0
 fi
 
-##############################################################
 # Default process : doing everything unless --no-flags 
 # are given.
-#############################################################
 
-# first cleanning up the repository 
 if [ "$nopurge" != "true" ]; then
 	clean_repositories
 fi
 
-# now generating new archives...
-# FIXME: here we will manage multiple archive method
-# like 
-#       make_tarballs
-#       make_rsync 
-#       ....
 make_archives
 
-# upload if needed
 if [ "$noupload" != "true" ]; then
 	upload_files
 fi
 
-# burn if wanted
 if [ "$noburn" != "true" ]; then
 	burn_files
 fi
 
-# this is time for post-command
 exec_post_command || error "Unable to exec post-command"
 
-# release the lock concerned by this conffile
 release_lock
 
 exit 0

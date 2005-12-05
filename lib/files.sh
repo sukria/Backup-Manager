@@ -6,7 +6,9 @@
 
 unmount_tmp_dir()
 {
-	if [ -n "$mount_point" ] && [ -d $mount_point ]; then
+	if [ -n "$mount_point" ] && 
+	   [ -d $mount_point ] &&
+	   [ grep $mount_point /etc/mtab >/dev/null 2>&1 ]; then
 		umount "$mount_point" > /dev/null 2>&1 || error "unable to unmount \$mount_point"
 		sleep 1
 		rmdir "$mount_point" > /dev/null 2>&1 || error "unable to remove \$mount_point"

@@ -1,3 +1,28 @@
+2005-12-05  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* BackupManager/Config.pm:
+	  + fixed some typos.
+	* backup-manager:
+	  + removed some comments, cleaning.
+	* backup-manager-upload:
+	  + deletes expired files on remote FTP hosts (closes: #1).
+	  + error when the repository is not readable (closes: #2).
+	  + using other ports than 22 is possible for SSH transfers, new
+	  configuration key "BM_UPLOAD_SSH_PORT" (closes: #5).
+	* backup-manager.conf.tpl:
+	  + New confkeys for the upload methods, BM_UPLOAD_SSH_*, BM_UPLOAD_FTP_*
+	* lib/actions.sh:
+	  + Code cleaning, upload_files() now uses the new stuff in
+	  lib/upload-methods.sh
+	* lib/files.sh:
+	  + unmount_tmp_dir() now unmount $mount_point only if it's already
+	  mounted (closes: #6).
+	* lib/sanitize.sh:
+	  + New sanitizers for the new configuration keys.
+	* lib/upload-methods.sh:
+	  + New library for handling every upload methods, implemented here ssh
+	  and ftp methods.
+
 2005-11-23  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* backup-manager:

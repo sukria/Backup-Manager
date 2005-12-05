@@ -142,6 +142,8 @@ __exec_meta_command()
 # configuration keys: BM_TARBALL_* and BM_TARBALLINC_*
 backup_method_tarball()
 {
+	info "Using method \"\$BM_ARCHIVE_METHOD\""
+	
 	# Create the directories blacklist
 	blacklist=""
 	for pattern in $BM_TARBALL_BLACKLIST
@@ -266,6 +268,7 @@ backup_method_tarball()
 
 backup_method_mysql()
 {
+	info "Using method \"\$BM_ARCHIVE_METHOD\""
 	if [ ! -x $mysqldump ]; then
 		error "The \"mysql\" method is choosen, but \$mysqldump is not found."
 	fi
@@ -285,6 +288,7 @@ backup_method_mysql()
 
 backup_method_svn()
 {
+	info "Using method \"\$BM_ARCHIVE_METHOD\""
         if [ ! -x $svnadmin ]; then
                 error "The \"svn\" method is choosen, but \$svnadmin is not found."
         fi
@@ -305,6 +309,7 @@ backup_method_svn()
 
 backup_method_pipe()
 {
+	info "Using method \"\$BM_ARCHIVE_METHOD\""
         index=0
 
         # parse each BM_PIPE_NAME's

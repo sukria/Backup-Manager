@@ -18,7 +18,7 @@ use warnings;
 
 =head2 getopt()
 
-Comes from debconf, thanks Joe ;)
+Comes from debconf, thanks joeyh ;)
 
 first arg : $usage (text to be written on STDERR if help is needed).
 

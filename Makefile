@@ -9,6 +9,7 @@ SHFILES=lib/dialog.sh \
 	lib/files.sh \
 	lib/actions.sh \
 	lib/backup-methods.sh\
+	lib/upload-methods.sh\
 	lib/logger.sh \
 	lib/gettext.sh \
 	lib/gettext-real.sh \

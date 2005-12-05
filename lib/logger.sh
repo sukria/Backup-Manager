@@ -127,20 +127,7 @@ _exit()
 	release_lock
 	info "ok"
 
-	if [ -n "$mount_point" ]; then
-		if [ -d $mount_point ] && [ "$HAS_MOUNTED" = "1" ]; then
-			info -n "Unmounting \$BM_BURNING_DEVICE: "
-			umount $mount_point || true
-			sleep 2
-			info "ok"
-		fi
-	
-		if [ -d $mount_point ]; then
-			info -n "Removing \$mount_point: "
-			rmdir $mount_point || true
-			info "ok"
-		fi
-	fi
+	unmount_tmp_dir
 
 	exit $@
 }

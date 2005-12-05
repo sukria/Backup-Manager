@@ -1,5 +1,10 @@
 2005-12-05  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* lib/sanitize.sh:
+	  + typo, hanlde -> handle.
+
+2005-12-05  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* BackupManager/Config.pm:
 	  + fixed some typos.
 	* backup-manager:

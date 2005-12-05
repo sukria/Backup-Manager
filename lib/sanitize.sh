@@ -30,7 +30,7 @@ confkey_warning_deprecated()
 
 # Look if the deprecated key exists, if so, warning and use it as 
 # a default value for the new key.
-confkey_hanlde_deprecated()
+confkey_handle_deprecated()
 {
 	deprecated_key="$1"
 	new_key="$2"
@@ -64,31 +64,31 @@ confkey_error()
 }
 
 ##############################################################
-# Sanitizer - check mandatory configuration keys, hanlde them
+# Sanitizer - check mandatory configuration keys, handle them
 # the best possible, with default values and so on...
 #############################################################
 
-confkey_hanlde_deprecated "BM_ARCHIVES_REPOSITORY" "BM_REPOSITORY_ROOT"
+confkey_handle_deprecated "BM_ARCHIVES_REPOSITORY" "BM_REPOSITORY_ROOT"
 confkey_require "BM_REPOSITORY_ROOT" "/var/archives" 
 
 confkey_require "BM_REPOSITORY_SECURE" "yes" 
 if [ "$BM_REPOSITORY_SECURE" = "yes" ]; then
-	confkey_hanlde_deprecated "BM_USER" "BM_REPOSITORY_USER"
+	confkey_handle_deprecated "BM_USER" "BM_REPOSITORY_USER"
 	confkey_require "BM_REPOSITORY_USER" "root"
-	confkey_hanlde_deprecated "BM_GROUP" "BM_REPOSITORY_GROUP"
+	confkey_handle_deprecated "BM_GROUP" "BM_REPOSITORY_GROUP"
 	confkey_require "BM_REPOSITORY_GROUP" "root"
 fi
 
-confkey_hanlde_deprecated "BM_MAX_TIME_TO_LIVE" "BM_ARCHIVE_TTL"
+confkey_handle_deprecated "BM_MAX_TIME_TO_LIVE" "BM_ARCHIVE_TTL"
 confkey_require "BM_ARCHIVE_TTL" "5"
 
-confkey_hanlde_deprecated "BM_PURGE_DUPLICATES" "BM_ARCHIVE_PURGEDUPS"
+confkey_handle_deprecated "BM_PURGE_DUPLICATES" "BM_ARCHIVE_PURGEDUPS"
 confkey_require "BM_ARCHIVE_PURGEDUPS" "yes"
 
-confkey_hanlde_deprecated "BM_ARCHIVES_PREFIX" "BM_ARCHIVE_PREFIX"
+confkey_handle_deprecated "BM_ARCHIVES_PREFIX" "BM_ARCHIVE_PREFIX"
 confkey_require "BM_ARCHIVE_PREFIX" "$HOSTNAME"
 
-confkey_hanlde_deprecated "BM_BACKUP_METHOD" "BM_ARCHIVE_METHOD"
+confkey_handle_deprecated "BM_BACKUP_METHOD" "BM_ARCHIVE_METHOD"
 confkey_require "BM_ARCHIVE_METHOD" "tarball"
 
 if [ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ] && 
@@ -98,27 +98,27 @@ fi
 
 if [ "$BM_ARCHIVE_METHOD" = "tarball" ]; then
 
-	confkey_hanlde_deprecated "BM_FILETYPE" "BM_TARBALL_FILETYPE"
+	confkey_handle_deprecated "BM_FILETYPE" "BM_TARBALL_FILETYPE"
 	confkey_require "BM_TARBALL_FILETYPE" "tar.gz"
 
-	confkey_hanlde_deprecated "BM_NAME_FORMAT" "BM_TARBALL_NAMEFORMAT"
+	confkey_handle_deprecated "BM_NAME_FORMAT" "BM_TARBALL_NAMEFORMAT"
 	confkey_require "BM_TARBALL_NAMEFORMAT" "long"
 
-	confkey_hanlde_deprecated "BM_DUMP_SYMLINKS" "BM_TARBALL_DUMPSYMLINKS"
+	confkey_handle_deprecated "BM_DUMP_SYMLINKS" "BM_TARBALL_DUMPSYMLINKS"
 	confkey_require "BM_TARBALL_DUMPSYMLINKS" "no"
 
-	confkey_hanlde_deprecated "BM_DIRECTORIES" "BM_TARBALL_DIRECTORIES"
-	confkey_hanlde_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
+	confkey_handle_deprecated "BM_DIRECTORIES" "BM_TARBALL_DIRECTORIES"
+	confkey_handle_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
 fi
 
 if [ "$BM_ARCHIVE_METHOD" = "rsync" ]; then
-	confkey_hanlde_deprecated "BM_TARBALL_DUMPSYMLINKS" "BM_RSYNC_DUMPSYMLINKS"
+	confkey_handle_deprecated "BM_TARBALL_DUMPSYMLINKS" "BM_RSYNC_DUMPSYMLINKS"
 	confkey_require "BM_RSYNC_DUMPSYMLINKS" "no"
 
-	confkey_hanlde_deprecated "BM_TARBALL_DIRECTORIES" "BM_RSYNC_DIRECTORIES"
-	confkey_hanlde_deprecated "BM_UPLOAD_HOSTS" "BM_RSYNC_HOSTS"
-	confkey_hanlde_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
-	confkey_hanlde_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
+	confkey_handle_deprecated "BM_TARBALL_DIRECTORIES" "BM_RSYNC_DIRECTORIES"
+	confkey_handle_deprecated "BM_UPLOAD_HOSTS" "BM_RSYNC_HOSTS"
+	confkey_handle_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
+	confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
 fi
 
 if [ "$BM_ARCHIVE_METHOD" = "mysql" ]; then
@@ -142,17 +142,17 @@ fi
 # The FTP stuff
 
 if [ -n "$BM_UPLOAD_MODE" ]; then
-	confkey_hanlde_deprecated "BM_UPLOAD_MODE" "BM_UPLOAD_METHOD"
+	confkey_handle_deprecated "BM_UPLOAD_MODE" "BM_UPLOAD_METHOD"
    
-    confkey_hanlde_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
-    confkey_hanlde_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
+    confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
+    confkey_handle_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
 
-    confkey_hanlde_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_FTP_USER"
-    confkey_hanlde_deprecated "BM_UPLOAD_PASSWD" "BM_UPLOAD_FTP_PASSWORD"
-	confkey_hanlde_deprecated "BM_FTP_PURGE" "BM_UPLOAD_FTP_PURGE"
-	confkey_hanlde_deprecated "BM_UPLOAD_FTPPURGE" "BM_UPLOAD_FTP_PURGE"
+    confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_FTP_USER"
+    confkey_handle_deprecated "BM_UPLOAD_PASSWD" "BM_UPLOAD_FTP_PASSWORD"
+	confkey_handle_deprecated "BM_FTP_PURGE" "BM_UPLOAD_FTP_PURGE"
+	confkey_handle_deprecated "BM_UPLOAD_FTPPURGE" "BM_UPLOAD_FTP_PURGE"
 
-    confkey_hanlde_deprecated "BM_UPLOAD_DIR" "BM_UPLOAD_DESTINATION"
+    confkey_handle_deprecated "BM_UPLOAD_DIR" "BM_UPLOAD_DESTINATION"
 fi        
 
 if [ -z "$BM_LOGGER" ]; then

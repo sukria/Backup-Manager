@@ -1,3 +1,9 @@
+2005-12-06  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* Minor changes to the tests.
+	  + t/confs/upload-rsync.conf
+	  + t/t01.sh
+
 2005-12-05  Jimmy Gredler  <jimmy@backup-manager.org>
 
 	* t/confs/tarball-incremental.conf:

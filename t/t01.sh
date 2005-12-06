@@ -2,11 +2,6 @@
 
 set -e
 
-if [ "$UID" != 0 ]; then
-    echo "This test fails without root"
-    exit 1
-fi
-
 # Each test script should include testlib.sh
 source testlib.sh
 # When the test is ready, set this to false for nice outputs.
@@ -20,7 +15,7 @@ source confs/tarball.conf
 
 export BM_ARCHIVE_ROOT="repository"
 export BM_ARCHIVE_METHOD="tarball"
-export BM_TARBALL_DIRECTORIES="/etc"
+export BM_TARBALL_DIRECTORIES="$PWD"
 
 # The test actions
 
@@ -32,7 +27,8 @@ init_default_vars
 create_archive_root_if_not_exists
 make_archives
 
-if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX-etc.$TODAY.tar.gz" ]; then
+name=$(get_dir_name $PWD long)
+if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.tar.gz" ]; then
     exit 0
 else
     exit 1

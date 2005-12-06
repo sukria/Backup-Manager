@@ -1,3 +1,13 @@
+2005-12-06  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* backup-manager-upload:
+	  + chomp() the result of the shell command, better.
+	* Renamed tests with understandable names.
+	* t/t04-tarball-blacklist.sh:
+	  + New test for reproducing bug #4, cannot reproduce...
+	* t/testlib.sh:
+	  + better paths for the lock and pid files.
+
 2005-12-06  Alexis Sukrieh <sukria@backup-manager.org>
 
 	* doc/user-guide.sgml:

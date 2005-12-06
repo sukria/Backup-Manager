@@ -83,8 +83,8 @@ bm_upload_ftp()
 
     # flags for the FTP method
     ftp_purge_switch=""
-    if [ "$BM_UPLOAD_FTPPURGE" == "yes" ] || 
-       [ "$BM_UPLOAD_FTPPURGE" = "true" ]; then
+    if [ "$BM_UPLOAD_FTP_PURGE" = "yes" ] || 
+       [ "$BM_UPLOAD_FTP_PURGE" = "true" ]; then
             ftp_purge_switch="--ftp-purge"
     fi
  

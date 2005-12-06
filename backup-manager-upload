@@ -240,10 +240,12 @@ sub ftp_clean_directory($)
     my $BM_ARCHIVE_TTL = $ENV{BM_ARCHIVE_TTL};
     return 0 unless defined $BM_ARCHIVE_TTL;
     my $date_to_remove = `date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago"`;
+    chomp $date_to_remove;
    
     my $ra_files = $ftp->ls();
     foreach my $file (@$ra_files) {
         my $date = undef;
+        chomp $file;
         if ($file =~ /\.(\d{8})\./) {
             $date = $1;
             if ($date and ($date <= $date_to_remove)) {

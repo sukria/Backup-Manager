@@ -1,3 +1,9 @@
+2005-12-06  Alexis Sukrieh <sukria@backup-manager.org>
+
+	* doc/user-guide.sgml:
+	 + Chapter 3 is finished (well, remains a lot of typos but the main
+	 structure is there).
+
 2005-12-06  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* Minor changes to the tests.

@@ -252,6 +252,8 @@ The method you choose must be defined in the configuration key
 <tt>BM_ARCHIVE_METHOD</tt>. You can put here a list of all the different methods 
 you want to use. Take care to put every configuration keys needed by all the 
 methods you choose.
+Note that you can also choose none of the propsoed methods, if you don't want
+to build archives with this configuration file, then just put <tt>none</tt>.
 
 <p>
 A couple of other configuration keys may be needed depending on the method you
@@ -348,6 +350,7 @@ export BM_TARBALL_DIRECTORIES="/etc /home /var/log/apache"
 </example>
 
 <sect id="tarballinc">Incremental tarballs
+<sect1 id="tarballinc-desc">Description
 
 <p>
 <em>Method name: <tt>tarball-incremental</tt>, configuration keys prefix:
@@ -398,13 +401,194 @@ For instance, 1 means <em>"monday"</em> if you
 choose a weekly frequency, but it means <em>"the first day of the month"</em>
 if you choose a monthly frequency.
 
-<sect1 id="mysql">MySQL databases
-<sect1 id="svn">Subversion repositories
-<sect1 id="pipe">Generic methods
+<sect id="mysql">MySQL databases
+<sect1 id="mysql-desc">Description
+
+<p>
+<em>Method name: <tt>mysql</tt>, configuration keys prefix:
+<tt>BM_MYSQL</tt>.</em>
+
+<p>
+This method provides a way to archive MySQL databases, the archives are made with 
+mysqldump (SQL text files) and can be compressed.
+
+<sect1 id="BM_MYSQL_DATABASES"><tt>BM_MYSQL_DATABASES</tt>
+
+<p>
+<em>Type: space-separated list, default: <tt>mysql</tt>.</em>
+<p>
+This is the list of databases you want to archive.
+<p>
+Example:
+
+<example>
+export BM_MYSQL_DATABASES="mysql mybase wordpress dotclear phpbb2"
+</example>
+
+<sect1 id="BM_MYSQL_ADMINLOGIN"><tt>BM_MYSQL_ADMINLOGIN</tt>
+
+<p>
+<em>Type: string, default: <tt>root</tt>.</em>
+
+<p>
+The MySQL login you want to use for connecting to the database. Make sure this login 
+can read all the databases you've set in <tt>BM_MYSQL_DATABASES</tt>.
+
+<p>
+Example:
+
+<example>
+export BM_MYSQL_ADMINLOGIN="root"
+</example>
+
+<sect1 id="BM_MYSQL_HOST"><tt>BM_MYSQL_HOST</tt>
+
+<p>
+<em>Type: string, default: <tt>localhost</tt>.</em>
+
+<p>
+The database host where are the databases.
+
+<p>
+Example:
+
+<example>
+export BM_MYSQL_HOST="localhost"
+</example>
+
+<sect1 id="BM_MYSQL_PORT"><tt>BM_MYSQL_PORT</tt>
+
+<p>
+<em>Type: string, default: <tt>3306</tt>.</em>
+
+<p>
+The port on <tt>BM_MYSQL_HOST</tt> where the mysql server is listening.
+
+<p>
+Example:
+
+<example>
+export BM_MYSQL_PORT="3306"
+</example>
+
+<sect1 id="BM_MYSQL_FILETYPE"><tt>BM_MYSQL_FILETYPE</tt>
+
+<p>
+<em>Type: enum(gzip, bzip2), default: <tt>bzip2</tt>.</em>
+
+<p>
+The archive is made with mysqldump which renders SQL lines; the 
+resulting text file can be compressed.
+If you want to compress the file, choose the compressor you want.
+Leave it blank if you want pure SQL files.
+
+<p>
+Example:
+
+<example>
+export BM_MYSQL_FILETYPE="bzip2"
+</example>
+
+<sect id="svn">Subversion repositories
+<sect1 id="svn-desc">Description
+
+<p>
+You can archive Subversion repositories with this method. The archive will be 
+made with <tt>svnadmin</tt> and will contain XML data (text files).
+Like the mysql method, you can choose to compress it.
+
+<sect1 id="BM_SVN_REPOSITORIES"><tt>BM_SVN_REPOSITORIES</tt>
+
+<p>
+<em>Type: space-separated list</em>
+
+<p>
+This is the list of absolute paths to the SVN repositories to archive.
+
+<p>
+Example:
+
+<example>
+export BM_SVN_REPOSITORIES="/srv/svnroot/repo1 /srv/svnroot/repo2"
+</example>
+
+<sect1 id="BM_SVN_COMPRESSWITH"><tt>BM_SVN_COMPRESSWITH</tt>
+
+<p>
+<em>Type: enum(gzip, bzip2), default: <tt>bzip2</tt>.</em>
+
+<p>
+If you want to compress the resulting XML files, choose a compressor here.
+Leave this blank if you don't want any compression.
+
+<p>
+Example:
+
+<example>
+export BM_SVN_COMPRESSWITH="gzip"
+</example>
+
+<sect id="pipe">Generic methods
+<sect1 id="pipe-desc">Description
+
+<p>
+Even if most of the common needs are covered by the existing methods, there is always
+a case uncovered. &bmngr; provide a way for backing up anything, and can be used in such 
+circumstances.
+
+<p>
+This method is called <tt>pipe</tt>, it is more complex to use but can virtually backup anything.
+The concept is simple, a pipe method is defined by the following items:
+
+<list>
+<item>A name (for naming the archive)
+<item>A command (that produces content on stdout)
+<item>A file type (txt, sql, dump, ...)
+<item>A compressor (gzip, bzip2)
+</list>
+
+<p>
+Those configuration keys are arrays, so you can implement as many pipe methods
+as you like.
+
+<p>
+For each pipe method defined, &bmngr; will launch the command given and redirect 
+the content sent to stdout by this command to a file named with the name of the 
+method and its filetype. Then, if the method uses a compressor, the file will 
+be compressed.
+
+<sect1 id="pipe-example">Example
+<p>
+Example for archiving a remote MySQL database through SSH:
+
+<example>
+BM_PIPE_COMMAND[0]="ssh host -c \"mysqldump -ufoo -pbar base\"" 
+BM_PIPE_NAME[0]="base" 
+BM_PIPE_FILETYPE[0]="sql"
+BM_PIPE_COMPRESS[0]="gzip"
+</example>
+
+<p>
+Imagine you have a second pipe method to implement, for instance building 
+a tarball trough SSH:
+
+<example>
+BM_PIPE_COMMAND[1]="ssh host -c \"tar -c -z /home/user\"" 
+BM_PIPE_NAME[1]="host.home.user" 
+BM_PIPE_FILETYPE[1]="tar.gz"
+BM_PIPE_COMPRESS[1]=""
+</example>
+
+<p>
+Note that we have incremented the array's index.
+
+<chapt id="uploads">Upload Methods
+<sect id="upload-ssh">SSH uploads
+<sect id="upload-ftp">FTP uploads
+<sect id="upload-rsync">RSYNC uploads
 
 <chapt id="exports">Exports
-<sect id="media">Media
-<sect id="network">Network
+<sect id="media">CDR/DVD
 </book>
 
 </debiandoc>

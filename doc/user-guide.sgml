@@ -851,21 +851,35 @@ export BM_UPLOAD_RSYNC_DUMPSYMLINKS="false"
 <p>
 <em>
 Another way of storing your archives to a safe place is to use external media.
-In the version &bmngr-version;, &bmngr; supports three different kinds of media: CDR, CDRW and DVDR.
 </em>
 
-<sect1 id="BM_BURNING_METHOD"><tt>BM_BURNING_METHOD</tt>
 <p>
 In version &bmngr-version;, only CDs and DVDs are supported as external media, so we will discuss
-in this secter only the <tt>BM_BURNING</tt> features. Other exports are expected to come in next version though.
+in this section only the <tt>BM_BURNING</tt> features. 
+Other exports are expected to come in next versions though.
 
+<sect1 id="exports-burning">Burning CDR/DVD media
 <p>
-Set the key <tt>BM_BURNING_METHOD</tt> to the method you want to use :
+In the version &bmngr-version;, &bmngr; supports three different kinds of media: CDR, CDRW and DVDR.
+
+<sect2 id="BM_BURNING_METHOD"><tt>BM_BURNING_METHOD</tt>
+<p>
+Set the key <tt>BM_BURNING_METHOD</tt> to the method corresponding to the media you want to burn:
+
 <list>
 <item>CDR
 <item>CDRW 
 <item>DVD 
 </list>
+
+<p>
+Any of these methods will try to put the whole archive repository in the media, if it does not 
+fit in the media, it will try to put only the archives built on the day, if that's not possible,
+nothing will be burnt.
+
+<p>
+The CDRW and DVD methods will first blank the media, so you can safely use these methods if you 
+want to use the same media several times.
 
 <p>
 As usual, you can put <tt>none</tt> in order to disable the burning process.
@@ -874,7 +888,7 @@ As usual, you can put <tt>none</tt> in order to disable the burning process.
 All those burning methods share the same configuration keys, so it's easy to
 switch from a media to another.
 
-<sect1 id="BM_BURNING_DEVICE"><tt>BM_BURNING_DEVICE</tt>
+<sect2 id="BM_BURNING_DEVICE"><tt>BM_BURNING_DEVICE</tt>
 <p>
 <em>Type: string, default: <tt>/dev/cdrom</tt>.</em>
 <p>
@@ -887,7 +901,7 @@ Example:
 export BM_BURNING_DEVICE="/dev/cdrom"
 </example>
 
-<sect1 id="BM_BURNING_DEVFORCED"><tt>BM_BURNING_DEVFORCED</tt>
+<sect2 id="BM_BURNING_DEVFORCED"><tt>BM_BURNING_DEVFORCED</tt>
 <p>
 <em>Type: string</em>
 <p>
@@ -905,7 +919,7 @@ Example:
 export BM_BURNING_DEVFORCED="/dev/cdrom"
 </example>
 
-<sect1 id="BM_BURNING_MAXSIZE"><tt>BM_BURNING_MAXSIZE</tt>
+<sect2 id="BM_BURNING_MAXSIZE"><tt>BM_BURNING_MAXSIZE</tt>
 <p>
 <em>Type: integer, default: <tt>700</tt>.</em>
 <p>
@@ -938,7 +952,7 @@ export BM_BURNING_METHOD="DVD"
 export BM_BURNING_MAXSIZE="4200"
 </example>
 
-<sect1 id="BM_BURNING_CHKMD5"><tt>BM_BURNING_CHKMD5</tt>
+<sect2 id="BM_BURNING_CHKMD5"><tt>BM_BURNING_CHKMD5</tt>
 <p>
 <em>Type: boolean, default: <tt>true</tt>.</em>
 <p>
@@ -1047,7 +1061,9 @@ export BM_PRE_BACKUP_COMMAND="/usr/local/bin/backup-cleanup.pl $TODAY"
 <em>Now that you know in details how to write your configuration files, 
 let's see how to use &bmngr;.</em>
 
-<sect id="command">Command line
+<sect id="command">Command line 
+
+<sect1 id="command-desc">Restrictions
 <p>
 In version &bmngr-version;, &bmngr; can only be used by <tt>root</tt>, 
 as it has be designed as a systemwide tool.
@@ -1093,7 +1109,11 @@ Has you can see in the example above, using the <tt>-h</tt> switch (or <tt>--hel
 a short help message and prints every supported command switches.
 We will cover in this section each of them.
 
-<sect1 id="version"><tt>--version</tt>
+<sect1 id="command-switched">Options
+<p>
+The following switches can be used for altering &bmngr;'s behaviour. 
+
+<sect2 id="version"><tt>--version</tt>
 <p>
 Prints on stdout the &bmngr; version installed on the system and exit.
 
@@ -1105,7 +1125,7 @@ Example:
 Backup Manager 0.6
 </example>
 
-<sect1 id="verbose"><tt>--verbose</tt> or <tt>-v</tt>
+<sect2 id="verbose"><tt>--verbose</tt> or <tt>-v</tt>
 <p>
 Using this switch will enabled the verbose mode. Every actions are reported on stdout.
 
@@ -1119,13 +1139,13 @@ Entering directory /var/archives/lost+found.
 [...]
 </example>
 
-<sect1 id="no-warnings"><tt>--no-warnings</tt>
+<sect2 id="no-warnings"><tt>--no-warnings</tt>
 <p>
 When a non-critical problem occurs (an error occured but the backup process can follow)
 &bmngr; will print a warning message (and will log it if the logger is enabled).
 If you don't want to see warnings messages, you can append this switch on the command line.
 
-<sect1 id="conffile"><tt>--conffile</tt> or <tt>-c</tt>
+<sect2 id="conffile"><tt>--conffile</tt> or <tt>-c</tt>
 <p>
 &bmngr; rely on configuration files, by default, the file <tt>/etc/backup-manager.conf</tt> is used but 
 you can choose to run it with a different one. This is done by using the following syntax :
@@ -1145,25 +1165,86 @@ You can then safely do something like that:
 # backup-manager -c /etc/backup-manager/backup-rsync-filer.conf
 </example>
 
-<sect1 id="force"><tt>--force</tt>
+<sect2 id="force"><tt>--force</tt>
 <p>
 When building an archive, &bmngr; looks if the archive already exists in the repository, if so, a warning 
 is sent saying that the archive exists. If you want to bypass this warning and overwrite archives, use 
 this switch.
 
-<sect1 id="upload"><tt>--upload</tt> or <tt>-u</tt>
+<sect2 id="upload"><tt>--upload</tt> or <tt>-u</tt>
+<p>
+If you have made a configuration file that enables the uploading system, you can ask &bmngr; to 
+perform the uploading session instead of the whole process with this switch.
+
+<sect2 id="burn"><tt>--burn</tt> or <tt>-b</tt>
 <p>
 If you have made a configuration file that enables the burning system, you can ask &bmngr; to 
 perform the burning session instead of the whole process with this switch.
 
-<sect1 id="burn"><tt>--burn</tt> or <tt>-b</tt>
-<sect1 id="md5check"><tt>--md5check</tt> or <tt>-m</tt>
-<sect1 id="purge"><tt>--purge</tt> or <tt>-p</tt>
-<sect1 id="no-upload"><tt>--no-upload</tt> or <tt>-p</tt>
-<sect1 id="no-burn"><tt>--no-burn</tt>
-<sect1 id="no-purge"><tt>--no-purge</tt> or <tt>-p</tt>
+<sect2 id="md5check"><tt>--md5check</tt> or <tt>-m</tt>
+<p>
+
+If you have made a configuration file that enables the MD5 checks on burt media, you can ask &bmngr; to 
+perform the MD5 checks instead of the whole process with this switch.
+
+<sect2 id="purge"><tt>--purge</tt> or <tt>-p</tt>
+<p>
+This switch will as &bmngr; to just perform the archive repository purge: 
+removing any depreacted archives (according to <tt>BM_ARCHIVE_TTL</tt>.
+
+<sect2 id="no-upload"><tt>--no-upload</tt> or <tt>-p</tt>
+<p>
+Use this switch if you have a configuration file that enables the uploading system and want to run
+&bmngr; without it.
+
+<sect2 id="no-burn"><tt>--no-burn</tt>
+<p>
+Use this switch if you have a configuration file that enables the burning system and want to run
+&bmngr; without it.
+
+<sect2 id="no-purge"><tt>--no-purge</tt> or <tt>-p</tt>
+<p>
+Use this switch if you want to disable the purging phase. This can be useful if you like 
+to implement another kind of purging system, with a post-command hook for instance.
 
 <sect id="cron">CRON integration
+
+<p>
+There is a global idea behind &bmngr;'s design: "<em>You won't do it if you have to think about it</em>".
+This is specifically true for backup concerns and it is strongly adviced to automate your 
+backup process with a tasks scheduler like CRON.
+
+<p>
+Setting up a &bmngr; job in cron is pretty easy, you just have to write a shell script under
+the appropriate CRON sub-directory that will call backup-manager. 
+The best sub-directory to choose is <tt>/etc/cron.daily</tt> as &bmngr; handles daily archives.
+
+<p>
+Here is an example of a CRON script:
+
+<example>
+cat > /etc/cron.daily/backup-manager
+#!/bin/sh
+
+/usr/sbin/backup-manager
+</example>
+
+<p>
+If you want to be notified by mail if a problem occurs during the backup session, 
+just make sure you receive mails coming from CRON. When the verbose mode is off, 
+only warnings and errors are printed on stdout, so you will receive a mail from
+the &bmngr; CRON job only in case of unexpected effects.
+
+<p>
+On the other hand, if you like to receive daily mails from the job, even if everything
+went well, just append the --verbose switch like that :
+
+<example>
+cat > /etc/cron.daily/backup-manager
+#!/bin/sh
+
+/usr/sbin/backup-manager --verbose
+</example>
 
 </book>
 

@@ -245,7 +245,7 @@ ouranos-etc.20051123.tar.gz
 <p>
 The core feature of &bmngr; is to make archives, for doing this, a
 <em>method</em> is used. Each method can require a set of configuration keys.
-We will describe here every method supported in the version &version;.
+We will describe here every method supported in the version &bmngr-version;.
 
 <p>
 The method you choose must be defined in the configuration key
@@ -583,12 +583,368 @@ BM_PIPE_COMPRESS[1]=""
 Note that we have incremented the array's index.
 
 <chapt id="uploads">Upload Methods
+
+<sect id="uploads-desc">Description
+<p>
+<em>One of the most important thing to do when backing up file systems is to store 
+the archives on different places. The more different physical spaces you have, the better. 
+&bmngr; provides a way for achieving this goal : the upload methods. </em>
+
+<p>
+There are different upload methods, each of them behave differently and provides particular 
+features. In &bmngr; &bmngr-version; you can use FTP, SSH or RSYNC uploads.
+
+<p>In the same maner as for backup methods, you can choose to use as many 
+upload methods as you like. If you don't want to use this feature at all, just put
+the keyword <tt>none</tt> in the configuration <tt>BM_UPLOAD_METHOD</tt>.
+
+<p>
+Note that the FTP and SSH methods are dedicated to upload archives, 
+using those method depends on the use of at least one backup method.
+
+<p>
+On the opposite, the RSYNC method uploads a directory to remote locations, 
+this directory can be your repository or whatever other location of your
+file sytem.
+
+<sect id="uploads-global">Global configuration keys
+<p>
+The following configuration keys are global in the upload section:
+
+<sect1 id="BM_UPLOAD_HOSTS"><tt>BM_UPLOAD_HOSTS</tt>
+<p>
+<em>Type: space-separated list</em>
+<p>
+Eeach of the hosts defined in that list are used by all the upload methods
+when establishing connections. For instance if you want to perform SSH uploads of 
+your archives and RSYNC upload of a location to the same host, put it in this list.
+<p>
+Example:
+<example>
+export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
+</example>
+
+<sect1 id="BM_UPLOAD_DESTINATION"><tt>BM_UPLOAD_DESTINATION</tt>
+<p>
+<em>Type: string</em>
+<p>
+This is the absolute path of the directory in the remote hosts where to
+put the files uploaded.
+<p>
+If you have installed installed &bmngr; on the remote host,
+a good idea is to choose a sub-directory of the repository.
+Then, during the remote host purge phase, your uploads will be 
+cleaned at the same time.
+<p>
+You can also define a destination dedicated to your host: 
+<tt>BM_UPLOAD_DESTINATION="/var/archives/$HOSTNAME"</tt>
+
+<p>Example:
+
+<p>
+Let's say you want that all your uploads are performed on the host mirror2.lan.mysite.net,
+in the sub-directory /var/archives/uploads
+
+<example>
+export BM_UPLOAD_HOSTS="mirror2.lan.mysite.net"
+export BM_UPLOAD_DESTINATION="/var/archives/uploads"
+</example>
+
 <sect id="upload-ssh">SSH uploads
+
+<sect1 id="uploads-ssh-desc">Description
+<p>
+<em>Method name: <tt>ssh</tt>, goal: upload archives to remote hosts over SSH.
+This method depends on a backup method.
+</em>
+
+<p>
+If you want to upload your archives on remote locations, you can use the SSH method. 
+This method is good if you like to use a secure tunnel between the two points of 
+the upload.
+
+<p>
+The call to <tt>scp</tt> will be done with the identity of the user <tt>BM_UPLOAD_SSH_USER</tt>, 
+thus, you have to make sure this user can have access to the repository (take care to the secure mode).
+
+<sect1 id="BM_UPLOAD_SSH_USER"><tt>BM_UPLOAD_SSH_USER</tt>
+<p>
+<em>Type: string</em>
+<p>
+This is the user to use for performing the ssh connection. Make sure this user can access 
+repository.
+<p>
+Example:
+<example>
+export BM_UPLOAD_SSH_USER="bmngr"
+</example>
+
+<sect1 id="BM_UPLOAD_SSH_KEY"><tt>BM_UPLOAD_SSH_KEY</tt>
+<p>
+<em>Type: string</em>
+<p>
+This is the path to the private key of the user BM_UPLOAD_SSH_USER. 
+<p>
+Example:
+<example>
+export BM_UPLOAD_SSH_KEY="/home/bmngr/.ssh/id_dsa"
+</example>
+
+<sect1 id="BM_UPLOAD_SSH_HOSTS"><tt>BM_UPLOAD_SSH_HOSTS</tt>
+<p>
+<em>Type: space-separated list</em>
+<p>
+Put here the list of hosts to use for SSH-only uploads.
+Note that if you put some hosts in <tt>BM_UPLOAD_HOSTS</tt>, they will be used as well. 
+<p>
+Example:
+<example>
+export BM_UPLOAD_SSH_HOSTS="mirror3.lan.mysite.net"
+</example>
+
+<sect1 id="BM_UPLOAD_SSH_DESTINATION"><tt>BM_UPLOAD_SSH_DESTINATION</tt>
+<p>
+<em>Type: string</em>
+<p>
+Put here the destination for SSH-only uploads, this key overrides 
+<tt>BM_UPLOAD_DESTINATION</tt>.
+<p>
+Example:
+<example>
+export BM_UPLOAD_SSH_DESTINATION="/var/archives/scp-uploads"
+</example>
+
+
 <sect id="upload-ftp">FTP uploads
+<sect1 id="uploads-ftp-desc">Description
+<p>
+If security does not matter much on your lan (between the two points of the upload) you can choose to use the 
+FTP method.
+One of the main pros of this method is that it can perform purging independtly. You can safely use this method
+for uploading files to a hosts where you just have a FTP account.
+
+<sect1 id="BM_UPLOAD_FTP_USER"><tt>BM_UPLOAD_FTP_USER</tt>
+<p>
+<em>Type: string.</em>
+<p>
+Put here the FTP user to use for opening the connections.
+<p>
+Example:
+<example>
+export BM_UPLOAD_FTP_USER="bmngr"
+</example>
+
+<sect1 id="BM_UPLOAD_FTP_PASSWORD"><tt>BM_UPLOAD_FTP_PASSWORD</tt>
+<p>
+<em>Type: string.</em>
+<p>
+Put here the <tt>BM_UPLOAD_FTP_USER</tt>'s password to use (in plain text).
+<p>
+Example:
+<example>
+export BM_UPLOAD_FTP_USER="secret"
+</example>
+
+<sect1 id="BM_UPLOAD_FTP_HOSTS"><tt>BM_UPLOAD_FTP_HOSTS</tt>
+<p>
+<em>Type: space-separated list</em>
+<p>
+Put here the list of hosts to use for FTP-only uploads.
+Note that if you put some hosts in <tt>BM_UPLOAD_HOSTS</tt>, they will be used as well. 
+<p>
+Example:
+<example>
+export BM_UPLOAD_FTP_HOSTS="mirror4.lan.mysite.net"
+</example>
+
+<sect1 id="BM_UPLOAD_FTP_DESTINATION"><tt>BM_UPLOAD_FTP_DESTINATION</tt>
+<p>
+<em>Type: string</em>
+<p>
+Put here the destination for FTP-only uploads, this key overrides 
+<tt>BM_UPLOAD_DESTINATION</tt>.
+<p>
+Example:
+<example>
+export BM_UPLOAD_FTP_DESTINATION="/var/archives/ftp-uploads"
+</example>
+
+<sect1 id="BM_UPLOAD_FTP_PURGE"><tt>BM_UPLOAD_FTP_PURGE</tt>
+<p>
+<em>Type: boolean, default: <tt>true</tt></em>
+<p>
+You can choose to purge deprecated archives before uploading new ones.
+This purge is done over FTP and uses the configuration key <tt>BM_ARCHIVE_TTL</tt> in 
+the same maner as the local purge behaves (the FTP purge is not recursive though).
+<p>
+Example:
+<example>
+export BM_UPLOAD_FTP_PURGE="true"
+</example>
+
 <sect id="upload-rsync">RSYNC uploads
+<sect1 id="upload-rsync-desc">Description
+<p>
+You may want to upload some parts of your file system to some remote hosts. 
+In these cases, archives are not needed, you just want to synchronize some 
+directories to remote places. This is where the RSYNC upload method is usefull.
+<p>
+RSYNC uploads need a SSH user/key pair to behave correctly, thus there is a 
+dependency against the keys <tt>BM_UPLOAD_SSH_USER</tt> and <tt>BM_UPLOAD_SSH_KEY</tt>.
+
+<sect1 id="BM_UPLOAD_RSYNC_DIRECTORIES"><tt>BM_UPLOAD_RSYNC_DIRECTORIES</tt>
+<p>
+<em>Type: space-separated list</em>
+<p>
+Put here the list of local directories you want to upload with rsync.
+<p>
+Example:
+<example>
+export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
+</example>
+
+<sect1 id="BM_UPLOAD_RSYNC_HOSTS"><tt>BM_UPLOAD_RSYNC_HOSTS</tt>
+<p>
+<em>Type: space-separated list</em>
+<p>
+Put here the list of hosts to use for RSYNC-only uploads.
+Note that if you put some hosts in <tt>BM_UPLOAD_HOSTS</tt>, they will be used as well. 
+<p>
+Example:
+<example>
+export BM_UPLOAD_RSYNC_HOSTS="mirror5.lan.mysite.net"
+</example>
+
+<sect1 id="BM_UPLOAD_RSYNC_DESTINATION"><tt>BM_UPLOAD_RSYNC_DESTINATION</tt>
+<p>
+<em>Type: string</em>
+<p>
+Put here the destination for RSYNC-only uploads, this key overrides 
+<tt>BM_UPLOAD_DESTINATION</tt>.
+<p>
+Example:
+<example>
+export BM_UPLOAD_RSYNC_DESTINATION="/var/archives/rsync-snapshots"
+</example>
+
+<sect1 id="BM_UPLOAD_RSYNC_DUMPSYMLINKS"><tt>BM_UPLOAD_RSYNC_DUMPSYMLINKS</tt>
+<p>
+<em>Type: boolean, default: <tt>false</tt>.</em>
+<p>
+You can choose to dereference files pointed by symlinks in your RSYNC snapshots.
+This feature should be used with care.
+<p>
+Example:
+<example>
+export BM_UPLOAD_RSYNC_DUMPSYMLINKS="false"
+</example>
 
 <chapt id="exports">Exports
-<sect id="media">CDR/DVD
+<p>
+<em>
+Another way of storing your archives to a safe place is to use external media.
+In the version &bmngr-version;, &bmngr; supports three different kinds of media: CDR, CDRW and DVDR.
+</em>
+
+<sect id="BM_BURNING_METHOD"><tt>BM_BURNING_METHOD</tt>
+<p>
+In version &bmngr-version;, only CDs and DVDs are supported as external media, so we will discuss
+in this chapter only the <tt>BM_BURNING</tt> features. Other exports are expected to come in next version though.
+
+<p>
+Set the key <tt>BM_BURNING_METHOD</tt> to the method you want to use :
+<list>
+<item>CDR
+<item>CDRW 
+<item>DVD 
+</list>
+
+<p>
+As usual, you can put <tt>none</tt> in order to disable the burning process.
+
+<p>
+All those burning methods share the same configuration keys, so it's easy to
+switch from a media to another.
+
+<sect id="BM_BURNING_DEVICE"><tt>BM_BURNING_DEVICE</tt>
+<p>
+<em>Type: string, default: <tt>/dev/cdrom</tt>.</em>
+<p>
+This is mandatory for using the burning feature, it's the device 
+to use for mounting the media. It's needed by backup manager for 
+performing the MD5 checks and for other needs.
+<p>
+Example:
+<example>
+export BM_BURNING_DEVICE="/dev/cdrom"
+</example>
+
+<sect id="BM_BURNING_DEVFORCED"><tt>BM_BURNING_DEVFORCED</tt>
+<p>
+<em>Type: string</em>
+<p>
+&bmngr; uses <tt>cdrecord</tt> for burning CDs. If when you run
+<tt>cdrecord -scanbus</tt> you don't see your burning device, that means you will have to 
+force the device in ATA mode. 
+To tell &bmngr; to do so, just put here the path to your device, and a switch will be appended to the
+cdrecord commandline like de following : <tt>cdrecrord ... dev=$BM_BURNING_DEVFORCED ...</tt>.
+<p>
+Leave this configuration key blank if you see your device with <tt>cdrecord -scanbus</tt>, 
+in this case, &bmngr; will use the default cdrecord device for burning CDR media.
+<p>
+Example:
+<example>
+export BM_BURNING_DEVFORCED="/dev/cdrom"
+</example>
+
+<sect id="BM_BURNING_MAXSIZE"><tt>BM_BURNING_MAXSIZE</tt>
+<p>
+<em>Type: integer, default: <tt>700</tt>.</em>
+<p>
+This is where you define the maximum size (in mega bytes) 
+of the media you will put in the device.
+Here is the list of the common sizes:
+
+<list>
+<item>CDR/CDRW: 650, 700, 800
+<item>DVD: 4200
+</list>
+
+<p>
+When &bmngr; looks in the repository for burning data, it will try to put 
+the whole archive repository in the media. If the summarized size of the
+repository does not fit in <tt>BM_BURNING_MAXSIZE</tt>, &bmngr; will then 
+try to put only the archives of the day.
+
+<p>
+Example for a CD burner
+<example>
+export BM_BURNING_METHOD="CDRW"
+export BM_BURNING_MAXSIZE="700"
+</example>
+
+<p>
+Example for a DVD burner:
+<example>
+export BM_BURNING_METHOD="DVD"
+export BM_BURNING_MAXSIZE="4200"
+</example>
+
+<sect id="BM_BURNING_CHKMD5"><tt>BM_BURNING_CHKMD5</tt>
+<p>
+<em>Type: boolean, default: <tt>true</tt>.</em>
+<p>
+If this boolean is set to a true value, every MD5 sums will be checked when the media 
+is burnt in order to make sure evrything is ok.
+<p>
+Note that you can choose to perform this checkup with the command 
+switch <tt>--md5check</tt>.
+<p>
+Example:
+<example>
+exports BM_BURNING_CHKMD5="true"
+</example>
+
 </book>
 
 </debiandoc>

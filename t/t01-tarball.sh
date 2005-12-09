@@ -23,7 +23,7 @@ if [ -e $BM_ARCHIVE_ROOT ]; then
     rm -f $BM_ARCHIVE_ROOT/*
 fi    
 
-init_default_vars
+bm_init_env
 create_archive_root_if_not_exists
 make_archives
 

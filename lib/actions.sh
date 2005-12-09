@@ -155,7 +155,9 @@ check_cdrom_md5_sums()
 # in this way, we prevent the use of preicous disk place.
 burn_files()
 {
-	if [ "$BM_BURNING" != "yes" ]; then
+	if [ "$BM_BURNING_METHOD" = "none" ] || 
+       [ -z "$BM_BURNING_METHOD" ]; then
+        info "No burning method used."
 		return 0
 	fi
 	
@@ -246,6 +248,9 @@ burn_files()
 				error "failed, check \$logfile"
 			info "ok"
 		;;
+        "none"|"NONE")
+            info "Nothing to burn."
+        ;;
         *)
             error "The requested burning method is not supported, check BM_BURNING_METHOD in \$conffile"
         ;;
@@ -282,7 +287,7 @@ exec_pre_command()
 			"false")
 				info "failed"
 				warning "pre-command returned false. Stopping the process."
-				_exit 0
+				_exit 15
 			;;
 
 			*)
@@ -302,6 +307,7 @@ exec_post_command()
 			"false")
 				info "failed"
 				warning "post-command returned false."
+                _exit 16
 			;;
 
 			*)
@@ -309,4 +315,10 @@ exec_post_command()
 			;;
 		esac
 	fi
+}
+
+bm_init_env ()
+{
+    export TODAY=`date +%Y%m%d`                  
+    export TOOMUCH_TIME_AGO=`date +%d --date "$BM_ARCHIVE_TTL days ago"`
 }

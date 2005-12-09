@@ -38,7 +38,7 @@ touch $PWD/var/www/Upload/file3
 touch $PWD/var/www/real/file4
 
 # BM actions
-init_default_vars
+bm_init_env
 create_archive_root_if_not_exists
 make_archives
 

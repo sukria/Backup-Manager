@@ -126,9 +126,9 @@ if [ "$BM_ARCHIVE_METHOD" = "mysql" ]; then
 fi
 
 # Burning system
-if [ "$BM_BURNING" = "yes" ]; then
+if [ -n "$BM_BURNING_METHOD" ] && 
+   [ "$BM_BURNING_METHOD" != "none" ] ; then
 	confkey_require "BM_BURNING_DEVICE" "/dev/cdrom"
-	confkey_require "BM_BURNING_METHOD" "CDRW"
 	confkey_require "BM_BURNING_MAXSIZE" "650"
 	confkey_require "BM_BURNING_CHKMD5" "yes"
 fi

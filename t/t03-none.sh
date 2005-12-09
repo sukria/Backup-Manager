@@ -13,11 +13,13 @@ source testlib.sh
 source confs/base.conf
 export BM_ARCHIVE_METHOD="none"
 export BM_UPLOAD_METHOD="none"
+export BM_BURNING_METHOD="none"
 
 # The test actions
-init_default_vars
+bm_init_env
 create_archive_root_if_not_exists
 make_archives
 upload_files
+burn_files
 
 exit 0

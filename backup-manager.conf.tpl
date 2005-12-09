@@ -222,11 +222,21 @@ export BM_UPLOAD_RSYNC_DUMPSYMLINKS="no"
 
 ##############################################################
 # Section "BURNING" 
-# - Automatic CDR/CDRW burning
+# - Automatic CDR/CDRW/DVDR burning
 #############################################################
 
-# set this to yes if you want automatic burning.
-export BM_BURNING="no"
+# the method of burning archives from the list :
+#  - DVD  : burn archives on a DVD media.
+#
+#  - CDRW : blank the CDRW and burn the whole 
+#           ARCHIVES_REPOSITORY or only 
+#           the generated archives.
+#
+#  - CDR  : burn the whole ARCHIVES_REPOSITORY or 
+#           only the generated archives.
+#  - none : disable the burning system
+
+export BM_BURNING_METHOD="none"
 
 # When the CD is burnt, it is possible to check every file's 
 # MD5 checksum to see if the CD is not corrupted.
@@ -240,18 +250,6 @@ export BM_BURNING_DEVICE="/dev/cdrom"
 # e.g. BM_BURNING_DEVFORCED="/dev/cdrom"
 # If none specified, the default cdrecord device will be used.
 export BM_BURNING_DEVFORCED=""
-
-# the method of burning archives from the list :
-#  - DVD  : burn archives on a DVD media.
-#
-#  - CDRW : blank the CDRW and burn the whole 
-#           ARCHIVES_REPOSITORY or only 
-#           the generated archives.
-#
-#  - CDR  : burn the whole ARCHIVES_REPOSITORY or 
-#           only the generated archives.
-export BM_BURNING_METHOD="CDRW"
-
 # enter here the max size of your media 
 # (usal sizes are 4200 for DVD media and 700 or 800 for CDR media)
 export BM_BURNING_MAXSIZE="700"

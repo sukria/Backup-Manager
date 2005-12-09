@@ -15,7 +15,7 @@ source confs/upload-global.conf
 source confs/upload-rsync.conf
 
 # The test actions
-init_default_vars
+bm_init_env
 create_archive_root_if_not_exists
 make_archives
 upload_files

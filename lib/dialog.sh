@@ -72,13 +72,6 @@ check_what_to_backup()
 	fi
 }
 
-init_default_vars()
-{
-	# set the date values 
-	export TODAY=`date +%Y%m%d`                  
-	export TOOMUCH_TIME_AGO=`date +%d --date "$BM_ARCHIVE_TTL days ago"`
-}
-
 create_archive_root_if_not_exists()
 {
 	if [ ! -d $BM_REPOSITORY_ROOT ]

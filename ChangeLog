@@ -1,3 +1,11 @@
+2005-12-09  Alexis Sukrieh,,,  <set EMAIL_ADDRESS environment variable>
+
+	* backup-manager:
+	  + cleaned a bit the code.
+	* backup-manager.conf.tpl:
+	  + removed useless BM_BURNING conf key (BM_BURNING_METHOD is enough).
+	* Updated the tests, new test for the hooks.
+
 2005-12-06  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* backup-manager-upload:

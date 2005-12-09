@@ -130,6 +130,8 @@ while [ $# -ge 1 ]; do
 	shift
 done
 
+bm_init_env
+
 source $conffile
 source $libdir/sanitize.sh
 

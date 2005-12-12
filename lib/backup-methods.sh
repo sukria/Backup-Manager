@@ -10,15 +10,15 @@ commit_archive()
 {
 	file_to_create="$1"
 	size=$(size_of_path $file_to_create)
-	info -n "\$file_to_create: ok (\${size}M, "
+	str=$(echo_translated "\$file_to_create: ok (\${size}M,")
 		
 	base=$(basename $file_to_create)
 	md5hash=$(get_md5sum $file_to_create)
-	info "${md5hash})"
+	info "$str ${md5hash})"
 	echo "$md5hash  $base" >> $BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5
 		
 	# Now that the file is created, remove previous duplicates if exists...
-	purge_duplicate_archives $file_to_create || error "unable to purge duplicates"
+	purge_duplicate_archives $file_to_create || error "Unable to purge duplicates of \$file_to_create"
 
 	# security fixes if BM_REPOSITORY_SECURE is set to yes.
 	if [ $BM_REPOSITORY_SECURE = yes ]; then
@@ -49,7 +49,7 @@ __exec_meta_command()
         
         # execute the command, grab the output
         $($command 1> $file_to_create 2>$logfile) || 
-        error "Unable to exec \$command; check \$logfile."
+        error "Unable to exec \$command; check \$logfile"
 
         # our $file_to_create should be created now
         if [ ! -e $file_to_create ]; then

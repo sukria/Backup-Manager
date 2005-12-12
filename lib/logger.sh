@@ -123,9 +123,8 @@ warning()
 # remove the logfile
 _exit()
 {
-	info -n "Releasing lock: "
+	info "Releasing lock"
 	release_lock
-	info "ok"
 
 	unmount_tmp_dir
 

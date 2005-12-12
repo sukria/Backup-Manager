@@ -52,10 +52,10 @@ get_dir_name()
 size_of_path()
 {
 	path="$1"
-    if [ ! -e $path ]; then
-            error "unable to stat $path"
-            return 1
-    fi            
+    if [ -z "$path" ]; then
+        error "No path given"
+    fi
+    
 	out=$(du -m -c $path)
 
 	OLDIFS=$IFS
@@ -153,24 +153,22 @@ get_lock() {
 		if [ -n "$pid" ]; then
 			# we really must not use error or _exit here ! 
 			# this is the special point were release_lock should not be called !
-			echo_translated "A backup-manager process (\$pid) is already running with the conffile \$conffile."
+			echo_translated "A backup-manager process (\$pid) is already running with the conffile \$conffile"
 			exit 1
 		else
 			pid=$$
-			info -n "Getting lock for backup-manager \$pid with \$conffile: "
+			info "Getting lock for backup-manager \$pid with \$conffile"
 			echo "$$ $conffile " >> $lockfile
-			info "ok"
 			
 		fi
 	else 
 		pid=$$
-		info -n "Getting lock for backup-manager \$pid with \$conffile: "
+		info "Getting lock for backup-manager \$pid with \$conffile"
 		echo "$$ $conffile " > $lockfile
 		if [ ! -e $lockfile ]; then
 			error "failed (check the file permissions)"
 			exit 1
 		fi
-		info "ok"
 	fi
 }
 
@@ -191,9 +189,8 @@ clean_file()
 	if [ ! -z $date ]; then
 		if [ $date -lt $date_to_remove ] || 
 		   [ $date = $date_to_remove ]; then
-			info -n "Removing \$file: "
+			info "Removing \$file"
 			rm -f $file
-			info "ok"
 		fi
 	fi
 }

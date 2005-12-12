@@ -27,7 +27,7 @@ DOCPDF		= doc/user-guide.pdf
 DOCTXT		= doc/user-guide.txt
 
 # The backup-manager package
-install: install_lib install_deb install_contrib install_man
+install: install_lib install_deb install_contrib install_man install_po
 install_binary: install_lib install_deb 
 
 install_contrib:
@@ -47,7 +47,6 @@ install_doc:
 
 # The translation stuff
 install_po:
-	@echo -e "\n*** generating po files ***\n"
 	$(MAKE) -C po install
 
 # The backup-manager libraries

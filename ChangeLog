@@ -1,3 +1,19 @@
+2005-12-12  Alexis Sukrieh,,,  <set EMAIL_ADDRESS environment variable>
+
+	* Makefile:
+	  + install po files
+	* backup-manager:
+	  + minor bug fix (call to bad function)
+	* Removed most of "info -n" calls
+	  + lib/actions.sh:
+	  + lib/backup-methods.sh:
+	  + lib/files.sh:
+	  + lib/logger.sh:
+	* po/Makefile:
+	  + Much cleaner
+	* po/fr.po
+	  + New french version, complete.
+
 2005-12-09  Alexis Sukrieh,,,  <set EMAIL_ADDRESS environment variable>
 
 	* backup-manager:

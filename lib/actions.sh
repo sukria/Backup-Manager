@@ -92,9 +92,8 @@ check_cdrom_md5_sums()
 	fi
 	
 	# mount the device in /tmp/
-	info -n "Mounting \$BM_BURNING_DEVICE: "
-	mount $BM_BURNING_DEVICE $mount_point >& /dev/null || error "unable to mount \$BM_BURNING_DEVICE on \$mount_point"
-	info "ok"
+	info "Mounting \$BM_BURNING_DEVICE on \$mount_point."
+	mount $BM_BURNING_DEVICE $mount_point >& /dev/null || error "Unable to mount \$BM_BURNING_DEVICE on \$mount_point."
 	export HAS_MOUNTED=1
 	
 	# now we can check the md5 sums.
@@ -103,7 +102,7 @@ check_cdrom_md5_sums()
 		base_file=$(basename $file)
 		date_of_file=$(get_date_from_file $file)
 		prefix_of_file=$(get_prefix_from_file $file)
-		info -n "Checking MD5 sum for \$base_file: "
+		str=$(echo_translated "Checking MD5 sum for \$base_file:")
 		
 		# Which file should contain the MD5 hashes for that file ?
 		md5_file="$BM_REPOSITORY_ROOT/${prefix_of_file}-${date_of_file}.md5"
@@ -125,14 +124,14 @@ check_cdrom_md5_sums()
 		md5hash_cdrom=$(get_md5sum $file) || md5hash_cdrom="undefined"
 		case "$md5hash_cdrom" in
 			"$md5hash_trust")
-				info "ok"
+				echo_translated "\$str ok"
 			;;
 			"undefined")
-				info "failed (read error)"
+				echo_translated "\$str failed (read error)"
 				has_error=1
 			;;
 			*)
-				info "failed (MD5 hash mismatch)"
+				echo_translated "\$str failed (MD5 hash mismatch)"
 				has_error=1
 			;;
 		esac
@@ -198,7 +197,7 @@ burn_files()
 	fi
 	
 	# get a log file in a secure path
-	logfile="$(mktemp /tmp/bm-cdrecord.log.XXXXXX)"
+	logfile="$(mktemp /tmp/bm-burning.log.XXXXXX)"
 	info "Redirecting burning logs into \$logfile"
 	
 	# set the cdrecord command 
@@ -215,26 +214,23 @@ burn_files()
             error "DVD burning requires $growisofs, aborting."
             fi
                         
-			info -n "Exporting archives to the DVD media in \$BM_BURNING_DEVICE: "
+			info "Exporting archives to the DVD media in \$BM_BURNING_DEVICE."
 			$growisofs -Z ${BM_BURNING_DEVICE} -R -J -V "${title}" ${what_to_burn} > ${logfile} 2>&1 ||
                                 error "failed, check \$logfile"
-			info "ok"
 		;;
 		"CDRW")
             if [ ! -x $cdrecord ]; then
                 error "CDROM burning requires $cdrecord, aborting."
             fi
                         
-			info -n "Blanking the CDRW in \$BM_BURNING_DEVICE: "
+			info "Blanking the CDRW in \$BM_BURNING_DEVICE."
 			${cdrecord} -tao $devforced blank=fast > ${logfile} 2>&1 ||
 				error "failed, check \$logfile"
-			info "ok"
 			
-			info -n "Burning data to \$BM_BURNING_DEVICE: "
+			info "Burning data to \$BM_BURNING_DEVICE."
 			${mkisofs} -V "${title}" -q -R -J ${what_to_burn} | \
 			${cdrecord} -tao $devforced - > ${logfile} 2>&1 ||
 				error "failed, check \$logfile"
-			info "ok"
 		;;
 		"CDR")
 
@@ -242,11 +238,10 @@ burn_files()
             error "CDROM burning requires $cdrecord, aborting."
         fi
 
-			info -n "Burning data to \$BM_BURNING_DEVICE: "
+			info "Burning data to \$BM_BURNING_DEVICE."
 			${mkisofs} -V "${title}" -q -R -J ${what_to_burn} | \
 			${cdrecord} -tao $devforced - > ${logfile} 2>&1 ||
 				error "failed, check \$logfile"
-			info "ok"
 		;;
         "none"|"NONE")
             info "Nothing to burn."
@@ -281,17 +276,16 @@ clean_repositories()
 exec_pre_command()
 {
 	if [ ! -z "$BM_PRE_BACKUP_COMMAND" ]; then
-		info -n "Running pre-command: \$BM_PRE_BACKUP_COMMAND: "
+		info "Running pre-command: \$BM_PRE_BACKUP_COMMAND."
 		RET=`$BM_PRE_BACKUP_COMMAND` || RET="false" 
 		case "$RET" in
 			"false")
-				info "failed"
-				warning "pre-command returned false. Stopping the process."
+				warning "Pre-command failed. Stopping the process."
 				_exit 15
 			;;
 
 			*)
-				info "ok"
+				info "Pre-command returned: \"$RET\" (success)."
 			;;
 		esac
 	fi
@@ -301,17 +295,16 @@ exec_pre_command()
 exec_post_command()
 {
 	if [ ! -z "$BM_POST_BACKUP_COMMAND" ]; then
-		info -n "Running post-command: \$BM_POST_BACKUP_COMMAND: "
+		info "Running post-command: \$BM_POST_BACKUP_COMMAND"
 		RET=`$BM_POST_BACKUP_COMMAND` || RET="false"
 		case "$RET" in
 			"false")
-				info "failed"
-				warning "post-command returned false."
+				warning "Post-command failed."
                 _exit 16
 			;;
 
 			*)
-				info "ok"
+				info "Post-command returned: \"$RET\" (success)."
 			;;
 		esac
 	fi

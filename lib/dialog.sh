@@ -82,7 +82,7 @@ create_archive_root_if_not_exists()
 
 	# for security reason, the repository should not be world readable
 	# only BM_REPOSITORY_USER:BM_REPOSITORY_GROUP can read/write it. 
-	if [ "$BM_REPOSITORY_SECURE" = "yes" ]; then
+	if [ "$BM_REPOSITORY_SECURE" = "true" ]; then
 		chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $BM_REPOSITORY_ROOT
 		chmod 770 $BM_REPOSITORY_ROOT
 	fi

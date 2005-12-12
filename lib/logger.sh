@@ -4,7 +4,7 @@
 
 
 if [ -z "$BM_LOGGER" ]; then
-	BM_LOGGER="yes"
+	BM_LOGGER="true"
 fi
 
 if [ -z "$BM_LOGGER_FACILITY" ]; then
@@ -15,7 +15,7 @@ if [ -x /usr/bin/logger ]; then
 	logger=/usr/bin/logger
 
 else
-	BM_LOGGER="no"
+	BM_LOGGER="false"
 fi
 
 
@@ -32,7 +32,7 @@ fi
 #########################################
 syslog()
 {
-	if [ "$BM_LOGGER" = "yes" ]; then	
+	if [ "$BM_LOGGER" = "true" ]; then	
 		level="$1"
 		message="$2"
 		$logger -t "backup-manager[$$]" -p "${BM_LOGGER_FACILITY}.${level}" -- "$level * $message"	

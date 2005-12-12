@@ -63,6 +63,34 @@ confkey_error()
 	error "The configuration key \$key is not set but \$keymandatory is enabled."
 }
 
+# In version older than 0.6, it was possible to 
+# set booleans to "yes" or "no", that's not more
+# valid.
+# In order to keep old conffiles working, we automagically
+# override yes/no values to true/false, but we trigger 
+# a warning.
+replace_deprecated_booleans()
+{
+        for line in $(env)
+        do
+            key=$(echo "$line" | awk -F '=' '{print $1}')
+            value=$(echo "$line" | awk -F '=' '{print $2}')
+          
+            if [ $(expr match $key BM_) -gt 0 ]; then
+                if [ "$value" = "yes" ]; then
+                    warning "Deprecated boolean, \$key is set to \"yes\", setting \"true\" instead."
+	                nb_warnings=$(($nb_warnings + 1))
+                    eval "export $key=\"true\""
+                fi
+                if [ "$value" = "no" ]; then
+                    warning "Deprecated boolean, \$key is set to \"no\", setting \"false\" instead."
+	                nb_warnings=$(($nb_warnings + 1))
+                    eval "export $key=\"false\""
+                fi
+            fi
+        done    
+}
+
 ##############################################################
 # Sanitizer - check mandatory configuration keys, handle them
 # the best possible, with default values and so on...
@@ -71,8 +99,8 @@ confkey_error()
 confkey_handle_deprecated "BM_ARCHIVES_REPOSITORY" "BM_REPOSITORY_ROOT"
 confkey_require "BM_REPOSITORY_ROOT" "/var/archives" 
 
-confkey_require "BM_REPOSITORY_SECURE" "yes" 
-if [ "$BM_REPOSITORY_SECURE" = "yes" ]; then
+confkey_require "BM_REPOSITORY_SECURE" "true" 
+if [ "$BM_REPOSITORY_SECURE" = "true" ]; then
 	confkey_handle_deprecated "BM_USER" "BM_REPOSITORY_USER"
 	confkey_require "BM_REPOSITORY_USER" "root"
 	confkey_handle_deprecated "BM_GROUP" "BM_REPOSITORY_GROUP"
@@ -83,7 +111,7 @@ confkey_handle_deprecated "BM_MAX_TIME_TO_LIVE" "BM_ARCHIVE_TTL"
 confkey_require "BM_ARCHIVE_TTL" "5"
 
 confkey_handle_deprecated "BM_PURGE_DUPLICATES" "BM_ARCHIVE_PURGEDUPS"
-confkey_require "BM_ARCHIVE_PURGEDUPS" "yes"
+confkey_require "BM_ARCHIVE_PURGEDUPS" "true"
 
 confkey_handle_deprecated "BM_ARCHIVES_PREFIX" "BM_ARCHIVE_PREFIX"
 confkey_require "BM_ARCHIVE_PREFIX" "$HOSTNAME"
@@ -105,14 +133,14 @@ if [ "$BM_ARCHIVE_METHOD" = "tarball" ]; then
 	confkey_require "BM_TARBALL_NAMEFORMAT" "long"
 
 	confkey_handle_deprecated "BM_DUMP_SYMLINKS" "BM_TARBALL_DUMPSYMLINKS"
-	confkey_require "BM_TARBALL_DUMPSYMLINKS" "no"
+	confkey_require "BM_TARBALL_DUMPSYMLINKS" "false"
 
 	confkey_handle_deprecated "BM_DIRECTORIES" "BM_TARBALL_DIRECTORIES"
 	confkey_handle_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
 fi
 
 if [ "$BM_UPLOAD_METHOD" = "rsync" ]; then
-	confkey_require "BM_UPLOAD_RSYNC_DUMPSYMLINKS" "no"
+	confkey_require "BM_UPLOAD_RSYNC_DUMPSYMLINKS" "false"
 	confkey_handle_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
 	confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
 fi
@@ -130,7 +158,7 @@ if [ -n "$BM_BURNING_METHOD" ] &&
    [ "$BM_BURNING_METHOD" != "none" ] ; then
 	confkey_require "BM_BURNING_DEVICE" "/dev/cdrom"
 	confkey_require "BM_BURNING_MAXSIZE" "650"
-	confkey_require "BM_BURNING_CHKMD5" "yes"
+	confkey_require "BM_BURNING_CHKMD5" "true"
 fi
 
 # The SSH stuff
@@ -151,12 +179,14 @@ if [ -n "$BM_UPLOAD_MODE" ]; then
     confkey_handle_deprecated "BM_UPLOAD_DIR" "BM_UPLOAD_DESTINATION"
 fi        
 
+replace_deprecated_booleans
+
 if [ -z "$BM_LOGGER" ]; then
-	confkey_warning "BM_LOGGER" "yes"
-	export BM_LOGGER="yes"
+	confkey_warning "BM_LOGGER" "true"
+	export BM_LOGGER="true"
 fi
 
-if [ "$BM_LOGGER" = "yes" ] && [ -z "$BM_LOGGER_FACILITY" ]; then
+if [ "$BM_LOGGER" = "true" ] && [ -z "$BM_LOGGER_FACILITY" ]; then
 	confkey_warning "BM_LOGGER_FACILITY" "user"
 	export BM_LOGGER_FACILITY="user"
 fi

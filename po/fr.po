@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.9a\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-12 12:18+0100\n"
+"POT-Creation-Date: 2005-12-13 00:15+0100\n"
 "PO-Revision-Date: 2005-10-14 00:26+0100\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "Language-Team: Debian l10n French Team <debian-l10n-french@lists.debian."
@@ -23,7 +23,7 @@ msgstr "$file_to_create : OK (${size} Mo,"
 #: ../lib/backup-methods.sh:21
 #, sh-format
 msgid "Unable to purge duplicates of $file_to_create"
-msgstr "Impossible de trouver supprimer les doublons de $file_to_create"
+msgstr "Impossible de purger les doublons de $file_to_create"
 
 #: ../lib/backup-methods.sh:35
 #, sh-format
@@ -51,8 +51,7 @@ msgid "Error while using $gzip."
 msgstr "Erreur lors de l'utilisation de $gzip."
 
 #: ../lib/backup-methods.sh:67
-#, sh-format
-msgid "Compressor $compress require $gzip"
+msgid "Compressor $compress requires $gzip"
 msgstr "L'archiveur $compress nécessite $gzip."
 
 #: ../lib/backup-methods.sh:72
@@ -61,8 +60,7 @@ msgid "Error while using $bzip."
 msgstr "Erreur lors de l'utilisation de $bzip"
 
 #: ../lib/backup-methods.sh:75
-#, sh-format
-msgid "Compressor $compress require $bzip"
+msgid "Compressor $compress requires $bzip"
 msgstr "L'archiveur $compress nécessite $bzip."
 
 #: ../lib/backup-methods.sh:82
@@ -81,7 +79,7 @@ msgstr "Impossible de trouver $file_to_create"
 msgid "Using method \"$BM_ARCHIVE_METHOD\""
 msgstr "Utilisation de la méthode « $BM_ARCHIVE_METHOD »."
 
-#: ../lib/backup-methods.sh:148
+#: ../lib/backup-methods.sh:147
 #, sh-format
 msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr "Fréquence inconnue : $BM_TARBALLINC_MASTERDATETYPE"
@@ -134,7 +132,19 @@ msgstr ""
 "La clef de configuration « $key » n'est pas définie mais « $keymandatory » "
 "est activée."
 
-#: ../lib/sanitize.sh:165
+#: ../lib/sanitize.sh:81
+#, sh-format
+msgid "Deprecated boolean, $key is set to \"yes\", setting \"true\" instead."
+msgstr ""
+"Booléen obsolète, $key vaut « yes », utilisation de « true » à la place."
+
+#: ../lib/sanitize.sh:86
+#, sh-format
+msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
+msgstr ""
+"Booléen obsolète, $key vaut « no », utilisation de « false » à la place."
+
+#: ../lib/sanitize.sh:195
 #, sh-format
 msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
@@ -274,7 +284,7 @@ msgstr "Le point de montage $mount_point n'est pas présent."
 #: ../lib/actions.sh:95
 #, sh-format
 msgid "Mounting $BM_BURNING_DEVICE on $mount_point."
-msgstr "Montage de $BM_BURNING_DEVICE sur $mount_point."
+msgstr "Impossible de monter $BM_BURNING_DEVICE sur $mount_point."
 
 #: ../lib/actions.sh:96
 #, sh-format
@@ -377,26 +387,26 @@ msgstr ""
 "La méthode de gravure demandée n'est pas supportée, voir BM_BURNING_METHOD "
 "dans $conffile"
 
-#: ../lib/actions.sh:268
+#: ../lib/actions.sh:267
 #, sh-format
 msgid "Cleaning $BM_REPOSITORY_ROOT"
 msgstr "Nettoyage de $BM_REPOSITORY_ROOT"
 
-#: ../lib/actions.sh:279
+#: ../lib/actions.sh:278
 #, sh-format
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND."
 msgstr "Lancement de la précommande : $BM_PRE_BACKUP_COMMAND"
 
-#: ../lib/actions.sh:283
+#: ../lib/actions.sh:282
 msgid "Pre-command failed. Stopping the process."
 msgstr "La précommande a échoué. Arrêt du processus."
 
-#: ../lib/actions.sh:298
+#: ../lib/actions.sh:297
 #, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
 msgstr "Lancement de la post-commande : $BM_POST_BACKUP_COMMAND"
 
-#: ../lib/actions.sh:302
+#: ../lib/actions.sh:301
 msgid "Post-command failed."
 msgstr "La post-commande a échoué."
 
@@ -445,7 +455,7 @@ msgstr "$file n'est pas un fichier régulier."
 #: ../lib/files.sh:192
 #, sh-format
 msgid "Removing $file"
-msgstr "Suppression de $file."
+msgstr "Suppression de $file"
 
 #: ../lib/files.sh:209
 msgid "Directory given is not found"
@@ -456,26 +466,26 @@ msgstr "Le répertoire spécifié n'est pas trouvable."
 msgid "Entering directory $file."
 msgstr "Entrée dans le répertoire $file."
 
-#: ../lib/files.sh:246
+#: ../lib/files.sh:247
 msgid "No file given"
 msgstr "Aucun fichier spécifié"
 
-#: ../lib/files.sh:250
+#: ../lib/files.sh:251
 #, sh-format
 msgid "The given file does not exist: $file_to_create"
 msgstr "Le fichier donné n'existe pas : $file_to_create"
 
-#: ../lib/files.sh:254
+#: ../lib/files.sh:255
 msgid "unable to get date from file"
 msgstr "Impossible de récupérer la date du fichier"
 
-#: ../lib/files.sh:255
+#: ../lib/files.sh:256
 msgid "unable to find the pattern of the file"
 msgstr "Impossible de trouver le motif du fichier"
 
 #: ../lib/upload-methods.sh:38
 msgid "Using the upload method \"ssh\"."
-msgstr "Utilisation de la méthode de téléchargement « ssh »"
+msgstr "Utilisation de la méthode de téléchargement « ssh »."
 
 #: ../lib/upload-methods.sh:47
 msgid "No valid destination found, SSH upload not possible."
@@ -487,41 +497,41 @@ msgstr "Impossible d'utiliser backup-manager-upload."
 
 #: ../lib/upload-methods.sh:71
 msgid "Using the upload method \"ftp\"."
-msgstr "Utilisation de la méthode de téléchargement « ftp »"
+msgstr "Utilisation de la méthode de téléchargement « ftp »."
 
 #: ../lib/upload-methods.sh:81
 msgid "No valid destination found, FTP upload not possible."
 msgstr "Aucune destination valide, téléchargement FTP impossible."
 
-#: ../lib/upload-methods.sh:98
+#: ../lib/upload-methods.sh:97
 msgid "unable to call backup-manager-upload"
 msgstr "Impossible d'utiliser backup-manager-upload"
 
-#: ../lib/upload-methods.sh:114 ../lib/upload-methods.sh:123
+#: ../lib/upload-methods.sh:113 ../lib/upload-methods.sh:122
 #, sh-format
 msgid "Upload of $directory with rsync failed; check $logfile."
 msgstr "Échec du téléchargement de $directory avec rsync ; voir $logfile"
 
-#: ../lib/upload-methods.sh:140
+#: ../lib/upload-methods.sh:139
 msgid "No valid destination found, RSYNC upload not possible."
 msgstr "Aucune destination valide, téléchargement RSYNC impossible."
 
-#: ../lib/upload-methods.sh:163
+#: ../lib/upload-methods.sh:161
 msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)"
 msgstr ""
 "Besoin d'une clef pour utiliser rsync (définir BM_UPLOAD_SSH_USER, "
 "BM_UPLOAD_SSH_KEY)."
 
-#: ../lib/upload-methods.sh:166
+#: ../lib/upload-methods.sh:164
 msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
 msgstr ""
 "Aucun hôte fourni à la méthode rsync, veuillez définir BM_UPLOAD_RSYNC_HOSTS."
 
-#: ../lib/upload-methods.sh:173
+#: ../lib/upload-methods.sh:171
 msgid "Using the upload method \"rsync\"."
 msgstr "Utilisation de la méthode de téléchargement « rsync »."
 
-#: ../lib/upload-methods.sh:180
+#: ../lib/upload-methods.sh:178
 msgid "Using the upload method \"rsync-snapshots\"."
 msgstr "Utilisation de la méthode de téléchargement « rsync-snapshots »."
 

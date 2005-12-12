@@ -107,7 +107,7 @@ check_cdrom_md5_sums()
 		# Which file should contain the MD5 hashes for that file ?
 		md5_file="$BM_REPOSITORY_ROOT/${prefix_of_file}-${date_of_file}.md5"
 
-		# if it does not exists, we create it (yes that will take much time).
+		# if it does not exists, we create it (that will take much time).
 		if [ ! -f $md5_file ]; then
 			save_md5_sum $file $md5_file || continue
 		fi
@@ -255,8 +255,7 @@ burn_files()
 	rm -f $logfile
 
 	# checking the files in the CDR if wanted
-	if [ $BM_BURNING_CHKMD5 = yes ] 
-	then
+	if [ $BM_BURNING_CHKMD5 = true ]; then
 		check_cdrom_md5_sums
 	fi
 }

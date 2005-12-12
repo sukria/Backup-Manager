@@ -227,7 +227,7 @@ clean_directory()
 # This takes a file and the md5sum of that file.
 # It will look at every archives of the same source
 # and will replace duplicates (same size) by symlinks.
-# CONDITION: BM_ARCHIVE_PURGEDUPS = yes
+# CONDITION: BM_ARCHIVE_PURGEDUPS = true
 purge_duplicate_archives()
 {
 	file_to_create="$1"
@@ -237,8 +237,9 @@ purge_duplicate_archives()
     fi    
 	size_file=$(ls -l $file_to_create | awk '{print $5}')
 
-	# Only purge if BM_ARCHIVE_PURGEDUPS = yes
-	if [ -z $BM_ARCHIVE_PURGEDUPS ] || [ $BM_ARCHIVE_PURGEDUPS != yes ]; then
+	# Only purge if BM_ARCHIVE_PURGEDUPS = true
+	if [ -z "$BM_ARCHIVE_PURGEDUPS" ] ||
+       [ "$BM_ARCHIVE_PURGEDUPS" != "true" ]; then
 		return 0
 	fi
 

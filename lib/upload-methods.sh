@@ -83,8 +83,7 @@ bm_upload_ftp()
 
     # flags for the FTP method
     ftp_purge_switch=""
-    if [ "$BM_UPLOAD_FTP_PURGE" = "yes" ] || 
-       [ "$BM_UPLOAD_FTP_PURGE" = "true" ]; then
+    if [ "$BM_UPLOAD_FTP_PURGE" = "true" ]; then
             ftp_purge_switch="--ftp-purge"
     fi
  
@@ -142,8 +141,7 @@ bm_upload_rsync_common()
 
     rsync_options="-va"
     if [ ! -z $BM_UPLOAD_RSYNC_DUMPSYMLINKS ]; then
-        if [ "$BM_UPLOAD_RSYNC_DUMPSYMLINKS" = "yes" ] ||
-           [ "$BM_UPLOAD_RSYNC_DUMPSYMLINKS" = "true" ]; then
+        if [ "$BM_UPLOAD_RSYNC_DUMPSYMLINKS" = "true" ]; then
             rsync_options="-vaL"
         fi
     fi

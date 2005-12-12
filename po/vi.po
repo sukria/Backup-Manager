@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.8b\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-12 12:03+0100\n"
+"POT-Creation-Date: 2005-12-13 00:15+0100\n"
 "PO-Revision-Date: 2005-07-13 16:50+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -53,7 +53,7 @@ msgstr ""
 
 #: ../lib/backup-methods.sh:67
 #, sh-format
-msgid "Compressor $compress require $gzip"
+msgid "Compressor $compress requires $gzip"
 msgstr ""
 
 #: ../lib/backup-methods.sh:72
@@ -63,7 +63,7 @@ msgstr ""
 
 #: ../lib/backup-methods.sh:75
 #, sh-format
-msgid "Compressor $compress require $bzip"
+msgid "Compressor $compress requires $bzip"
 msgstr ""
 
 #: ../lib/backup-methods.sh:82
@@ -82,7 +82,7 @@ msgstr "Đang tạo tập tin «$file_to_create»:"
 msgid "Using method \"$BM_ARCHIVE_METHOD\""
 msgstr ""
 
-#: ../lib/backup-methods.sh:148
+#: ../lib/backup-methods.sh:147
 #, sh-format
 msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr ""
@@ -129,7 +129,17 @@ msgstr ""
 msgid "The configuration key $key is not set but $keymandatory is enabled."
 msgstr "Chưa lập khóa cấu hình «$key» nhưng «$keymandatory» bật."
 
-#: ../lib/sanitize.sh:165
+#: ../lib/sanitize.sh:81
+#, sh-format
+msgid "Deprecated boolean, $key is set to \"yes\", setting \"true\" instead."
+msgstr ""
+
+#: ../lib/sanitize.sh:86
+#, sh-format
+msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
+msgstr ""
+
+#: ../lib/sanitize.sh:195
 #, sh-format
 msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
@@ -255,8 +265,9 @@ msgid "No such backup method: $BM_ARCHIVE_METHOD"
 msgstr ""
 
 #: ../lib/actions.sh:68
+#, fuzzy
 msgid "No upload method used."
-msgstr ""
+msgstr "Đang dùng phương pháp lưu trữ «rsync» (chương trình đồng bộ)"
 
 #: ../lib/actions.sh:71
 #, fuzzy, sh-format
@@ -376,27 +387,27 @@ msgid ""
 "$conffile"
 msgstr ""
 
-#: ../lib/actions.sh:268
+#: ../lib/actions.sh:267
 #, fuzzy, sh-format
 msgid "Cleaning $BM_REPOSITORY_ROOT"
 msgstr "Đang xóa sạch nơi kho «$BM_ARCHIVES_REPOSITORY»:"
 
-#: ../lib/actions.sh:279
+#: ../lib/actions.sh:278
 #, fuzzy, sh-format
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND."
 msgstr "Đang chạy «pre-command» lệnh trước: $BM_PRE_BACKUP_COMMAND: "
 
-#: ../lib/actions.sh:283
+#: ../lib/actions.sh:282
 #, fuzzy
 msgid "Pre-command failed. Stopping the process."
 msgstr "«pre-command» đã trả gởi Không đúng nên ngừng tiến trình."
 
-#: ../lib/actions.sh:298
+#: ../lib/actions.sh:297
 #, fuzzy, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
 msgstr "Đang chạy «post-command» (lệnh sau): $BM_POST_BACKUP_COMMAND:"
 
-#: ../lib/actions.sh:302
+#: ../lib/actions.sh:301
 #, fuzzy
 msgid "Post-command failed."
 msgstr "«post-command» đã trả gởi Không đúng"
@@ -458,20 +469,20 @@ msgstr "Không tìm thấy thư mục đã cho"
 msgid "Entering directory $file."
 msgstr "Đang vào thư mục «$file»."
 
-#: ../lib/files.sh:246
+#: ../lib/files.sh:247
 msgid "No file given"
 msgstr "Chưa cho tập tin"
 
-#: ../lib/files.sh:250
+#: ../lib/files.sh:251
 #, sh-format
 msgid "The given file does not exist: $file_to_create"
 msgstr "Không có tập tin đã cho: $file_to_create"
 
-#: ../lib/files.sh:254
+#: ../lib/files.sh:255
 msgid "unable to get date from file"
 msgstr "không gọi được ngày từ tập tin"
 
-#: ../lib/files.sh:255
+#: ../lib/files.sh:256
 msgid "unable to find the pattern of the file"
 msgstr "không tìm thấy mẫu của tập tin ấy"
 
@@ -498,35 +509,36 @@ msgstr "Đang dùng phương pháp lưu trữ «rsync» (chương trình đồng
 msgid "No valid destination found, FTP upload not possible."
 msgstr ""
 
-#: ../lib/upload-methods.sh:98
+#: ../lib/upload-methods.sh:97
 msgid "unable to call backup-manager-upload"
 msgstr "không gọi được tiến trình tải lên «backup-manager-upload»"
 
-#: ../lib/upload-methods.sh:114 ../lib/upload-methods.sh:123
+#: ../lib/upload-methods.sh:113 ../lib/upload-methods.sh:122
 #, sh-format
 msgid "Upload of $directory with rsync failed; check $logfile."
 msgstr ""
 
-#: ../lib/upload-methods.sh:140
+#: ../lib/upload-methods.sh:139
 msgid "No valid destination found, RSYNC upload not possible."
 msgstr ""
 
-#: ../lib/upload-methods.sh:163
+#: ../lib/upload-methods.sh:161
 msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)"
 msgstr ""
 
-#: ../lib/upload-methods.sh:166
+#: ../lib/upload-methods.sh:164
 msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
 msgstr ""
 
-#: ../lib/upload-methods.sh:173
+#: ../lib/upload-methods.sh:171
 #, fuzzy
 msgid "Using the upload method \"rsync\"."
 msgstr "Đang dùng phương pháp lưu trữ «rsync» (chương trình đồng bộ)"
 
-#: ../lib/upload-methods.sh:180
+#: ../lib/upload-methods.sh:178
+#, fuzzy
 msgid "Using the upload method \"rsync-snapshots\"."
-msgstr ""
+msgstr "Đang dùng phương pháp lưu trữ «rsync» (chương trình đồng bộ)"
 
 #: ../backup-manager:66
 msgid "backup-manager must be run as root."
@@ -544,17 +556,11 @@ msgstr "Không thực hiện được «pre-command» (lệnh trước)"
 msgid "Unable to exec post-command"
 msgstr "Không thực hiện được «post-command» (lệnh sau)"
 
-#~ msgid "unable to purge duplicates"
-#~ msgstr "không tẩy được nhân sao"
+#~ msgid "Mounting $BM_BURNING_DEVICE: "
+#~ msgstr "Đang gắn kết thiết bị ghi «$BM_BURNING_DEVICE»:"
 
 #~ msgid "ok"
 #~ msgstr "được"
-
-#~ msgid "failed"
-#~ msgstr "thất bại"
-
-#~ msgid "Mounting $BM_BURNING_DEVICE: "
-#~ msgstr "Đang gắn kết thiết bị ghi «$BM_BURNING_DEVICE»:"
 
 #~ msgid "The burning system is disabled in the conf file."
 #~ msgstr "Hệ thống ghi bị vô hiệu hóa trong tập tin cấu hình."
@@ -575,8 +581,18 @@ msgstr "Không thực hiện được «post-command» (lệnh sau)"
 #~ msgid "Using the \"pipe\" backup method."
 #~ msgstr "Đang dùng phương pháp lưu trữ «pipe» (ống dẫn)"
 
+#, fuzzy
+#~ msgid "Using the \"svn\" backup method."
+#~ msgstr "Đang dùng phương pháp lưu trữ «rsync» (chương trình đồng bộ)"
+
 #~ msgid "The upload system is disabled in the conf file."
 #~ msgstr "Hệ thống tải lên bị vô hiệu hóa trong tập tin cấu hình."
+
+#~ msgid "failed"
+#~ msgstr "thất bại"
+
+#~ msgid "unable to purge duplicates"
+#~ msgstr "không tẩy được nhân sao"
 
 #~ msgid "Need a key to use rsync"
 #~ msgstr "Cần một khóa để dùng trình rsync"

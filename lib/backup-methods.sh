@@ -20,8 +20,8 @@ commit_archive()
 	# Now that the file is created, remove previous duplicates if exists...
 	purge_duplicate_archives $file_to_create || error "Unable to purge duplicates of \$file_to_create"
 
-	# security fixes if BM_REPOSITORY_SECURE is set to yes.
-	if [ $BM_REPOSITORY_SECURE = yes ]; then
+	# security fixes if BM_REPOSITORY_SECURE is set to true
+	if [ $BM_REPOSITORY_SECURE = true ]; then
 		chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $file_to_create
 		chmod 660 $file_to_create
 	fi
@@ -43,7 +43,7 @@ __exec_meta_command()
         compress="$3"
         logfile=$(mktemp /tmp/bm-command.stderr.XXXXXX)
         
-	if [ -f $file_to_create ] && [ $force != true ]; then
+        if [ -f $file_to_create ] && [ $force != true ]; then
                 warning "File \$file_to_create already exists, skipping."
         fi
         
@@ -64,7 +64,7 @@ __exec_meta_command()
                                 $gzip -f -q -9 $file_to_create || error "Error while using \$gzip."
                                 file_to_create="$file_to_create.gz"
                         else
-                                error "Compressor \$compress require \$gzip"
+                                error "Compressor \$compress requires \$gzip"
                         fi
                 ;;
                 "bzip"|"bzip2")
@@ -72,7 +72,7 @@ __exec_meta_command()
                                 $bzip -f -q -9 $file_to_create || error "Error while using \$bzip."
                                 file_to_create="$file_to_create.bz2"
                         else
-                                error "Compressor \$compress require \$bzip"
+                                error "Compressor \$compress requires \$bzip"
                         fi
 
                 ;;
@@ -109,8 +109,7 @@ backup_method_tarball()
 	# or the -y flag for zip. 
 	h=""
 	y="-y"
-	if [ "$BM_TARBALL_DUMPSYMLINKS" = "yes" ] ||
-	   [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
+	if [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
 		h="-h "
 		y=""
 	fi
@@ -165,7 +164,8 @@ backup_method_tarball()
                         incremental="--listed-incremental $incremental_list"
                 fi
 
-		if [ ! -f $file_to_create ] || [ $force = true ]; then
+		if [ ! -f $file_to_create ] ||
+           [ $force = true ]; then
 		   	
 			case $BM_TARBALL_FILETYPE in
 				tar.gz) # generate a tar.gz file if needed 

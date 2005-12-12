@@ -1,4 +1,9 @@
-2005-12-12  Alexis Sukrieh,,,  <set EMAIL_ADDRESS environment variable>
+2005-12-13  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* No more yes/no -> true/false
+	* French translatio ok.
+
+2005-12-12  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* Makefile:
 	  + install po files
@@ -14,7 +19,7 @@
 	* po/fr.po
 	  + New french version, complete.
 
-2005-12-09  Alexis Sukrieh,,,  <set EMAIL_ADDRESS environment variable>
+2005-12-09  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* backup-manager:
 	  + cleaned a bit the code.

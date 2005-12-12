@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-12 12:03+0100\n"
+"POT-Creation-Date: 2005-12-13 00:15+0100\n"
 "PO-Revision-Date: 2005-07-12 23:09+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debiann.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -52,7 +52,7 @@ msgstr ""
 
 #: ../lib/backup-methods.sh:67
 #, sh-format
-msgid "Compressor $compress require $gzip"
+msgid "Compressor $compress requires $gzip"
 msgstr ""
 
 #: ../lib/backup-methods.sh:72
@@ -62,7 +62,7 @@ msgstr ""
 
 #: ../lib/backup-methods.sh:75
 #, sh-format
-msgid "Compressor $compress require $bzip"
+msgid "Compressor $compress requires $bzip"
 msgstr ""
 
 #: ../lib/backup-methods.sh:82
@@ -81,7 +81,7 @@ msgstr "Vytváøím $file_to_create: "
 msgid "Using method \"$BM_ARCHIVE_METHOD\""
 msgstr ""
 
-#: ../lib/backup-methods.sh:148
+#: ../lib/backup-methods.sh:147
 #, sh-format
 msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr ""
@@ -128,7 +128,17 @@ msgstr ""
 msgid "The configuration key $key is not set but $keymandatory is enabled."
 msgstr "Konfiguraèní klíè $key není nastaven, ale $keymandatory je povolen."
 
-#: ../lib/sanitize.sh:165
+#: ../lib/sanitize.sh:81
+#, sh-format
+msgid "Deprecated boolean, $key is set to \"yes\", setting \"true\" instead."
+msgstr ""
+
+#: ../lib/sanitize.sh:86
+#, sh-format
+msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
+msgstr ""
+
+#: ../lib/sanitize.sh:195
 #, sh-format
 msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
@@ -259,8 +269,9 @@ msgid "No such backup method: $BM_ARCHIVE_METHOD"
 msgstr ""
 
 #: ../lib/actions.sh:68
+#, fuzzy
 msgid "No upload method used."
-msgstr ""
+msgstr "Pou¾ívám zálohovací metodu \"rsync\""
 
 #: ../lib/actions.sh:71
 #, fuzzy, sh-format
@@ -376,27 +387,27 @@ msgid ""
 "$conffile"
 msgstr ""
 
-#: ../lib/actions.sh:268
+#: ../lib/actions.sh:267
 #, fuzzy, sh-format
 msgid "Cleaning $BM_REPOSITORY_ROOT"
 msgstr "Èistím $BM_ARCHIVES_REPOSITORY: "
 
-#: ../lib/actions.sh:279
+#: ../lib/actions.sh:278
 #, fuzzy, sh-format
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND."
 msgstr "Spou¹tím úvodní pøíkaz: $BM_PRE_BACKUP_COMMAND: "
 
-#: ../lib/actions.sh:283
+#: ../lib/actions.sh:282
 #, fuzzy
 msgid "Pre-command failed. Stopping the process."
 msgstr "Úvodní pøíkaz vrátil chybu. Zastavuji proces."
 
-#: ../lib/actions.sh:298
+#: ../lib/actions.sh:297
 #, fuzzy, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
 msgstr "Spou¹tím závìreèný pøíkaz: $BM_POST_BACKUP_COMMAND: "
 
-#: ../lib/actions.sh:302
+#: ../lib/actions.sh:301
 #, fuzzy
 msgid "Post-command failed."
 msgstr "Závìreèný pøíkaz vrátil chybu."
@@ -457,20 +468,20 @@ msgstr "Zadaný adresáø nebyl nalezen"
 msgid "Entering directory $file."
 msgstr "Vstupuji do adresáøe $file."
 
-#: ../lib/files.sh:246
+#: ../lib/files.sh:247
 msgid "No file given"
 msgstr "Nebyl zadán ¾ádný soubor"
 
-#: ../lib/files.sh:250
+#: ../lib/files.sh:251
 #, sh-format
 msgid "The given file does not exist: $file_to_create"
 msgstr "Zadaný soubor neexistuje: $file_to_create"
 
-#: ../lib/files.sh:254
+#: ../lib/files.sh:255
 msgid "unable to get date from file"
 msgstr "nemohu ze souboru získat datum"
 
-#: ../lib/files.sh:255
+#: ../lib/files.sh:256
 msgid "unable to find the pattern of the file"
 msgstr "nemohu najít vzor souboru"
 
@@ -497,35 +508,36 @@ msgstr "Pou¾ívám zálohovací metodu \"rsync\""
 msgid "No valid destination found, FTP upload not possible."
 msgstr ""
 
-#: ../lib/upload-methods.sh:98
+#: ../lib/upload-methods.sh:97
 msgid "unable to call backup-manager-upload"
 msgstr "nemohu zavolat backup-manager-upload"
 
-#: ../lib/upload-methods.sh:114 ../lib/upload-methods.sh:123
+#: ../lib/upload-methods.sh:113 ../lib/upload-methods.sh:122
 #, sh-format
 msgid "Upload of $directory with rsync failed; check $logfile."
 msgstr ""
 
-#: ../lib/upload-methods.sh:140
+#: ../lib/upload-methods.sh:139
 msgid "No valid destination found, RSYNC upload not possible."
 msgstr ""
 
-#: ../lib/upload-methods.sh:163
+#: ../lib/upload-methods.sh:161
 msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)"
 msgstr ""
 
-#: ../lib/upload-methods.sh:166
+#: ../lib/upload-methods.sh:164
 msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
 msgstr ""
 
-#: ../lib/upload-methods.sh:173
+#: ../lib/upload-methods.sh:171
 #, fuzzy
 msgid "Using the upload method \"rsync\"."
 msgstr "Pou¾ívám zálohovací metodu \"rsync\""
 
-#: ../lib/upload-methods.sh:180
+#: ../lib/upload-methods.sh:178
+#, fuzzy
 msgid "Using the upload method \"rsync-snapshots\"."
-msgstr ""
+msgstr "Pou¾ívám zálohovací metodu \"rsync\""
 
 #: ../backup-manager:66
 msgid "backup-manager must be run as root."
@@ -543,17 +555,11 @@ msgstr "Nemohu spustit úvodní pøíkaz"
 msgid "Unable to exec post-command"
 msgstr "Nemohu spustit závìreèný pøíkaz"
 
-#~ msgid "unable to purge duplicates"
-#~ msgstr "nemohu smazat duplikáty"
+#~ msgid "Mounting $BM_BURNING_DEVICE: "
+#~ msgstr "Pøipojuji $BM_BURNING_DEVICE: "
 
 #~ msgid "ok"
 #~ msgstr "ok"
-
-#~ msgid "failed"
-#~ msgstr "selhalo"
-
-#~ msgid "Mounting $BM_BURNING_DEVICE: "
-#~ msgstr "Pøipojuji $BM_BURNING_DEVICE: "
 
 #~ msgid "The burning system is disabled in the conf file."
 #~ msgstr "Vypalovací systém je v konfiguraèním souboru zakázán."
@@ -574,8 +580,18 @@ msgstr "Nemohu spustit závìreèný pøíkaz"
 #~ msgid "Using the \"pipe\" backup method."
 #~ msgstr "Pou¾ívám zálohovací metodu \"pipe\""
 
+#, fuzzy
+#~ msgid "Using the \"svn\" backup method."
+#~ msgstr "Pou¾ívám zálohovací metodu \"rsync\""
+
 #~ msgid "The upload system is disabled in the conf file."
 #~ msgstr "Nahrávání na vzdálený poèítaè je v konfiguraèním souboru zakázáno."
+
+#~ msgid "failed"
+#~ msgstr "selhalo"
+
+#~ msgid "unable to purge duplicates"
+#~ msgstr "nemohu smazat duplikáty"
 
 #~ msgid "Need a key to use rsync"
 #~ msgstr "Pro pou¾ití programu rsync potøebuji klíè"

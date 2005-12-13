@@ -1,20 +1,35 @@
-
-Backup Manager is a free software, people making it possible are
-the following persons, thanks to all of them!
+Big thanx to the following crew ;)
 
 *********************************************************************
 
-* Backup Manager 
+* Backup Manager main code and design
 
-  Alexis Sukrieh <sukria@sukria.net>
+    - Alexis Sukrieh <sukria@backup-manager.org>
 
 * Contributions
   
-  Adreas "Jimmy" Gredler: Implementation of the rsync 
-  method (experimental).
+    Implementation of the rsync upload method.
+        - Andreas "Jimmy" Gredler <jimmy@backup-manager.org>
 
 * Patches:
   
-  Sven Joachim: symlink dumping support for zip archives.
-  Michael Prokop: multiple configuration files.
+    Symbolic links dumping support for zip archives.
+        - Sven Joachim <sven_joachim@web.de>
+        
+    multiple configuration files.
+        - Michael Prokop <mikap@grml.org> 
+
+* Translations:
+
+    German
+        - Sven Joachim <sven_joachim@web.de>
+    Spanish
+        - Niv Sardi-Altivanik <xaiki@cxhome.ath.cx>
+        - César Gómez Martín <cesar.gomez@gmail.com>
+    Italian: 
+        - Matteo Frare Barutti <xenon@ngi.it>
+    French
+        - Alexis Sukrieh <sukria@backup-manager.org>
+
+*********************************************************************
 

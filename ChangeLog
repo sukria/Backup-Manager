@@ -1,4 +1,16 @@
-2005-12-13  Alexis Sukrieh
+2005-12-13  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* AUTHORS:
+	  + Cleaner
+	  + Added translators
+	* THANKS:
+	  + Some typos, changes.
+	* VERSION:
+	  + 0.6 !!! Yeah :)
+	* backup-manager:
+	  + version= 0.6 (yeah)
+
+2005-12-13  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* Makefile:
 	  + add a target `docs' for building the userguide.

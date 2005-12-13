@@ -26,7 +26,7 @@ $(POFILES_SRC):
 
 backup-manager.pot: $(POFILES_SRC)
 	xgettext --keyword=info \
-	         --keyword=warning \
+			 --keyword=warning \
 			 --keyword=error \
 			 --keyword=echo_translated \
 			 --language=Shell \

@@ -1,5 +1,12 @@
 2005-12-13  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* po/es.po:
+	  + New translation from Niv Altivanik (not finished).
+	* t/t05-hooks.sh:
+	  + clean a bit the test script, remove the verbose stuff.
+
+2005-12-13  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* No more yes/no -> true/false
 	* French translatio ok.
 

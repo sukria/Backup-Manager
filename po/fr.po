@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.9a\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-13 00:15+0100\n"
+"POT-Creation-Date: 2005-12-13 09:41+0100\n"
 "PO-Revision-Date: 2005-10-14 00:26+0100\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "Language-Team: Debian l10n French Team <debian-l10n-french@lists.debian."
@@ -51,6 +51,7 @@ msgid "Error while using $gzip."
 msgstr "Erreur lors de l'utilisation de $gzip."
 
 #: ../lib/backup-methods.sh:67
+#, sh-format
 msgid "Compressor $compress requires $gzip"
 msgstr "L'archiveur $compress nécessite $gzip."
 
@@ -60,6 +61,7 @@ msgid "Error while using $bzip."
 msgstr "Erreur lors de l'utilisation de $bzip"
 
 #: ../lib/backup-methods.sh:75
+#, sh-format
 msgid "Compressor $compress requires $bzip"
 msgstr "L'archiveur $compress nécessite $bzip."
 

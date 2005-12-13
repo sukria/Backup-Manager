@@ -4,10 +4,12 @@ prefix=$(DESTDIR)
 POTFILES= \
 	$(shell find ../lib -type f -name \*.sh) \
 	../backup-manager
-POFILES_SRC=backup-manager.files
 
+POFILES_SRC=backup-manager.files
 POFILES=$(wildcard *.po)
 MOFILES=$(POFILES:.po=.mo)
+PACKAGE=backup-manager
+.SUFFIXES: .po .mo
 
 all: backup-manager.pot $(POFILES) $(MOFILES)
 
@@ -19,12 +21,11 @@ install: $(MOFILES)
 		install -m 0644 $$file $(prefix)/usr/share/locale/$$lang/LC_MESSAGES/backup-manager.mo; \
 	done
 
-
 $(POFILES_SRC):
 	find ../lib -type f -name \*.sh > $(POFILES_SRC)
 	echo ../backup-manager >> $(POFILES_SRC)
 
-backup-manager.pot: $(POFILES_SRC)
+$(PACKAGE).pot: $(POFILES_SRC)
 	xgettext --keyword=info \
 			 --keyword=warning \
 			 --keyword=error \
@@ -38,18 +39,16 @@ clean:
 		  messages messages.mo \
 		  messages.po 
 		  
-%.mo: %.po
-	msgfmt -o $@ $<
-
-%.po: backup-manager.pot
-	@echo -n "Merging backup-manager.pot and $@"
-	@msgmerge $@ backup-manager.pot -o $@.new
-	@if [ "`diff $@ $@.new | grep '[<>]' | wc -l`" -ne 2 ]; then \
-		mv -f $@.new $@; \
-	else \
-		rm -f $@.new; \
-	fi
-	@msgfmt --statistics $@
+.po.mo: $(PACKAGE).pot
+	@echo "Merging $(PACKAGE).pot and $*.po"
+	@msgmerge $*.po $(PACKAGE).pot -o $*.po.new
+	@if [ "`diff $*.po $*.po.new | grep '[<>]' | wc -l`" -ne 2 ]; then \
+        mv -f $*.po.new $*.po; \
+    else \
+        rm -f $*.po.new; \
+    fi
+	@msgfmt --statistics $*.po
+	msgfmt --no-hash -o $*.mo $*.po
 
 check:
 	@for file in $(POFILES); do \

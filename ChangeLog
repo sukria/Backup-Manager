@@ -1,5 +1,14 @@
 2005-12-13  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* po/Makefile:
+	  + use the .SUFFIXES method, better for handling correctly .mo files. 
+	* po/backup-manager.pot:
+	  + deleted, this file is generated on the fly.
+	* po/es.po:
+	  + Minor correction, waiting for the reviewed version.
+
+2005-12-13  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* AUTHORS:
 	  + Cleaner
 	  + Added translators

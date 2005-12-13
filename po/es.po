@@ -90,7 +90,7 @@ msgstr "Frequencia desconocida: $BM_TARBALLINC_MASTERDATETYPE"
 #: ../lib/backup-methods.sh:204
 #, sh-format
 msgid "The filetype $BM_TARBALL_FILETYPE is not spported."
-msgstr "El tipo de fichero $BM_FILETYPE no está soportado."
+msgstr "El tipo de fichero $BM_TARBALL_FILETYPE no está soportado."
 
 #: ../lib/backup-methods.sh:217
 #, sh-format

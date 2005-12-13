@@ -77,6 +77,9 @@ install_man:
 	install -d /usr/share/man/man8/
 	install --owner=root --group=root --mode=0644 man/*.8 /usr/share/man/man8/
 
+docs:
+	make -C doc all
+
 # Quick :)
 deb:
 	dpkg-buildpackage -us -uc -rfakeroot

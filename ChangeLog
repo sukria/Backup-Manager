@@ -1,3 +1,13 @@
+2005-12-13  Alexis Sukrieh
+
+	* Makefile:
+	  + add a target `docs' for building the userguide.
+	* doc/Makefile:
+	  + install the user guide in /usr/share/backup-manager/doc
+	* po/it.po:
+	  + First full version of the translated messages in Italian (Matteo Frare
+	  Barutti <xenon@ngi.it>).
+
 2005-12-13  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* po/es.po:

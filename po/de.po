@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.5.9b\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-13 00:15+0100\n"
+"POT-Creation-Date: 2005-12-13 22:10+0100\n"
 "PO-Revision-Date: 2005-12-04 09:02+0100\n"
 "Last-Translator: Sven Joachim <sven_joachim@web.de>\n"
 "Language-Team: \n"
@@ -20,96 +20,101 @@ msgstr ""
 msgid "$file_to_create: ok (${size}M,"
 msgstr "$file_to_create: ok (${size}M, "
 
-#: ../lib/backup-methods.sh:21
+#: ../lib/backup-methods.sh:23
 #, fuzzy, sh-format
 msgid "Unable to purge duplicates of $file_to_create"
 msgstr "Kann $file_to_create nicht finden"
 
-#: ../lib/backup-methods.sh:35
+#: ../lib/backup-methods.sh:37
 #, sh-format
 msgid "Unable to create $target, check $logfile"
 msgstr "Kann $target nicht erzeugen, überprüfen Sie $logfile"
 
-#: ../lib/backup-methods.sh:47 ../lib/backup-methods.sh:209
+#: ../lib/backup-methods.sh:49 ../lib/backup-methods.sh:211
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Datei $file_to_create existiert bereits, wird übergangen."
 
-#: ../lib/backup-methods.sh:52
+#: ../lib/backup-methods.sh:54
 #, fuzzy, sh-format
 msgid "Unable to exec $command; check $logfile"
 msgstr "Kann $command nicht ausführen; überprüfen Sie $logfile."
 
-#: ../lib/backup-methods.sh:56
+#: ../lib/backup-methods.sh:58
 #, sh-format
 msgid "$command ended, but $file_to_create not found; check $logfile"
 msgstr ""
 "$command wurde beendet, aber $file_to_create nicht gefunden; überprüfen Sie "
 "$logfile"
 
-#: ../lib/backup-methods.sh:64
+#: ../lib/backup-methods.sh:66
 #, sh-format
 msgid "Error while using $gzip."
 msgstr "Fehler beim Ausführen von $gzip."
 
-#: ../lib/backup-methods.sh:67
+#: ../lib/backup-methods.sh:69
 #, fuzzy, sh-format
 msgid "Compressor $compress requires $gzip"
 msgstr "Komprimierer $compress erfordert $gzip"
 
-#: ../lib/backup-methods.sh:72
+#: ../lib/backup-methods.sh:74
 #, sh-format
 msgid "Error while using $bzip."
 msgstr "Fehler beim Ausführen von $bzip."
 
-#: ../lib/backup-methods.sh:75
+#: ../lib/backup-methods.sh:77
 #, fuzzy, sh-format
 msgid "Compressor $compress requires $bzip"
 msgstr "Komprimierer $compress erfordert $bzip"
 
-#: ../lib/backup-methods.sh:82
+#: ../lib/backup-methods.sh:84
 #, sh-format
 msgid "No such compressor supported: $compress"
 msgstr "Dieser Komprimierer wird nicht unterstützt: $compress"
 
-#: ../lib/backup-methods.sh:89
+#: ../lib/backup-methods.sh:91
 #, sh-format
 msgid "Unable to find $file_to_create"
 msgstr "Kann $file_to_create nicht finden"
 
-#: ../lib/backup-methods.sh:99 ../lib/backup-methods.sh:225
-#: ../lib/backup-methods.sh:245 ../lib/backup-methods.sh:266
+#: ../lib/backup-methods.sh:101 ../lib/backup-methods.sh:227
+#: ../lib/backup-methods.sh:247 ../lib/backup-methods.sh:268
 #, fuzzy, sh-format
 msgid "Using method \"$BM_ARCHIVE_METHOD\""
 msgstr "Backup Methode existiert nicht: $BM_ARCHIVE_METHOD"
 
-#: ../lib/backup-methods.sh:147
+#: ../lib/backup-methods.sh:124
+#, sh-format
+msgid "Target $DIR does not exist, skipping."
+msgstr ""
+
+#: ../lib/backup-methods.sh:149
 #, sh-format
 msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr ""
 
-#: ../lib/backup-methods.sh:204
+#: ../lib/backup-methods.sh:206
 #, sh-format
 msgid "The filetype $BM_TARBALL_FILETYPE is not spported."
 msgstr "Der Dateityp $BM_TARBALL_FILETYPE wird nicht unterstützt."
 
-#: ../lib/backup-methods.sh:217
+#: ../lib/backup-methods.sh:219
 #, sh-format
 msgid "During the tarballs generation, $nb_err error(s) occured."
 msgstr "Beim Erzeugen der Tarbälle sind $nb_err Fehler aufgetreten."
 
-#: ../lib/backup-methods.sh:227
+#: ../lib/backup-methods.sh:229
 #, sh-format
 msgid "The \"mysql\" method is choosen, but $mysqldump is not found."
 msgstr ""
 "Die \"mysql\" Methode ist gewählt, aber $mysqldump wurde nicht gefunden."
 
-#: ../lib/backup-methods.sh:247
+#: ../lib/backup-methods.sh:249
 #, sh-format
 msgid "The \"svn\" method is choosen, but $svnadmin is not found."
 msgstr "Die \"svn\" Methode ist gewählt, aber $svnadmin wurde nicht gefunden."
 
-#: ../lib/backup-methods.sh:275
+#: ../lib/backup-methods.sh:277
 #, sh-format
 msgid "Not enough args for this archive ($archive), skipping."
 msgstr "Zu wenige Argumente für dieses Archiv ($archive), es wird übergangen."
@@ -284,6 +289,13 @@ msgstr "Benutze die \"svn\" Backup Methode."
 msgid "The upload method \"$method\" is not supported; skipping."
 msgstr ""
 
+#: ../lib/actions.sh:85
+#, sh-format
+msgid ""
+"MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE "
+"in $conffile."
+msgstr ""
+
 #: ../lib/actions.sh:91
 #, sh-format
 msgid "The mount point $mount_point is not there"
@@ -361,6 +373,16 @@ msgstr "Kann das Gerät $BM_BURNING_DEVICE nicht aushängen"
 msgid "Redirecting burning logs into $logfile"
 msgstr "Umleiten der Logs des Brennprogramms nach $logfile"
 
+#: ../lib/actions.sh:206
+#, sh-format
+msgid "Forcing dev=${BM_BURNING_DEVFORCED} for cdrecord commands"
+msgstr ""
+
+#: ../lib/actions.sh:214
+#, sh-format
+msgid "DVD burning requires $growisofs, aborting."
+msgstr ""
+
 #: ../lib/actions.sh:217
 #, fuzzy, sh-format
 msgid "Exporting archives to the DVD media in $BM_BURNING_DEVICE."
@@ -371,6 +393,11 @@ msgstr "Exportiere Archive auf das DVD-Medium in $BM_BURNING_DEVICE: "
 #, sh-format
 msgid "failed, check $logfile"
 msgstr "fehlgeschlagen, überprüfen Sie $logfile"
+
+#: ../lib/actions.sh:223 ../lib/actions.sh:238
+#, sh-format
+msgid "CDROM burning requires $cdrecord, aborting."
+msgstr ""
 
 #: ../lib/actions.sh:226
 #, fuzzy, sh-format
@@ -411,6 +438,11 @@ msgid "Pre-command failed. Stopping the process."
 msgstr ""
 "pre-command lieferte einen negativen Returnwert. Prozess wurde gestoppt."
 
+#: ../lib/actions.sh:287
+#, sh-format
+msgid "Pre-command returned: \"$RET\" (success)."
+msgstr ""
+
 #: ../lib/actions.sh:297
 #, fuzzy, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
@@ -420,6 +452,11 @@ msgstr "post-command läuft: $BM_POST_BACKUP_COMMAND: "
 #, fuzzy
 msgid "Post-command failed."
 msgstr "post-command lieferte einen negativen Returnwert."
+
+#: ../lib/actions.sh:306
+#, sh-format
+msgid "Post-command returned: \"$RET\" (success)."
+msgstr ""
 
 #: ../lib/files.sh:12
 #, sh-format
@@ -480,6 +517,11 @@ msgstr "Angegebenes Verzeichnis nicht gefunden"
 msgid "Entering directory $file."
 msgstr "Gehe in Verzeichnis $file."
 
+#: ../lib/files.sh:235
+#, fuzzy, sh-format
+msgid "No such file $file_to_create"
+msgstr "Kann $file_to_create nicht finden"
+
 #: ../lib/files.sh:247
 msgid "No file given"
 msgstr "Keine Datei angegeben"
@@ -496,6 +538,11 @@ msgstr "kann Datum der Datei nicht ermitteln"
 #: ../lib/files.sh:256
 msgid "unable to find the pattern of the file"
 msgstr "kann das Dateimuster nicht finden"
+
+#: ../lib/files.sh:265
+#, fuzzy, sh-format
+msgid "$file is a duplicate of $file_to_create (using symlink)"
+msgstr "Kann $file_to_create nicht finden"
 
 #: ../lib/upload-methods.sh:38
 #, fuzzy
@@ -523,6 +570,11 @@ msgstr ""
 #: ../lib/upload-methods.sh:97
 msgid "unable to call backup-manager-upload"
 msgstr "kann backup-manager-upload nicht ausführen"
+
+#: ../lib/upload-methods.sh:106
+#, sh-format
+msgid "Uploading $directory to ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
+msgstr ""
 
 #: ../lib/upload-methods.sh:113 ../lib/upload-methods.sh:122
 #, sh-format

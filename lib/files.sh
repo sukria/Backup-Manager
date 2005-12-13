@@ -232,7 +232,7 @@ purge_duplicate_archives()
 {
 	file_to_create="$1"
     if [ ! -e $file_to_create ]; then
-        error "No such file $file_to_create"
+        error "No such file \$file_to_create"
         return 1
     fi    
 	size_file=$(ls -l $file_to_create | awk '{print $5}')
@@ -262,7 +262,7 @@ purge_duplicate_archives()
 			size=$(ls -l $file | awk '{print $5}')
 
 			if [ "$size_file" = "$size" ]; then
-				info "$file is a duplicate of $file_to_create (using symlink)"
+				info "\$file is a duplicate of \$file_to_create (using symlink)"
 				rm -f $file
 				ln -s $file_to_create $file
 			fi

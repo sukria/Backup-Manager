@@ -103,7 +103,7 @@ bm_upload_ftp()
 # $BM_UPLOAD_SSH_USER...
 _exec_rsync_command()
 {
-    info "Uploading $directory to $host:$BM_UPLOAD_RSYNC_DESTINATION"
+    info "Uploading \$directory to \${host}:\${BM_UPLOAD_RSYNC_DESTINATION}"
     logfile=$(mktemp /tmp/bm-rsync.XXXXXX)
     if [ "$UID" != 0 ]; then
         if ! ${rsync} ${rsync_options} \

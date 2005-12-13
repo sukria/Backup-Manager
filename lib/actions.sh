@@ -82,7 +82,7 @@ check_cdrom_md5_sums()
 	has_error=0
 
 	if [ -z $BM_BURNING_DEVICE ]; then
-		error "MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE in $conffile."
+		error "MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE in \$conffile."
 	fi
 
 	# first create the mount point
@@ -203,7 +203,7 @@ burn_files()
 	# set the cdrecord command 
 	devforced=""
 	if [ -n "$BM_BURNING_DEVFORCED" ]; then
-		info "Forcing dev=${BM_BURNING_DEVFORCED} for cdrecord commands"
+		info "Forcing dev=\${BM_BURNING_DEVFORCED} for cdrecord commands"
 		devforced="dev=${BM_BURNING_DEVFORCED}"
 	fi
 	
@@ -211,7 +211,7 @@ burn_files()
 	case "$BM_BURNING_METHOD" in
 		"DVD")
             if [ ! -x $growisofs ]; then
-            error "DVD burning requires $growisofs, aborting."
+            error "DVD burning requires \$growisofs, aborting."
             fi
                         
 			info "Exporting archives to the DVD media in \$BM_BURNING_DEVICE."
@@ -220,7 +220,7 @@ burn_files()
 		;;
 		"CDRW")
             if [ ! -x $cdrecord ]; then
-                error "CDROM burning requires $cdrecord, aborting."
+                error "CDROM burning requires \$cdrecord, aborting."
             fi
                         
 			info "Blanking the CDRW in \$BM_BURNING_DEVICE."
@@ -235,7 +235,7 @@ burn_files()
 		"CDR")
 
         if [ ! -x $cdrecord ]; then
-            error "CDROM burning requires $cdrecord, aborting."
+            error "CDROM burning requires \$cdrecord, aborting."
         fi
 
 			info "Burning data to \$BM_BURNING_DEVICE."
@@ -284,7 +284,7 @@ exec_pre_command()
 			;;
 
 			*)
-				info "Pre-command returned: \"$RET\" (success)."
+				info "Pre-command returned: \"\$RET\" (success)."
 			;;
 		esac
 	fi
@@ -303,7 +303,7 @@ exec_post_command()
 			;;
 
 			*)
-				info "Post-command returned: \"$RET\" (success)."
+				info "Post-command returned: \"\$RET\" (success)."
 			;;
 		esac
 	fi

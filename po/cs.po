@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-13 00:15+0100\n"
+"POT-Creation-Date: 2005-12-13 22:10+0100\n"
 "PO-Revision-Date: 2005-07-12 23:09+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debiann.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -20,93 +20,98 @@ msgstr ""
 msgid "$file_to_create: ok (${size}M,"
 msgstr "ok (${size}M, "
 
-#: ../lib/backup-methods.sh:21
+#: ../lib/backup-methods.sh:23
 #, fuzzy, sh-format
 msgid "Unable to purge duplicates of $file_to_create"
 msgstr "Vytváøím $file_to_create: "
 
-#: ../lib/backup-methods.sh:35
+#: ../lib/backup-methods.sh:37
 #, fuzzy, sh-format
 msgid "Unable to create $target, check $logfile"
 msgstr "nemohu ze souboru získat datum"
 
-#: ../lib/backup-methods.sh:47 ../lib/backup-methods.sh:209
+#: ../lib/backup-methods.sh:49 ../lib/backup-methods.sh:211
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Soubor $file_to_create ji¾ existuje, pøeskakuji."
 
-#: ../lib/backup-methods.sh:52
+#: ../lib/backup-methods.sh:54
 #, fuzzy, sh-format
 msgid "Unable to exec $command; check $logfile"
 msgstr "nemohu ze souboru získat datum"
 
-#: ../lib/backup-methods.sh:56
+#: ../lib/backup-methods.sh:58
 #, sh-format
 msgid "$command ended, but $file_to_create not found; check $logfile"
 msgstr ""
 
-#: ../lib/backup-methods.sh:64
+#: ../lib/backup-methods.sh:66
 #, sh-format
 msgid "Error while using $gzip."
 msgstr ""
 
-#: ../lib/backup-methods.sh:67
+#: ../lib/backup-methods.sh:69
 #, sh-format
 msgid "Compressor $compress requires $gzip"
 msgstr ""
 
-#: ../lib/backup-methods.sh:72
+#: ../lib/backup-methods.sh:74
 #, sh-format
 msgid "Error while using $bzip."
 msgstr ""
 
-#: ../lib/backup-methods.sh:75
+#: ../lib/backup-methods.sh:77
 #, sh-format
 msgid "Compressor $compress requires $bzip"
 msgstr ""
 
-#: ../lib/backup-methods.sh:82
+#: ../lib/backup-methods.sh:84
 #, sh-format
 msgid "No such compressor supported: $compress"
 msgstr ""
 
-#: ../lib/backup-methods.sh:89
+#: ../lib/backup-methods.sh:91
 #, fuzzy, sh-format
 msgid "Unable to find $file_to_create"
 msgstr "Vytváøím $file_to_create: "
 
-#: ../lib/backup-methods.sh:99 ../lib/backup-methods.sh:225
-#: ../lib/backup-methods.sh:245 ../lib/backup-methods.sh:266
+#: ../lib/backup-methods.sh:101 ../lib/backup-methods.sh:227
+#: ../lib/backup-methods.sh:247 ../lib/backup-methods.sh:268
 #, sh-format
 msgid "Using method \"$BM_ARCHIVE_METHOD\""
 msgstr ""
 
-#: ../lib/backup-methods.sh:147
+#: ../lib/backup-methods.sh:124
+#, sh-format
+msgid "Target $DIR does not exist, skipping."
+msgstr ""
+
+#: ../lib/backup-methods.sh:149
 #, sh-format
 msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr ""
 
-#: ../lib/backup-methods.sh:204
+#: ../lib/backup-methods.sh:206
 #, fuzzy, sh-format
 msgid "The filetype $BM_TARBALL_FILETYPE is not spported."
 msgstr "Typ souboru $BM_FILETYPE není podporován."
 
-#: ../lib/backup-methods.sh:217
+#: ../lib/backup-methods.sh:219
 #, sh-format
 msgid "During the tarballs generation, $nb_err error(s) occured."
 msgstr ""
 
-#: ../lib/backup-methods.sh:227
+#: ../lib/backup-methods.sh:229
 #, sh-format
 msgid "The \"mysql\" method is choosen, but $mysqldump is not found."
 msgstr ""
 
-#: ../lib/backup-methods.sh:247
+#: ../lib/backup-methods.sh:249
 #, sh-format
 msgid "The \"svn\" method is choosen, but $svnadmin is not found."
 msgstr ""
 
-#: ../lib/backup-methods.sh:275
+#: ../lib/backup-methods.sh:277
 #, sh-format
 msgid "Not enough args for this archive ($archive), skipping."
 msgstr ""
@@ -278,6 +283,13 @@ msgstr "Pou¾ívám zálohovací metodu \"rsync\""
 msgid "The upload method \"$method\" is not supported; skipping."
 msgstr "Soubor $file_to_create ji¾ existuje, pøeskakuji."
 
+#: ../lib/actions.sh:85
+#, sh-format
+msgid ""
+"MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE "
+"in $conffile."
+msgstr ""
+
 #: ../lib/actions.sh:91
 #, sh-format
 msgid "The mount point $mount_point is not there"
@@ -355,6 +367,16 @@ msgstr "Nemohu odpojit zaøízení $BM_BURNING_DEVICE"
 msgid "Redirecting burning logs into $logfile"
 msgstr "Pøesmìrovávám hlá¹ení cdrecordu do $logfile"
 
+#: ../lib/actions.sh:206
+#, sh-format
+msgid "Forcing dev=${BM_BURNING_DEVFORCED} for cdrecord commands"
+msgstr ""
+
+#: ../lib/actions.sh:214
+#, sh-format
+msgid "DVD burning requires $growisofs, aborting."
+msgstr ""
+
 #: ../lib/actions.sh:217
 #, fuzzy, sh-format
 msgid "Exporting archives to the DVD media in $BM_BURNING_DEVICE."
@@ -365,6 +387,11 @@ msgstr "Ma¾u CDRW v $BM_BURNING_DEVICE: "
 #, sh-format
 msgid "failed, check $logfile"
 msgstr "selhalo, zkontrolujte $logfile"
+
+#: ../lib/actions.sh:223 ../lib/actions.sh:238
+#, sh-format
+msgid "CDROM burning requires $cdrecord, aborting."
+msgstr ""
 
 #: ../lib/actions.sh:226
 #, fuzzy, sh-format
@@ -402,6 +429,11 @@ msgstr "Spou¹tím úvodní pøíkaz: $BM_PRE_BACKUP_COMMAND: "
 msgid "Pre-command failed. Stopping the process."
 msgstr "Úvodní pøíkaz vrátil chybu. Zastavuji proces."
 
+#: ../lib/actions.sh:287
+#, sh-format
+msgid "Pre-command returned: \"$RET\" (success)."
+msgstr ""
+
 #: ../lib/actions.sh:297
 #, fuzzy, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
@@ -411,6 +443,11 @@ msgstr "Spou¹tím závìreèný pøíkaz: $BM_POST_BACKUP_COMMAND: "
 #, fuzzy
 msgid "Post-command failed."
 msgstr "Závìreèný pøíkaz vrátil chybu."
+
+#: ../lib/actions.sh:306
+#, sh-format
+msgid "Post-command returned: \"$RET\" (success)."
+msgstr ""
 
 #: ../lib/files.sh:12
 #, fuzzy, sh-format
@@ -468,6 +505,11 @@ msgstr "Zadaný adresáø nebyl nalezen"
 msgid "Entering directory $file."
 msgstr "Vstupuji do adresáøe $file."
 
+#: ../lib/files.sh:235
+#, fuzzy, sh-format
+msgid "No such file $file_to_create"
+msgstr "Vytváøím $file_to_create: "
+
 #: ../lib/files.sh:247
 msgid "No file given"
 msgstr "Nebyl zadán ¾ádný soubor"
@@ -484,6 +526,11 @@ msgstr "nemohu ze souboru získat datum"
 #: ../lib/files.sh:256
 msgid "unable to find the pattern of the file"
 msgstr "nemohu najít vzor souboru"
+
+#: ../lib/files.sh:265
+#, fuzzy, sh-format
+msgid "$file is a duplicate of $file_to_create (using symlink)"
+msgstr "Vytváøím $file_to_create: "
 
 #: ../lib/upload-methods.sh:38
 #, fuzzy
@@ -511,6 +558,11 @@ msgstr ""
 #: ../lib/upload-methods.sh:97
 msgid "unable to call backup-manager-upload"
 msgstr "nemohu zavolat backup-manager-upload"
+
+#: ../lib/upload-methods.sh:106
+#, sh-format
+msgid "Uploading $directory to ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
+msgstr ""
 
 #: ../lib/upload-methods.sh:113 ../lib/upload-methods.sh:122
 #, sh-format

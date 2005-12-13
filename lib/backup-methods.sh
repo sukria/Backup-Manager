@@ -14,7 +14,9 @@ commit_archive()
 		
 	base=$(basename $file_to_create)
 	md5hash=$(get_md5sum $file_to_create)
-	info "$str ${md5hash})"
+    if [ "$verbose" = "true" ]; then
+	    echo "$str ${md5hash})"
+    fi
 	echo "$md5hash  $base" >> $BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5
 		
 	# Now that the file is created, remove previous duplicates if exists...
@@ -119,7 +121,7 @@ backup_method_tarball()
 	do
 		# first be sure the target exists
 		if [ ! -e $DIR ] || [ ! -r $DIR ]; then
-			warning "Target $DIR does not exist, skipping."
+			warning "Target \$DIR does not exist, skipping."
 			nb_err=$(($nb_err + 1))
 			continue
 		fi

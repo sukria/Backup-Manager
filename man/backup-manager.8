@@ -4,16 +4,30 @@ backup-manager - An easy to use backup tool for your Linux box.
 .SH SYNOPSIS
   backup-manager [options]
 .SH DESCRIPTION
-This is a smart tool written in Bash and Perl to provide an easy way for 
-backing up local directories.
+Backup Manager is an easy-to-use tool for generating archives. 
 .P
-All the behaviour of the tool will be determined by configuration files, 
-default one is /etc/backup-manager.conf.
-All the configuration keys located in the configuration file can tune the
-way backup-manager will work.
-It is able to make tarballs in tar.gz, tar.bz2, tar and zip format, upload
-them to remote hosts using FTP or SSH, burn them to CDR/CDRW automatically
-using mkisofs and cdrecord.
+It is designed with simplicity in mind
+for those who don't want an obfuscated tool for making tarballs. 
+.P
+There are different methods for building archives: tarballs, incremental 
+tarballs, mysql dumps, svn dump. You can also write your own method with a 
+generic method that will execute a command and will archive its output.
+.P
+Every times you run Backup Manager, you can upload archives thanks to a couple
+of upload methods: trhough FTP, SSH or even with RSYNC.
+.P
+It's also possible to export your archives to removable media like CDR or DVD.
+.SH CONFIGURATION FILES
+Backup Manager's behaviour is defined in configuration files. You can use
+different configuration files at the same time. 
+The default configuration file is `/etc/backup-manager.conf'.
+.P
+An example should have been provided with the program, most of the time it's
+installed in `/usr/share/backup-manager/backup-manager.conf.tpl'.
+.P
+If you want exhaustive details about how to write your own configuration files,
+please refer to the Backup Manager User Guide:
+http://www.backup-manager.org/documentation/user-guide/
 .SH OPTIONS
 .P
 .B --version
@@ -54,24 +68,14 @@ Disable the burning process.
 .P
 .B --no-purge
 Disable the purging process.
-.SH UPLOADING SYSTEM
-If the scp transfer mode is used, no password will be prompted, ssh key
-authentication will be used instead. Be sure to set the appropriate
-keys on your ssh accounts if you use this transfer mode.
-.P
-Backup manager uses backup-manager-upload for uploading files.
-Although backup-manager is run by root (from crond), backup-manager-upload
-will be launched with the upload user you choose. This means that the user 
-should exist on both remote and local machines.
-Keep that in mind when editing the ssh authorized keys on remote hosts.
-.SH BURNING SYSTEM
-If the BM_BURNING configuration key is set to "yes", backup-manager
-will try to burn the archives after generating them.
-.SH NOTES
-On debian systems the best way to configure backup-manager is to use dpkg-reconfigure,
-but you can also edit the configuration file by hand.
+.SH BUGS
+If you find a bug or want to submit a wishlist to the development team, feel
+free to use the official Bug Tracking System: http://bugzilla.backup-manager.org
+.SH WEBSITE
+To find latest news and releases, come to the official website:
+http://www.backup-manager.org
 .SH SEE ALSO
 .BR backup-manager-upload (8),
 .BR ssh-keygen (1)
 .SH AUTHOR
-Alexis Sukrieh <sukria@sukria.net>
+Alexis Sukrieh <sukria@backup-manager.org>

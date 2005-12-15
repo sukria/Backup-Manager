@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: backup-manager 0.5.9a\n"
+"Project-Id-Version: backup-manager 0.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-15 09:59+0100\n"
-"PO-Revision-Date: 2005-10-14 00:26+0100\n"
+"POT-Creation-Date: 2005-12-15 17:27+0100\n"
+"PO-Revision-Date: 2005-12-15 17:06+0100\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "Language-Team: Debian l10n French Team <debian-l10n-french@lists.debian."
 "org>\n"
@@ -84,7 +84,7 @@ msgstr "Utilisation de la méthode « $BM_ARCHIVE_METHOD »."
 #: ../lib/backup-methods.sh:124
 #, sh-format
 msgid "Target $DIR does not exist, skipping."
-msgstr ""
+msgstr "La cible $DIR n'existe pas ; ignoré."
 
 #: ../lib/backup-methods.sh:149
 #, sh-format
@@ -92,23 +92,23 @@ msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr "Fréquence inconnue : $BM_TARBALLINC_MASTERDATETYPE"
 
 #: ../lib/backup-methods.sh:206
-#, fuzzy, sh-format
+#, sh-format
 msgid "The filetype $BM_TARBALL_FILETYPE is not supported."
 msgstr "Le type de fichier $BM_TARBALL_FILETYPE n'est pas géré."
 
 #: ../lib/backup-methods.sh:219
-#, fuzzy, sh-format
+#, sh-format
 msgid "During the tarballs generation, $nb_err error(s) occurred."
 msgstr ""
 "Lors de la génération des archives, $nb_err erreur(s) se sont produite(s)."
 
 #: ../lib/backup-methods.sh:229
-#, fuzzy, sh-format
+#, sh-format
 msgid "The \"mysql\" method is chosen, but $mysqldump is not found."
 msgstr "La méthode « mysql » est choisie, mais $mysqldump n'est pas présent."
 
 #: ../lib/backup-methods.sh:249
-#, fuzzy, sh-format
+#, sh-format
 msgid "The \"svn\" method is chosen, but $svnadmin is not found."
 msgstr "La méthode « svn » est choisie, mais $svnadmin n'est pas présent."
 
@@ -289,6 +289,8 @@ msgid ""
 "MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE "
 "in $conffile."
 msgstr ""
+"Les contrôles des sommes MD5 ne sont effectués que sur les media CD/DVD. "
+"Veuillez définir BM_BURNING_DEVICE in $conffile."
 
 #: ../lib/actions.sh:91
 #, sh-format
@@ -371,11 +373,12 @@ msgstr "Redirection des journaux de gravure dans $logfile"
 #, sh-format
 msgid "Forcing dev=${BM_BURNING_DEVFORCED} for cdrecord commands"
 msgstr ""
+"Ajout de « dev=${BM_BURNING_DEVFORCED} » dans les commandes de cdrecord."
 
 #: ../lib/actions.sh:214
 #, sh-format
 msgid "DVD burning requires $growisofs, aborting."
-msgstr ""
+msgstr "La gravure de DVD nécessite $growisofs ; annulation."
 
 #: ../lib/actions.sh:217
 #, sh-format
@@ -391,7 +394,7 @@ msgstr "Erreur, voir le fichier $logfile"
 #: ../lib/actions.sh:223 ../lib/actions.sh:238
 #, sh-format
 msgid "CDROM burning requires $cdrecord, aborting."
-msgstr ""
+msgstr "La gravure de CDROM nécessite $cdrecord ; annulation."
 
 #: ../lib/actions.sh:226
 #, sh-format
@@ -433,7 +436,7 @@ msgstr "La précommande a échoué. Arrêt du processus."
 #: ../lib/actions.sh:287
 #, sh-format
 msgid "Pre-command returned: \"$RET\" (success)."
-msgstr ""
+msgstr "La pré-commande a retourné : « $RET » (succès)."
 
 #: ../lib/actions.sh:297
 #, sh-format
@@ -447,7 +450,7 @@ msgstr "La post-commande a échoué."
 #: ../lib/actions.sh:306
 #, sh-format
 msgid "Post-command returned: \"$RET\" (success)."
-msgstr ""
+msgstr "La post-commande a retourné : « $RET » (succès)."
 
 #: ../lib/files.sh:12
 #, sh-format
@@ -506,7 +509,7 @@ msgid "Entering directory $file."
 msgstr "Entrée dans le répertoire $file."
 
 #: ../lib/files.sh:235
-#, fuzzy, sh-format
+#, sh-format
 msgid "No such file $file_to_create"
 msgstr "Impossible de trouver $file_to_create"
 
@@ -528,9 +531,10 @@ msgid "unable to find the pattern of the file"
 msgstr "Impossible de trouver le motif du fichier"
 
 #: ../lib/files.sh:265
-#, fuzzy, sh-format
+#, sh-format
 msgid "$file is a duplicate of $file_to_create (using symlink)"
-msgstr "Impossible de purger les doublons de $file_to_create"
+msgstr ""
+"$file est un doublon de $file_to_create (utilisation d'un lien symbolique)"
 
 #: ../lib/upload-methods.sh:38
 msgid "Using the upload method \"ssh\"."
@@ -560,6 +564,7 @@ msgstr "Impossible d'utiliser backup-manager-upload"
 #, sh-format
 msgid "Uploading $directory to ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
 msgstr ""
+"Téléchargement de $directory vers ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
 
 #: ../lib/upload-methods.sh:113 ../lib/upload-methods.sh:122
 #, sh-format

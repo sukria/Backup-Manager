@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BM ITALIAN VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-13 22:10+0100\n"
+"POT-Creation-Date: 2005-12-15 09:59+0100\n"
 "PO-Revision-Date: 2005-12-13 14:25+0100\n"
 "Last-Translator: Matteo Frare Barutti <xenon@ngi.it>\n"
 "Language-Team: ITALIAN <xenon@ngi.it>\n"
@@ -96,24 +96,24 @@ msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr "Frequenza sconoscita: $BM_TARBALLINC_MASTERDATETYPE"
 
 #: ../lib/backup-methods.sh:206
-#, sh-format
-msgid "The filetype $BM_TARBALL_FILETYPE is not spported."
+#, fuzzy, sh-format
+msgid "The filetype $BM_TARBALL_FILETYPE is not supported."
 msgstr "Il filetype $BM_TARBALL_FILETYPE non è supportato."
 
 #: ../lib/backup-methods.sh:219
-#, sh-format
-msgid "During the tarballs generation, $nb_err error(s) occured."
+#, fuzzy, sh-format
+msgid "During the tarballs generation, $nb_err error(s) occurred."
 msgstr ""
 "Durante la creazione dei tarball, $nb_err si è(sono) verificato(i) errore(i)."
 
 #: ../lib/backup-methods.sh:229
-#, sh-format
-msgid "The \"mysql\" method is choosen, but $mysqldump is not found."
+#, fuzzy, sh-format
+msgid "The \"mysql\" method is chosen, but $mysqldump is not found."
 msgstr "E' stato scelto il metodo \"mysql\" ma $mysqldump non è stato trovato."
 
 #: ../lib/backup-methods.sh:249
-#, sh-format
-msgid "The \"svn\" method is choosen, but $svnadmin is not found."
+#, fuzzy, sh-format
+msgid "The \"svn\" method is chosen, but $svnadmin is not found."
 msgstr "E' stato scelto il metodo \"svn\" ma  $svnadmin non è stato trovato."
 
 #: ../lib/backup-methods.sh:277

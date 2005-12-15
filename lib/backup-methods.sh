@@ -203,7 +203,7 @@ backup_method_tarball()
 					fi
 				;;
 				*) # unknown option
-					error "The filetype \$BM_TARBALL_FILETYPE is not spported."
+					error "The filetype \$BM_TARBALL_FILETYPE is not supported."
 					_exit
 				;;
 			esac
@@ -216,7 +216,7 @@ backup_method_tarball()
 	done
 
 	if [ $nb_err -gt 0 ]; then
-		error "During the tarballs generation, \$nb_err error(s) occured."
+		error "During the tarballs generation, \$nb_err error(s) occurred."
 	else
 		rm -f $tarball_logfile
 	fi
@@ -226,7 +226,7 @@ backup_method_mysql()
 {
 	info "Using method \"\$BM_ARCHIVE_METHOD\""
 	if [ ! -x $mysqldump ]; then
-		error "The \"mysql\" method is choosen, but \$mysqldump is not found."
+		error "The \"mysql\" method is chosen, but \$mysqldump is not found."
 	fi
 	
 	for database in $BM_MYSQL_DATABASES
@@ -246,7 +246,7 @@ backup_method_svn()
 {
 	info "Using method \"\$BM_ARCHIVE_METHOD\""
         if [ ! -x $svnadmin ]; then
-                error "The \"svn\" method is choosen, but \$svnadmin is not found."
+                error "The \"svn\" method is chosen, but \$svnadmin is not found."
         fi
 
         for repository in $BM_SVN_REPOSITORIES

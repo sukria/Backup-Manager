@@ -17,7 +17,7 @@
 <!-- Template of a configuration key description
 
      Please, follow this template for *each* configuration key
-     this will allow us to make a nice appendix later, think to our 
+     this will allow us to make a nice appendix later, think of our 
      users ;-)
 
 <sect1 id="BM_MYCONFIGURATION_KEY"><tt>BM_MYCONFIGURATION_KEY</tt>
@@ -70,7 +70,7 @@ it by writing to the &fsf-addr;.
 
 <sect id="about-scope">Scope
 <p>
-&bmngr; is a system tool designed to hanlde backups. It is written with
+&bmngr; is a system tool designed to handle backups. It is written with
 simplicity in mind. 
 
 <p>
@@ -81,14 +81,14 @@ program, how to write your own backup methods or even look at some real life
 examples, this guide is for you.
 
 <p>
-This document describes the main design of the software and gives informations
-about supported configuration keys. Every backup methods are described, with
+This document describes the main design of the software and gives information
+about supported configuration keys. All backup methods are described, with
 a sample configuration file as illustration. Whenever possible, advices and best
 practices are given. 
 
 <p>
 This manual also describes every configuration variables supported in the
-version &bmngr-version;, these are available in appendices for a quick reference.
+version &bmngr-version;.
 
 <sect id="about-version">Version
 
@@ -99,7 +99,8 @@ the release 0.6 of &bmngr;.
 
 <sect id="about-authors">Authors
 <p>
-The first version of this document was made in late 2005, by Alexis Sukrieh.
+The first version of this document was made in late 2005, by Alexis Sukrieh and 
+has been reviewed by Sven Joachim.
 
 <p>
 While the author of this document has tried hard to avoid typos and other 
@@ -132,7 +133,7 @@ This chapter will cover all the configuration keys supported in version
 
 <p>
 The repository is the place in your filesystem
-where every archives are stored.
+where all archives are stored.
 This is a particular place for &bmngr;, it will be cleaned during backup
 sessions: archives older than the authorized lifetime will be purged.
 If the repository does not exist, it will be created at runtime.
@@ -141,7 +142,7 @@ If the repository does not exist, it will be created at runtime.
 Isolating the repository on a dedicated partition is a good idea. This can
 prevent the repository from eating all the disk space of the partition.
 With a bad configuration file, backup sessions can lead to huge archives, 
-for many reasons, so take care).
+for many reasons, so take care.
 
 <p>
 Example:
@@ -193,7 +194,7 @@ If disk usage matters in your backup strategy, you might find useful to use
 looks at the previous versions of this archive. 
 If it finds that a previous archive is the same file as the one it
 has just built, the previous one is replaced by a symlink to the new one.
-This is useful if you don't want to have twice the same archive in the
+This is useful if you don't want to have the same archive twice in the
 repository.
 
 <p>
@@ -202,10 +203,9 @@ Example:
 <example>
 export BM_ARCHIVE_PURGEDUPS="true"
 
-# ls -l /var/archives
-wrw-rw---- 1 root root  138 2005-11-15 10:46 host-etc.20051115.tar.gz
-wrwxrwxrwx 1 root root   51 2005-11-17 10:31 host-etc.20051116.tar.gz -> /var/archives/host-etc.20051117.tar.gz
--rw-rw---- 1 root root  137 2005-11-17 10:31 host-etc.20051117.tar.gz
+host-etc.20051115.tar.gz
+host-etc.20051116.tar.gz -> /var/archives/host-etc.20051117.tar.gz
+host-etc.20051117.tar.gz
 </example>
 
 <sect2 id="BM_ARCHIVE_TTL"><tt>BM_ARCHIVE_TTL</tt>
@@ -214,10 +214,10 @@ wrwxrwxrwx 1 root root   51 2005-11-17 10:31 host-etc.20051116.tar.gz -> /var/ar
 <em>Type: integer, default: <tt>5</tt>.</em>
 
 <p>
-One of the main concept behind the handling of the repository is to purge
+One of the main concepts behind the handling of the repository is to purge
 deprecated archives automatically. The purge session is always performed
-when you launch &bmngr;. During this phase, every archives older than the
-authorized lifetime are droped.
+when you launch &bmngr;. During this phase, all archives older than the
+authorized lifetime are dropped.
 
 <p>
 Example:
@@ -258,9 +258,9 @@ We will describe here every method supported in the version &bmngr-version;.
 <p>
 The method you choose must be defined in the configuration key
 <tt>BM_ARCHIVE_METHOD</tt>. You can put here a list of all the different methods 
-you want to use. Take care to put every configuration keys needed by all the 
+you want to use. Take care to put every configuration key needed by all the 
 methods you choose.
-Note that you can also choose none of the propsoed methods, if you don't want
+Note that you can also choose none of the proposed methods, if you don't want
 to build archives with this configuration file, then just put <tt>none</tt>.
 
 <p>
@@ -288,7 +288,7 @@ and builds the corresponding tarballs.
 This method is the default one, this is the easiest to use, it just
 builds tarballs as you could do with your own tar script. Its main drawback is
 to eat a lot of disk space: archives can be big from a day to another, even if
-there is no changes in their content. See the <tt>tarball-incremental</tt>
+there are no changes in their content. See the <tt>tarball-incremental</tt>
 method if you want to optimize archives' size.
 
 <p>
@@ -304,7 +304,7 @@ values are possible:
 <list>
 <item><tt>long</tt>: the name will be made with the absolute path of the directory
 (eg: <tt>var-log-apache</tt> for <tt>/var/log/apache</tt>).
-<item><tt>short</tt>: the name will just contains the directory (eg:
+<item><tt>short</tt>: the name will just contain the directory (eg:
 <tt>apache</tt> for <tt>/var/log/apache</tt>). 
 </list>
 
@@ -333,9 +333,9 @@ For the best compression rate, choose <tt>tar.bz2</tt>.
 
 <p>
 It is possible, when generating the tarball (or the zip file) to dereference the
-symlinks. If you enable this feature, every symbolic links in the file system
-will be replaced in the archive by the file the point to. Use this feature with
-care, it can quickly leads to huge archive, or even worse: if you have a
+symlinks. If you enable this feature, every symbolic link in the file system
+will be replaced in the archive by the file it points to. Use this feature with
+care, it can quickly lead to huge archives, or even worse: if you have a
 circular symlink somewhere, this will lead to an infinite archive!
 
 <p>
@@ -361,7 +361,7 @@ export BM_TARBALL_DIRECTORIES="/etc /home /var/log/apache"
 <sect2 id="tarballinc-desc">Description
 
 <p>
-<em>Method name: <tt>tarball-incremental</tt>, configuration keys prefix:
+<em>Method name: <tt>tarball-incremental</tt>, configuration key prefix:
 <tt>BM_TARBALLINC</tt>.</em>
 
 <p>
@@ -377,13 +377,13 @@ directory is composed by two sub-directories: /home/foo and /home/bar.
 You choose a weekly frequency and say that monday will be the "fullbackup" day.
 Obviously, you will have a full tarball of /home on monday. 
 Then, if a file changed inside /home/foo and if /home/bar
-remains unchanged, tuesday's archive will only contains the modified files of
+remains unchanged, tuesday's archive will only contain the modified files of
 /home/foo. Using this method will save a lot of disk space.
 
 <p>
 This method uses all the tarball's configuration keys and adds two more. One to
-define the kind of frequency, the other to choose on which day should the full
-backups be made. 
+define the kind of frequency, the other to choose on which day the full backups 
+should be made. 
 
 <sect2 id="BM_TARBALLINC_MASTERDATETYPE"><tt>BM_TARBALLINC_MASTERDATETYPE</tt>
 
@@ -455,7 +455,7 @@ export BM_MYSQL_ADMINLOGIN="root"
 <em>Type: string, default: <tt>localhost</tt>.</em>
 
 <p>
-The database host where are the databases.
+The database host where the databases are.
 
 <p>
 Example:
@@ -541,7 +541,7 @@ export BM_SVN_COMPRESSWITH="gzip"
 
 <p>
 Even if most of the common needs are covered by the existing methods, there is always
-a case uncovered. &bmngr; provide a way for backing up anything, and can be used in such 
+a case uncovered. &bmngr; provides a way for backing up anything, and can be used in such 
 circumstances.
 
 <p>
@@ -599,10 +599,10 @@ the archives on different places. The more different physical spaces you have, t
 &bmngr; provides a way for achieving this goal : the upload methods. </em>
 
 <p>
-There are different upload methods, each of them behave differently and provides particular 
+There are different upload methods, each of them behaves differently and provides particular 
 features. In &bmngr; &bmngr-version; you can use FTP, SSH or RSYNC uploads.
 
-<p>In the same maner as for backup methods, you can choose to use as many 
+<p>In the same manner as for backup methods, you can choose to use as many 
 upload methods as you like. If you don't want to use this feature at all, just put
 the keyword <tt>none</tt> in the configuration <tt>BM_UPLOAD_METHOD</tt>.
 
@@ -617,13 +617,13 @@ file sytem.
 
 <sect1 id="uploads-global">Global configuration keys
 <p>
-The following configuration keys are global in the upload sect1ion:
+The following configuration keys are global in the upload section:
 
 <sect2 id="BM_UPLOAD_HOSTS"><tt>BM_UPLOAD_HOSTS</tt>
 <p>
 <em>Type: space-separated list</em>
 <p>
-Eeach of the hosts defined in that list are used by all the upload methods
+Each of the hosts defined in that list is used by all the upload methods
 when establishing connections. For instance if you want to perform SSH uploads of 
 your archives and RSYNC upload of a location to the same host, put it in this list.
 <p>
@@ -728,8 +728,8 @@ export BM_UPLOAD_SSH_DESTINATION="/var/archives/scp-uploads"
 <p>
 If security does not matter much on your lan (between the two points of the upload) you can choose to use the 
 FTP method.
-One of the main pros of this method is that it can perform purging independtly. You can safely use this method
-for uploading files to a hosts where you just have a FTP account.
+One of the main pros of this method is that it can perform purging independently. You can safely use this method
+for uploading files to a host where you just have an FTP account.
 
 <sect2 id="BM_UPLOAD_FTP_USER"><tt>BM_UPLOAD_FTP_USER</tt>
 <p>
@@ -783,7 +783,7 @@ export BM_UPLOAD_FTP_DESTINATION="/var/archives/ftp-uploads"
 <p>
 You can choose to purge deprecated archives before uploading new ones.
 This purge is done over FTP and uses the configuration key <tt>BM_ARCHIVE_TTL</tt> in 
-the same maner as the local purge behaves (the FTP purge is not recursive though).
+the same manner as the local purge behaves (the FTP purge is not recursive though).
 <p>
 Example:
 <example>
@@ -795,7 +795,7 @@ export BM_UPLOAD_FTP_PURGE="true"
 <p>
 You may want to upload some parts of your file system to some remote hosts. 
 In these cases, archives are not needed, you just want to synchronize some 
-directories to remote places. This is where the RSYNC upload method is usefull.
+directories to remote places. This is where the RSYNC upload method is useful.
 <p>
 RSYNC uploads need a SSH user/key pair to behave correctly, thus there is a 
 dependency against the keys <tt>BM_UPLOAD_SSH_USER</tt> and <tt>BM_UPLOAD_SSH_KEY</tt>.
@@ -875,7 +875,7 @@ Set the key <tt>BM_BURNING_METHOD</tt> to the method corresponding to the media 
 <p>
 Any of these methods will try to put the whole archive repository in the media, if it does not 
 fit in the media, it will try to put only the archives built on the day, if that's not possible,
-nothing will be burnt.
+nothing will be burned.
 
 <p>
 The CDRW and DVD methods will first blank the media, so you can safely use these methods if you 
@@ -886,7 +886,7 @@ As usual, you can put <tt>none</tt> in order to disable the burning process.
 
 <p>
 All those burning methods share the same configuration keys, so it's easy to
-switch from a media to another.
+switch from a medium to another.
 
 <sect2 id="BM_BURNING_DEVICE"><tt>BM_BURNING_DEVICE</tt>
 <p>
@@ -909,7 +909,7 @@ export BM_BURNING_DEVICE="/dev/cdrom"
 <tt>cdrecord -scanbus</tt> you don't see your burning device, that means you will have to 
 force the device in ATA mode. 
 To tell &bmngr; to do so, just put here the path to your device, and a switch will be appended to the
-cdrecord commandline like de following : <tt>cdrecrord ... dev=$BM_BURNING_DEVFORCED ...</tt>.
+cdrecord commandline like the following : <tt>cdrecrord ... dev=$BM_BURNING_DEVFORCED ...</tt>.
 <p>
 Leave this configuration key blank if you see your device with <tt>cdrecord -scanbus</tt>, 
 in this case, &bmngr; will use the default cdrecord device for burning CDR media.
@@ -923,7 +923,7 @@ export BM_BURNING_DEVFORCED="/dev/cdrom"
 <p>
 <em>Type: integer, default: <tt>700</tt>.</em>
 <p>
-This is where you define the maximum size (in mega bytes) 
+This is where you define the maximum size (in megabytes) 
 of the media you will put in the device.
 Here is the list of the common sizes:
 
@@ -956,8 +956,8 @@ export BM_BURNING_MAXSIZE="4200"
 <p>
 <em>Type: boolean, default: <tt>true</tt>.</em>
 <p>
-If this boolean is set to a true value, every MD5 sums will be checked when the media 
-is burnt in order to make sure evrything is ok.
+If this boolean is set to a true value, every MD5 sum will be checked when the media 
+is burned in order to make sure everything is ok.
 <p>
 Note that you can choose to perform this checkup with the command 
 switch <tt>--md5check</tt>.
@@ -1018,8 +1018,8 @@ different hooks: the <em>pre-command</em> and <em>post-command</em> hooks.
 <p>
 <em>Type: string</em>
 <p>
-Put here the path to a programm (or a shell command) to launch before the backup
-session. If the command fails (exit with non zero value, or print the keyword
+Put here the path to a program (or a shell command) to launch before the backup
+session. If the command fails (exits with non zero value, or prints the keyword
 <tt>false</tt> on stdout) the backup session will stop. If the pre-command
 succeeds, the process can follow.
 
@@ -1039,8 +1039,8 @@ export BM_PRE_BACKUP_COMMAND="/usr/local/bin/backup-prepare.pl $TODAY"
 <p>
 <em>Type: string</em>
 <p>
-Put here the path to a programm (or a shell command) to launch after the backup
-session. If the command fails (exit with non zero value, or print the keyword
+Put here the path to a program (or a shell command) to launch after the backup
+session. If the command fails (exits with non zero value, or prints the keyword
 <tt>false</tt> on stdout) &bmngr; will exit with an error code (and will log to
 syslog the post-command failure if the logger is enabled).
 
@@ -1105,8 +1105,8 @@ ouranos:/home/sukria#
 </example>
 
 <p>
-Has you can see in the example above, using the <tt>-h</tt> switch (or <tt>--help</tt>) gives 
-a short help message and prints every supported command switches.
+As you can see in the example above, using the <tt>-h</tt> switch (or <tt>--help</tt>) gives 
+a short help message and prints all supported command switches.
 We will cover in this section each of them.
 
 <sect1 id="command-switched">Options
@@ -1127,7 +1127,7 @@ Backup Manager 0.6
 
 <sect2 id="verbose"><tt>--verbose</tt> or <tt>-v</tt>
 <p>
-Using this switch will enabled the verbose mode. Every actions are reported on stdout.
+Using this switch will enabled the verbose mode. All actions are reported on stdout.
 
 <p>
 Example:
@@ -1143,11 +1143,11 @@ Entering directory /var/archives/lost+found.
 <p>
 When a non-critical problem occurs (an error occured but the backup process can follow)
 &bmngr; will print a warning message (and will log it if the logger is enabled).
-If you don't want to see warnings messages, you can append this switch on the command line.
+If you don't want to see warning messages, you can append this switch on the command line.
 
 <sect2 id="conffile"><tt>--conffile</tt> or <tt>-c</tt>
 <p>
-&bmngr; rely on configuration files, by default, the file <tt>/etc/backup-manager.conf</tt> is used but 
+&bmngr; relies on configuration files, by default, the file <tt>/etc/backup-manager.conf</tt> is used but 
 you can choose to run it with a different one. This is done by using the following syntax :
 
 <example>
@@ -1155,7 +1155,7 @@ you can choose to run it with a different one. This is done by using the followi
 </example>
 
 <p>
-Note that &bmngr; is designed to work properly when launched in parallel mode with different configuation 
+Note that &bmngr; is designed to work properly when launched in parallel mode with different configuration 
 files, but it will refuse to run twice at the same time with the same configuration file.
 You can then safely do something like that:
 
@@ -1184,7 +1184,7 @@ perform the burning session instead of the whole process with this switch.
 <sect2 id="md5check"><tt>--md5check</tt> or <tt>-m</tt>
 <p>
 
-If you have made a configuration file that enables the MD5 checks on burt media, you can ask &bmngr; to 
+If you have made a configuration file that enables the MD5 checks on burnt media, you can ask &bmngr; to 
 perform the MD5 checks instead of the whole process with this switch.
 
 <sect2 id="purge"><tt>--purge</tt> or <tt>-p</tt>

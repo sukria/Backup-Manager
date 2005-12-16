@@ -1,23 +1,20 @@
-Big thanx to the following crew ;)
 
-*********************************************************************
-
-* Backup Manager main code and design
-
-    - Alexis Sukrieh <sukria@backup-manager.org>
-
-* Contributions
-  
-    Implementation of the rsync upload method.
+* Backup Manager 
+    
+    Main code and design
+        - Alexis Sukrieh <sukria@backup-manager.org>
+    Implementation of the rsync upload method
         - Andreas "Jimmy" Gredler <jimmy@backup-manager.org>
-
-* Patches:
-  
-    Symbolic links dumping support for zip archives.
+    Symbolic links dumping support for zip archives
         - Sven Joachim <sven_joachim@web.de>
-        
-    multiple configuration files.
+    Support for multiple configuration files
         - Michael Prokop <mikap@grml.org> 
+
+* Documentation
+
+    User Guide
+        - Alexis Sukrieh <sukria@backup-manager.org>
+        - Sven Joachim <sven_joachim@web.de>
 
 * Translations:
 
@@ -32,6 +29,4 @@ Big thanx to the following crew ;)
         - Alexis Sukrieh <sukria@backup-manager.org>
     Vietnamese
         - Clytie Siddall <clytie@riverland.net.au>
-
-*********************************************************************
 

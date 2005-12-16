@@ -1,5 +1,12 @@
 2005-12-16  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* AUTHORS:
+	  + Better, less confusing.
+	* doc/user-guide.sgml:
+	  + Sven Joachim fixes (typos...)
+
+2005-12-16  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* po/Makefile:
 	  + better clean target.
 	* po/vi.po:

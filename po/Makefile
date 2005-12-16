@@ -35,6 +35,7 @@ $(PACKAGE).pot: $(POFILES_SRC)
 			 --files-from=$(POFILES_SRC)
 clean:
 	rm -f backup-manager.pot \
+		  backup-manager.files \
 	      $(MOFILES) \
 		  messages messages.mo \
 		  messages.po 

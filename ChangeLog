@@ -1,3 +1,10 @@
+2005-12-16  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* po/Makefile:
+	  + better clean target.
+	* po/vi.po:
+	  + Final version of the Vietnamese translations.
+
 2005-12-15  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* AUTHORS:

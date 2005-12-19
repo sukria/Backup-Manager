@@ -698,6 +698,18 @@ Example:
 export BM_UPLOAD_SSH_KEY="/home/bmngr/.ssh/id_dsa"
 </example>
 
+<sect2 id="BM_UPLOAD_SSH_PORT"><tt>BM_UPLOAD_SSH_PORT</tt>
+<p>
+<em>Type: integer</em>
+<p>
+You may want to connect to remote hosts with a specific port. 
+Use this configuration key then.
+<p>
+Example:
+<example>
+export BM_UPLOAD_SSH_PORT="1352"
+</example>
+
 <sect2 id="BM_UPLOAD_SSH_HOSTS"><tt>BM_UPLOAD_SSH_HOSTS</tt>
 <p>
 <em>Type: space-separated list</em>

@@ -1,3 +1,28 @@
+2005-12-19  Alexis Sukrieh	<sukria@backup-manager.org>
+
+	* New configuration key BM_UPLOAD_SSH_PORT
+	  + backup-manager.conf.tpl
+	  + doc/user-guide.sgml
+	* Added copyright headers
+	  + lib/backup-methods.sh
+	  + lib/dialog.sh
+	  + lib/logger.sh
+	  + lib/files.sh
+	  + lib/gettext-dummy.sh:
+	  + lib/gettext-real.sh:
+	  + lib/gettext.sh:
+	  + lib/md5sum.sh:
+	* lib/sanitize.sh:
+	  + added copyright header
+	  + check for BM_BURNING
+	* po/Makefile:
+	  + Minor changes
+	* po/backup-manager.pot:
+	  + Added this pot file in the repository so people
+	    without xgettext can install BM.
+	* po/es.po:
+	  + New version updated.
+
 2005-12-16  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* AUTHORS:

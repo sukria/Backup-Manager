@@ -1,127 +1,126 @@
-# German messages for backup-manager.
-# Copyleft © 2004, 2005 The Backup Manager Authors
-# This file is distributed under the same license as the backup-manager package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: backup-manager 0.6\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-19 11:51+0100\n"
-"PO-Revision-Date: 2005-12-15 17:02+0100\n"
-"Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
-"Language-Team: \n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../lib/backup-methods.sh:26
 #, sh-format
 msgid "$file_to_create: ok (${size}M,"
-msgstr "$file_to_create: ok (${size}M,"
+msgstr ""
 
 #: ../lib/backup-methods.sh:36
 #, sh-format
 msgid "Unable to purge duplicates of $file_to_create"
-msgstr "Kann Duplikate von $file_to_create nicht löschen"
+msgstr ""
 
 #: ../lib/backup-methods.sh:50
 #, sh-format
 msgid "Unable to create $target, check $logfile"
-msgstr "Kann $target nicht erzeugen, überprüfen Sie $logfile"
+msgstr ""
 
 #: ../lib/backup-methods.sh:62 ../lib/backup-methods.sh:224
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
-msgstr "Datei $file_to_create existiert bereits, wird übergangen."
+msgstr ""
 
 #: ../lib/backup-methods.sh:67
 #, sh-format
 msgid "Unable to exec $command; check $logfile"
-msgstr "Kann $command nicht ausführen; überprüfen Sie $logfile"
+msgstr ""
 
 #: ../lib/backup-methods.sh:71
 #, sh-format
 msgid "$command ended, but $file_to_create not found; check $logfile"
 msgstr ""
-"$command wurde beendet, aber $file_to_create nicht gefunden; überprüfen Sie "
-"$logfile"
 
 #: ../lib/backup-methods.sh:79
 #, sh-format
 msgid "Error while using $gzip."
-msgstr "Fehler beim Ausführen von $gzip."
+msgstr ""
 
 #: ../lib/backup-methods.sh:82
 #, sh-format
 msgid "Compressor $compress requires $gzip"
-msgstr "Kompressor $compress erfordert $gzip"
+msgstr ""
 
 #: ../lib/backup-methods.sh:87
 #, sh-format
 msgid "Error while using $bzip."
-msgstr "Fehler beim Ausführen von $bzip."
+msgstr ""
 
 #: ../lib/backup-methods.sh:90
 #, sh-format
 msgid "Compressor $compress requires $bzip"
-msgstr "Kompressor $compress erfordert $bzip"
+msgstr ""
 
 #: ../lib/backup-methods.sh:97
 #, sh-format
 msgid "No such compressor supported: $compress"
-msgstr "Dieser Kompressor wird nicht unterstützt: $compress"
+msgstr ""
 
 #: ../lib/backup-methods.sh:104
 #, sh-format
 msgid "Unable to find $file_to_create"
-msgstr "Kann $file_to_create nicht finden"
+msgstr ""
 
 #: ../lib/backup-methods.sh:114 ../lib/backup-methods.sh:240
 #: ../lib/backup-methods.sh:260 ../lib/backup-methods.sh:281
 #, sh-format
 msgid "Using method \"$BM_ARCHIVE_METHOD\""
-msgstr "Verwende Methode »$BM_ARCHIVE_METHOD«"
+msgstr ""
 
 #: ../lib/backup-methods.sh:137
 #, sh-format
 msgid "Target $DIR does not exist, skipping."
-msgstr "Ziel $DIR existiert nicht, es wird übergangen."
+msgstr ""
 
 #: ../lib/backup-methods.sh:162
 #, sh-format
 msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
-msgstr "Unbekannte Häufigkeit: $BM_TARBALLINC_MASTERDATETYPE"
+msgstr ""
 
 #: ../lib/backup-methods.sh:219
 #, sh-format
 msgid "The filetype $BM_TARBALL_FILETYPE is not supported."
-msgstr "Der Dateityp $BM_TARBALL_FILETYPE wird nicht unterstützt."
+msgstr ""
 
 #: ../lib/backup-methods.sh:232
 #, sh-format
 msgid "During the tarballs generation, $nb_err error(s) occurred."
-msgstr "$nb_err Fehler beim Erzeugen der Tarbälle aufgetreten."
+msgstr ""
 
 #: ../lib/backup-methods.sh:242
 #, sh-format
 msgid "The \"mysql\" method is chosen, but $mysqldump is not found."
-msgstr "Die »mysql«-Methode ist gewählt, aber $mysqldump wurde nicht gefunden."
+msgstr ""
 
 #: ../lib/backup-methods.sh:262
 #, sh-format
 msgid "The \"svn\" method is chosen, but $svnadmin is not found."
-msgstr "Die »svn«-Methode ist gewählt, aber $svnadmin wurde nicht gefunden."
+msgstr ""
 
 #: ../lib/backup-methods.sh:290
 #, sh-format
 msgid "Not enough args for this archive ($archive), skipping."
-msgstr "Zu wenige Argumente für dieses Archiv ($archive), es wird übergangen."
+msgstr ""
 
 #: ../lib/sanitize.sh:29
 #, sh-format
 msgid "The configuration key $key is not set, using \"$default\"."
 msgstr ""
-"Die Konfigurationsvariable $key ist nicht gesetzt, verwende »$default«."
 
 #: ../lib/sanitize.sh:39
 #, sh-format
@@ -129,29 +128,21 @@ msgid ""
 "The configuration key \"$deprecated_key\" is deprecated, you should rename "
 "it \"$new_key\". Using \"$deprecated_value\"."
 msgstr ""
-"Die Konfigurationsvariable »$deprecated_key« ist veraltet, Sie sollten sie "
-"in »$new_key« umbenennen. Verwende »$deprecated_value«."
 
 #: ../lib/sanitize.sh:74
 #, sh-format
 msgid "The configuration key $key is not set but $keymandatory is enabled."
 msgstr ""
-"Die Konfigurationsvariable $key ist nicht gesetzt, aber $keymandatory ist "
-"aktiviert."
 
 #: ../lib/sanitize.sh:92
 #, sh-format
 msgid "Deprecated boolean, $key is set to \"yes\", setting \"true\" instead."
 msgstr ""
-"Veralteter Boolescher Wert, $key ist auf »yes« gesetzt, verwende »true« "
-"stattdessen."
 
 #: ../lib/sanitize.sh:97
 #, sh-format
 msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
 msgstr ""
-"Veralteter Boolescher Wert, $key ist auf »no« gesetzt, verwende »false« "
-"stattdessen."
 
 #: ../lib/sanitize.sh:214
 #, sh-format
@@ -159,137 +150,127 @@ msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
 "found."
 msgstr ""
-"Beim Überprüfen der Konfigurationsdatei $conffile wurden $nb_warnings "
-"Warnungen gefunden."
 
 #: ../lib/md5sum.sh:28
 #, sh-format
 msgid "No md5file found: $md5file"
-msgstr "Keine MD5-Datei gefunden: $md5file"
+msgstr ""
 
 #: ../lib/md5sum.sh:80
 #, sh-format
 msgid "Archive given does not exist in the repository: $archive"
-msgstr "Angegebenes Archiv existiert nicht im Repository: $archive"
+msgstr ""
 
 #: ../lib/dialog.sh:27
 msgid "Output:"
-msgstr "Ausgabe:"
+msgstr ""
 
 #: ../lib/dialog.sh:28
 msgid "Print this short help message."
-msgstr "Diesen kurzen Hilfetext ausgeben."
+msgstr ""
 
 #: ../lib/dialog.sh:29
 msgid "Print what happens on STDOUT."
-msgstr "Auf STDOUT ausgeben, was passiert."
+msgstr ""
 
 #: ../lib/dialog.sh:30
 msgid "Disable warnings."
-msgstr "Warnungen deaktivieren."
+msgstr ""
 
 #: ../lib/dialog.sh:33
 msgid "Single actions:"
-msgstr "Einzelne Aktionen:"
+msgstr ""
 
 #: ../lib/dialog.sh:34
 msgid "Just upload the files of the day."
-msgstr "Nur die Dateien des Tages hochladen."
+msgstr ""
 
 #: ../lib/dialog.sh:35
 msgid "Just burn the files of the day."
-msgstr "Nur die Dateien des Tages brennen."
+msgstr ""
 
 #: ../lib/dialog.sh:36
 msgid "Just test the md5 sums."
-msgstr "Nur die MD5-Summen testen."
+msgstr ""
 
 #: ../lib/dialog.sh:37
 msgid "Just purge old archives."
-msgstr "Nur alte Archive löschen."
+msgstr ""
 
 #: ../lib/dialog.sh:40
 msgid "Behaviour:"
-msgstr "Verhalten:"
+msgstr ""
 
 #: ../lib/dialog.sh:41
 msgid "Choose an alternate config file."
-msgstr "Alternative Konfigurationsdatei wählen."
+msgstr ""
 
 #: ../lib/dialog.sh:42
 msgid "Force overwrite of existing archives."
-msgstr "Überschreiben existierender Archive erzwingen."
+msgstr ""
 
 #: ../lib/dialog.sh:45
 msgid "Unwanted actions:"
-msgstr "Unerwünschte Aktionen:"
+msgstr ""
 
 #: ../lib/dialog.sh:46
 msgid "Disable the upload process."
-msgstr "Upload deaktivieren."
+msgstr ""
 
 #: ../lib/dialog.sh:47
 msgid "Disable the burning process."
-msgstr "Brennen deaktivieren."
+msgstr ""
 
 #: ../lib/dialog.sh:48
 msgid "Disable the purge process."
-msgstr "Löschen alter Archive deaktivieren."
+msgstr ""
 
 #: ../lib/dialog.sh:60
 msgid "Warning, process interupted, archives may be corrupted."
-msgstr "Warnung, Prozess wurde unterbrochen. Archive könnten defekt sein."
+msgstr ""
 
 #: ../lib/dialog.sh:70
 msgid ""
 "the BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
 msgstr ""
-"Die Konfigurationsvariable BM_TARBALL_FILETYPE ist auf »zip« gesetzt, aber "
-"zip ist nicht installiert."
 
 #: ../lib/dialog.sh:75
 msgid ""
 "the BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
 "installed."
 msgstr ""
-"Die Konfigurationsvariable BM_TARBALL_FILETYPE ist auf »bzip2« gesetzt, aber "
-"bzip2 ist nicht installiert."
 
 #: ../lib/dialog.sh:85
 #, sh-format
 msgid "The BM_TARBALL_DIRECTORIES conf key is not set in $conffile"
 msgstr ""
-"Die Konfigurationsvariable BM_TARBALL_DIRECTORIES ist in $conffile nicht "
-"gesetzt"
 
 #: ../lib/dialog.sh:93
 #, sh-format
 msgid "$BM_REPOSITORY_ROOT does not exist, creating it"
-msgstr "$BM_REPOSITORY_ROOT existiert nicht, wird angelegt"
+msgstr ""
 
 #: ../lib/logger.sh:140
 msgid "Releasing lock"
-msgstr "Freigabe der Sperre"
+msgstr ""
 
 #: ../lib/actions.sh:40
 msgid "No backup method used."
-msgstr "Keine Backup-Methode verwendet."
+msgstr ""
 
 #: ../lib/actions.sh:43
 #, sh-format
 msgid "No such backup method: $BM_ARCHIVE_METHOD"
-msgstr "Backup-Methode existiert nicht: $BM_ARCHIVE_METHOD"
+msgstr ""
 
 #: ../lib/actions.sh:68
 msgid "No upload method used."
-msgstr "Keine Upload-Methode verwendet."
+msgstr ""
 
 #: ../lib/actions.sh:71
 #, sh-format
 msgid "The upload method \"$method\" is not supported; skipping."
 msgstr ""
-"Die Upload-Methode »$method« wird nicht unterstützt; der Upload wird "
-"übergangen."
 
 #: ../lib/actions.sh:85
 #, sh-format
@@ -297,61 +278,59 @@ msgid ""
 "MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE "
 "in $conffile."
 msgstr ""
-"MD5-Überprüfung wird nur auf CD-Medien durchgeführt. Bitte setzen Sie "
-"BM_BURNING_DEVICE in $conffile."
 
 #: ../lib/actions.sh:91
 #, sh-format
 msgid "The mount point $mount_point is not there"
-msgstr "Der Einhängepunkt $mount_point existiert nicht"
+msgstr ""
 
 #: ../lib/actions.sh:95
 #, sh-format
 msgid "Mounting $BM_BURNING_DEVICE on $mount_point."
-msgstr "Einhängen von $BM_BURNING_DEVICE auf $mount_point."
+msgstr ""
 
 #: ../lib/actions.sh:96
 #, sh-format
 msgid "Unable to mount $BM_BURNING_DEVICE on $mount_point."
-msgstr "Kann $BM_BURNING_DEVICE nicht auf $mount_point einhängen."
+msgstr ""
 
 #: ../lib/actions.sh:105
 #, sh-format
 msgid "Checking MD5 sum for $base_file:"
-msgstr "Überprüfen der MD5-Summe für $base_file: "
+msgstr ""
 
 #: ../lib/actions.sh:127
 #, sh-format
 msgid "$str ok"
-msgstr "$str ok"
+msgstr ""
 
 #: ../lib/actions.sh:130
 #, sh-format
 msgid "$str failed (read error)"
-msgstr "$str fehlgeschlagen (Lesefehler)"
+msgstr ""
 
 #: ../lib/actions.sh:134
 #, sh-format
 msgid "$str failed (MD5 hash mismatch)"
-msgstr "$str fehlgeschlagen (MD5-Summe stimmt nicht überein)"
+msgstr ""
 
 #: ../lib/actions.sh:141
 msgid "Errors encountered during MD5 controls."
-msgstr "Fehler während der MD5-Überprüfung aufgetreten."
+msgstr ""
 
 #: ../lib/actions.sh:145
 #, sh-format
 msgid "unable to unmount the mount point $mount_point"
-msgstr "kann den Einhängepunkt $mount_point nicht aushängen"
+msgstr ""
 
 #: ../lib/actions.sh:146
 #, sh-format
 msgid "unable to remove the mount point $mount_point"
-msgstr "kann den Einhängepunkt $mount_point nicht entfernen"
+msgstr ""
 
 #: ../lib/actions.sh:159
 msgid "No burning method used."
-msgstr "Keine Brennmethode verwendet."
+msgstr ""
 
 #: ../lib/actions.sh:170
 #, sh-format
@@ -359,63 +338,61 @@ msgid ""
 "Cannot burn archives of the $TODAY, too big: ${size}M, must fit in "
 "$BM_BURNING_MAXSIZE"
 msgstr ""
-"Kann Archive von $TODAY nicht brennen, zu groß : ${size}M, maximale Größe "
-"laut Konfiguration aber nur $BM_BURNING_MAXSIZE"
 
 #: ../lib/actions.sh:196
 #, sh-format
 msgid "$BM_BURNING_DEVICE is mounted, unmounting before the burning session."
-msgstr "$BM_BURNING_DEVICE ist eingehängt, es wird vor dem Brennen ausgehängt."
+msgstr ""
 
 #: ../lib/actions.sh:197
 #, sh-format
 msgid "Unable to unmount the device $BM_BURNING_DEVICE"
-msgstr "Kann das Gerät $BM_BURNING_DEVICE nicht aushängen"
+msgstr ""
 
 #: ../lib/actions.sh:202
 #, sh-format
 msgid "Redirecting burning logs into $logfile"
-msgstr "Umleiten der Ausgaben des Brennprogramms nach $logfile"
+msgstr ""
 
 #: ../lib/actions.sh:207
 #, sh-format
 msgid "Forcing dev=${BM_BURNING_DEVFORCED} for cdrecord commands"
-msgstr "Erzwinge dev=${BM_BURNING_DEVFORCED} für cdrecord-Befehle"
+msgstr ""
 
 #: ../lib/actions.sh:215
 #, sh-format
 msgid "DVD burning requires $growisofs, aborting."
-msgstr "DVD-Brennen erfordert $growisofs, Abbruch."
+msgstr ""
 
 #: ../lib/actions.sh:218
 #, sh-format
 msgid "Exporting archives to the DVD media in $BM_BURNING_DEVICE."
-msgstr "Exportieren der Archive auf das DVD-Medium in $BM_BURNING_DEVICE."
+msgstr ""
 
 #: ../lib/actions.sh:220 ../lib/actions.sh:229 ../lib/actions.sh:234
 #: ../lib/actions.sh:245
 #, sh-format
 msgid "failed, check $logfile"
-msgstr "fehlgeschlagen, überprüfen Sie $logfile"
+msgstr ""
 
 #: ../lib/actions.sh:224 ../lib/actions.sh:239
 #, sh-format
 msgid "CDROM burning requires $cdrecord, aborting."
-msgstr "CD-Brennen erfordert $cdrecord, Abbruch."
+msgstr ""
 
 #: ../lib/actions.sh:227
 #, sh-format
 msgid "Blanking the CDRW in $BM_BURNING_DEVICE."
-msgstr "Löschen der CDRW in $BM_BURNING_DEVICE."
+msgstr ""
 
 #: ../lib/actions.sh:231 ../lib/actions.sh:242
 #, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
-msgstr "Brennen der Daten auf $BM_BURNING_DEVICE."
+msgstr ""
 
 #: ../lib/actions.sh:248
 msgid "Nothing to burn."
-msgstr "Nichts zu brennen."
+msgstr ""
 
 #: ../lib/actions.sh:251
 #, sh-format
@@ -423,60 +400,58 @@ msgid ""
 "The requested burning method is not supported, check BM_BURNING_METHOD in "
 "$conffile"
 msgstr ""
-"Die angeforderte Brennmethode wird nicht unterstützt, überprüfen Sie "
-"BM_BURNING_METHOD in $conffile"
 
 #: ../lib/actions.sh:268
 #, sh-format
 msgid "Cleaning $BM_REPOSITORY_ROOT"
-msgstr "Aufräumen von $BM_REPOSITORY_ROOT"
+msgstr ""
 
 #: ../lib/actions.sh:279
 #, sh-format
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND."
-msgstr "Pre-command läuft: $BM_PRE_BACKUP_COMMAND."
+msgstr ""
 
 #: ../lib/actions.sh:283
 msgid "Pre-command failed. Stopping the process."
-msgstr "Pre-command fehlgeschlagen. Prozess wurde gestoppt."
+msgstr ""
 
 #: ../lib/actions.sh:288
 #, sh-format
 msgid "Pre-command returned: \"$RET\" (success)."
-msgstr "Pre-command gab »$RET« (Erfolg) zurück."
+msgstr ""
 
 #: ../lib/actions.sh:298
 #, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
-msgstr "Post-command läuft: $BM_POST_BACKUP_COMMAND"
+msgstr ""
 
 #: ../lib/actions.sh:302
 msgid "Post-command failed."
-msgstr "Post-command fehlgeschlagen."
+msgstr ""
 
 #: ../lib/actions.sh:307
 #, sh-format
 msgid "Post-command returned: \"$RET\" (success)."
-msgstr "Post-command gab »$RET« (Erfolg) zurück."
+msgstr ""
 
 #: ../lib/files.sh:26
 #, sh-format
 msgid "unable to unmount $mount_point"
-msgstr "kann $mount_point nicht aushängen"
+msgstr ""
 
 #: ../lib/files.sh:28
 #, sh-format
 msgid "unable to remove $mount_point"
-msgstr "kann $mount_point nicht entfernen"
+msgstr ""
 
 #: ../lib/files.sh:70
 msgid "No path given"
-msgstr "Kein Pfad angegeben"
+msgstr ""
 
 #: ../lib/files.sh:160
 #, sh-format
 msgid "Removing lock for old PID, $pid is not running."
-msgstr "Löschen der Sperrdatei von altem Prozess, $pid läuft nicht."
+msgstr ""
 
 #: ../lib/files.sh:170
 #, sh-format
@@ -484,135 +459,128 @@ msgid ""
 "A backup-manager process ($pid) is already running with the conffile "
 "$conffile"
 msgstr ""
-"Ein backup-manager-Prozess ($pid) läuft bereits mit der Konfigurationsdatei "
-"$conffile"
 
 #: ../lib/files.sh:174 ../lib/files.sh:180
 #, sh-format
 msgid "Getting lock for backup-manager $pid with $conffile"
-msgstr "Holen der Sperrdatei für backup-manager $pid mit $conffile"
+msgstr ""
 
 #: ../lib/files.sh:183
 msgid "failed (check the file permissions)"
-msgstr "fehlgeschlagen (überprüfen Sie die Dateirechte)"
+msgstr ""
 
 #: ../lib/files.sh:198
 #, sh-format
 msgid "$file is not a regular file."
-msgstr "$file ist keine reguläre Datei."
+msgstr ""
 
 #: ../lib/files.sh:206
 #, sh-format
 msgid "Removing $file"
-msgstr "Löschen von $file"
+msgstr ""
 
 #: ../lib/files.sh:223
 msgid "Directory given is not found"
-msgstr "Angegebenes Verzeichnis nicht gefunden"
+msgstr ""
 
 #: ../lib/files.sh:233
 #, sh-format
 msgid "Entering directory $file."
-msgstr "Gehe in Verzeichnis $file."
+msgstr ""
 
 #: ../lib/files.sh:249
 #, sh-format
 msgid "No such file $file_to_create"
-msgstr "$file_to_create existiert nicht"
+msgstr ""
 
 #: ../lib/files.sh:261
 msgid "No file given"
-msgstr "Keine Datei angegeben"
+msgstr ""
 
 #: ../lib/files.sh:265
 #, sh-format
 msgid "The given file does not exist: $file_to_create"
-msgstr "Angegebene Datei existiert nicht: $file_to_create"
+msgstr ""
 
 #: ../lib/files.sh:269
 msgid "unable to get date from file"
-msgstr "kann Datum der Datei nicht ermitteln"
+msgstr ""
 
 #: ../lib/files.sh:270
 msgid "unable to find the pattern of the file"
-msgstr "kann das Dateimuster nicht finden"
+msgstr ""
 
 #: ../lib/files.sh:279
 #, sh-format
 msgid "$file is a duplicate of $file_to_create (using symlink)"
-msgstr "$file ist ein Duplikat von $file_to_create (verwende symlink)"
+msgstr ""
 
 #: ../lib/upload-methods.sh:38
 msgid "Using the upload method \"ssh\"."
-msgstr "Verwende die Upload-Methode »ssh«."
+msgstr ""
 
 #: ../lib/upload-methods.sh:47
 msgid "No valid destination found, SSH upload not possible."
-msgstr "Kein gültiges Ziel gefunden, SSH-Upload nicht möglich."
+msgstr ""
 
 #: ../lib/upload-methods.sh:65
 msgid "Unable to call backup-manager-upload."
-msgstr "Kann backup-manager-upload nicht aufrufen."
+msgstr ""
 
 #: ../lib/upload-methods.sh:71
 msgid "Using the upload method \"ftp\"."
-msgstr "Verwende die Upload-Methode »ftp«."
+msgstr ""
 
 #: ../lib/upload-methods.sh:81
 msgid "No valid destination found, FTP upload not possible."
-msgstr "Kein gültiges Ziel gefunden, FTP-Upload nicht möglich."
+msgstr ""
 
 #: ../lib/upload-methods.sh:97
 msgid "unable to call backup-manager-upload"
-msgstr "kann backup-manager-upload nicht aufrufen"
+msgstr ""
 
 #: ../lib/upload-methods.sh:106
 #, sh-format
 msgid "Uploading $directory to ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
-msgstr "Hochladen von $directory auf ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
+msgstr ""
 
 #: ../lib/upload-methods.sh:113 ../lib/upload-methods.sh:122
 #, sh-format
 msgid "Upload of $directory with rsync failed; check $logfile."
 msgstr ""
-"Hochladen von $directory mit rsync fehlgeschlagen; überprüfen Sie $logfile."
 
 #: ../lib/upload-methods.sh:139
 msgid "No valid destination found, RSYNC upload not possible."
-msgstr "Kein gültiges Ziel gefunden, RSYNC-Upload nicht möglich."
+msgstr ""
 
 #: ../lib/upload-methods.sh:161
 msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)"
 msgstr ""
-"Benötige einen Schlüssel, um rsync auszuführen (setzen Sie "
-"BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)"
 
 #: ../lib/upload-methods.sh:164
 msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
 msgstr ""
-"Keine Hosts für die rsync-Methode angegeben, setzen Sie "
-"BM_UPLOAD_RSYNC_HOSTS."
 
 #: ../lib/upload-methods.sh:171
 msgid "Using the upload method \"rsync\"."
-msgstr "Verwende die Upload-Methode »rsync«."
+msgstr ""
 
 #: ../lib/upload-methods.sh:178
 msgid "Using the upload method \"rsync-snapshots\"."
-msgstr "Verwende die Upload-Methode »rsync-snapshots«."
+msgstr ""
 
 #: ../backup-manager:66
 msgid "backup-manager must be run as root."
-msgstr "Backup-manager muss als root ausgeführt werden."
+msgstr ""
 
 #: ../backup-manager:118
 msgid "-c option must be followed by an existing filename"
-msgstr "Auf die Option -c muss der Name einer existierenden Datei folgen"
+msgstr ""
 
 #: ../backup-manager:142
 msgid "Unable to exec the pre-command"
-msgstr "Kann pre-command nicht ausführen"
+msgstr ""
 
 #: ../backup-manager:183
 msgid "Unable to exec post-command"
-msgstr "Kann post-command nicht ausführen"
+msgstr ""

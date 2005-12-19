@@ -40,7 +40,7 @@ clean:
 		  messages messages.mo \
 		  messages.po 
 		  
-.po.mo: $(PACKAGE).pot
+.po.mo: backup-manager.pot
 	@echo "Merging $(PACKAGE).pot and $*.po"
 	@msgmerge $*.po $(PACKAGE).pot -o $*.po.new
 	@if [ "`diff $*.po $*.po.new | grep '[<>]' | wc -l`" -ne 2 ]; then \

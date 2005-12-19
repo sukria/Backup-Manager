@@ -1,9 +1,20 @@
-#!/bin/sh
+# Copyright (C) 2005 The Backup Manager Authors
+#
+# See the AUTHORS file for details.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
 # Check that every key in the conffile is ok for a proper run.
 # Also manage deprecated confkeys the best as possible, so a deprecated
 # conffile just renders warnings but still works as before.
-
 
 # we'll count the number of warnings, here
 nb_warnings=0
@@ -154,6 +165,14 @@ if [ "$BM_ARCHIVE_METHOD" = "mysql" ]; then
 fi
 
 # Burning system
+if [ -n "$BM_BURNING" ]; then
+        case "$BM_BURNING" in 
+            ""|"no"|"false"|"none")
+                BM_BURNING_METHOD="none"
+            ;;
+        esac
+fi        
+
 if [ -n "$BM_BURNING_METHOD" ] && 
    [ "$BM_BURNING_METHOD" != "none" ] ; then
 	confkey_require "BM_BURNING_DEVICE" "/dev/cdrom"

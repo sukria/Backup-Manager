@@ -182,6 +182,8 @@ export BM_UPLOAD_SSH_USER=""
 export BM_UPLOAD_SSH_KEY=""
 # specific ssh hosts 
 export BM_UPLOAD_SSH_HOSTS=""
+# port to use for SSH connections (leave blank for default one)
+export BM_UPLOAD_SSH_PORT=""
 # destination for ssh uploads (overrides BM_UPLOAD_DESTINATION)
 export BM_UPLOAD_SSH_DESTINATION=""
 

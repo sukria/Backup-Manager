@@ -3,10 +3,10 @@
 # Clytie Siddall <clytie@riverland.net.au>, 2005.
 # 
 msgid ""
-""
-msgstr "Project-Id-Version: backup-manager 0.6\n"
+msgstr ""
+"Project-Id-Version: backup-manager 0.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-15 17:27+0100\n"
+"POT-Creation-Date: 2005-12-19 11:51+0100\n"
 "PO-Revision-Date: 2005-12-16 14:11+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -16,576 +16,605 @@ msgstr "Project-Id-Version: backup-manager 0.6\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 "X-Generator: LocFactoryEditor 1.5.1b1\n"
 
-#:../lib/backup-methods.sh:13
-#,sh-format
+#: ../lib/backup-methods.sh:26
+#, sh-format
 msgid "$file_to_create: ok (${size}M,"
 msgstr "$file_to_create: được (${size}M,"
 
-#:../lib/backup-methods.sh:23
-#,sh-format
+#: ../lib/backup-methods.sh:36
+#, sh-format
 msgid "Unable to purge duplicates of $file_to_create"
 msgstr "Không thể tẩy các bản sao của $file_to_create"
 
-#:../lib/backup-methods.sh:37
-#,sh-format
+#: ../lib/backup-methods.sh:50
+#, sh-format
 msgid "Unable to create $target, check $logfile"
 msgstr "không thể tạo $target, hãy kiểm tra lại tập tin bản ghi $logfile"
 
-#:../lib/backup-methods.sh:49 ../lib/backup-methods.sh:211
-#,sh-format
+#: ../lib/backup-methods.sh:62 ../lib/backup-methods.sh:224
+#, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Tập tin $file_to_create đã có nên bỏ qua."
 
-#:../lib/backup-methods.sh:54
-#,sh-format
+#: ../lib/backup-methods.sh:67
+#, sh-format
 msgid "Unable to exec $command; check $logfile"
-msgstr "Không thể thực hiện lệnh $command; hãy kiểm tra lại tập tin bản ghi $logfile"
+msgstr ""
+"Không thể thực hiện lệnh $command; hãy kiểm tra lại tập tin bản ghi $logfile"
 
-#:../lib/backup-methods.sh:58
-#,sh-format
+#: ../lib/backup-methods.sh:71
+#, sh-format
 msgid "$command ended, but $file_to_create not found; check $logfile"
-msgstr "$command đã kết thức, còn không tìm thấy $file_to_create; hãy kiểm tra lại tập tin bản ghi $logfile"
+msgstr ""
+"$command đã kết thức, còn không tìm thấy $file_to_create; hãy kiểm tra lại "
+"tập tin bản ghi $logfile"
 
-#:../lib/backup-methods.sh:66
-#,sh-format
+#: ../lib/backup-methods.sh:79
+#, sh-format
 msgid "Error while using $gzip."
 msgstr "Gặp lỗi khi chạy $gzip."
 
-#:../lib/backup-methods.sh:69
-#,sh-format
+#: ../lib/backup-methods.sh:82
+#, sh-format
 msgid "Compressor $compress requires $gzip"
 msgstr "Bộ nén $compress cần thiết $gzip"
 
-#:../lib/backup-methods.sh:74
-#,sh-format
+#: ../lib/backup-methods.sh:87
+#, sh-format
 msgid "Error while using $bzip."
 msgstr "Gặp lỗi khi chạy $bzip."
 
-#:../lib/backup-methods.sh:77
-#,sh-format
+#: ../lib/backup-methods.sh:90
+#, sh-format
 msgid "Compressor $compress requires $bzip"
 msgstr "Bộ nén $compress cần thiết $bzip"
 
-#:../lib/backup-methods.sh:84
-#,sh-format
+#: ../lib/backup-methods.sh:97
+#, sh-format
 msgid "No such compressor supported: $compress"
 msgstr "Không hỗ trợ bộ nén như vậy: $compress"
 
-#:../lib/backup-methods.sh:91
-#,sh-format
+#: ../lib/backup-methods.sh:104
+#, sh-format
 msgid "Unable to find $file_to_create"
 msgstr "Không tìm thậy $file_to_create"
 
-#:../lib/backup-methods.sh:101 ../lib/backup-methods.sh:227
-#:../lib/backup-methods.sh:247 ../lib/backup-methods.sh:268
-#,sh-format
+#: ../lib/backup-methods.sh:114 ../lib/backup-methods.sh:240
+#: ../lib/backup-methods.sh:260 ../lib/backup-methods.sh:281
+#, sh-format
 msgid "Using method \"$BM_ARCHIVE_METHOD\""
 msgstr "Bằng phương pháp « $BM_ARCHIVE_METHOD »"
 
-#:../lib/backup-methods.sh:124
-#,sh-format
+#: ../lib/backup-methods.sh:137
+#, sh-format
 msgid "Target $DIR does not exist, skipping."
 msgstr "Không có mục đích $DIR nên bỏ qua."
 
-#:../lib/backup-methods.sh:149
-#,sh-format
+#: ../lib/backup-methods.sh:162
+#, sh-format
 msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr "Không biết tần số: $BM_TARBALLINC_MASTERDATETYPE"
 
-#:../lib/backup-methods.sh:206
-#,sh-format
+#: ../lib/backup-methods.sh:219
+#, sh-format
 msgid "The filetype $BM_TARBALL_FILETYPE is not supported."
 msgstr "Không hỗ trợ kiểu tập tin $BM_TARBALL_FILETYPE."
 
-#:../lib/backup-methods.sh:219
-#,sh-format
+#: ../lib/backup-methods.sh:232
+#, sh-format
 msgid "During the tarballs generation, $nb_err error(s) occurred."
 msgstr "Gặp $nb_err lỗi trong khi tạo ra tarball."
 
-#:../lib/backup-methods.sh:229
-#,sh-format
+#: ../lib/backup-methods.sh:242
+#, sh-format
 msgid "The \"mysql\" method is chosen, but $mysqldump is not found."
 msgstr "Phương pháp « mysql » đã chọn còn không tìm thấy $mysqldump."
 
-#:../lib/backup-methods.sh:249
-#,sh-format
+#: ../lib/backup-methods.sh:262
+#, sh-format
 msgid "The \"svn\" method is chosen, but $svnadmin is not found."
 msgstr "Phương pháp « svn » đã chọn còn không tìm thấy $svnadmin."
 
-#:../lib/backup-methods.sh:277
-#,sh-format
+#: ../lib/backup-methods.sh:290
+#, sh-format
 msgid "Not enough args for this archive ($archive), skipping."
 msgstr "Không đủ đối số cho kho này ($archive) nên bỏ qua."
 
-#:../lib/sanitize.sh:18
-#,sh-format
+#: ../lib/sanitize.sh:29
+#, sh-format
 msgid "The configuration key $key is not set, using \"$default\"."
 msgstr "Chưa lập khóa cấu hình $key nên dùng mặc định $default."
 
-#:../lib/sanitize.sh:28
-#,sh-format
+#: ../lib/sanitize.sh:39
+#, sh-format
 msgid ""
 "The configuration key \"$deprecated_key\" is deprecated, you should rename "
 "it \"$new_key\". Using \"$deprecated_value\"."
-msgstr "Khóa cấu hình « $deprecated_key » bị phản đối nên bạn hãy thay đổi tên nó "
+msgstr ""
+"Khóa cấu hình « $deprecated_key » bị phản đối nên bạn hãy thay đổi tên nó "
 "thành « $new_key ». Như thế thì đang sử dụng « $deprecated_value »."
 
-#:../lib/sanitize.sh:63
-#,sh-format
+#: ../lib/sanitize.sh:74
+#, sh-format
 msgid "The configuration key $key is not set but $keymandatory is enabled."
 msgstr "Khóa cấu hình $key chưa được lập còn $keymandatory có bật."
 
-#:../lib/sanitize.sh:81
-#,sh-format
+#: ../lib/sanitize.sh:92
+#, sh-format
 msgid "Deprecated boolean, $key is set to \"yes\", setting \"true\" instead."
-msgstr "Biểu thực bun bị phản đối, khóa $key được lập thành « yes » (có) nên lập nó thành « true » (đúng) thay thế."
+msgstr ""
+"Biểu thực bun bị phản đối, khóa $key được lập thành « yes » (có) nên lập nó "
+"thành « true » (đúng) thay thế."
 
-#:../lib/sanitize.sh:86
-#,sh-format
+#: ../lib/sanitize.sh:97
+#, sh-format
 msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
-msgstr "Biểu thực bun bị phản đối, khóa $key được lập thành « nó » (không) nên lập nó thành « false » (không đúng) thay thế."
+msgstr ""
+"Biểu thực bun bị phản đối, khóa $key được lập thành « nó » (không) nên lập "
+"nó thành « false » (không đúng) thay thế."
 
-#:../lib/sanitize.sh:195
-#,sh-format
+#: ../lib/sanitize.sh:214
+#, sh-format
 msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
 "found."
 msgstr "Gặp $nb_warnings cảnh báo khi hợp lệ hóa tập tin cấu hình $conffile."
 
-#:../lib/md5sum.sh:14
-#,sh-format
+#: ../lib/md5sum.sh:28
+#, sh-format
 msgid "No md5file found: $md5file"
 msgstr "Không tìm thấy tập tin MD5: $md5file"
 
-#:../lib/md5sum.sh:66
-#,sh-format
+#: ../lib/md5sum.sh:80
+#, sh-format
 msgid "Archive given does not exist in the repository: $archive"
 msgstr "Kho đã cho không có trong nơi kho: $archive"
 
-#:../lib/dialog.sh:13
+#: ../lib/dialog.sh:27
 msgid "Output:"
 msgstr "Xuất:"
 
-#:../lib/dialog.sh:14
+#: ../lib/dialog.sh:28
 msgid "Print this short help message."
 msgstr "Hiển thị thông điệp trợ giúp ngắn này."
 
-#:../lib/dialog.sh:15
+#: ../lib/dialog.sh:29
 msgid "Print what happens on STDOUT."
 msgstr "In ra thiết bị xuất chuẩn."
 
-#:../lib/dialog.sh:16
+#: ../lib/dialog.sh:30
 msgid "Disable warnings."
 msgstr "Tắt mọi cảnh báo."
 
-#:../lib/dialog.sh:19
+#: ../lib/dialog.sh:33
 msgid "Single actions:"
 msgstr "Hành động đơn:"
 
-#:../lib/dialog.sh:20
+#: ../lib/dialog.sh:34
 msgid "Just upload the files of the day."
 msgstr "Tải lên chỉ những tập tin của hôm nay."
 
-#:../lib/dialog.sh:21
+#: ../lib/dialog.sh:35
 msgid "Just burn the files of the day."
 msgstr "Ghi chỉ những tập tin của hôm nay."
 
-#:../lib/dialog.sh:22
+#: ../lib/dialog.sh:36
 msgid "Just test the md5 sums."
 msgstr "Kiểm tra chỉ tổng MD5."
 
-#:../lib/dialog.sh:23
+#: ../lib/dialog.sh:37
 msgid "Just purge old archives."
 msgstr "Tẩy chỉ các kho cũ."
 
-#:../lib/dialog.sh:26
+#: ../lib/dialog.sh:40
 msgid "Behaviour:"
 msgstr "Hành vi:"
 
-#:../lib/dialog.sh:27
+#: ../lib/dialog.sh:41
 msgid "Choose an alternate config file."
 msgstr "Chọn tập tịn cấu hình thay thế."
 
-#:../lib/dialog.sh:28
+#: ../lib/dialog.sh:42
 msgid "Force overwrite of existing archives."
 msgstr "Buộc ghi đè lên kho đã có."
 
-#:../lib/dialog.sh:31
+#: ../lib/dialog.sh:45
 msgid "Unwanted actions:"
 msgstr "Hành động vô ích:"
 
-#:../lib/dialog.sh:32
+#: ../lib/dialog.sh:46
 msgid "Disable the upload process."
 msgstr "Tắt tiến trình tải lên."
 
-#:../lib/dialog.sh:33
+#: ../lib/dialog.sh:47
 msgid "Disable the burning process."
 msgstr "Tắt tiến trình ghi."
 
-#:../lib/dialog.sh:34
+#: ../lib/dialog.sh:48
 msgid "Disable the purge process."
 msgstr "Tắt tiến trình tẩy."
 
-#:../lib/dialog.sh:46
+#: ../lib/dialog.sh:60
 msgid "Warning, process interupted, archives may be corrupted."
 msgstr "Cảnh báo: tiến trình bị ngắt thì kho có lẽ bị hỏng."
 
-#:../lib/dialog.sh:56
+#: ../lib/dialog.sh:70
 msgid ""
 "the BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
-msgstr "khóa cấu hình BM_TARBALL_FILETYPE được lập thành « zip » nhưng chưa cài đặt zip."
+msgstr ""
+"khóa cấu hình BM_TARBALL_FILETYPE được lập thành « zip » nhưng chưa cài đặt "
+"zip."
 
-#:../lib/dialog.sh:61
+#: ../lib/dialog.sh:75
 msgid ""
 "the BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
 "installed."
-msgstr "khóa cấu hình BM_TARBALL_FILETYPE được lập thành « bzip » nhưng chưa cài đặt "
+msgstr ""
+"khóa cấu hình BM_TARBALL_FILETYPE được lập thành « bzip » nhưng chưa cài đặt "
 "bzip."
 
-#:../lib/dialog.sh:71
-#,sh-format
+#: ../lib/dialog.sh:85
+#, sh-format
 msgid "The BM_TARBALL_DIRECTORIES conf key is not set in $conffile"
 msgstr "Khóa cấu hình BM_TARBALL_DIRECTORIES chưa được lập trong $conffile."
 
-#:../lib/dialog.sh:79
-#,sh-format
+#: ../lib/dialog.sh:93
+#, sh-format
 msgid "$BM_REPOSITORY_ROOT does not exist, creating it"
 msgstr "Không có $BM_REPOSITORY_ROOT nên đang tạo nó"
 
-#:../lib/logger.sh:126
+#: ../lib/logger.sh:140
 msgid "Releasing lock"
 msgstr "Đang nhả khóa"
 
-#:../lib/actions.sh:40
+#: ../lib/actions.sh:40
 msgid "No backup method used."
 msgstr "Chưa thực hiện phương pháp lưu trữ nào."
 
-#:../lib/actions.sh:43
-#,sh-format
+#: ../lib/actions.sh:43
+#, sh-format
 msgid "No such backup method: $BM_ARCHIVE_METHOD"
 msgstr "Không có phương pháp lưu trữ như vậy: $BM_ARCHIVE_METHOD"
 
-#:../lib/actions.sh:68
+#: ../lib/actions.sh:68
 msgid "No upload method used."
 msgstr "Chưa thực hiện phương pháp tải lên nào."
 
-#:../lib/actions.sh:71
-#,sh-format
+#: ../lib/actions.sh:71
+#, sh-format
 msgid "The upload method \"$method\" is not supported; skipping."
 msgstr "Không hỗ trợ phương pháp tải lên « $method » nên bỏ qua."
 
-#:../lib/actions.sh:85
-#,sh-format
+#: ../lib/actions.sh:85
+#, sh-format
 msgid ""
 "MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE "
 "in $conffile."
-msgstr "Việc kiểm tra kiểu MD5 được thực hiện chỉ trên vật chứa đĩa CD thôi. Hãy lập giá trị thiết bị ghi BM_BURNING_DEVICE trong tập tin cấu hình $conffile."
+msgstr ""
+"Việc kiểm tra kiểu MD5 được thực hiện chỉ trên vật chứa đĩa CD thôi. Hãy lập "
+"giá trị thiết bị ghi BM_BURNING_DEVICE trong tập tin cấu hình $conffile."
 
-#:../lib/actions.sh:91
-#,sh-format
+#: ../lib/actions.sh:91
+#, sh-format
 msgid "The mount point $mount_point is not there"
 msgstr "Không có điểm gắn kết $mount_point."
 
-#:../lib/actions.sh:95
-#,sh-format
+#: ../lib/actions.sh:95
+#, sh-format
 msgid "Mounting $BM_BURNING_DEVICE on $mount_point."
-msgstr "Đang gắn kết thiết bị ghi $BM_BURNING_DEVICE vào điểm gắn $mount_point."
+msgstr ""
+"Đang gắn kết thiết bị ghi $BM_BURNING_DEVICE vào điểm gắn $mount_point."
 
-#:../lib/actions.sh:96
-#,sh-format
+#: ../lib/actions.sh:96
+#, sh-format
 msgid "Unable to mount $BM_BURNING_DEVICE on $mount_point."
-msgstr "Không thể gắn kết thiết bị ghi $BM_BURNING_DEVICE vào điểm gắn $mount_point."
+msgstr ""
+"Không thể gắn kết thiết bị ghi $BM_BURNING_DEVICE vào điểm gắn $mount_point."
 
-#:../lib/actions.sh:105
-#,sh-format
+#: ../lib/actions.sh:105
+#, sh-format
 msgid "Checking MD5 sum for $base_file:"
 msgstr "Đang kiểm tra tổng MD5 cho tập tin cơ bản $base_file:"
 
-#:../lib/actions.sh:127
-#,sh-format
+#: ../lib/actions.sh:127
+#, sh-format
 msgid "$str ok"
 msgstr "$str được"
 
-#:../lib/actions.sh:130
-#,sh-format
+#: ../lib/actions.sh:130
+#, sh-format
 msgid "$str failed (read error)"
 msgstr "$str bị lỗi (lỗi đọc)"
 
-#:../lib/actions.sh:134
-#,sh-format
+#: ../lib/actions.sh:134
+#, sh-format
 msgid "$str failed (MD5 hash mismatch)"
 msgstr "$str bị lỗi (băm MD5 không khớp)"
 
-#:../lib/actions.sh:141
+#: ../lib/actions.sh:141
 msgid "Errors encountered during MD5 controls."
 msgstr "Gặp lỗi trong khi điều khiển MD5."
 
-#:../lib/actions.sh:145
-#,sh-format
+#: ../lib/actions.sh:145
+#, sh-format
 msgid "unable to unmount the mount point $mount_point"
 msgstr "không thể tháo gắn kết điểm gắn $mount_point"
 
-#:../lib/actions.sh:146
-#,sh-format
+#: ../lib/actions.sh:146
+#, sh-format
 msgid "unable to remove the mount point $mount_point"
 msgstr "không thể gỡ bỏ điểm gắn kết $mount_point"
 
-#:../lib/actions.sh:159
+#: ../lib/actions.sh:159
 msgid "No burning method used."
 msgstr "Chưa thực hiện phương pháp ghi nào."
 
-#:../lib/actions.sh:169
-#,sh-format
+#: ../lib/actions.sh:170
+#, sh-format
 msgid ""
 "Cannot burn archives of the $TODAY, too big: ${size}M, must fit in "
 "$BM_BURNING_MAXSIZE"
-msgstr "Không thể ghi kho của $TODAY vì quá lớn: ${size}M phải vừa trong "
+msgstr ""
+"Không thể ghi kho của $TODAY vì quá lớn: ${size}M phải vừa trong "
 "$BM_BURNING_MAXSIZE"
 
-#:../lib/actions.sh:195
-#,sh-format
+#: ../lib/actions.sh:196
+#, sh-format
 msgid "$BM_BURNING_DEVICE is mounted, unmounting before the burning session."
-msgstr "$BM_BURNING_DEVICE được gắn kết nên đang tháo gắn kết nó trước phiên chạy ghi."
+msgstr ""
+"$BM_BURNING_DEVICE được gắn kết nên đang tháo gắn kết nó trước phiên chạy "
+"ghi."
 
-#:../lib/actions.sh:196
-#,sh-format
+#: ../lib/actions.sh:197
+#, sh-format
 msgid "Unable to unmount the device $BM_BURNING_DEVICE"
 msgstr "Không thể tháo gắn kết thiết bị $BM_BURNING_DEVICE"
 
-#:../lib/actions.sh:201
-#,sh-format
+#: ../lib/actions.sh:202
+#, sh-format
 msgid "Redirecting burning logs into $logfile"
 msgstr "Đang chuyển hướng các bản ghi về ghi dữ liệu sang $logfile"
 
-#:../lib/actions.sh:206
-#,sh-format
+#: ../lib/actions.sh:207
+#, sh-format
 msgid "Forcing dev=${BM_BURNING_DEVFORCED} for cdrecord commands"
-msgstr "Đang buộc giá trị « dev=${BM_BURNING_DEVFORCED} » cho các lệnh cdrecord (ghi vào đĩa CD)"
+msgstr ""
+"Đang buộc giá trị « dev=${BM_BURNING_DEVFORCED} » cho các lệnh cdrecord (ghi "
+"vào đĩa CD)"
 
-#:../lib/actions.sh:214
-#,sh-format
+#: ../lib/actions.sh:215
+#, sh-format
 msgid "DVD burning requires $growisofs, aborting."
 msgstr "Việc ghi vào đĩa DVD cần thiết $growisofs nên hủy bỏ."
 
-#:../lib/actions.sh:217
-#,sh-format
+#: ../lib/actions.sh:218
+#, sh-format
 msgid "Exporting archives to the DVD media in $BM_BURNING_DEVICE."
-msgstr "Đang xuất khẩu các kho vào vật chứa DVD trong thiết bị ghi $BM_BURNING_DEVICE."
+msgstr ""
+"Đang xuất khẩu các kho vào vật chứa DVD trong thiết bị ghi "
+"$BM_BURNING_DEVICE."
 
-#:../lib/actions.sh:219 ../lib/actions.sh:228 ../lib/actions.sh:233
-#:../lib/actions.sh:244
-#,sh-format
+#: ../lib/actions.sh:220 ../lib/actions.sh:229 ../lib/actions.sh:234
+#: ../lib/actions.sh:245
+#, sh-format
 msgid "failed, check $logfile"
 msgstr "bị lỗi, hãy kiểm tra xem bản ghi $logfile"
 
-#:../lib/actions.sh:223 ../lib/actions.sh:238
-#,sh-format
+#: ../lib/actions.sh:224 ../lib/actions.sh:239
+#, sh-format
 msgid "CDROM burning requires $cdrecord, aborting."
 msgstr "Việc ghi vào đĩa CD-ROM cần thiết $cdrecord nên hủy bỏ."
 
-#:../lib/actions.sh:226
-#,sh-format
+#: ../lib/actions.sh:227
+#, sh-format
 msgid "Blanking the CDRW in $BM_BURNING_DEVICE."
 msgstr "Đang xóa trắng đĩa CD-RW trong thiết bị ghi $BM_BURNING_DEVICE"
 
-#:../lib/actions.sh:230 ../lib/actions.sh:241
-#,sh-format
+#: ../lib/actions.sh:231 ../lib/actions.sh:242
+#, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
 msgstr "Đang ghi dữ liệu vào $BM_BURNING_DEVICE:"
 
-#:../lib/actions.sh:247
+#: ../lib/actions.sh:248
 msgid "Nothing to burn."
 msgstr "Không có gì cần ghi."
 
-#:../lib/actions.sh:250
-#,sh-format
+#: ../lib/actions.sh:251
+#, sh-format
 msgid ""
 "The requested burning method is not supported, check BM_BURNING_METHOD in "
 "$conffile"
-msgstr "Không hỗ trợ phương pháp ghi đã yêu cầu: hãy kiểm tra lại BM_BURNING_METHOD "
+msgstr ""
+"Không hỗ trợ phương pháp ghi đã yêu cầu: hãy kiểm tra lại BM_BURNING_METHOD "
 "trong $conffile"
 
-#:../lib/actions.sh:267
-#,sh-format
+#: ../lib/actions.sh:268
+#, sh-format
 msgid "Cleaning $BM_REPOSITORY_ROOT"
 msgstr "Đang xóa sạch $BM_REPOSITORY_ROOT"
 
-#:../lib/actions.sh:278
-#,sh-format
+#: ../lib/actions.sh:279
+#, sh-format
 msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND."
 msgstr "Đang chạy tiền lệnh: $BM_PRE_BACKUP_COMMAND."
 
-#:../lib/actions.sh:282
+#: ../lib/actions.sh:283
 msgid "Pre-command failed. Stopping the process."
 msgstr "Tiền lệnh bị lỗi nên ngừng tiến trình."
 
-#:../lib/actions.sh:287
-#,sh-format
+#: ../lib/actions.sh:288
+#, sh-format
 msgid "Pre-command returned: \"$RET\" (success)."
 msgstr "Tiền lệnh đã trả gởi: « $RET » (thành công)."
 
-#:../lib/actions.sh:297
-#,sh-format
+#: ../lib/actions.sh:298
+#, sh-format
 msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
 msgstr "Đang chạy hậu lệnh: $BM_POST_BACKUP_COMMAND"
 
-#:../lib/actions.sh:301
+#: ../lib/actions.sh:302
 msgid "Post-command failed."
 msgstr "Hậu lệnh bị lỗi."
 
-#:../lib/actions.sh:306
-#,sh-format
+#: ../lib/actions.sh:307
+#, sh-format
 msgid "Post-command returned: \"$RET\" (success)."
 msgstr "Hậu lệnh đã trả gởi: « $RET » (thành công)."
 
-#:../lib/files.sh:12
-#,sh-format
+#: ../lib/files.sh:26
+#, sh-format
 msgid "unable to unmount $mount_point"
 msgstr "không thể tháo gắn kết điểm gắn $mount_point"
 
-#:../lib/files.sh:14
-#,sh-format
+#: ../lib/files.sh:28
+#, sh-format
 msgid "unable to remove $mount_point"
 msgstr "không thể gỡ bỏ điểm gắn kết $mount_point"
 
-#:../lib/files.sh:56
+#: ../lib/files.sh:70
 msgid "No path given"
 msgstr "Chưa cho đường dẫn"
 
-#:../lib/files.sh:146
-#,sh-format
+#: ../lib/files.sh:160
+#, sh-format
 msgid "Removing lock for old PID, $pid is not running."
 msgstr "Đang gỡ bỏ khóa cho PID cũ, $pid không đang chạy."
 
-#:../lib/files.sh:156
-#,sh-format
+#: ../lib/files.sh:170
+#, sh-format
 msgid ""
 "A backup-manager process ($pid) is already running with the conffile "
 "$conffile"
-msgstr "Một tiến trình backup-manager đang chạy ($pid) với tập tin cấu hình "
+msgstr ""
+"Một tiến trình backup-manager đang chạy ($pid) với tập tin cấu hình "
 "$conffile."
 
-#:../lib/files.sh:160 ../lib/files.sh:166
-#,sh-format
+#: ../lib/files.sh:174 ../lib/files.sh:180
+#, sh-format
 msgid "Getting lock for backup-manager $pid with $conffile"
 msgstr "Đang lấy khóa cho backup-manager $pid với tập tin cấu hình $conffile"
 
-#:../lib/files.sh:169
+#: ../lib/files.sh:183
 msgid "failed (check the file permissions)"
 msgstr "bị lỗi (hãy kiểm tra lại quyền truy cập tập tin)"
 
-#:../lib/files.sh:184
-#,sh-format
+#: ../lib/files.sh:198
+#, sh-format
 msgid "$file is not a regular file."
 msgstr "$file không phải là tập tin chuẩn."
 
-#:../lib/files.sh:192
-#,sh-format
+#: ../lib/files.sh:206
+#, sh-format
 msgid "Removing $file"
 msgstr "Đang gỡ bỏ tập tin $file"
 
-#:../lib/files.sh:209
+#: ../lib/files.sh:223
 msgid "Directory given is not found"
 msgstr "Không tìm thấy thư mục đã cho"
 
-#:../lib/files.sh:219
-#,sh-format
+#: ../lib/files.sh:233
+#, sh-format
 msgid "Entering directory $file."
 msgstr "Đang vào thư mục $file"
 
-#:../lib/files.sh:235
-#,sh-format
+#: ../lib/files.sh:249
+#, sh-format
 msgid "No such file $file_to_create"
 msgstr "Không có tập tin $file_to_create như vậy"
 
-#:../lib/files.sh:247
+#: ../lib/files.sh:261
 msgid "No file given"
 msgstr "Chưa cho tập tin"
 
-#:../lib/files.sh:251
-#,sh-format
+#: ../lib/files.sh:265
+#, sh-format
 msgid "The given file does not exist: $file_to_create"
 msgstr "Không có tập tin đã cho: $file_to_create"
 
-#:../lib/files.sh:255
+#: ../lib/files.sh:269
 msgid "unable to get date from file"
 msgstr "không thể lấy ngày từ tập tin"
 
-#:../lib/files.sh:256
+#: ../lib/files.sh:270
 msgid "unable to find the pattern of the file"
 msgstr "không tìm thấy mẫu của tập tin"
 
-#:../lib/files.sh:265
-#,sh-format
+#: ../lib/files.sh:279
+#, sh-format
 msgid "$file is a duplicate of $file_to_create (using symlink)"
-msgstr "Tập tin $file là bản sao của $file_to_create (dùng liên kết tượng trưng)"
+msgstr ""
+"Tập tin $file là bản sao của $file_to_create (dùng liên kết tượng trưng)"
 
-#:../lib/upload-methods.sh:38
+#: ../lib/upload-methods.sh:38
 msgid "Using the upload method \"ssh\"."
 msgstr "Đang dùng phương pháp tải lên « ssh »."
 
-#:../lib/upload-methods.sh:47
+#: ../lib/upload-methods.sh:47
 msgid "No valid destination found, SSH upload not possible."
 msgstr "Không tìm thấy đích hợp lệ nên không thể tải lên cách SSH."
 
-#:../lib/upload-methods.sh:65
+#: ../lib/upload-methods.sh:65
 msgid "Unable to call backup-manager-upload."
 msgstr "Không thể gọi tiến trình tải lên backup-manager-upload"
 
-#:../lib/upload-methods.sh:71
+#: ../lib/upload-methods.sh:71
 msgid "Using the upload method \"ftp\"."
 msgstr "Đang dùng phương pháp tải lên « ftp »"
 
-#:../lib/upload-methods.sh:81
+#: ../lib/upload-methods.sh:81
 msgid "No valid destination found, FTP upload not possible."
 msgstr "Không tìm thấy đích hợp lệ nên không thể tải lên cách FTP."
 
-#:../lib/upload-methods.sh:97
+#: ../lib/upload-methods.sh:97
 msgid "unable to call backup-manager-upload"
 msgstr "không thể gọi tiến trình tải lên backup-manager-upload"
 
-#:../lib/upload-methods.sh:106
-#,sh-format
+#: ../lib/upload-methods.sh:106
+#, sh-format
 msgid "Uploading $directory to ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
-msgstr "Đang tải thư mục $directory lên máy ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
+msgstr ""
+"Đang tải thư mục $directory lên máy ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
 
-#:../lib/upload-methods.sh:113 ../lib/upload-methods.sh:122
-#,sh-format
+#: ../lib/upload-methods.sh:113 ../lib/upload-methods.sh:122
+#, sh-format
 msgid "Upload of $directory with rsync failed; check $logfile."
-msgstr "Việc tải lên thư mục $directory với rsync; hãy kiểm tra lại tập tin bản ghi $logfile."
+msgstr ""
+"Việc tải lên thư mục $directory với rsync; hãy kiểm tra lại tập tin bản ghi "
+"$logfile."
 
-#:../lib/upload-methods.sh:139
+#: ../lib/upload-methods.sh:139
 msgid "No valid destination found, RSYNC upload not possible."
 msgstr "Không tìm thấy đích hợp lệ nên không thể tải lên cách RSYNC."
 
-#:../lib/upload-methods.sh:161
+#: ../lib/upload-methods.sh:161
 msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)"
-msgstr "Cần thiết khóa để chạy rsync (lập BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)"
+msgstr ""
+"Cần thiết khóa để chạy rsync (lập BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)"
 
-#:../lib/upload-methods.sh:164
+#: ../lib/upload-methods.sh:164
 msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
 msgstr "Chưa cho máy đối với phương pháp rsync, hãy lập BM_UPLOAD_RSYNC_HOSTS."
 
-#:../lib/upload-methods.sh:171
+#: ../lib/upload-methods.sh:171
 msgid "Using the upload method \"rsync\"."
 msgstr "Đang dùng phương pháp tải lên « rsync »."
 
-#:../lib/upload-methods.sh:178
+#: ../lib/upload-methods.sh:178
 msgid "Using the upload method \"rsync-snapshots\"."
 msgstr "Đang dùng phương pháp tải lên « rsync-snapshots »."
 
-#:../backup-manager:66
+#: ../backup-manager:66
 msgid "backup-manager must be run as root."
 msgstr "phải chạy trình backup-manager với tư cách người chủ (root)."
 
-#:../backup-manager:118
+#: ../backup-manager:118
 msgid "-c option must be followed by an existing filename"
 msgstr "tùy chọn « -c » phải có một tên tập tin tồn tại theo sau"
 
-#:../backup-manager:142
+#: ../backup-manager:142
 msgid "Unable to exec the pre-command"
 msgstr "Không thể thực hiện tiền lệnh"
 
-#:../backup-manager:183
+#: ../backup-manager:183
 msgid "Unable to exec post-command"
 msgstr "Không thể thực hiện hậu lệnh"

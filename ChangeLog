@@ -1,5 +1,21 @@
 2005-12-19  Alexis Sukrieh	<sukria@backup-manager.org>
 
+	* INSTALL:
+	  + bits about dependencies
+	* NEWS:
+	  + The 0.6 Changelog
+	* doc/DISCLAIMER:
+	  + Removed, not needed anymore.
+	* doc/README:
+	  + Bits about the available formats.
+	* doc/user-guide.txt:
+	  + Added the text version in the repository, so users
+	    can have a light version of the guide with the release.
+	* doc/version.ent:
+	  + Revision: 1.0
+
+2005-12-19  Alexis Sukrieh	<sukria@backup-manager.org>
+
 	* New configuration key BM_UPLOAD_SSH_PORT
 	  + backup-manager.conf.tpl
 	  + doc/user-guide.sgml

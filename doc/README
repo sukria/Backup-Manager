@@ -1,0 +1,8 @@
+The text version of the user guide is provided here:
+user-guide.txt
+
+If you want to use the HTML or PDF format, grab it from the Backup
+Maneger website:
+http://www.backup-manager.org/documentation/
+
+This has been written in SGML with the debiandoc tools.

@@ -1,3 +1,30 @@
+2005-12-19 (0.6)     Alexis Sukrieh <sukria@backup-manager.org>
+    * New Features:
+        + New backup method "tarball-incremental" for building 
+          incremental backups.
+        + New upload metyhod "rsync".
+        + Support for multiple backup methods in BM_ARCHIVE_METHOD
+        + Support for multiple upload methods in BM_UPLOAD_METHOD
+        + User Guide available in different formats (HTML, PDF)
+    * Changes:
+        + Booleans must be true/false values, yes/no are deprecated 
+          (triggers warnings but backward compatible though).
+        + Configuration key "BM_BURNING" is deprecated, use "BM_BURNING_METHOD" instead.
+    * Bugs closed by this release:
+        + No error when the repository is not accessible by BM_UPLOAD_USER (bug #2)
+        + [BM_TARBALL_BLACKLIST] error handling multiple directories (bug #4)
+        + feature request: use of ports other than 22 for scp upload (bug #5)
+        + Backup-Manager can't umount an unmounted CD (bug #6)
+        + Write the user guide (bug #8)
+        + Support for multiple methods in BM_ARCHIVE_METHOD (bug #9)
+        + Function backup_method_rsync() uses BM_TARBALL confkeys (bug #10)
+        + Configuration keys BM_UPLOAD_USER/KEY/PASSWORD should be renamed (bug #11)
+    * Translations:
+        + Full translation in French.
+        + Full translation in German.
+        + Full translation in Spanish.
+        + Full translation in Vietnamese.
+
 2005-11-07 (0.5.9b)  Alexis Sukrieh <sukria@sukria.net>
 
 	* New Features:

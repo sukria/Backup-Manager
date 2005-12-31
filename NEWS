@@ -1,3 +1,8 @@
+2005-12-31 (0.6.1)   Alexis Sukrieh <sukria@backup-manager.org>
+    * Bug fix
+      Several backup methods can be used safely in the same configuration file, 
+      the incremental method will then work as expected (Bug #14 closed).
+      
 2005-12-19 (0.6)     Alexis Sukrieh <sukria@backup-manager.org>
     * New Features:
         + New backup method "tarball-incremental" for building 

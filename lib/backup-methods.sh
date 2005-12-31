@@ -111,7 +111,8 @@ __exec_meta_command()
 # configuration keys: BM_TARBALL_* and BM_TARBALLINC_*
 backup_method_tarball()
 {
-	info "Using method \"\$BM_ARCHIVE_METHOD\""
+    method="$1"
+	info "Using method \"\$method\""
 	
 	# Create the directories blacklist
 	blacklist=""
@@ -142,42 +143,42 @@ backup_method_tarball()
 		dir_name=$(get_dir_name $DIR $BM_TARBALL_NAMEFORMAT)
 		file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY.$BM_TARBALL_FILETYPE"
 
-                # needed for the incremental method
-                incremental_list="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.incremental-list.txt"
-		
-                # handling of incremental options
-                if [ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ]; then
-        
-                        incremental=""
-                        is_master_day="false"
+        # needed for the incremental method
+        incremental_list="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.incremental-list.txt"
 
-                        case $BM_TARBALLINC_MASTERDATETYPE in
-                        weekly)
-                                master_day=$(date +'%w')
-                        ;;
-                        monthly)
-                                master_day=$(date +'%d')
-                        ;;
-                        *)
-                                error "Unknown frequency: \$BM_TARBALLINC_MASTERDATETYPE"
-                        ;;
-                        esac
-                        
-                        if [ -z "$BM_TARBALLINC_MASTERDATEVALUE" ]; then
-                                BM_TARBALLINC_MASTERDATEVALUE="1"
-                        fi
-                        if [ $master_day = $BM_TARBALLINC_MASTERDATEVALUE ]; then
-                                is_master_day="true"
-                        fi
+        # handling of incremental options
+        if [ "$method" = "tarball-incremental" ]; then
 
-                        # if master day, we have to purge the incremental list if exists
-                        # so we'll generate a new one (and then, a full backup).
-                        if [ "$is_master_day" = "true" ] && 
-                           [ -e $incremental_list ]; then
-                                rm -f $incremental_list
-                        fi
-                        incremental="--listed-incremental $incremental_list"
+                incremental=""
+                is_master_day="false"
+
+                case $BM_TARBALLINC_MASTERDATETYPE in
+                weekly)
+                        master_day=$(date +'%w')
+                ;;
+                monthly)
+                        master_day=$(date +'%d')
+                ;;
+                *)
+                        error "Unknown frequency: \$BM_TARBALLINC_MASTERDATETYPE"
+                ;;
+                esac
+                
+                if [ -z "$BM_TARBALLINC_MASTERDATEVALUE" ]; then
+                        BM_TARBALLINC_MASTERDATEVALUE="1"
                 fi
+                if [ $master_day = $BM_TARBALLINC_MASTERDATEVALUE ]; then
+                        is_master_day="true"
+                fi
+
+                # if master day, we have to purge the incremental list if exists
+                # so we'll generate a new one (and then, a full backup).
+                if [ "$is_master_day" = "true" ] && 
+                   [ -e $incremental_list ]; then
+                        rm -f $incremental_list
+                fi
+                incremental="--listed-incremental $incremental_list"
+        fi
 
 		if [ ! -f $file_to_create ] ||
            [ $force = true ]; then
@@ -237,7 +238,8 @@ backup_method_tarball()
 
 backup_method_mysql()
 {
-	info "Using method \"\$BM_ARCHIVE_METHOD\""
+    method="$1"
+	info "Using method \"\$method\""
 	if [ ! -x $mysqldump ]; then
 		error "The \"mysql\" method is chosen, but \$mysqldump is not found."
 	fi
@@ -257,7 +259,8 @@ backup_method_mysql()
 
 backup_method_svn()
 {
-	info "Using method \"\$BM_ARCHIVE_METHOD\""
+    method="$1"
+	info "Using method \"\$method\""
         if [ ! -x $svnadmin ]; then
                 error "The \"svn\" method is chosen, but \$svnadmin is not found."
         fi
@@ -278,7 +281,8 @@ backup_method_svn()
 
 backup_method_pipe()
 {
-	info "Using method \"\$BM_ARCHIVE_METHOD\""
+    method="$1"
+	info "Using method \"\$method\""
         index=0
 
         # parse each BM_PIPE_NAME's

@@ -1,3 +1,11 @@
+2005-12-31  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* Bug #14 closed. Backup methods are handled better so we can
+	  safely use several methods in the same configruation file.
+	  + lib/actions.sh: pass $method to each method.
+	  + lib/backup-methods.sh: handle $method rather than $BM_ARCHIVE_METHOD.
+	  + t/t06-bug14.sh: Regression-proof test for this bug.
+
 2005-12-19  Alexis Sukrieh	<sukria@backup-manager.org>
 
 	* INSTALL:

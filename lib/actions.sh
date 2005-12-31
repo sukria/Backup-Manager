@@ -25,16 +25,16 @@ make_archives()
     do      
         case $method in
         mysql)
-            backup_method_mysql
+            backup_method_mysql "$method"
         ;;
         tarball|tarball-incremental)
-            backup_method_tarball
+            backup_method_tarball "$method"
         ;;
         pipe)
-            backup_method_pipe
+            backup_method_pipe "$method"
         ;;
         svn)
-            backup_method_svn
+            backup_method_svn "$method"
         ;;
         none|disabled)
             info "No backup method used."

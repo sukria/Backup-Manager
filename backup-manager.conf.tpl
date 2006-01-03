@@ -15,10 +15,10 @@
 export BM_REPOSITORY_ROOT="/var/archives"
 # For security reasons, the archive repository and the generated 
 # archives will be readable/writable by a given user/group.
-# This is recommended to set this to yes.
-export BM_REPOSITORY_SECURE="yes"
+# This is recommended to set this to true.
+export BM_REPOSITORY_SECURE="true"
 # The repository will be readable/writable only by a specific 
-# user:group pair if BM_REPOSITORY_SECURE is set to yes.
+# user:group pair if BM_REPOSITORY_SECURE is set to true.
 export BM_REPOSITORY_USER="root"
 export BM_REPOSITORY_GROUP="root"
 
@@ -30,7 +30,7 @@ export BM_ARCHIVE_TTL="5"
 # Do you want to replace duplicates by symlinks? 
 # (archive-DAY is a duplicate of archive-(DAY - 1) if they 
 # are both the same size).
-export BM_ARCHIVE_PURGEDUPS="yes"
+export BM_ARCHIVE_PURGEDUPS="true"
 # Prefix of every archive on that box (default is HOSTNAME)
 export BM_ARCHIVE_PREFIX="$HOSTNAME"
 
@@ -57,8 +57,8 @@ export BM_TARBALL_NAMEFORMAT="long"
 # Type of archives, available types are tar, tar.gz, tar.bz2, zip.
 export BM_TARBALL_FILETYPE="tar.gz"
 # Do you want to dereference the files pointed by symlinks ? 
-# enter yes or no (yes can lead to huge archives, be careful).
-export BM_TARBALL_DUMPSYMLINKS="no"
+# enter true or false (true can lead to huge archives, be careful).
+export BM_TARBALL_DUMPSYMLINKS="false"
 # Directories you want to backup as tarballs (separated by spaces)
 export BM_TARBALL_DIRECTORIES="/etc /home"
 # Files to exclude when generating tarballs
@@ -197,7 +197,7 @@ export BM_UPLOAD_FTP_PASSWORD=""
 # FTP specific rmeote hosts
 export BM_UPLOAD_FTP_HOSTS=""
 # purge archives on remote hosts before uploading?
-export BM_UPLOAD_FTP_PURGE="no"
+export BM_UPLOAD_FTP_PURGE="false"
 # destination for FTP uploads (overrides BM_UPLOAD_DESTINATION)
 export BM_UPLOAD_FTP_DESTINATION=""
 
@@ -219,8 +219,8 @@ export BM_UPLOAD_RSYNC_DESTINATION=""
 export BM_UPLOAD_RSYNC_HOSTS=""
 
 # Do you want to dereference the files pointed by symlinks?   
-# enter yes or no (yes can lead to huge archives, be careful).    
-export BM_UPLOAD_RSYNC_DUMPSYMLINKS="no"
+# enter true or false (true can lead to huge archives, be careful).    
+export BM_UPLOAD_RSYNC_DUMPSYMLINKS="false"
 
 ##############################################################
 # Section "BURNING" 
@@ -242,7 +242,7 @@ export BM_BURNING_METHOD="none"
 
 # When the CD is burnt, it is possible to check every file's 
 # MD5 checksum to see if the CD is not corrupted.
-export BM_BURNING_CHKMD5="yes"
+export BM_BURNING_CHKMD5="true"
 
 # The device to use for mounting the cdrom
 export BM_BURNING_DEVICE="/dev/cdrom"
@@ -262,8 +262,8 @@ export BM_BURNING_MAXSIZE="700"
 #############################################################
 
 # Every output made can be sent to syslog
-# set this to "yes" or "no"
-export BM_LOGGER="yes"
+# set this to "true" or "false"
+export BM_LOGGER="true"
 
 # You can choose which facility to use
 export BM_LOGGER_FACILITY="user"

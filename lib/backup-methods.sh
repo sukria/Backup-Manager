@@ -248,10 +248,10 @@ backup_method_mysql()
 	do
 		file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${database}.$TODAY.sql"
 		command="$mysqldump -u$BM_MYSQL_ADMINLOGIN -p$BM_MYSQL_ADMINPASS -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT $database"
-                compress="$BM_MYSQL_FILETYPE"	
+        compress="$BM_MYSQL_FILETYPE"	
          
-                __exec_meta_command "$command" "$file_to_create" "$compress"
-                file_to_create="$BM_RET"
+        __exec_meta_command "$command" "$file_to_create" "$compress"
+        file_to_create="$BM_RET"
 
 		commit_archive "$file_to_create"
 	done

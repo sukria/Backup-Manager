@@ -1,3 +1,13 @@
+2006-01-05  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* backup-manager.conf.tpl:
+	  + added BM_MYSQL_SAFEDUMPS for providing a way to perform full clena
+	  backup with the "--opt" switch (closes bug #15)
+	  + Changed the behaviour of BM_MYSQL_DATABASES so we can put here a
+	  wildcard "__ALL__" that means backing up every databases at once.
+	* lib/backup-methods.sh:
+	  + Changes in backup_mysql().
+
 2005-12-31  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* Bug #14 closed. Backup methods are handled better so we can

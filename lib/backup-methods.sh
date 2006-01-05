@@ -243,18 +243,30 @@ backup_method_mysql()
 	if [ ! -x $mysqldump ]; then
 		error "The \"mysql\" method is chosen, but \$mysqldump is not found."
 	fi
-	
-	for database in $BM_MYSQL_DATABASES
-	do
-		file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${database}.$TODAY.sql"
-		command="$mysqldump -u$BM_MYSQL_ADMINLOGIN -p$BM_MYSQL_ADMINPASS -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT $database"
-        compress="$BM_MYSQL_FILETYPE"	
-         
-        __exec_meta_command "$command" "$file_to_create" "$compress"
-        file_to_create="$BM_RET"
 
-		commit_archive "$file_to_create"
-	done
+    opt=""
+    if [ "$BM_MYSQL_SAFEDUMPS" = "true" ]; then
+        opt="--opt"
+    fi
+    base_command="$mysqldump $opt -u$BM_MYSQL_ADMINLOGIN -p$BM_MYSQL_ADMINPASS -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT"
+
+    if [ "$BM_MYSQL_DATABASES" = "__ALL__" ]
+    then
+    		file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-all-mysql-databases.$TODAY.sql"
+    		command="$base_command --all-databases"
+            compress="$BM_MYSQL_FILETYPE"	
+    else
+    	for database in $BM_MYSQL_DATABASES
+    	do
+    		file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${database}.$TODAY.sql"
+    		command="$base_command $database"
+            compress="$BM_MYSQL_FILETYPE"	
+    	done
+    fi
+    
+    __exec_meta_command "$command" "$file_to_create" "$compress"
+    file_to_create="$BM_RET"
+    commit_archive "$file_to_create"
 }
 
 backup_method_svn()

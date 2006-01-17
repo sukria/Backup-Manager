@@ -1,5 +1,11 @@
 2006-01-17  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* lib/files.sh:
+	  + Applied patch from Michel Grentzinger <mic.grentz@online.fr> for
+	  enhancing the way space occupation is computed (bug #22).
+
+2006-01-17  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* backup-manager:
 	  + added path to /usr/bin/dar
 	* lib/backup-methods.sh:

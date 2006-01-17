@@ -63,6 +63,7 @@ get_dir_name()
 
 # This will take a path and return the size in mega bytes
 # used on the disk.
+# Thanks to Michel Grentzinger <mic.grentz@online.fr>
 size_of_path()
 {
 	path="$1"
@@ -70,31 +71,21 @@ size_of_path()
         error "No path given"
     fi
     
-	out=$(du -m -c $path)
-
-	OLDIFS=$IFS
-	IFS=$'\n'
-	# The last size seen is the total.
-	for line in $out
-	do
-		total_size=$(echo $line | awk '{print $1}')
-	done
-	IFS=$OLDIFS
+	total_size=$(du -m -c $path | tail -1 | awk '{print $1}')
+	
 	echo $total_size
 }
 
+# Thanks to Michel Grentzinger <mic.grentz@online.fr>
 size_left_of_path()
 {
 	path="$1"
-	out=$(df -B 1024K $path) 
+    if [ -z "$path" ]; then
+        error "No path given"
+    fi
 
-	OLDIFS=$IFS
-	IFS=$'\n'
-	for line in $out
-	do
-		left=$(echo $line | awk '{print $4}')
-	done
-	IFS=$OLDIFS
+	left=$(df -B 1024K $path | tail -1 | awk '{print $4}')
+
 	echo $left
 
 }

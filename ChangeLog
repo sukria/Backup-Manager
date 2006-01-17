@@ -1,3 +1,15 @@
+2006-01-17  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* backup-manager:
+	  + added path to /usr/bin/dar
+	* lib/backup-methods.sh:
+	  + major rewrite/clean of backup_method_tarball()
+	  + support for BM_ARCHIVE_FILETYPE "dar"
+	* lib/dialog.sh:
+	  + check that dar is present.
+	* backup-manager.conf.tpl
+	  + New configuration variable "BM_TARBALL_SLICESIZE".
+
 2006-01-05  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* backup-manager.conf.tpl:

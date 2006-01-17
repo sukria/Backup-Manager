@@ -75,6 +75,11 @@ check_filetypes()
 				error "the BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
 			fi
 		;;
+		"dar" )
+			if [ ! -x $dar ]; then
+				error "the BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
+			fi
+		;;
 	esac
 }
 

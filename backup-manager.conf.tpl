@@ -75,6 +75,9 @@ export BM_TARBALL_DIRECTORIES="/etc /home"
 # Files to exclude when generating tarballs
 export BM_TARBALL_BLACKLIST=""
 
+# With the "dar" fieltype, you can choose a maximum slice limit.
+export BM_TARBALL_SLICESIZE="1000M"
+
 ##############################################################
 # The tarball-incremental method uses the same keys as the 
 # tarball method, plus two others.

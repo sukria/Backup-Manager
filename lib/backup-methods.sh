@@ -22,24 +22,37 @@
 commit_archive()
 {
 	file_to_create="$1"
-	size=$(size_of_path $file_to_create)
-	str=$(echo_translated "\$file_to_create: ok (\${size}M,")
-		
-	base=$(basename $file_to_create)
-	md5hash=$(get_md5sum $file_to_create)
-    if [ "$verbose" = "true" ]; then
-	    echo "$str ${md5hash})"
-    fi
-	echo "$md5hash  $base" >> $BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5
-		
-	# Now that the file is created, remove previous duplicates if exists...
-	purge_duplicate_archives $file_to_create || error "Unable to purge duplicates of \$file_to_create"
+    size=$(size_of_path $file_to_create)
+    str=$(echo_translated "\$file_to_create: ok (\${size}M,")
 
-	# security fixes if BM_REPOSITORY_SECURE is set to true
-	if [ $BM_REPOSITORY_SECURE = true ]; then
-		chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $file_to_create
-		chmod 660 $file_to_create
-	fi
+    base=$(basename $file_to_create)
+    md5hash=$(get_md5sum $file_to_create)
+    if [ "$verbose" = "true" ]; then
+        echo "$str ${md5hash})"
+    fi
+    echo "$md5hash  $base" >> $BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5
+
+    # Now that the file is created, remove previous duplicates if exists...
+    purge_duplicate_archives $file_to_create || error "Unable to purge duplicates of \$file_to_create"
+
+    # security fixes if BM_REPOSITORY_SECURE is set to true
+    if [ $BM_REPOSITORY_SECURE = true ]; then
+        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $file_to_create
+        chmod 660 $file_to_create
+    fi
+}
+
+commit_archives()
+{    
+	file_to_create="$1"
+    if [ "$BM_TARBALL_FILETYPE" = "dar" ]; then
+        for dar_file in $file_to_create.?.dar
+        do
+            commit_archive "$dar_file"
+        done
+    else
+        commit_archive "$file_to_create"
+    fi
 }
 
 handle_tarball_error()
@@ -107,6 +120,133 @@ __exec_meta_command()
         export BM_RET="$file_to_create"
 }
 
+__get_flags_tar_blacklist()
+{
+    blacklist=""
+	for pattern in $BM_TARBALL_BLACKLIST
+	do
+		blacklist="$blacklist --exclude=$pattern"
+	done
+    echo "$blacklist"
+}
+
+__get_flags_dar_blacklist()
+{
+    blacklist=""
+	for pattern in $BM_TARBALL_BLACKLIST
+	do
+		blacklist="$blacklist -P ${pattern#/}"
+	done
+    echo "$blacklist"
+}
+
+__get_flags_zip_dump_symlinks()
+{
+    export ZIP="" 
+    export ZIPOPT="" 
+	y="-y"
+	if [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
+		y=""
+	fi
+    echo "$y"
+}
+
+__get_flags_tar_dump_symlinks()
+{
+	h=""
+	if [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
+		h="-h "
+	fi
+    echo "$h"
+}
+
+__get_file_to_create()
+{
+    target="$1"
+    dir_name=$(get_dir_name $target $BM_TARBALL_NAMEFORMAT)
+    file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY.$BM_TARBALL_FILETYPE"
+    # dar appends itself the ".dar" extension
+    if [ "$BM_TARBALL_FILETYPE" = "dar" ]; then
+        file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY"
+    fi
+    echo "$file_to_create"
+}
+
+__get_master_day()
+{
+    case $BM_TARBALLINC_MASTERDATETYPE in
+    weekly)
+        master_day=$(date +'%w')
+    ;;
+    monthly)
+        master_day=$(date +'%d')
+    ;;
+    *)
+        error "Unknown frequency: \$BM_TARBALLINC_MASTERDATETYPE"
+    ;;
+    esac
+    echo "$master_day"
+}
+
+__init_masterdatevalue()
+{
+    if [ -z "$BM_TARBALLINC_MASTERDATEVALUE" ]; then
+        BM_TARBALLINC_MASTERDATEVALUE="1"
+    fi
+}
+
+__get_flags_tar_incremental()
+{
+    dir_name="$1"
+    incremental_list="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.incremental-list.txt"
+    
+    incremental=""
+    master_day=$(__get_master_day)
+    __init_masterdatevalue
+
+    # if master day, we have to purge the incremental list if exists
+    # so we'll generate a new one (and then, a full backup).
+    if [ $master_day = $BM_TARBALLINC_MASTERDATEVALUE ] &&
+       [ -e $incremental_list ]; then
+        rm -f $incremental_list
+    fi
+    incremental="--listed-incremental $incremental_list"
+    echo "$incremental"
+}
+
+__get_flags_dar_incremental()
+{
+    dir_name="$1"
+    incremental=""
+    master_day=$(__get_master_day)
+    __init_masterdatevalue
+    yesterday=$(date +'%Y%m%d' --date '1 days ago')
+    yesterday_dar="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.dar"
+    yesterday_dar_first="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.1.dar"
+
+    # If we aren't the "full backup" day, we take the previous backup as 
+    # a reference for the incremental stuff.
+    # We have to find the previous backup for that...
+    if [ $master_day != $BM_TARBALLINC_MASTERDATEVALUE ]; then
+        if [ -e $yesterday_dar ] ||
+           [ -e $yesterday_dar_first ]; then
+            incremental="--ref $BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday"
+        else
+        #    warning "Incremental backup should be made today, but no previous dar backup found, building a full backup."
+            incremental=""
+        fi
+    fi
+    echo "$incremental"
+}
+
+__get_dar_maxsize()
+{
+    if [ -n "$BM_TARBALL_SLICESIZE" ]; then
+        $maxsize="-s $BM_TARBALL_SLICESIZE"
+    fi
+    echo "$maxsize"
+}
+
 # This manages both "tarball" and "tarball-incremental" methods.
 # configuration keys: BM_TARBALL_* and BM_TARBALLINC_*
 backup_method_tarball()
@@ -114,121 +254,97 @@ backup_method_tarball()
     method="$1"
 	info "Using method \"\$method\""
 	
-	# Create the directories blacklist
-	blacklist=""
-	for pattern in $BM_TARBALL_BLACKLIST
-	do
-		blacklist="$blacklist --exclude=$pattern"
-	done
-	
-	# Set the -h flag according to the $BM_TARBALL_DUMPSYMLINKS conf key
-	# or the -y flag for zip. 
-	h=""
-	y="-y"
-	if [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
-		h="-h "
-		y=""
-	fi
+    # build the command line
+    case $BM_TARBALL_FILETYPE in 
+    tar.gz)
+        blacklist="$(__get_flags_tar_blacklist)"
+        dumpsymlinks="$(__get_flags_tar_dump_symlinks)"
+    ;;
+    tar)
+        blacklist="$(__get_flags_tar_blacklist)"
+        dumpsymlinks="$(__get_flags_tar_dump_symlinks)"
+    ;;
+    tar.bz2|tar.bz)
+        blacklist="$(__get_flags_tar_blacklist)"
+        dumpsymlinks="$(__get_flags_tar_dump_symlinks)"
+    ;;
+    zip)
+        dumpsymlinks="$(__get_flags_zip_dump_symlinks)"
+    ;;
+    dar)
+        blacklist="$(__get_flags_dar_blacklist)"
+        maxsize="$(__get_dar_maxsize)"
+    ;;
+    esac
+    
 
+    # make archives
 	nb_err=0
-	for DIR in $BM_TARBALL_DIRECTORIES
+	for target in $BM_TARBALL_DIRECTORIES
 	do
 		# first be sure the target exists
-		if [ ! -e $DIR ] || [ ! -r $DIR ]; then
-			warning "Target \$DIR does not exist, skipping."
+		if [ ! -e $target ] || [ ! -r $target ]; then
+			warning "Target \$target does not exist, skipping."
 			nb_err=$(($nb_err + 1))
 			continue
 		fi
 		
-		dir_name=$(get_dir_name $DIR $BM_TARBALL_NAMEFORMAT)
-		file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY.$BM_TARBALL_FILETYPE"
-
-        # needed for the incremental method
-        incremental_list="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.incremental-list.txt"
+        file_to_create=$(__get_file_to_create "$target")
 
         # handling of incremental options
+        incremental=""
         if [ "$method" = "tarball-incremental" ]; then
-
-                incremental=""
-                is_master_day="false"
-
-                case $BM_TARBALLINC_MASTERDATETYPE in
-                weekly)
-                        master_day=$(date +'%w')
+            case "$BM_TARBALL_FILETYPE" in
+            "tar"|"tar.gz"|"tar.bz2"|"tar.bz")
+                incremental="$(__get_flags_tar_incremental "$dir_name")"
+            ;;
+            "dar")
+                incremental="$(__get_flags_dar_incremental "$dir_name")"
+            ;;
+            *)
+                error "Incremental backups are not supported with this file-type: \"\$BM_TARBALL_FILETYPE\"."
+            ;;
+            esac
+        fi
+                
+		if [ ! -f $file_to_create ] || [ $force = true ]; then
+			case $BM_TARBALL_FILETYPE in
+				tar) 
+				    command="$tar $incremental $blacklist $dumpsymlinks -p -c    -f "$file_to_create" "$target""
                 ;;
-                monthly)
-                        master_day=$(date +'%d')
+				tar.gz)
+                    command="$tar $incremental $blacklist $dumpsymlinks -p -c -z -f "$file_to_create" "$target""
+                ;;
+				tar.bz2|tar.bz) 
+					command="$tar $incremental $blacklist $dumpsymlinks -p -c -j -f "$file_to_create" "$target""
+                ;;
+				zip) 
+                    command="$zip $dumpsymlinks -r "$file_to_create" "$target""
+                ;;
+                dar)
+                    command="$dar $incremental $blacklist $maxsize -z9 -Q -c "$file_to_create" -R "$target""
                 ;;
                 *)
-                        error "Unknown frequency: \$BM_TARBALLINC_MASTERDATETYPE"
-                ;;
-                esac
-                
-                if [ -z "$BM_TARBALLINC_MASTERDATEVALUE" ]; then
-                        BM_TARBALLINC_MASTERDATEVALUE="1"
-                fi
-                if [ $master_day = $BM_TARBALLINC_MASTERDATEVALUE ]; then
-                        is_master_day="true"
-                fi
-
-                # if master day, we have to purge the incremental list if exists
-                # so we'll generate a new one (and then, a full backup).
-                if [ "$is_master_day" = "true" ] && 
-                   [ -e $incremental_list ]; then
-                        rm -f $incremental_list
-                fi
-                incremental="--listed-incremental $incremental_list"
-        fi
-
-		if [ ! -f $file_to_create ] ||
-           [ $force = true ]; then
-		   	
-			case $BM_TARBALL_FILETYPE in
-				tar.gz) # generate a tar.gz file if needed 
-					tarball_logfile=$(mktemp /tmp/bm-tar.log.XXXXXX)
-					if ! $tar $incremental $blacklist $h -p -c -z -f "$file_to_create" "$DIR" > $tarball_logfile 2>&1 ; then
-						handle_tarball_error "$file_to_create" "$tarball_logfile"
-					else
-						rm -f $tarball_logfile
-					fi
-				;;
-				tar.bz2|tar.bz) # generate a tar.bz2 file if needed
-					tarball_logfile=$(mktemp /tmp/bm-tar.log.XXXXXX)
-					if ! $tar $incremental $blacklist $h -p -c -j -f "$file_to_create" "$DIR" > $tarball_logfile 2>&1 ; then
-						handle_tarball_error "$file_to_create" "$tarball_logfile"
-					else
-						rm -f $tarball_logfile
-					fi
-				;;
-				tar) # generate a tar file if needed
-					tarball_logfile=$(mktemp /tmp/bm-tar.log.XXXXXX)
-					if ! $tar $incremental $blacklist $h -p -c -f "$file_to_create" "$DIR" > $tarball_logfile 2>&1 ; then
-						handle_tarball_error "$file_to_create" "$tarball_logfile"
-					else 
-						rm -f $tarball_logfile
-					fi
-				;;
-				zip) # generate a zip file if needed
-					tarball_logfile=$(mktemp /tmp/bm-zip.log.XXXXXX)
-					if ! ZIP="" ZIPOPT="" $zip $y -r "$file_to_create" "$DIR" > $tarball_logfile 2>&1 ; then
-						handle_tarball_error "$file_to_create" "$tarball_logfile"
-					else
-						rm -f $tarball_logfile
-					fi
-				;;
-				*) # unknown option
 					error "The filetype \$BM_TARBALL_FILETYPE is not supported."
 					_exit
-				;;
-			esac
-		else
+                ;;
+            esac
+
+            logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+            if ! $command > $logfile 2>&1 ; then
+                handle_tarball_error "$file_to_create" "$logfile"
+            else
+                rm -f $tarball_logfile
+            fi
+        else
 			warning "File \$file_to_create already exists, skipping."
 			continue
 		fi
 			
-		commit_archive "$file_to_create"
+		commit_archives "$file_to_create"
 	done
 
+    # Handle errors
 	if [ $nb_err -gt 0 ]; then
 		error "During the tarballs generation, \$nb_err error(s) occurred."
 	else

@@ -211,12 +211,19 @@ burn_files()
 	case "$BM_BURNING_METHOD" in
 		"DVD")
             if [ ! -x $growisofs ]; then
-            error "DVD burning requires \$growisofs, aborting."
+                error "DVD burning requires \$growisofs, aborting."
             fi
-                        
+            if [ ! -x $dvdrwformat ]; then
+                error "DVD burning requires \$dvdrwformat, aborting."
+            fi
+            
+            info "Blanking the DVD media in \$BM_BURNING_DEVFORCED"
+			$dvdrwformat -blank $BM_BURNING_DEVICE > $logfile 2>&1 || 
+                error "Unable to blank the DVD media (check \$logfile)."
+            
 			info "Exporting archives to the DVD media in \$BM_BURNING_DEVICE."
-			$growisofs -Z ${BM_BURNING_DEVICE} -R -J -V "${title}" ${what_to_burn} > ${logfile} 2>&1 ||
-                                error "failed, check \$logfile"
+			$growisofs -Z ${BM_BURNING_DEVICE} -R -J -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
+                error "failed, check \$logfile"
 		;;
 		"CDRW")
             if [ ! -x $cdrecord ]; then

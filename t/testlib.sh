@@ -10,19 +10,27 @@ source $locallib/backup-methods.sh
 source $locallib/upload-methods.sh
 source $locallib/actions.sh
 
+VERSION="0.7.1+svn"
 
+# All the path we'll need
+libdir="/usr/share/backup-manager"
 zip="/usr/bin/zip"
 bzip="/usr/bin/bzip2"
 gzip="/bin/gzip"
+dar="/usr/bin/dar"
 tar="/bin/tar"
 rsync="/usr/bin/rsync"
 mkisofs="/usr/bin/mkisofs"
 growisofs="/usr/bin/growisofs"
+dvdrwformat="/usr/bin/dvd+rw-format"
 cdrecord="/usr/bin/cdrecord"
+bmu="/usr/bin/backup-manager-upload"
+lockfile="/var/run/backup-manager.pid"
 md5sum="/usr/bin/md5sum"
 bc="/usr/bin/bc"
 mysqldump="/usr/bin/mysqldump"
 svnadmin="/usr/bin/svnadmin"
+
 
 libdir="../lib"
 bmu="../backup-manager-upload"

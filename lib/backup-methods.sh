@@ -120,6 +120,13 @@ __exec_meta_command()
         export BM_RET="$file_to_create"
 }
 
+__create_file_with_meta_command()
+{
+    __exec_meta_command "$command" "$file_to_create" "$compress"
+    file_to_create="$BM_RET"
+    commit_archive "$file_to_create"
+}
+
 __get_flags_tar_blacklist()
 {
     blacklist=""
@@ -174,6 +181,10 @@ __get_file_to_create()
 
 __get_master_day()
 {
+    if [ -z "$BM_TARBALLINC_MASTERDATETYPE" ]; then
+        error "No frequency given, set BM_TARBALLINC_MASTERDATETYPE."
+    fi
+    
     case $BM_TARBALLINC_MASTERDATETYPE in
     weekly)
         master_day=$(date +'%w')
@@ -185,7 +196,6 @@ __get_master_day()
         error "Unknown frequency: \$BM_TARBALLINC_MASTERDATETYPE"
     ;;
     esac
-    echo "$master_day"
 }
 
 __init_masterdatevalue()
@@ -195,30 +205,29 @@ __init_masterdatevalue()
     fi
 }
 
-__get_flags_tar_incremental()
+function __get_flags_tar_incremental()
 {
     dir_name="$1"
     incremental_list="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.incremental-list.txt"
     
     incremental=""
-    master_day=$(__get_master_day)
+    __get_master_day
     __init_masterdatevalue
 
     # if master day, we have to purge the incremental list if exists
     # so we'll generate a new one (and then, a full backup).
-    if [ $master_day = $BM_TARBALLINC_MASTERDATEVALUE ] &&
-       [ -e $incremental_list ]; then
+    if [ "$master_day" = "$BM_TARBALLINC_MASTERDATEVALUE" ] && [ -e $incremental_list ]; then
         rm -f $incremental_list
     fi
     incremental="--listed-incremental $incremental_list"
-    echo "$incremental"
+
 }
 
 __get_flags_dar_incremental()
 {
     dir_name="$1"
     incremental=""
-    master_day=$(__get_master_day)
+    __get_master_day
     __init_masterdatevalue
     yesterday=$(date +'%Y%m%d' --date '1 days ago')
     yesterday_dar="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.dar"
@@ -227,16 +236,13 @@ __get_flags_dar_incremental()
     # If we aren't the "full backup" day, we take the previous backup as 
     # a reference for the incremental stuff.
     # We have to find the previous backup for that...
-    if [ $master_day != $BM_TARBALLINC_MASTERDATEVALUE ]; then
-        if [ -e $yesterday_dar ] ||
-           [ -e $yesterday_dar_first ]; then
+    if [ "$master_day" != "$BM_TARBALLINC_MASTERDATEVALUE" ]; then
+        if [ -e $yesterday_dar ] || [ -e $yesterday_dar_first ]; then
             incremental="--ref $BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday"
         else
-        #    warning "Incremental backup should be made today, but no previous dar backup found, building a full backup."
             incremental=""
         fi
     fi
-    echo "$incremental"
 }
 
 __get_dar_maxsize()
@@ -245,6 +251,88 @@ __get_dar_maxsize()
         $maxsize="-s $BM_TARBALL_SLICESIZE"
     fi
     echo "$maxsize"
+}
+
+__get_backup_tarball_command()
+{
+    case $BM_TARBALL_FILETYPE in
+        tar) 
+            command="$tar $incremental $blacklist $dumpsymlinks -p -c    -f "$file_to_create" "$target""
+        ;;
+        tar.gz)
+            command="$tar $incremental $blacklist $dumpsymlinks -p -c -z -f "$file_to_create" "$target""
+        ;;
+        tar.bz2|tar.bz) 
+            command="$tar $incremental $blacklist $dumpsymlinks -p -c -j -f "$file_to_create" "$target""
+        ;;
+        zip) 
+            command="$zip $dumpsymlinks -r "$file_to_create" "$target""
+        ;;
+        dar)
+            command="$dar $incremental $blacklist $maxsize -z9 -Q -c "$file_to_create" -R "$target""
+        ;;
+        *)
+            return 1
+        ;;
+    esac
+    echo "$command"
+}
+
+__make_tarball_archives()
+{
+    nb_err=0
+	for target in $BM_TARBALL_DIRECTORIES
+	do
+		# first be sure the target exists
+		if [ ! -e $target ] || [ ! -r $target ]; then
+			warning "Target \$target does not exist, skipping."
+			nb_err=$(($nb_err + 1))
+			continue
+		fi
+		
+        file_to_create=$(__get_file_to_create "$target")
+        # handling of incremental options
+        incremental=""
+        if [ $method = tarball-incremental ]
+        then
+            case $BM_TARBALL_FILETYPE in
+                
+                dar)
+                    incremental="$(__get_flags_dar_incremental $dir_name)"
+                ;;
+                
+                *)
+                    if [ "$BM_TARBALL_FILETYPE" != "zip" ]; then
+                        __get_flags_tar_incremental "$dir_name"
+                    fi
+                    incremental=""
+                ;;
+            esac
+        fi
+        command=$(__get_backup_tarball_command) || 
+            error "The filetype \$BM_TARBALL_FILETYPE is not supported."
+
+        # dar is not like tar, we have to manually check for existing .1.dar files
+        if [ $BM_TARBALL_FILETYPE = dar ]; then
+            dir_name=$(get_dir_name "$target" $BM_TARBALL_NAMEFORMAT)
+            file_to_check="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY.1.dar"
+        else
+            file_to_check="$file_to_create"
+        fi
+        
+        if [ ! -e $file_to_check ] || [ $force = true ]; then
+            logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+            if ! $command > $logfile 2>&1 ; then
+                handle_tarball_error "$file_to_create" "$logfile"
+            else
+                rm -f $logfile
+                commit_archives "$file_to_create"
+            fi
+        else
+            warning "File \$file_to_check already exists, skipping."
+            continue
+        fi
+    done
 }
 
 # This manages both "tarball" and "tarball-incremental" methods.
@@ -276,74 +364,9 @@ backup_method_tarball()
         maxsize="$(__get_dar_maxsize)"
     ;;
     esac
-    
 
-    # make archives
-	nb_err=0
-	for target in $BM_TARBALL_DIRECTORIES
-	do
-		# first be sure the target exists
-		if [ ! -e $target ] || [ ! -r $target ]; then
-			warning "Target \$target does not exist, skipping."
-			nb_err=$(($nb_err + 1))
-			continue
-		fi
-		
-        file_to_create=$(__get_file_to_create "$target")
-
-        # handling of incremental options
-        incremental=""
-        if [ "$method" = "tarball-incremental" ]; then
-            case "$BM_TARBALL_FILETYPE" in
-            "tar"|"tar.gz"|"tar.bz2"|"tar.bz")
-                incremental="$(__get_flags_tar_incremental "$dir_name")"
-            ;;
-            "dar")
-                incremental="$(__get_flags_dar_incremental "$dir_name")"
-            ;;
-            *)
-                error "Incremental backups are not supported with this file-type: \"\$BM_TARBALL_FILETYPE\"."
-            ;;
-            esac
-        fi
-                
-		if [ ! -f $file_to_create ] || [ $force = true ]; then
-			case $BM_TARBALL_FILETYPE in
-				tar) 
-				    command="$tar $incremental $blacklist $dumpsymlinks -p -c    -f "$file_to_create" "$target""
-                ;;
-				tar.gz)
-                    command="$tar $incremental $blacklist $dumpsymlinks -p -c -z -f "$file_to_create" "$target""
-                ;;
-				tar.bz2|tar.bz) 
-					command="$tar $incremental $blacklist $dumpsymlinks -p -c -j -f "$file_to_create" "$target""
-                ;;
-				zip) 
-                    command="$zip $dumpsymlinks -r "$file_to_create" "$target""
-                ;;
-                dar)
-                    command="$dar $incremental $blacklist $maxsize -z9 -Q -c "$file_to_create" -R "$target""
-                ;;
-                *)
-					error "The filetype \$BM_TARBALL_FILETYPE is not supported."
-					_exit
-                ;;
-            esac
-
-            logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
-            if ! $command > $logfile 2>&1 ; then
-                handle_tarball_error "$file_to_create" "$logfile"
-            else
-                rm -f $tarball_logfile
-            fi
-        else
-			warning "File \$file_to_create already exists, skipping."
-			continue
-		fi
-			
-		commit_archives "$file_to_create"
-	done
-
+    __make_tarball_archives
+	
     # Handle errors
 	if [ $nb_err -gt 0 ]; then
 		error "During the tarballs generation, \$nb_err error(s) occurred."
@@ -364,78 +387,64 @@ backup_method_mysql()
     if [ "$BM_MYSQL_SAFEDUMPS" = "true" ]; then
         opt="--opt"
     fi
-    base_command="$mysqldump $opt -u$BM_MYSQL_ADMINLOGIN -p$BM_MYSQL_ADMINPASS -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT"
-
-    if [ "$BM_MYSQL_DATABASES" = "__ALL__" ]
-    then
-    		file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-all-mysql-databases.$TODAY.sql"
-    		command="$base_command --all-databases"
-            compress="$BM_MYSQL_FILETYPE"	
-    else
-    	for database in $BM_MYSQL_DATABASES
-    	do
-    		file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${database}.$TODAY.sql"
-    		command="$base_command $database"
-            compress="$BM_MYSQL_FILETYPE"	
-    	done
-    fi
     
-    __exec_meta_command "$command" "$file_to_create" "$compress"
-    file_to_create="$BM_RET"
-    commit_archive "$file_to_create"
+    base_command="$mysqldump $opt -u$BM_MYSQL_ADMINLOGIN -p$BM_MYSQL_ADMINPASS -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT"
+    compress="$BM_MYSQL_FILETYPE"	
+
+    for database in $BM_MYSQL_DATABASES
+    do
+        if [ "$database" = "__ALL__" ]; then
+            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-all-mysql-databases.$TODAY.sql"
+            command="$base_command --all-databases"
+        else
+            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${database}.$TODAY.sql"
+            command="$base_command $database"
+        fi
+        __create_file_with_meta_command
+    done   
 }
 
 backup_method_svn()
 {
     method="$1"
-	info "Using method \"\$method\""
-        if [ ! -x $svnadmin ]; then
-                error "The \"svn\" method is chosen, but \$svnadmin is not found."
-        fi
+    info "Using method \"\$method\""
+    if [ ! -x $svnadmin ]; then
+        error "The \"svn\" method is chosen, but \$svnadmin is not found."
+    fi
 
-        for repository in $BM_SVN_REPOSITORIES
-        do
-                archive_name=$(get_dir_name $repository "long")
-                file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$archive_name.$TODAY.svn"
-                command="$svnadmin dump $repository"
-                compress="$BM_SVN_COMPRESSWITH"
-                
-                __exec_meta_command "$command" "$file_to_create" "$compress"
-                file_to_create="$BM_RET"
-
-                commit_archive "$file_to_create"
-        done
+    for repository in $BM_SVN_REPOSITORIES
+    do
+        archive_name=$(get_dir_name $repository "long")
+        file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$archive_name.$TODAY.svn"
+        command="$svnadmin dump $repository"
+        compress="$BM_SVN_COMPRESSWITH"
+        __create_file_with_meta_command
+    done
 }
 
 backup_method_pipe()
 {
     method="$1"
-	info "Using method \"\$method\""
-        index=0
+    info "Using method \"\$method\""
+    index=0
 
-        # parse each BM_PIPE_NAME's
-        for archive in ${BM_PIPE_NAME[*]}
-        do
-                # make sure everything is here for this archive
-                if [ -z "${BM_PIPE_COMMAND[$index]}" ] || 
-                   [ -z "${BM_PIPE_FILETYPE[$index]}" ]; then
-                        warning "Not enough args for this archive (\$archive), skipping."
-                        continue
-                fi
-                command="${BM_PIPE_COMMAND[$index]}"
-                filetype="${BM_PIPE_FILETYPE[$index]}"
-                file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX-$archive.$TODAY.$filetype"
-                compress="${BM_PIPE_COMPRESS[$index]}"
-                
-                # the magic stuff! 
-                __exec_meta_command "$command" "$file_to_create" "$compress"
-                file_to_create="$BM_RET"
-                
-                # commit the archive
-                commit_archive "$file_to_create"
+    # parse each BM_PIPE_NAME's
+    for archive in ${BM_PIPE_NAME[*]}
+    do
+        # make sure everything is here for this archive
+        if [ -z "${BM_PIPE_COMMAND[$index]}" ] || 
+           [ -z "${BM_PIPE_FILETYPE[$index]}" ]; then
+                warning "Not enough args for this archive (\$archive), skipping."
+                continue
+        fi
+        command="${BM_PIPE_COMMAND[$index]}"
+        filetype="${BM_PIPE_FILETYPE[$index]}"
+        file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX-$archive.$TODAY.$filetype"
+        compress="${BM_PIPE_COMPRESS[$index]}"
+        __create_file_with_meta_command
 
-                # update the index mark 
-                index=$(($index + 1))
-        done
+        # update the index mark 
+        index=$(($index + 1))
+    done
 }
 

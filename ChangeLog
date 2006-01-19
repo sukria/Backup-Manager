@@ -1,3 +1,11 @@
+2006-01-19  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* lib/backup-methods.sh:
+	  + major rewrite of the code, much more clean and scalable.
+	  + dar support
+	* t/testlib.sh:
+	  + added missing stuff here, for the tests.
+
 2006-01-17  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* backup-manager:

@@ -179,7 +179,7 @@ __get_file_to_create()
     echo "$file_to_create"
 }
 
-__get_master_day()
+function __get_master_day()
 {
     if [ -z "$BM_TARBALLINC_MASTERDATETYPE" ]; then
         error "No frequency given, set BM_TARBALLINC_MASTERDATETYPE."
@@ -198,7 +198,7 @@ __get_master_day()
     esac
 }
 
-__init_masterdatevalue()
+function __init_masterdatevalue()
 {
     if [ -z "$BM_TARBALLINC_MASTERDATEVALUE" ]; then
         BM_TARBALLINC_MASTERDATEVALUE="1"
@@ -223,7 +223,7 @@ function __get_flags_tar_incremental()
 
 }
 
-__get_flags_dar_incremental()
+function __get_flags_dar_incremental()
 {
     dir_name="$1"
     incremental=""
@@ -283,13 +283,14 @@ __make_tarball_archives()
     nb_err=0
 	for target in $BM_TARBALL_DIRECTORIES
 	do
-		# first be sure the target exists
+            # first be sure the target exists
 		if [ ! -e $target ] || [ ! -r $target ]; then
 			warning "Target \$target does not exist, skipping."
 			nb_err=$(($nb_err + 1))
 			continue
 		fi
 		
+        dir_name=$(get_dir_name "$target" $BM_TARBALL_NAMEFORMAT)
         file_to_create=$(__get_file_to_create "$target")
         # handling of incremental options
         incremental=""
@@ -305,7 +306,6 @@ __make_tarball_archives()
                     if [ "$BM_TARBALL_FILETYPE" != "zip" ]; then
                         __get_flags_tar_incremental "$dir_name"
                     fi
-                    incremental=""
                 ;;
             esac
         fi
@@ -314,7 +314,6 @@ __make_tarball_archives()
 
         # dar is not like tar, we have to manually check for existing .1.dar files
         if [ $BM_TARBALL_FILETYPE = dar ]; then
-            dir_name=$(get_dir_name "$target" $BM_TARBALL_NAMEFORMAT)
             file_to_check="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY.1.dar"
         else
             file_to_check="$file_to_create"

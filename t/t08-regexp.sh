@@ -16,9 +16,9 @@ source confs/tarball.conf
 export BM_ARCHIVE_ROOT="repository"
 export BM_ARCHIVE_METHOD="tarball"
 
-export BM_TARBALL_DIRECTORIES="foo-*.d bar[0-9][0-9] static"
-subdirs_to_create="foo-bar.d foo-foo.d bar01 bar21 static"
-subdirs_to_ignore="foo.d bar-foo"
+export BM_TARBALL_DIRECTORIES="foo-*.d bar[0-9][0-9] static rep-[a-zA-Z\-]*test"
+subdirs_to_create="foo-bar.d foo-foo.d bar01 bar21 static rep-sukria-test rep-BackupManagertest"
+subdirs_to_ignore="foo.d bar-foo rep-132312-test"
 
 # The test actions
 

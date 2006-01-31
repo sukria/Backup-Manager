@@ -139,10 +139,11 @@ __get_flags_tar_blacklist()
 
 __get_flags_dar_blacklist()
 {
+    target="$1"
     blacklist=""
 	for pattern in $BM_TARBALL_BLACKLIST
 	do
-		blacklist="$blacklist -P ${pattern#/}"
+		blacklist="$blacklist -P ${pattern#$target}"
 	done
     echo "$blacklist"
 }
@@ -269,6 +270,8 @@ __get_backup_tarball_command()
             command="$zip $dumpsymlinks -r "$file_to_create" "$target""
         ;;
         dar)
+            blacklist=""
+            blacklist="$(__get_flags_dar_blacklist "$target")"
             command="$dar $incremental $blacklist $maxsize -z9 -Q -c "$file_to_create" -R "$target""
         ;;
         *)
@@ -321,6 +324,7 @@ __make_tarball_archives()
         
         if [ ! -e $file_to_check ] || [ $force = true ]; then
             logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+#            echo "DEBUG: '$command'" >&2
             if ! $command > $logfile 2>&1 ; then
                 handle_tarball_error "$file_to_create" "$logfile"
             else

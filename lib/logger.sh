@@ -38,7 +38,7 @@ fi
 # for sending messages to syslog.
 #
 # Note that no messages will be sent to 
-# syslog if BM_LOGGER is set to "no".
+# syslog if BM_LOGGER is set to "false".
 #
 # ex:
 #      syslog "info" "message to log"

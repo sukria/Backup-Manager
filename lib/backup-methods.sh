@@ -259,7 +259,7 @@ function __get_flags_dar_incremental()
 __get_dar_maxsize()
 {
     if [ -n "$BM_TARBALL_SLICESIZE" ]; then
-        $maxsize="-s $BM_TARBALL_SLICESIZE"
+        maxsize="-s $BM_TARBALL_SLICESIZE"
     fi
     echo "$maxsize"
 }

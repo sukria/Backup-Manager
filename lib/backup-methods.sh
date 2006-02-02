@@ -137,23 +137,34 @@ __get_flags_tar_blacklist()
     echo "$blacklist"
 }
 
+# Thanks to Michel Grentzinger for his 
+# smart ideas/remarks about that function.
 __get_flags_dar_blacklist()
 {
     target="$1"
     blacklist=""
 	for pattern in $BM_TARBALL_BLACKLIST
 	do
-        pattern="${pattern#$target}"
-        length=$(expr length $pattern)
+        # absolute paths 
         char=$(expr substr $pattern 1 1)
-        
-        # we have to remove the first char if it's a '/'
-        # thanks to Michel Grentzinger.
         if [ "$char" = "/" ]; then
-            pattern=$(expr substr $pattern 2 $length)
-        fi
 
-        blacklist="$blacklist -P $pattern"
+           # we blacklist only absolute paths related to $target
+           if [ "${pattern#$target}" != "$pattern" ]; then
+                
+                # making a relative path...
+                pattern="${pattern#$target}"
+                length=$(expr length $pattern)
+                pattern=$(expr substr $pattern 2 $length)
+
+                # ...and blacklisting it
+                blacklist="$blacklist -P $pattern"
+           fi
+
+        # relative path are blindly appended to the blacklist
+        else
+            blacklist="$blacklist -P $pattern"
+        fi
     done
     echo "$blacklist"
 }

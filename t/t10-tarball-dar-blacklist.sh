@@ -3,8 +3,8 @@
 set -e
 
 source testlib.sh
-verbose="true"
-warnings="true"
+#verbose="true"
+#warnings="true"
 
 source confs/base.conf
 
@@ -15,7 +15,7 @@ export BM_ARCHIVE_METHOD="tarball"
 export BM_TARBALL_NAMEFORMAT="long"
 export BM_TARBALL_FILETYPE="dar"
 export BM_TARBALL_DUMPSYMLINKS="no"
-export BM_TARBALL_DIRECTORIES="$PWD/var/www/"
+export BM_TARBALL_DIRECTORIES="$PWD/var/www"
 export BM_TARBALL_BLACKLIST="$PWD/var/www/xim $PWD/var/www/Upload"
 
 # clean

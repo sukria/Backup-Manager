@@ -143,8 +143,18 @@ __get_flags_dar_blacklist()
     blacklist=""
 	for pattern in $BM_TARBALL_BLACKLIST
 	do
-		blacklist="$blacklist -P ${pattern#$target}"
-	done
+        pattern="${pattern#$target}"
+        length=$(expr length $pattern)
+        char=$(expr substr $pattern 1 1)
+        
+        # we have to remove the first char if it's a '/'
+        # thanks to Michel Grentzinger.
+        if [ "$char" = "/" ]; then
+            pattern=$(expr substr $pattern 2 $length)
+        fi
+
+        blacklist="$blacklist -P $pattern"
+    done
     echo "$blacklist"
 }
 
@@ -363,7 +373,6 @@ backup_method_tarball()
         dumpsymlinks="$(__get_flags_zip_dump_symlinks)"
     ;;
     dar)
-        blacklist="$(__get_flags_dar_blacklist)"
         maxsize="$(__get_dar_maxsize)"
     ;;
     esac

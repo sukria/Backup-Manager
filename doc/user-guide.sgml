@@ -920,11 +920,17 @@ The CDRW and DVD methods will first blank the media, so you can safely use these
 want to use the same media several times.
 
 <p>
+DVD media are handled by the tool <tt>dvd+rw-tools</tt>, problems can occur in CRON environment with 
+dvd+rw-tools versions prior to 6.1, make sure to have 6.1 or later if you want to burn DVD media with 
+Backup Manager.
+
+<p>
 As usual, you can put <tt>none</tt> in order to disable the burning process.
 
 <p>
 All those burning methods share the same configuration keys, so it's easy to
 switch from a medium to another.
+
 
 <sect2 id="BM_BURNING_DEVICE"><tt>BM_BURNING_DEVICE</tt>
 <p>

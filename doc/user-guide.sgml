@@ -314,17 +314,43 @@ Suggested value: <tt>long</tt>.
 <sect2 id="BM_TARBALL_FILETYPE"><tt>BM_TARBALL_FILETYPE</tt>
 
 <p>
-<em>Type: enum(tar, tar.gz, tar.bz2, zip), default: <tt>tar.gz</tt>.</em>
+<em>Type: enum(tar, tar.gz, tar.bz2, zip, dar), default: <tt>tar.gz</tt>.</em>
 
 <p>
 Basically, this configuration key defines the filetype of the resulting archive.
-In a way, it defines which compressor to use (zip, gzip or bzip2).
+In a way, it defines which compressor to use (zip, gzip, dar or bzip2).
 Here are the supported values: <tt>tar</tt>, <tt>tar.gz</tt>, <tt>tar.bz2</tt>,
-<tt>zip</tt>. Note that depending on the filetype you choose, you will have to
-make sure you have the corresponding compressor.
+<tt>zip</tt> and <tt>dar</tt>. 
+Note that depending on the filetype you choose, you will have to
+make sure you have the corresponding compressor installed.
 
 <p>
 For the best compression rate, choose <tt>tar.bz2</tt>.
+
+<p>
+Since version 0.7.1, &bmngr; provides the <em>dar</em> support. This archiver 
+provides some interesting features like the archive slicing.
+
+<sect2 id="BM_TARBALL_SLICESIZE"><tt>BM_TARBALL_SLICESIZE</tt>
+
+<p>
+<em>Type: string</em>
+
+<p>
+If you want to make sure your archives won't exceed a given size (for instance 2
+GB) you can use that configuration variable, but only if you are using the
+<tt>dar</tt> <tt>BM_TARBALL_FILETYPE</tt>. Indeed this feature is only supported
+by dar.
+
+<p>
+If you want to limit your archives size to 1 giga byte, use such a statement:
+
+<example>
+BM_TARBALL_SLICESIZE="1000M"
+</example>
+
+<p>
+Refer to the dar manpage for details about slices.
 
 <sect2 id="BM_TARBALL_DUMPSYMLINKS"><tt>BM_TARBALL_DUMPSYMLINKS</tt>
 

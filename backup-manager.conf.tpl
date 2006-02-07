@@ -62,7 +62,7 @@ export BM_ARCHIVE_METHOD="tarball"
 # 	short : parentfolder.tar.gz
 export BM_TARBALL_NAMEFORMAT="long"
 
-# Type of archives, available types are tar, tar.gz, tar.bz2, zip.
+# Type of archives, available types are tar, tar.gz, tar.bz2, dar, zip.
 export BM_TARBALL_FILETYPE="tar.gz"
 
 # Do you want to dereference the files pointed by symlinks ? 
@@ -72,10 +72,11 @@ export BM_TARBALL_DUMPSYMLINKS="false"
 # Directories you want to backup as tarballs (separated by spaces)
 export BM_TARBALL_DIRECTORIES="/etc /home"
 
-# Files to exclude when generating tarballs
+# Files to exclude when generating tarballs, you can put absolute 
+# or relative paths, Bash wildcards are possible.
 export BM_TARBALL_BLACKLIST=""
 
-# With the "dar" fieltype, you can choose a maximum slice limit.
+# With the "dar" filetype, you can choose a maximum slice limit.
 export BM_TARBALL_SLICESIZE="1000M"
 
 ##############################################################
@@ -240,7 +241,7 @@ export BM_UPLOAD_FTP_USER=""
 # the FTP user's password
 export BM_UPLOAD_FTP_PASSWORD=""
 
-# FTP specific rmeote hosts
+# FTP specific remote hosts
 export BM_UPLOAD_FTP_HOSTS=""
 
 # purge archives on remote hosts before uploading?

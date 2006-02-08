@@ -1,6 +1,9 @@
 0.7.1
-    * Full "dar" archives support.
-    * better support of DVD-RW, bugfix of the DVD burning method.
+    * New Features:
+        + Full "dar" archives support.
+        + New variable `BM_MYSQL_SAFEDUMPS' for making safe MySQL dumps (locking tables).
+    * Changes: 
+        + Better support of DVD-RW media, bugfix of the DVD burning method.
 
 2005-12-31 (0.6.1)   Alexis Sukrieh <sukria@backup-manager.org>
     * Bug fix

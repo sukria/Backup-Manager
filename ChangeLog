@@ -1,3 +1,10 @@
+2006-02-08  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* NEWS:
+	  + Release notes for 0.7.1
+	* backup-manager.conf.tpl:
+	  + default blacklist items: /dev /proc /sys
+
 2006-01-19  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* lib/backup-methods.sh:

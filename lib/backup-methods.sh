@@ -66,58 +66,57 @@ handle_tarball_error()
 
 __exec_meta_command()
 {
-        command="$1"
-        file_to_create="$2"
-        compress="$3"
-        logfile=$(mktemp /tmp/bm-command.stderr.XXXXXX)
-        
-        if [ -f $file_to_create ] && [ $force != true ]; then
-                warning "File \$file_to_create already exists, skipping."
-        fi
-        
-        # execute the command, grab the output
-        $($command 1> $file_to_create 2>$logfile) || 
-        error "Unable to exec \$command; check \$logfile"
+    command="$1"
+    file_to_create="$2"
+    compress="$3"
 
-        # our $file_to_create should be created now
-        if [ ! -e $file_to_create ]; then
-               error "\$command ended, but \$file_to_create not found; check \$logfile" 
-        fi
-        rm -f $logfile
-       
-        if [ -n $compress ]; then
-                case "$compress" in
-                "gzip"|"gz")
-                        if [ -x $gzip ]; then
-                                $gzip -f -q -9 $file_to_create || error "Error while using \$gzip."
-                                file_to_create="$file_to_create.gz"
-                        else
-                                error "Compressor \$compress requires \$gzip"
-                        fi
-                ;;
-                "bzip"|"bzip2")
-                        if [ -x $bzip ]; then
-                                $bzip -f -q -9 $file_to_create || error "Error while using \$bzip."
-                                file_to_create="$file_to_create.bz2"
-                        else
-                                error "Compressor \$compress requires \$bzip"
-                        fi
+    if [ -f $file_to_create ] && [ $force != true ]; then
+        warning "File \$file_to_create already exists, skipping."
+        return 0
+    fi
+    logfile=$(mktemp /tmp/bm-command.XXXXXX)
 
-                ;;
-                ""|"uncompressed"|"none")
-                ;;
-                *)
-                        error "No such compressor supported: \$compress"
-                ;;
-                esac
+    case "$compress" in
+    "gzip"|"gz")
+        if [ -x $gzip ]; then
+            $command 2>$logfile | $gzip -f -q -9 > "$file_to_create.gz"
+            words=$(wc -w $logfile | awk '{print $1}')
+            if [ $words -gt 0 ]; then
+                error "Unable to exec \$command; check \$logfile"
+            fi
+            file_to_create="$file_to_create.gz"
+        else
+            error "Compressor \$compress requires \$gzip"
         fi
-       
-        # make sure we didn't loose the archive
-        if [ ! -e $file_to_create ]; then
-                error "Unable to find \$file_to_create" 
+    ;;
+    "bzip"|"bzip2")
+        if [ -x $bzip ]; then
+            $command 2>$logfile | $bzip -f -q -9 > "$file_to_create.bz2"
+            words=$(wc -w $logfile | awk '{print $1}')
+            if [ $words -gt 0 ]; then
+                error "Unable to exec \$command; check \$logfile"
+            fi
+            file_to_create="$file_to_create.bz2"
+        else
+            error "Compressor \$compress requires \$bzip"
         fi
-        
-        export BM_RET="$file_to_create"
+    ;;
+    ""|"uncompressed"|"none")
+        $command 1> $file_to_create 2>$logfile || 
+            error "Unable to exec \$command; check \$logfile"
+    ;;
+    *)
+        error "No such compressor supported: \$compress"
+    ;;
+    esac
+    rm -f $logfile
+
+    # make sure we didn't loose the archive
+    if [ ! -e $file_to_create ]; then
+        error "Unable to find \$file_to_create" 
+    fi
+
+    export BM_RET="$file_to_create"
 }
 
 __create_file_with_meta_command()

@@ -383,6 +383,30 @@ Example:
 export BM_TARBALL_DIRECTORIES="/etc /home /var/log/apache"
 </example>
 
+<sect2 id="BM_TARBALL_BLACKLIST"><tt>BM_TARBALL_BLACKLIST</tt>
+
+<p>
+<em>Type: space-separated list, default: <tt>"/proc /dev /sys /tmp"</tt>.</em>
+
+<p>
+It can be very useful to prevent some locations of your filesytem from being
+included in the archives. This is really useful when you use wildcards in
+BM_TARBALL_DIRECTORIES. Indeed, you may want to backup every top-level directory
+of your filesystem (<tt>/*</tt>) but without volatile locations like
+<tt>/tmp</tt>, <tt>/dev</tt> and <tt>/proc</tt>.
+
+<p>
+You can also use this variable for excluding every files of a given extension,
+like for instance mp3 or mpg files.
+
+<p>
+Example: 
+
+<example>
+export BM_TARBALL_BLACKLIST="/tmp /dev /proc *.mp3 *.mpg"
+</example>
+
+
 <sect1 id="tarballinc">Incremental tarballs
 <sect2 id="tarballinc-desc">Description
 
@@ -449,15 +473,36 @@ mysqldump (SQL text files) and can be compressed.
 <sect2 id="BM_MYSQL_DATABASES"><tt>BM_MYSQL_DATABASES</tt>
 
 <p>
-<em>Type: space-separated list, default: <tt>mysql</tt>.</em>
+<em>Type: space-separated list, default: <tt>__ALL__</tt>.</em>
 <p>
 This is the list of databases you want to archive.
+You can put the keyword <tt>__ALL__</tt> if you like to backup every database without 
+having to list them.
 <p>
 Example:
 
 <example>
 export BM_MYSQL_DATABASES="mysql mybase wordpress dotclear phpbb2"
 </example>
+
+<sect2 id="BM_MYSQL_SAFEDUMPS"><tt>BM_MYSQL_SAFEDUMPS</tt>
+<p>
+<em>Type: boolean, default: <tt>true</tt>.</em>
+
+<p>
+The best way to produce MySQL dumps is done by using mysqldump's <tt>--opt</tt> switch. 
+This makes the dump directly usable with mysql (adds the drop table
+statements), locks tables during the dump generation and other cool things (see <tt>mysqldump</tt>).
+This is recommended for full-clean-safe backups, but needs a 
+privileged user (for the lock permissions).
+
+<p>
+Example:
+
+<example>
+export BM_MYSQL_SAFEDUMPS="true"
+</example>
+
 
 <sect2 id="BM_MYSQL_ADMINLOGIN"><tt>BM_MYSQL_ADMINLOGIN</tt>
 
@@ -1289,6 +1334,50 @@ cat > /etc/cron.daily/backup-manager
 
 /usr/sbin/backup-manager --verbose
 </example>
+
+<chapt id="about">Restoring Archives
+<p>
+You make archives for being ready to back your system up when needed. When such a time
+comes, you will have to restore an archive. In the current version, Backup Manager does
+not provide a way to automatically restore an archive. You'll have to do it by
+hand. This is planed to be supported in next versions though.
+
+<p>
+We will cover in this chapter evry method for restoring archives. Of course the
+restore method depends on the kind of archive you have to manipulate.
+
+<sect id="restore-tarballs">Tarballs
+<p>
+Let's begin with the basic kind of archives, the "tarballs".
+
+<sect1 id="restore-tar"><tt>tar</tt>, <tt>tar.gz</tt> and <tt>tar.bz2</tt> archives
+<p>
+All these archives are made using the <tt>tar</tt> command, restoring them will
+be about to use tar with the appropriate options for uncompressing the archive.
+
+<p>
+Exemple: 
+
+<p>
+We want to restore the file <tt>/etc/passwd</tt> and the directory <tt>/home/john/work/</tt>.
+Every toplevel directory of our filesystem is archived:
+<example>
+BM_TARBALL_DIRECTORIES="/*"
+BM_TARBALL_BLACKLIST="/tmp /dev /proc /sys"
+</example>
+
+<p>
+We have to 
+
+<sect1 id="restore-zip"><tt>zip</tt> archives
+<sect1 id="restore-dar"><tt>dar</tt> archives
+
+<sect id="restore-incremental">Incremental tarballs
+
+<sect id="restore-mysql">MySQL dumps
+
+<sect id="restore-svn">SVN dumps
+
 
 </book>
 

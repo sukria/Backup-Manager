@@ -74,7 +74,7 @@ export BM_TARBALL_DIRECTORIES="/etc /home"
 
 # Files to exclude when generating tarballs, you can put absolute 
 # or relative paths, Bash wildcards are possible.
-export BM_TARBALL_BLACKLIST="/dev /sys /proc"
+export BM_TARBALL_BLACKLIST="/dev /sys /proc /tmp"
 
 # With the "dar" filetype, you can choose a maximum slice limit.
 export BM_TARBALL_SLICESIZE="1000M"

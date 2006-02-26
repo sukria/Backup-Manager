@@ -70,9 +70,13 @@ size_of_path()
     if [ -z "$path" ]; then
         error "No path given"
     fi
+
+    if [ ! -e $path ]; then
+        error "Cannot find \$path, unable to stat."
+    fi
     
-	total_size=$(du --si --block-size=1000k -c $path | tail -1 | awk '{print $1}')
-	
+    #echo "DEBUG: du --si --block-size=1000k -c $path | tail -1 | awk '{print $1}'" >&2
+    total_size=$(du --si --block-size=1000k -c $path | tail -1 | awk '{print $1}')
 	echo $total_size
 }
 

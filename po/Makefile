@@ -13,7 +13,7 @@ PACKAGE=backup-manager
 
 all: backup-manager.pot $(POFILES) $(MOFILES)
 
-install: $(MOFILES)
+install: backup-manager.pot $(MOFILES)
 	@echo "Installing mo files"
 	for file in $(MOFILES); do \
 		lang=`echo $$file | sed 's/\.mo//'`; \

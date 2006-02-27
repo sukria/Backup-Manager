@@ -141,6 +141,7 @@ __get_flags_tar_blacklist()
 __get_flags_dar_blacklist()
 {
     target="$1"
+    target=${target%/}
     blacklist=""
 	for pattern in $BM_TARBALL_BLACKLIST
 	do
@@ -344,7 +345,7 @@ __make_tarball_archives()
         
         if [ ! -e $file_to_check ] || [ $force = true ]; then
             logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
-#            echo "DEBUG: '$command'" >&2
+            #echo "DEBUG: '$command'" >&2
             if ! $command > $logfile 2>&1 ; then
                 handle_tarball_error "$file_to_create" "$logfile"
             else
@@ -436,11 +437,15 @@ backup_method_svn()
 
     for repository in $BM_SVN_REPOSITORIES
     do
-        archive_name=$(get_dir_name $repository "long")
-        file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$archive_name.$TODAY.svn"
-        command="$svnadmin dump $repository"
-        compress="$BM_SVN_COMPRESSWITH"
-        __create_file_with_meta_command
+        if [ ! -d $repository ]; then
+            warning "SVN repository \"\$repository\" is not valid; skipping."
+        else
+            archive_name=$(get_dir_name $repository "long")
+            file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$archive_name.$TODAY.svn"
+            command="$svnadmin dump $repository"
+            compress="$BM_SVN_COMPRESSWITH"
+            __create_file_with_meta_command
+        fi
     done
 }
 

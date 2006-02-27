@@ -217,7 +217,7 @@ function burn_files_interactive()
 {
     find_what_to_burn "$BM_REPOSITORY_ROOT"
     size=$(size_of_path "$BM_REPOSITORY_ROOT")
-    info "Trying to burn \$BM_REPOSITORY_ROOT (\$size_of_path MB) in interactive mode."
+    info "Trying to burn \$BM_REPOSITORY_ROOT (\$size MB) in interactive mode."
     burn_multiples_media
 }
 

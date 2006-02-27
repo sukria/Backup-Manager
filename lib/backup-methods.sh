@@ -82,7 +82,9 @@ __exec_meta_command()
             $command 2>$logfile | $gzip -f -q -9 > "$file_to_create.gz"
             words=$(wc -w $logfile | awk '{print $1}')
             if [ $words -gt 0 ]; then
-                error "Unable to exec \$command; check \$logfile"
+                warning "Unable to exec \$command; check \$logfile"
+            else
+                rm -f $logfile
             fi
             file_to_create="$file_to_create.gz"
         else
@@ -94,7 +96,9 @@ __exec_meta_command()
             $command 2>$logfile | $bzip -f -q -9 > "$file_to_create.bz2"
             words=$(wc -w $logfile | awk '{print $1}')
             if [ $words -gt 0 ]; then
-                error "Unable to exec \$command; check \$logfile"
+                warning "Unable to exec \$command; check \$logfile"
+            else
+                rm -f $logfile
             fi
             file_to_create="$file_to_create.bz2"
         else
@@ -103,13 +107,17 @@ __exec_meta_command()
     ;;
     ""|"uncompressed"|"none")
         $command 1> $file_to_create 2>$logfile || 
-            error "Unable to exec \$command; check \$logfile"
+        words=$(wc -w $logfile | awk '{print $1}')
+        if [ $words -gt 0 ]; then
+            warning "Unable to exec \$command; check \$logfile"
+        else
+            rm -f $logfile
+        fi
     ;;
     *)
         error "No such compressor supported: \$compress"
     ;;
     esac
-    rm -f $logfile
 
     # make sure we didn't loose the archive
     if [ ! -e $file_to_create ]; then

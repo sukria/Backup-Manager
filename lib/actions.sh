@@ -266,7 +266,7 @@ function burn_session()
                 error "DVD burning requires \$dvdrwformat, aborting."
             fi
             
-            info "Blanking the DVD media in \$BM_BURNING_DEVFORCED"
+            info "Blanking the DVD media in \$BM_BURNING_DEVICE"
             $dvdrwformat -blank $BM_BURNING_DEVICE > $logfile 2>&1 || 
                 error "Unable to blank the DVD media (check \$logfile)."
             

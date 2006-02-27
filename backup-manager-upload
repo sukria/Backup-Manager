@@ -246,7 +246,7 @@ sub ftp_clean_directory($)
     foreach my $file (@$ra_files) {
         my $date = undef;
         chomp $file;
-        if ($file =~ /\.(\d{8})\./) {
+        if ($file =~ /[\.\-](\d{8})\./) {
             $date = $1;
             if ($date and ($date <= $date_to_remove)) {
                 verbose "$file has to be deleted, too old ($date <= $date_to_remove).";

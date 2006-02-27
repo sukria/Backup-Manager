@@ -433,7 +433,7 @@ remains unchanged, tuesday's archive will only contain the modified files of
 <p>
 This method uses all the tarball's configuration keys and adds two more. One to
 define the kind of frequency, the other to choose on which day the full backups 
-should be made. 
+should be done.
 
 <sect2 id="BM_TARBALLINC_MASTERDATETYPE"><tt>BM_TARBALLINC_MASTERDATETYPE</tt>
 

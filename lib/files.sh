@@ -76,7 +76,7 @@ size_of_path()
     fi
     
     #echo "DEBUG: du --si --block-size=1000k -c $path | tail -1 | awk '{print $1}'" >&2
-    total_size=$(du --si --block-size=1000k -c "$path" | tail -1 | awk '{print $1}')
+    total_size=$(du --si --block-size=1000k -c $path | tail -1 | awk '{print $1}')
 	echo $total_size
 }
 

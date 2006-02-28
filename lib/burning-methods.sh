@@ -116,8 +116,8 @@ burn_files()
     # according to the standard input
     if tty -s ; then 
 #        NOT YET READY - DOES NOT WORK
-#        burn_files_interactive
-        burn_files_non_interactive
+        burn_files_interactive
+#        burn_files_non_interactive
     else
         burn_files_non_interactive
     fi
@@ -266,12 +266,12 @@ function burn_session()
 
 function __build_indexes_from_target()
 {
-    indexes=""
+    indexes="blah"
 }
 
 function __insert_new_medium()
 {
-    info "DEBUG: inserting new medium"
+    bm_pause "$(translate "Please insert a new media in \$BM_BURNING_DEVICE")"
 }
 
 function __burn_session_from_file()

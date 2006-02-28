@@ -1,4 +1,4 @@
-# Copyright (C) 2005 The Backup Manager Authors
+# Copyright © 2005-2006 The Backup Manager Authors
 #
 # See the AUTHORS file for details.
 #
@@ -59,6 +59,42 @@ stop_me()
 	echo ""
 	error "Warning, process interupted, archives may be corrupted."
 	release_lock
+}
+
+
+# Prompt the user with a question, set $BM_RET to "true" if the user agreed,
+# to "false" if not.
+# PLEASE use translate() for giving a question to that function!
+function bm_prompt()
+{
+    # this must be translated here, I cannot do it here! 
+    question="$1"
+         
+    if ! tty -s ; then
+        error "Not in interactive mode, cannot follow."
+    fi
+    
+    echo -n "$question "; echo "[y/N] "
+    read ret
+    
+    if [ "$ret" == "y" ] || [ "$ret" == "Y" ]; then
+        export BM_RET="true"
+    else 
+        export BM_RET="false"
+    fi
+}
+
+# Prints a message and wait for the user to press enter.
+function bm_pause()
+{
+    message="$1"
+
+    if ! tty -s ; then
+        error "Not in interactive mode, cannot follow."
+    fi
+
+    echo -n "$message "
+    read pause
 }
 
 

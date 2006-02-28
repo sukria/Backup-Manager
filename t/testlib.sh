@@ -8,6 +8,7 @@ source $locallib/files.sh
 source $locallib/md5sum.sh
 source $locallib/backup-methods.sh
 source $locallib/upload-methods.sh
+source $locallib/burning-methods.sh
 source $locallib/actions.sh
 
 VERSION="0.7.1+svn"

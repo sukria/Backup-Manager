@@ -130,3 +130,52 @@ bm_init_env ()
     export TODAY=`date +%Y%m%d`                  
     export TOOMUCH_TIME_AGO=`date +%d --date "$BM_ARCHIVE_TTL days ago"`
 }
+
+# be sure that zip is supported.
+check_filetypes()
+{
+	case "$BM_TARBALL_FILETYPE" in
+		"zip")
+			if [ ! -x $zip ]; then
+				error "the BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
+			fi
+		;;
+		"tar.bz2" )
+			if [ ! -x $bzip ]; then
+				error "the BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
+			fi
+		;;
+		"dar" )
+			if [ ! -x $dar ]; then
+				error "the BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
+			fi
+		;;
+	esac
+}
+
+# get the list of directories to backup.
+check_what_to_backup()
+{
+	if [ ! -n "$BM_TARBALL_DIRECTORIES" ] && [ "$BM_ARCHIVE_METHOD" = "tarball" ]; then 
+		error "The BM_TARBALL_DIRECTORIES conf key is not set in \$conffile"
+	fi
+}
+
+create_archive_root_if_not_exists()
+{
+	if [ ! -d $BM_REPOSITORY_ROOT ]
+	then
+		info "\$BM_REPOSITORY_ROOT does not exist, creating it"
+		mkdir $BM_REPOSITORY_ROOT
+	fi
+
+	# for security reason, the repository should not be world readable
+	# only BM_REPOSITORY_USER:BM_REPOSITORY_GROUP can read/write it. 
+	if [ "$BM_REPOSITORY_SECURE" = "true" ]; then
+		chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $BM_REPOSITORY_ROOT
+		chmod 770 $BM_REPOSITORY_ROOT
+	fi
+}
+
+
+

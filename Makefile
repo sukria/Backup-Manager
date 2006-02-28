@@ -10,6 +10,7 @@ SHFILES=lib/dialog.sh \
 	lib/actions.sh \
 	lib/backup-methods.sh\
 	lib/upload-methods.sh\
+	lib/burning-methods.sh\
 	lib/logger.sh \
 	lib/gettext.sh \
 	lib/gettext-real.sh \

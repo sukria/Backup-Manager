@@ -50,6 +50,7 @@ source $libdir/files.sh
 source $libdir/md5sum.sh
 source $libdir/backup-methods.sh
 source $libdir/upload-methods.sh
+source $libdir/burning-methods.sh
 source $libdir/actions.sh
 
 # Initialize defautls values of arguments

@@ -22,6 +22,16 @@
 #
 # * * *
 
+
+function bm_safe_unmount
+{
+    device="$1"
+    if grep $device /etc/mtab >/dev/null 2>&1; then
+        info "\$device is mounted, unmounting it."
+        umount $device || warning "Unable to unmount the device \$device"
+    fi
+}
+
 # This will get all the md5 sums of the day,
 # mount the BM_BURNING_DEVICE on /tmp/device and check 
 # that the files are correct with md5 tests.
@@ -39,13 +49,17 @@ check_cdrom_md5_sums()
         error "The mount point \$mount_point is not there"
     fi
     
+    # unmount if needed
+    bm_safe_unmount $BM_BURNING_DEVICE
+
     # mount the device in /tmp/
     info "Mounting \$BM_BURNING_DEVICE on \$mount_point."
-    mount $BM_BURNING_DEVICE $mount_point >& /dev/null || error "Unable to mount \$BM_BURNING_DEVICE on \$mount_point."
+    mount $BM_BURNING_DEVICE $mount_point >& /dev/null || 
+        error "Unable to mount \$BM_BURNING_DEVICE on \$mount_point."
     export HAS_MOUNTED=1
     
     # now we can check the md5 sums.
-    for file in $mount_point/*
+    for file in $mount_point/*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*
     do
         base_file=$(basename $file)
         date_of_file=$(get_date_from_file $file)
@@ -116,8 +130,8 @@ burn_files()
     # according to the standard input
     if tty -s ; then 
 #        NOT YET READY - DOES NOT WORK
-        burn_files_interactive
-#        burn_files_non_interactive
+#        burn_files_interactive
+        burn_files_non_interactive
     else
         burn_files_non_interactive
     fi
@@ -144,13 +158,13 @@ function burn_files_non_interactive()
     # We can't burn the whole repository, using only today's archives
     # FIXME: should be possible to choose another date than "today"
     if [ $size -gt $BM_BURNING_MAXSIZE ]; then
-        size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${TODAY}*")
+        size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DAY}*")
         
         # does not fit neither, cannot burn anything.
         if [ $size -gt $BM_BURNING_MAXSIZE ]; then
-			error "Cannot burn archives of the \$TODAY, too big: \${size}M, must fit in \$BM_BURNING_MAXSIZE"
+            error "Cannot burn archives of the \$BM__BURNING_DAY, too big: \${size}M, must fit in \$BM_BURNING_MAXSIZE"
         fi
-        find_what_to_burn "${BM_REPOSITORY_ROOT}/*${TODAY}*"
+        find_what_to_burn "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DAY}*"
     else
         find_what_to_burn "${BM_REPOSITORY_ROOT}"
     fi
@@ -183,10 +197,7 @@ function burn_session()
     fi
     
     # Let's unmount the device first
-    if grep $BM_BURNING_DEVICE /etc/mtab >/dev/null 2>&1; then
-        info "\$BM_BURNING_DEVICE is mounted, unmounting before the burning session."
-        umount $BM_BURNING_DEVICE || warning "Unable to unmount the device \$BM_BURNING_DEVICE"
-    fi
+    bm_safe_unmount $BM_BURNING_DEVICE
     
     # get a log file in a secure path
     logfile="$(mktemp /tmp/bm-burning.log.XXXXXX)"

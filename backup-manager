@@ -21,6 +21,9 @@
 
 set -e
 
+# FIXME: we have to support that flag!
+# set -u
+
 VERSION="0.7.1"
 
 # All the path we'll need
@@ -65,6 +68,9 @@ md5check="false"
 purge="false"
 conffile="/etc/backup-manager.conf"
 
+# set useful global variables
+bm_init_env
+
 if [ "$UID" != 0 ]; then
 	echo_translated "backup-manager must be run as root."
 	exit 1
@@ -90,28 +96,36 @@ while [ $# -ge 1 ]; do
 		;;
 		-b|--burn) 
 			burn="true"
+            # parse the second argument as a date if
+            # it does not begin with a dash (-).
+            if [ -n "$2" ] && 
+               [ "${2}" == "${2#-}" ]; then
+                export BM__BURNING_DATE="$2"
+            else
+                export BM__BURNING_DATE="$TODAY"
+            fi
 		;;
 		--no-burn)
 			noburn="true"
 		;;
-		-u|--upload) 
-			upload="true"
-		;;
-		--no-upload)
-			noupload="true"
-		;;
-		-v|--verbose) 
-			verbose="true"
-		;;
-                --version)
-                        echo "Backup Manager $VERSION"
-                        _exit 0
-                ;;
-		--no-warnings)
-			warnings="false"
-		;;
-		-f|--force) 
-			force="true"
+        -u|--upload) 
+            upload="true"
+        ;;
+        --no-upload)
+            noupload="true"
+        ;;
+        -v|--verbose) 
+            verbose="true"
+        ;;
+        --version)
+           echo "Backup Manager $VERSION"
+            _exit 0
+        ;;
+        --no-warnings)
+            warnings="false"
+        ;;
+        -f|--force) 
+            force="true"
 		;;
 		-c|--conffile)
 			# in this case, $2 should be the conffile !
@@ -133,7 +147,6 @@ while [ $# -ge 1 ]; do
 	shift
 done
 
-bm_init_env
 
 source $conffile
 source $libdir/sanitize.sh

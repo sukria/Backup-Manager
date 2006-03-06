@@ -140,7 +140,15 @@ burn_files()
 function find_what_to_burn()
 {
     source="$1"
-    for file in "$source"
+
+    nb_file=$(ls -l $source 2>/dev/null | wc -l)
+    if [ $nb_file -gt 0 ]; then
+        info "Number of files to burn: \$nb_file."
+    else
+        error "Nothing to burn for the \$BM__BURNING_DATE (\$nb_file), try the '--burn <date>' switch."
+    fi
+    
+    for file in $source
     do
         if [ ! -L $file ]; then
             what_to_burn="$what_to_burn $file"
@@ -156,15 +164,16 @@ function burn_files_non_interactive()
     size=$(size_of_path "$BM_REPOSITORY_ROOT")
 
     # We can't burn the whole repository, using only today's archives
-    # FIXME: should be possible to choose another date than "today"
-    if [ $size -gt $BM_BURNING_MAXSIZE ]; then
-        size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DAY}*")
+    if [ $size -gt $BM_BURNING_MAXSIZE ] ||
+       [ "${TODAY}" != "${BM__BURNING_DATE}" ]; then
+        info "Burning archives of \$BM__BURNING_DATE"
+        size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")
         
         # does not fit neither, cannot burn anything.
         if [ $size -gt $BM_BURNING_MAXSIZE ]; then
-            error "Cannot burn archives of the \$BM__BURNING_DAY, too big: \${size}M, must fit in \$BM_BURNING_MAXSIZE"
+            error "Cannot burn archives of the \$BM__BURNING_DATE, too big: \${size}M, must fit in \$BM_BURNING_MAXSIZE"
         fi
-        find_what_to_burn "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DAY}*"
+        find_what_to_burn "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*"
     else
         find_what_to_burn "${BM_REPOSITORY_ROOT}"
     fi

@@ -287,11 +287,11 @@ export BM_UPLOAD_RSYNC_DUMPSYMLINKS="false"
 #           only the generated archives.
 #  - none : disable the burning system
 
-export BM_BURNING_METHOD="CDR"
+export BM_BURNING_METHOD="none"
 
 # When the CD is burnt, it is possible to check every file's 
 # MD5 checksum to see if the CD is not corrupted.
-export BM_BURNING_CHKMD5="true"
+export BM_BURNING_CHKMD5="false"
 
 # The device to use for mounting the cdrom
 export BM_BURNING_DEVICE="/dev/cdrom"
@@ -304,7 +304,7 @@ export BM_BURNING_DEVFORCED=""
 
 # enter here the max size of your media 
 # (usal sizes are 4200 for DVD media and 700 or 800 for CDR media)
-export BM_BURNING_MAXSIZE="50"
+export BM_BURNING_MAXSIZE="650"
 
 
 ##############################################################

@@ -287,7 +287,7 @@ export BM_UPLOAD_RSYNC_DUMPSYMLINKS="false"
 #           only the generated archives.
 #  - none : disable the burning system
 
-export BM_BURNING_METHOD="none"
+export BM_BURNING_METHOD="CDR"
 
 # When the CD is burnt, it is possible to check every file's 
 # MD5 checksum to see if the CD is not corrupted.
@@ -304,7 +304,7 @@ export BM_BURNING_DEVFORCED=""
 
 # enter here the max size of your media 
 # (usal sizes are 4200 for DVD media and 700 or 800 for CDR media)
-export BM_BURNING_MAXSIZE="700"
+export BM_BURNING_MAXSIZE="50"
 
 
 ##############################################################

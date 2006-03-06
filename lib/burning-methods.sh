@@ -54,8 +54,7 @@ check_cdrom_md5_sums()
 
     # mount the device in /tmp/
     info "Mounting \$BM_BURNING_DEVICE on \$mount_point."
-    mount $BM_BURNING_DEVICE $mount_point >& /dev/null || 
-        error "Unable to mount \$BM_BURNING_DEVICE on \$mount_point."
+    mount $BM_BURNING_DEVICE $mount_point >& /dev/null
     export HAS_MOUNTED=1
     
     # now we can check the md5 sums.
@@ -100,7 +99,7 @@ check_cdrom_md5_sums()
     done
 
     if [ $has_error = 1 ]; then
-        error "Errors encountered during MD5 controls."
+        warning "Errors encountered during MD5 controls."
     fi
 
     # remove the mount point
@@ -129,9 +128,7 @@ burn_files()
     # Choose which mode to use (interactive or not)
     # according to the standard input
     if tty -s ; then 
-#        NOT YET READY - DOES NOT WORK
-#        burn_files_interactive
-        burn_files_non_interactive
+        burn_files_interactive
     else
         burn_files_non_interactive
     fi
@@ -145,7 +142,7 @@ function find_what_to_burn()
     if [ $nb_file -gt 0 ]; then
         info "Number of files to burn: \$nb_file."
     else
-        error "Nothing to burn for the \$BM__BURNING_DATE (\$nb_file), try the '--burn <date>' switch."
+        error "Nothing to burn for the \$BM__BURNING_DATE, try the '--burn <date>' switch."
     fi
     
     for file in $source
@@ -186,10 +183,11 @@ function burn_files_non_interactive()
 # (anyway, we rely on this assertion, this should be documented).
 function burn_files_interactive()
 {
-    find_what_to_burn "$BM_REPOSITORY_ROOT"
+    purge_indexes
+    find_what_to_burn "$BM_REPOSITORY_ROOT/*"
     size=$(size_of_path "$BM_REPOSITORY_ROOT")
     info "Trying to burn \$BM_REPOSITORY_ROOT (\$size MB) in interactive mode."
-    burn_multiples_media "$BM_REPOSITORY_ROOT"
+    burn_multiples_media "$what_to_burn"
 }
 
 # This will burn $what_to_burn on a single session 
@@ -219,11 +217,6 @@ function burn_session()
         devforced="dev=${BM_BURNING_DEVFORCED}"
     fi
     
-    # User must change the media before burning
-    if [ "$interactive" = "true" ] ; then
-        insert_media
-    fi
-
     # burning the iso with the user choosen method
     case "$BM_BURNING_METHOD" in
         "DVD")
@@ -283,10 +276,66 @@ function burn_session()
     fi
 }
 
+function purge_indexes()
+{
+    index_prefix=$(get_index_prefix)
+	rm -f ${index_prefix}*
+}
 
+function get_index_prefix()
+{
+	index_prefix="$BM_REPOSITORY_ROOT/index-${BM__BURNING_DATE}"
+    echo "$index_prefix"
+}
+
+# Parse "$target" and build index files. Put as many files in index as possible
+# according to BM_BURNING_MAXSIZE.
+# indexes are not included here, should be added by hand after that processing.
 function __build_indexes_from_target()
 {
-    indexes="blah"
+	target="$1"
+
+	medium_index=""
+	index_number=1
+    index_prefix=$(get_index_prefix)
+	index_session="$index_prefix-$index_number"
+
+    # Sorting by filetypes
+	target=$(ls -v $target)
+
+	# Write the indexes files in order to have one index file by medium.
+	# When a medium is full, we create a new one.
+	for file in ${target}
+	do
+		size_of_file=$(size_of_path "$file")
+
+		if [ $size_of_file -gt $BM_BURNING_MAXSIZE ] ; then
+			warning "Not burning \$file because it does not fit in the medium."
+			continue
+		fi
+
+		# Addd file to the index file.
+		medium_possible_index="$medium_index $file"
+		size_of_possible_index=$(size_of_path "$medium_possible_index")
+
+		if [ $size_of_possible_index -gt $BM_BURNING_MAXSIZE ] ; then
+			indexes="$indexes $index_session"
+			
+			index_number=$(($index_number + 1))
+			index_session="$index_prefix-$index_number"
+            #__debug "BM_BURNING_MAXSIZE is reached : new index: $index_session"
+            
+			echo "$file" > $index_session
+			
+            medium_index="$file"
+			medium_possible_index=""
+
+		else
+			echo "$file" >> $index_session
+			medium_index="$medium_possible_index"
+		fi	
+	done
+	indexes="$indexes $index_session"
 }
 
 function __insert_new_medium()
@@ -302,6 +351,33 @@ function __burn_session_from_file()
     if [ ! -e "$index_file" ]; then
         error "No such index file : \$index_file"
     fi
+	
+    what_to_burn_session=""
+
+    for file in $(cat "$index_file")
+      do
+      what_to_burn_session="$what_to_burn_session $file"
+    done
+    
+    what_to_burn="$what_to_burn_session"
+    
+    burn_session "$what_to_burn_session" "$session_number"
+
+    # Remove the index file.
+    rm -f $index_file
+
+}
+
+function __append_index_paths_in_indexes()
+{
+    prefix=$(get_index_prefix)
+    for index_file in $prefix*
+    do    
+        for index_path in $prefix*
+        do
+            echo "$index_path" >> $index_file
+        done
+    done
 }
 
 #Goal:
@@ -326,9 +402,16 @@ function burn_multiples_media()
 {
     target="$1"
     
+    # first purge existing indexs
+    purge_indexes
+
     # put in $indexes a list of files that contain
     # archives to put on each medium.
-    __build_indexes_from_target "$target" 
+    __build_indexes_from_target "$target"
+
+    # Now that all indexes are built, list them so we can find
+    # them all in the media.
+    __append_index_paths_in_indexes
 
     # foreach index, build its content on a media, interactively
     session_number=0
@@ -340,95 +423,3 @@ function burn_multiples_media()
         __burn_session_from_file "$index" "$session_number"
     done
 }
-
-
-# This will burn $what_to_burn on as many media as needed.
-# Take care, this has to be called in an interactive mode!
-burn_multiples_media_old()
-{
-    what_to_burn_session=""
-    interactive="true"
-    session_number="1"
-
-    # Sort the list of files which have to be burned
-    # and start with the little one.
-    what_to_burn_total="$(ls -r -S $what_to_burn)"
-    for file in $what_to_burn_total ; do
-        what_to_burn_sorted="$what_to_burn_sorted $file"
-    done
-    what_to_burn_total="$what_to_burn_sorted"
-
-    for file in $what_to_burn_total ; do
-        file="$BM_REPOSITORY_ROOT/$file"
-        size_file=$(size_of_path "$file")
-        if [ $size_file -gt $BM_BURNING_MAXSIZE ] ; then
-            info "The file \$file (\${size_file}M) is too big for the burning device."
-        fi
-
-        if [ -z "$what_to_burn_session" ] ; then
-            # Adding $file if the last session havn't keep any file which havn't been burnt.
-            what_to_burn_possible_session="$file"
-            what_to_burn_session="$file"
-        else
-            what_to_burn_possible_session="$what_to_burn_session $file"
-        fi
-
-        size_possible_session=$(size_of_path "$what_to_burn_possible_session")
-
-        # Test if $what_to_burn_possible_session is bigger than the $BM_BURNING_MAXSIZE.
-        # If yes, we return to $what_to_burn_session.
-        # If no, $file can be added to $what_to_burn_session by keeping $what_to_burn_possible_session.
-        if [ $size_possible_session -gt $BM_BURNING_MAXSIZE ] ; then
-            info "Burning session... (with \$what_to_burn_session)."
-            burn_session "$what_to_burn_session" "$session_number"
-
-            # Test if just one file have been burned in the last session.
-            if [ "$what_to_burn_session" = "$file" -o "$what_to_burn_session" = "$old_file" ] ; then
-                info "One file in this session."
-                # We reset the content of the session.
-                what_to_burn_session=""
-                old_file=""
-                if [ "$what_to_burn_session" = "$old_file" ] ; then
-                    # Adding $file to $what_to_burn for the next session because
-                    # in this session, $old_file was burnt.
-                    what_to_burn_session="$file"
-                fi 
-            else
-                # We add the file which havn't been burnt in this session.
-                what_to_burn_session="$file"
-                old_file="$file"
-            fi
-            
-        else
-            what_to_burn_session="$what_to_burn_possible_session"
-        fi
-
-        session_number=$(($session_number + 1))
-    done
-
-    # Test if there is one more file which haven't been burnt by 
-    # the last loop.
-    if [ ! -z "$what_to_burn_session" ] ; then
-        info "Burning the last media... (with \$what_to_burn_session)." 
-        burn_session "$what_to_burn_session" "$session_number"
-    fi
-}
-
-
-# This function is used by the burning process in case of it require more than one CD/DVD.
-# It's just a pause and gives some time to the user for changing the media.
-insert_media()
-{
-#eject
-while true ; do
-    echo -en "Please, insert a media and answer yes when you're ready to burn [YES|no]: "
-    read answer
-    case "$answer" in
-        yes|YES|"") break   ;;
-        no)                 ;;
-        *) info "Please answer yes or no to the question !" ;;
-    esac
-done
-}
-
-

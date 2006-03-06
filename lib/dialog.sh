@@ -97,4 +97,8 @@ function bm_pause()
     read pause
 }
 
-
+function __debug()
+{
+    message="$1"
+    echo "DEBUG: $message" >&2
+}

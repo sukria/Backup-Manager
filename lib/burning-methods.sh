@@ -184,8 +184,15 @@ function burn_files_non_interactive()
 function burn_files_interactive()
 {
     purge_indexes
-    find_what_to_burn "$BM_REPOSITORY_ROOT/*"
-    size=$(size_of_path "$BM_REPOSITORY_ROOT")
+	if [ "${TODAY}" != "${BM__BURNING_DATE}" ] ; then
+		info "Burning archives of \$BM__BURNING_DATE"
+		find_what_to_burn "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*"
+		size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")
+    else
+		info "Burning the whole archives"
+		find_what_to_burn "${BM_REPOSITORY_ROOT}/*"
+		size=$(size_of_path "${BM_REPOSITORY_ROOT}")
+	fi
     info "Trying to burn \$BM_REPOSITORY_ROOT (\$size MB) in interactive mode."
     burn_multiples_media "$what_to_burn"
 }

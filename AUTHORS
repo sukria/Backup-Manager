@@ -1,15 +1,18 @@
 
 * Backup Manager 
     
-    Main code and design
+    + Developers
         - Alexis Sukrieh <sukria@backup-manager.org>
-    Implementation of the rsync upload method
         - Andreas "Jimmy" Gredler <jimmy@backup-manager.org>
+        - Michel Grentzinger <michelg@backup-manager.org>
+    
+    + Patch submitters
+    
     Symbolic links dumping support for zip archives
         - Sven Joachim <sven_joachim@web.de>
     Support for multiple configuration files
         - Michael Prokop <mikap@grml.org> 
-
+    
 * Documentation
 
     User Guide

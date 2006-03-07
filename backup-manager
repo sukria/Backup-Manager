@@ -100,8 +100,14 @@ while [ $# -ge 1 ]; do
             # it does not begin with a dash (-).
             if [ -n "$2" ] && 
                [ "${2}" == "${2#-}" ]; then
-                export BM__BURNING_DATE="$2"
-			    shift
+				# test if the date is a valid date
+				if [ $(echo "$2" | grep "^[[:digit:]]\{8\}$") ] ; then
+	                export BM__BURNING_DATE="$2"
+				    shift
+				else
+					error "The -b option must be followed by a valid date (YYYYMMDD)"
+					usage
+				fi
             else
                 export BM__BURNING_DATE="$TODAY"
             fi

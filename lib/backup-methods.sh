@@ -401,8 +401,6 @@ backup_method_tarball()
     # Handle errors
 	if [ $nb_err -gt 0 ]; then
 		error "During the tarballs generation, \$nb_err error(s) occurred."
-	else
-		rm -f $tarball_logfile
 	fi
 }
 

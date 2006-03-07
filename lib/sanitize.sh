@@ -45,7 +45,7 @@ confkey_handle_deprecated()
 {
 	deprecated_key="$1"
 	new_key="$2"
-	eval "deprecated_value=\"\$$deprecated_key\""
+	eval "deprecated_value=\"\$$deprecated_key\"" || deprecated_value=""
 
 	if [ -n "$deprecated_value" ]; then 
 		confkey_warning_deprecated "$deprecated_key" "$deprecated_value" "$new_key"
@@ -109,6 +109,7 @@ replace_deprecated_booleans()
 
 confkey_handle_deprecated "BM_ARCHIVES_REPOSITORY" "BM_REPOSITORY_ROOT"
 confkey_require "BM_REPOSITORY_ROOT" "/var/archives" 
+
 
 confkey_require "BM_REPOSITORY_SECURE" "true" 
 if [ "$BM_REPOSITORY_SECURE" = "true" ]; then
@@ -200,14 +201,9 @@ fi
 
 replace_deprecated_booleans
 
-if [ -z "$BM_LOGGER" ]; then
-	confkey_warning "BM_LOGGER" "true"
-	export BM_LOGGER="true"
-fi
-
-if [ "$BM_LOGGER" = "true" ] && [ -z "$BM_LOGGER_FACILITY" ]; then
-	confkey_warning "BM_LOGGER_FACILITY" "user"
-	export BM_LOGGER_FACILITY="user"
+confkey_require "BM_LOGGER" "true"
+if [ "$BM_LOGGER" = "true" ]; then 
+	confkey_require "BM_LOGGER_FACILITY" "user"
 fi
 
 if [ $nb_warnings -gt 0 ]; then

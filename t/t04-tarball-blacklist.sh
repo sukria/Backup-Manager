@@ -39,6 +39,7 @@ touch $PWD/var/www/real/file4
 
 # BM actions
 bm_init_env
+bm_init_today
 create_archive_root_if_not_exists
 make_archives
 

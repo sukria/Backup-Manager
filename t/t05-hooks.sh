@@ -16,6 +16,7 @@ export BM_POST_BACKUP_COMMAND="echo true"
 
 # The test actions
 bm_init_env
+bm_init_today
 exec_pre_command
 exec_post_command
 

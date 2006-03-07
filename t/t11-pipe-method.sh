@@ -13,6 +13,7 @@ source confs/base.conf
 export BM_REPOSITORY_ROOT="$PWD/repository"
 export BM_ARCHIVE_METHOD="pipe"
 bm_init_env
+bm_init_today
 
 BM_PIPE_COMMAND[0]="cat /etc/passwd" 
 BM_PIPE_NAME[0]="passwd" 

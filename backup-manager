@@ -21,8 +21,6 @@
 
 set -e
 
-# FIXME: we have to support that flag!
-# set -u
 
 VERSION="0.7.1"
 
@@ -68,8 +66,14 @@ md5check="false"
 purge="false"
 conffile="/etc/backup-manager.conf"
 
-# set useful global variables
-bm_init_env
+# the "no" flags
+nopurge="false"
+noburn="false"
+noupload="false"
+
+# set useful global variables and initial
+# checks
+bm_init_today
 
 if [ "$UID" != 0 ]; then
 	echo_translated "backup-manager must be run as root."
@@ -106,10 +110,7 @@ while [ $# -ge 1 ]; do
 				    shift
 				else
 					error "The -b option must be followed by a valid date (YYYYMMDD)"
-					usage
 				fi
-            else
-                export BM__BURNING_DATE="$TODAY"
             fi
 		;;
 		--no-burn)
@@ -156,8 +157,14 @@ done
 
 
 source $conffile
-source $libdir/sanitize.sh
 
+# Sanitize will try to find deprecated vartiables,
+# so the -u flag should not be enabled before.
+source $libdir/sanitize.sh
+set -u
+
+bm_init_env 
+check_logger
 get_lock
 check_filetypes
 check_what_to_backup

@@ -16,22 +16,14 @@
 # It can print stuff on STDIN, STDERR and send messages
 # to syslog
 
-
-if [ -z "$BM_LOGGER" ]; then
-	BM_LOGGER="true"
-fi
-
-if [ -z "$BM_LOGGER_FACILITY" ]; then
-	BM_LOGGER_FACILITY="user"
-fi
-
-if [ -x /usr/bin/logger ]; then
-	logger=/usr/bin/logger
-
-else
-	BM_LOGGER="false"
-fi
-
+function check_logger()
+{
+    if [ -x /usr/bin/logger ]; then
+    	logger=/usr/bin/logger
+    else
+    	BM_LOGGER="false"
+    fi
+}
 
 #########################################
 # The syslog() function should be called 
@@ -84,6 +76,7 @@ log()
 		;;
 	esac
 	
+    log_buffer=""
 	# if there's the -n switch, we buffer the message 
 	if [ "$1" = "-n" ]; then
 		# output the message to STDOUT
@@ -91,7 +84,7 @@ log()
 		if [ "$bm_log_switch" = "true" ]; then
 			echo -n "${message}"
 		fi
-		BM_LOG_BUFFER="${BM_LOG_BUFFER}${message}"
+		BM_LOG_BUFFER="${log_buffer}${message}"
 	
 	else
 		# output the message to STDOUT
@@ -100,7 +93,7 @@ log()
 			echo "${message}"
 		fi
 		# log the message to syslog
-		syslog $bm_log_level "${BM_LOG_BUFFER}${message}"
+		syslog $bm_log_level "${log_buffer}${message}"
 		# we have now to flush the buffer
 		BM_LOG_BUFFER=""
 	fi
@@ -139,8 +132,5 @@ _exit()
 {
 	info "Releasing lock"
 	release_lock
-
-	unmount_tmp_dir
-
 	exit $@
 }

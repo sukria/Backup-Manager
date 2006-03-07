@@ -125,10 +125,15 @@ exec_post_command()
     fi
 }
 
-bm_init_env ()
+function bm_init_env ()
+{
+    export TOOMUCH_TIME_AGO=`date +%d --date "$BM_ARCHIVE_TTL days ago"`
+}
+
+function bm_init_today()
 {
     export TODAY=`date +%Y%m%d`                  
-    export TOOMUCH_TIME_AGO=`date +%d --date "$BM_ARCHIVE_TTL days ago"`
+    export BM__BURNING_DATE="$TODAY"
 }
 
 # be sure that zip is supported.

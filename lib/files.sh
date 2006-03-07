@@ -18,16 +18,16 @@
 # All functions dedicated to manage the files.
 #
 
-unmount_tmp_dir()
-{
-	if [ -n "$mount_point" ] && 
-	   [ -d $mount_point ] &&
-	   [ grep $mount_point /etc/mtab >/dev/null 2>&1 ]; then
-		umount "$mount_point" > /dev/null 2>&1 || error "unable to unmount \$mount_point"
-		sleep 1
-		rmdir "$mount_point" > /dev/null 2>&1 || error "unable to remove \$mount_point"
-	fi
-}
+#unmount_tmp_dir()
+#{
+#	if [ -n "$mount_point" ] && 
+#	   [ -d $mount_point ] &&
+#	   [ grep $mount_point /etc/mtab >/dev/null 2>&1 ]; then
+#		umount "$mount_point" > /dev/null 2>&1 || error "unable to unmount \$mount_point"
+#		sleep 1
+#		rmdir "$mount_point" > /dev/null 2>&1 || error "unable to remove \$mount_point"
+#	fi
+#}
 
 # this will send the appropriate name of archive to 
 # make according to what the user choose in the conf.
@@ -150,7 +150,7 @@ get_lock() {
 			if [ -z $real_pid ]; then
 				echo_translated "Removing lock for old PID, \$pid is not running."
 				release_lock
-				unmount_tmp_dir
+				#unmount_tmp_dir
 				pid=""
 			fi
 		fi

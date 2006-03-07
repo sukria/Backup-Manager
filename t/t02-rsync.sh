@@ -16,6 +16,7 @@ source confs/upload-rsync.conf
 
 # The test actions
 bm_init_env
+bm_init_today
 create_archive_root_if_not_exists
 make_archives
 upload_files

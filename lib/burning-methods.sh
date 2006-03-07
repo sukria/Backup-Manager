@@ -137,6 +137,7 @@ burn_files()
 function find_what_to_burn()
 {
     source="$1"
+    what_to_burn=""
 
     nb_file=$(ls -l $source 2>/dev/null | wc -l)
     if [ $nb_file -gt 0 ]; then
@@ -302,6 +303,7 @@ function __build_indexes_from_target()
 {
 	target="$1"
 
+    indexes=""
 	medium_index=""
 	index_number=1
     index_prefix=$(get_index_prefix)

@@ -133,7 +133,7 @@ while [ $# -ge 1 ]; do
 			if [ -f $2 ]; then
 				conffile=$2
 			else
-				error "-c option must be followed by an existing filename"
+				error "The -c option must be followed by an existing filename"
 				usage
 			fi
 			# we shift here to avoid processing the file path 

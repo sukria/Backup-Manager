@@ -104,6 +104,9 @@ get_date_from_file()
 {
 	filename="$1"
 	date=$(echo $filename | sed -e 's/.*\([0-9]\{8\}\).*/\1/')
+	if [ $date = $filename ] ; then
+		date=""
+	fi
 	echo $date
 }
 

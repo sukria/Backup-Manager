@@ -331,7 +331,7 @@ __make_tarball_archives()
             case $BM_TARBALL_FILETYPE in
                 
                 dar)
-                    incremental="$(__get_flags_dar_incremental $dir_name)"
+                    __get_flags_dar_incremental $dir_name
                 ;;
                 
                 *)
@@ -353,7 +353,7 @@ __make_tarball_archives()
         
         if [ ! -e $file_to_check ] || [ $force = true ]; then
             logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
-            #echo "DEBUG: '$command'" >&2
+#            echo "DEBUG: '$command'" >&2
             if ! $command > $logfile 2>&1 ; then
                 handle_tarball_error "$file_to_create" "$logfile"
             else

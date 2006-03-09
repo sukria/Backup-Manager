@@ -107,7 +107,7 @@ _exec_rsync_command()
     logfile=$(mktemp /tmp/bm-rsync.XXXXXX)
     if [ "$UID" != 0 ]; then
         if ! ${rsync} ${rsync_options} \
-             -e "ssh -o BatchMode=yes -i ${BM_UPLOAD_SSH_KEY}" ${directory} \
+             -e "ssh -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}" ${directory} \
                  ${BM_UPLOAD_SSH_USER}@${host}:$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR}/\
                  >/dev/null 2>$logfile; then
             error "Upload of \$directory with rsync failed; check \$logfile."
@@ -116,7 +116,7 @@ _exec_rsync_command()
         fi
     else
         if ! su $BM_UPLOAD_SSH_USER -c "${rsync} ${rsync_options} \
-             -e \"ssh -o BatchMode=yes -i ${BM_UPLOAD_SSH_KEY}\" ${directory} \
+             -e \"ssh -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}\" ${directory} \
                  ${BM_UPLOAD_SSH_USER}@${host}:$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR}/" \
                  >/dev/null 2>$logfile; then
             error "Upload of \$directory with rsync failed; check \$logfile."

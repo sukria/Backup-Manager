@@ -1,3 +1,13 @@
+2006-03-09  Rached Ben Mustapha  <rached@benmur.net>
+
+	* lib/upload-methods.sh:
+	  + Added support for the ServerAliveInterval ssh option. It is
+	  unconditional for now, but we should check if all supported version
+	  of ssh support it. This helps when the "building file list" step of
+	  rsync takes a loooong time (high I/O load for example), and the
+	  connection is closed because of non-activity. It is currently
+	  hardcoded to 60s, which seems like a good compromise.
+
 2006-02-08  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* NEWS:

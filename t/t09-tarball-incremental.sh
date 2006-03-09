@@ -8,8 +8,8 @@ set -e
 source testlib.sh
 # When the test is ready, set this to false for nice outputs.
 # if you want to see what happens, use those flags
-# verbose="true"
-# warnings="true"
+verbose="true"
+warnings="true"
 
 # The conffile part of the test, see confs/* for details.
 source confs/base.conf
@@ -27,6 +27,7 @@ rm -rf test
 mkdir -p test
 mkdir test/dir1
 touch test/file1
+cat /etc/passwd > test/passwd
 
 if [ -e $BM_ARCHIVE_ROOT ]; then
     rm -f $BM_ARCHIVE_ROOT/*
@@ -47,7 +48,7 @@ if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.tar.gz" ]; then
     make_archives
 
     # Now make sure file2 and dir2 are not saved in last darball
-    for file in file1 dir1 
+    for file in passwd file1 dir1 
     do
         grep=$(tar zxvf $BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.tar.gz | grep $file)
         if [ -n "$grep" ]; then

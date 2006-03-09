@@ -18,7 +18,7 @@
 
 <!-- Backup Manager related information -->
 <!ENTITY bmngr "Backup Manager">
-<!ENTITY bmngr-version "0.8">
+<!ENTITY bmngr-version "0.7.2">
 
 <!-- Email addresses -->
 <!ENTITY doc-email "<email>backup-manager-devel@backup-manager.org</email>">

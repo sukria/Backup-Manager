@@ -228,22 +228,34 @@ function burn_session()
     
     # burning the iso with the user choosen method
     case "$BM_BURNING_METHOD" in
+        
         "DVD")
             if [ ! -x $growisofs ]; then
-                error "DVD burning requires \$growisofs, aborting."
-            fi
-            if [ ! -x $dvdrwformat ]; then
-                error "DVD burning requires \$dvdrwformat, aborting."
+                error "DVD+R(W) burning requires \$growisofs, aborting."
             fi
             
-            info "Blanking the DVD media in \$BM_BURNING_DEVICE"
-            $dvdrwformat -blank $BM_BURNING_DEVICE > $logfile 2>&1 || 
-                error "Unable to blank the DVD media (check \$logfile)."
-            
-            info "Exporting archives to the DVD media in \$BM_BURNING_DEVICE."
+            info "Exporting archives to the DVD+R(W) media in \$BM_BURNING_DEVICE."
             $growisofs -Z ${BM_BURNING_DEVICE} -R -J -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
+        
+        "DVD-RW")
+            if [ ! -x $growisofs ]; then
+                error "DVD-R(W) burning requires \$growisofs, aborting."
+            fi
+            if [ ! -x $dvdrwformat ]; then
+                error "DVD-R(W) burning requires \$dvdrwformat, aborting."
+            fi
+            
+            info "Blanking the DVD-R(W) media in \$BM_BURNING_DEVICE"
+            $dvdrwformat -blank $BM_BURNING_DEVICE > $logfile 2>&1 || 
+                error "Unable to blank the DVD-R(W) media (check \$logfile)."
+            
+            info "Exporting archives to the DVD-R(W) media in \$BM_BURNING_DEVICE."
+            $growisofs -Z ${BM_BURNING_DEVICE} -R -J -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
+                error "failed, check \$logfile"
+        ;;
+        
         "CDRW")
             if [ ! -x $cdrecord ]; then
                 error "CDROM burning requires \$cdrecord, aborting."
@@ -258,6 +270,7 @@ function burn_session()
             ${cdrecord} -tao $devforced - > ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
+        
         "CDR")
             if [ ! -x $cdrecord ]; then
                 error "CDROM burning requires \$cdrecord, aborting."
@@ -268,9 +281,11 @@ function burn_session()
             ${cdrecord} -tao $devforced - > ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
+        
         "none"|"NONE")
             info "Nothing to burn."
         ;;
+        
         *)
             error "The requested burning method is not supported, check BM_BURNING_METHOD in \$conffile"
         ;;

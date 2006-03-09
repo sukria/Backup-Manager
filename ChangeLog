@@ -1,3 +1,21 @@
+2006-03-09  Alexis Sukrieh	<sukria@backup-manager.org>
+
+	* backup-manager.conf.tpl:
+	  + speak about the DVD-RW burning method (with formating).
+	  + speak about the DVD method (without formating).
+	* doc/common.ent:
+	  + New version of backup-manager: 0.7.2
+	* doc/user-guide.sgml:
+	  + Updates about the burning system.
+	  + Interactive mode
+	  + DVD / DVD-RW methods
+	  + --burn <DATE> new option
+	* doc/version.ent:
+	  + Revision 1.2
+	* lib/burning-methods.sh:
+	  + Split the burning method DVD into DVD and DVD-RW so we now have 
+	    a burning method that doesn't blank the medium before writing data..
+
 2006-03-09  Rached Ben Mustapha  <rached@benmur.net>
 
 	* lib/upload-methods.sh:

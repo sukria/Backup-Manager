@@ -277,15 +277,19 @@ export BM_UPLOAD_RSYNC_DUMPSYMLINKS="false"
 #############################################################
 
 # the method of burning archives from the list :
-#  - DVD  : burn archives on a DVD media.
+#  - DVD    : burn archives on a DVD medium
+#             (that doesn't need formatting, like DVD+RW).
 #
-#  - CDRW : blank the CDRW and burn the whole 
-#           ARCHIVES_REPOSITORY or only 
-#           the generated archives.
+#  - DVD-RW : blank the DVD medium and burn archives 
+#             (recommanded for DVD-RW media).
 #
-#  - CDR  : burn the whole ARCHIVES_REPOSITORY or 
-#           only the generated archives.
-#  - none : disable the burning system
+#  - CDRW   : blank the CDRW and burn the whole 
+#             ARCHIVES_REPOSITORY or only 
+#             the generated archives.
+#
+#  - CDR    : burn the whole ARCHIVES_REPOSITORY or 
+#             only the generated archives.
+#  - none   : disable the burning system
 
 export BM_BURNING_METHOD="none"
 

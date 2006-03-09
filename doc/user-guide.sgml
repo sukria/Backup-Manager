@@ -943,7 +943,8 @@ Other exports are expected to come in next versions though.
 
 <sect1 id="exports-burning">Burning CDR/DVD media
 <p>
-In the version &bmngr-version;, &bmngr; supports three different kinds of media: CDR, CDRW and DVDR.
+In the version &bmngr-version;, &bmngr; supports four different kinds of media: CDR, 
+CDRW and DVD+R(W) and DVD-R(W).
 
 <sect2 id="BM_BURNING_METHOD"><tt>BM_BURNING_METHOD</tt>
 <p>
@@ -953,21 +954,33 @@ Set the key <tt>BM_BURNING_METHOD</tt> to the method corresponding to the media 
 <item>CDR
 <item>CDRW 
 <item>DVD 
+<item>DVD-RW
 </list>
 
 <p>
-Any of these methods will try to put the whole archive repository in the media, if it does not 
+In <em>non-interactive mode</em> (when backup-manager is not lauchned from a terminal),
+any of these methods will try to put the whole archive repository in the media, if it does not 
 fit in the media, it will try to put only the archives built on the day, if that's not possible,
 nothing will be burned.
 
 <p>
-The CDRW and DVD methods will first blank the media, so you can safely use these methods if you 
-want to use the same media several times.
+In <em>interactive mode</em> (when backup-manager is launched from a terminal),
+the whole repository will be burnt into as many media as needed. When a medium is 
+satured with archives, backup-manager will pause the process asking the user to put a new 
+media inside.
+
+<p>
+The <tt>CDRW</tt> and <tt>DVD-RW</tt> methods will first blank the media, 
+so you can safely use these methods if you want to use the same media several times.
+
+<p>
+The <tt>CDR</tt> and <tt>DVD</tt> medthods won't blank the device first (DVD+RW media doesn't need blanking, 
+it's possible to re-burn data on-the-fly over such media)..
 
 <p>
 DVD media are handled by the tool <tt>dvd+rw-tools</tt>, problems can occur in CRON environment with 
-dvd+rw-tools versions prior to 6.1, make sure to have 6.1 or later if you want to burn DVD media with 
-Backup Manager.
+<tt>dvd+rw-tools</tt> versions prior to <tt>6.1</tt>, make sure to have <tt>6.1</tt>
+or later if you want to burn DVD media with Backup Manager.
 
 <p>
 As usual, you can put <tt>none</tt> in order to disable the burning process.
@@ -1018,7 +1031,7 @@ Here is the list of the common sizes:
 
 <list>
 <item>CDR/CDRW: 650, 700, 800
-<item>DVD: 4200
+<item>DVD: 4700
 </list>
 
 <p>
@@ -1038,7 +1051,7 @@ export BM_BURNING_MAXSIZE="700"
 Example for a DVD burner:
 <example>
 export BM_BURNING_METHOD="DVD"
-export BM_BURNING_MAXSIZE="4200"
+export BM_BURNING_MAXSIZE="4700"
 </example>
 
 <sect2 id="BM_BURNING_CHKMD5"><tt>BM_BURNING_CHKMD5</tt>
@@ -1265,10 +1278,22 @@ this switch.
 If you have made a configuration file that enables the uploading system, you can ask &bmngr; to 
 perform the uploading session instead of the whole process with this switch.
 
-<sect2 id="burn"><tt>--burn</tt> or <tt>-b</tt>
+<sect2 id="burn"><tt>--burn</tt> or <tt>-b</tt> [&lt;DATE&gt;]
 <p>
 If you have made a configuration file that enables the burning system, you can ask &bmngr; to 
 perform the burning session instead of the whole process with this switch.
+<p>
+You can also ask &bmngr; to burn only the archive of a given date with providing a timestamp 
+after the <tt>--burn</tt> switch.
+
+<p>
+Example:
+
+<p>
+Burning all the archives made on March, 12nd 2006:
+<example>
+# backup-manager --bnurn 20060312
+</example>
 
 <sect2 id="md5check"><tt>--md5check</tt> or <tt>-m</tt>
 <p>

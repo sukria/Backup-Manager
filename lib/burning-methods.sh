@@ -204,11 +204,12 @@ function burn_session()
 {
     what_to_burn="$1"
     session_number="$2"
+    number_of_indexes="$3"
 
     if [ -z "$session_number" ]; then
         title="Backups of ${TODAY}"
     else
-        title="Backups of ${TODAY} - $session_number"
+        title="Backups of ${TODAY} - $session_number/$number_of_indexes"
     fi
     
     # Let's unmount the device first
@@ -306,6 +307,7 @@ function __build_indexes_from_target()
     indexes=""
 	medium_index=""
 	index_number=1
+	number_of_indexes=1
     index_prefix=$(get_index_prefix)
 	index_session="$index_prefix-$index_number"
 
@@ -330,6 +332,7 @@ function __build_indexes_from_target()
 		if [ $size_of_possible_index -gt $BM_BURNING_MAXSIZE ] ; then
 			indexes="$indexes $index_session"
 			
+			number_of_indexes=$(($number_of_indexes +1))
 			index_number=$(($index_number + 1))
 			index_session="$index_prefix-$index_number"
             #__debug "BM_BURNING_MAXSIZE is reached : new index: $index_session"
@@ -356,6 +359,7 @@ function __burn_session_from_file()
 {
     index_file="$1"
     session_number="$2"
+    number_of_indexes="$3"
 
     if [ ! -e "$index_file" ]; then
         error "No such index file : \$index_file"
@@ -370,7 +374,7 @@ function __burn_session_from_file()
     
     what_to_burn="$what_to_burn_session"
     
-    burn_session "$what_to_burn_session" "$session_number"
+    burn_session "$what_to_burn_session" "$session_number" "$number_of_indexes"
 
     # Remove the index file.
     rm -f $index_file
@@ -389,24 +393,6 @@ function __append_index_paths_in_indexes()
     done
 }
 
-#Goal:
-#    burn_multiples_media() should be called for burning a given place to
-#several   
-#    media. This should be called only in interactive mode.
-#
-#Arguments:
-#    - target : the absolute path to archive on the media.
-#
-#Algorithm:
-#    - sort all the files in $target 
-#    - pack the filenames of $target in as many lists as needed for every media. 
-#      For instance, in we need 3 media, make 3 lists of files.
-#    - store this list in index files
-#    - for each filenames packs, do
-#          . pause and prompt the user for putting a new medium
-#          . burn_session $pack
-#      done
-# FIXME : THIS IS A PROTOTYPE
 function burn_multiples_media()
 {
     target="$1"
@@ -417,6 +403,9 @@ function burn_multiples_media()
     # put in $indexes a list of files that contain
     # archives to put on each medium.
     __build_indexes_from_target "$target"
+
+	# Display the number of medias required by the burning systemp.
+	info "The burning process will need $number_of_indexes media(s)."
 
     # Now that all indexes are built, list them so we can find
     # them all in the media.
@@ -429,6 +418,6 @@ function burn_multiples_media()
         session_number=$(($session_number + 1))
         info "Burning content of \$index"
         __insert_new_medium
-        __burn_session_from_file "$index" "$session_number"
+        __burn_session_from_file "$index" "$session_number" "$number_of_indexes"
     done
 }

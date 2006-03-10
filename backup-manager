@@ -110,7 +110,7 @@ while [ $# -ge 1 ]; do
 	                export BM__BURNING_DATE="$2"
 				    shift
 				else
-					error "The -b option must be followed by a valid date (YYYYMMDD)"
+					error "The -b option must be followed by a valid date (YYYYMMDD)."
 				fi
             fi
 		;;
@@ -141,14 +141,14 @@ while [ $# -ge 1 ]; do
 			if [ -f $2 ]; then
 				conffile=$2
 			else
-				error "The -c option must be followed by an existing filename"
+				error "The -c option must be followed by an existing filename."
 				usage
 			fi
 			# we shift here to avoid processing the file path 
 			shift
 		;;
 		*)  
-			echo "unknown option $1"
+			echo "Unknown option $1"
 			usage
 			break
 		;;
@@ -172,7 +172,7 @@ get_lock
 check_filetypes
 check_what_to_backup
 
-exec_pre_command || error "Unable to exec the pre-command"
+exec_pre_command || error "Unable to exec the pre-command."
 
 create_directories
 
@@ -213,7 +213,7 @@ if [ "$noburn" != "true" ]; then
 	burn_files
 fi
 
-exec_post_command || error "Unable to exec post-command"
+exec_post_command || error "Unable to exec post-command."
 
 release_lock
 

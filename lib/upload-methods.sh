@@ -94,7 +94,7 @@ bm_upload_ftp()
         -p="$BM_UPLOAD_FTP_PASSWORD" \
         -d="$BM_UPLOAD_FTP_DESTINATION" \
         -r="$BM_REPOSITORY_ROOT" today || 
-    error "unable to call backup-manager-upload"
+    error "Unable to call backup-manager-upload."
 
 }
 
@@ -158,7 +158,7 @@ bm_upload_rsync_common()
                     _exec_rsync_command
                 done
             else
-                error "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)"
+                error "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
             fi
         else
             warning "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."

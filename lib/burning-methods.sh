@@ -40,13 +40,13 @@ check_cdrom_md5_sums()
     has_error=0
 
     if [ -z $BM_BURNING_DEVICE ]; then
-        error "MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE in \$conffile."
+        error "MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE in \$conffile"
     fi
 
     # first create the mount point
     mount_point="$(mktemp -d /tmp/bm-mnt.XXXXXX)"
     if [ ! -d $mount_point ]; then
-        error "The mount point \$mount_point is not there"
+        error "The mount point \$mount_point is not there."
     fi
     
     # unmount if needed
@@ -103,8 +103,8 @@ check_cdrom_md5_sums()
     fi
 
     # remove the mount point
-    umount $BM_BURNING_DEVICE || error "unable to unmount the mount point \$mount_point"
-    rmdir $mount_point || error "unable to remove the mount point \$mount_point"
+    umount $BM_BURNING_DEVICE || error "Unable to unmount the mount point \$mount_point"
+    rmdir $mount_point || error "Unable to remove the mount point \$mount_point"
 }
 
 # this will try to burn the generated archives to the media
@@ -164,7 +164,7 @@ function burn_files_non_interactive()
     # We can't burn the whole repository, using only today's archives
     if [ $size -gt $BM_BURNING_MAXSIZE ] ||
        [ "${TODAY}" != "${BM__BURNING_DATE}" ]; then
-        info "Burning archives of \$BM__BURNING_DATE"
+        info "Burning archives of \$BM__BURNING_DATE."
         size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")
         
         # does not fit neither, cannot burn anything.
@@ -190,7 +190,7 @@ function burn_files_interactive()
 		find_what_to_burn "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*"
 		size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")
     else
-		info "Burning the whole archives"
+		info "Burning the whole archives."
 		find_what_to_burn "${BM_REPOSITORY_ROOT}/*"
 		size=$(size_of_path "${BM_REPOSITORY_ROOT}")
 	fi
@@ -222,7 +222,7 @@ function burn_session()
     # set the cdrecord command 
     devforced=""
     if [ -n "$BM_BURNING_DEVFORCED" ]; then
-        info "Forcing dev=\${BM_BURNING_DEVFORCED} for cdrecord commands"
+        info "Forcing dev=\${BM_BURNING_DEVFORCED} for cdrecord commands."
         devforced="dev=${BM_BURNING_DEVFORCED}"
     fi
     

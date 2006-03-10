@@ -90,7 +90,7 @@ __exec_meta_command()
                 fi
                 file_to_create="$file_to_create.gz"
             else
-                error "Compressor \$compress requires \$gzip"
+                error "Compressor \$compress requires \$gzip."
             fi
         ;;
         "bzip"|"bzip2")
@@ -104,7 +104,7 @@ __exec_meta_command()
                 fi
                 file_to_create="$file_to_create.bz2"
             else
-                error "Compressor \$compress requires \$bzip"
+                error "Compressor \$compress requires \$bzip."
             fi
         ;;
         ""|"uncompressed"|"none")
@@ -117,7 +117,7 @@ __exec_meta_command()
             fi
         ;;
         *)
-            error "No such compressor supported: \$compress"
+            error "No such compressor supported: \$compress."
         ;;
         esac
 
@@ -379,7 +379,7 @@ __make_tarball_archives()
 backup_method_tarball()
 {
     method="$1"
-	info "Using method \"\$method\""
+	info "Using method \"\$method\"."
 	
     # build the command line
     case $BM_TARBALL_FILETYPE in 
@@ -414,7 +414,7 @@ backup_method_tarball()
 backup_method_mysql()
 {
     method="$1"
-	info "Using method \"\$method\""
+	info "Using method \"\$method\"."
 	if [ ! -x $mysqldump ]; then
 		error "The \"mysql\" method is chosen, but \$mysqldump is not found."
 	fi
@@ -443,7 +443,7 @@ backup_method_mysql()
 backup_method_svn()
 {
     method="$1"
-    info "Using method \"\$method\""
+    info "Using method \"\$method\"."
     if [ ! -x $svnadmin ]; then
         error "The \"svn\" method is chosen, but \$svnadmin is not found."
     fi
@@ -465,7 +465,7 @@ backup_method_svn()
 backup_method_pipe()
 {
     method="$1"
-    info "Using method \"\$method\""
+    info "Using method \"\$method\"."
     index=0
 
     # parse each BM_PIPE_NAME's

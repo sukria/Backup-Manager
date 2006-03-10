@@ -130,7 +130,7 @@ warning()
 # remove the logfile
 _exit()
 {
-	info "Releasing lock"
+	info "Releasing lock."
 	release_lock
 	exit $@
 }

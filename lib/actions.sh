@@ -143,17 +143,17 @@ check_filetypes()
 	case "$BM_TARBALL_FILETYPE" in
 		"zip")
 			if [ ! -x $zip ]; then
-				error "the BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
+				error "The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
 			fi
 		;;
 		"tar.bz2" )
 			if [ ! -x $bzip ]; then
-				error "the BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
+				error "The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
 			fi
 		;;
 		"dar" )
 			if [ ! -x $dar ]; then
-				error "the BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
+				error "The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
 			fi
 		;;
 	esac
@@ -172,7 +172,7 @@ function create_directories()
 {
 	if [ ! -d $BM_REPOSITORY_ROOT ]
 	then
-		info "\$BM_REPOSITORY_ROOT does not exist, creating it"
+		info "The repository \$BM_REPOSITORY_ROOT does not exist, creating it."
 		mkdir $BM_REPOSITORY_ROOT
 	fi
 

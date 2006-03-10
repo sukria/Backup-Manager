@@ -68,7 +68,7 @@ size_of_path()
 {
 	path="$1"
     if [ -z "$path" ]; then
-        error "No path given"
+        error "No path given."
     fi
 
     #echo "DEBUG: du --si --block-size=1000k -c $path | tail -1 | awk '{print $1}'" >&2
@@ -81,7 +81,7 @@ size_left_of_path()
 {
 	path="$1"
     if [ -z "$path" ]; then
-        error "No path given"
+        error "No path given."
     fi
 
 	left=$(df --si --block-size=1000k "$path" | tail -1 | awk '{print $4}')
@@ -174,7 +174,7 @@ get_lock() {
 		info "Getting lock for backup-manager \$pid with \$conffile"
 		echo "$$ $conffile " > $lockfile
 		if [ ! -e $lockfile ]; then
-			error "failed (check the file permissions)"
+			error "failed (check the file permissions)."
 			exit 1
 		fi
 	fi
@@ -214,7 +214,7 @@ clean_directory()
 	directory="$1"
 
 	if [ ! -d $directory ]; then
-		error "Directory given is not found"
+		error "Directory given is not found."
 	fi
 
 	for file in $directory/*
@@ -224,7 +224,7 @@ clean_directory()
 		fi
 		
 		if [ -d $file ]; then
-			info "Entering directory \$file."
+			info "Entering directory \$file"
 			clean_directory "$file"
 		else 
 			clean_file "$file"
@@ -252,7 +252,7 @@ purge_duplicate_archives()
 	fi
 
 	if [ -z "$file_to_create" ]; then
-		error "No file given"
+		error "No file given."
 	fi
 
 	if [ ! -e $file_to_create ]; then
@@ -260,8 +260,8 @@ purge_duplicate_archives()
 	fi
 
 	# we'll parse all the files of the same source
-	date_of_file=$(get_date_from_file $file_to_create) || error "unable to get date from file"
-	file_pattern=$(echo $file_to_create | sed -e "s/$date_of_file.*$//") || error "unable to find the pattern of the file"
+	date_of_file=$(get_date_from_file $file_to_create) || error "Unable to get date from file."
+	file_pattern=$(echo $file_to_create | sed -e "s/$date_of_file.*$//") || error "Unable to find the pattern of the file."
 	
 	for file in $file_pattern*
 	do
@@ -270,7 +270,7 @@ purge_duplicate_archives()
 			size=$(ls -l $file | awk '{print $5}')
 
 			if [ "$size_file" = "$size" ]; then
-				info "\$file is a duplicate of \$file_to_create (using symlink)"
+				info "\$file is a duplicate of \$file_to_create (using symlink)."
 				rm -f $file
 				ln -s $file_to_create $file
 			fi

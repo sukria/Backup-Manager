@@ -172,7 +172,13 @@ get_lock
 check_filetypes
 check_what_to_backup
 
-exec_pre_command || error "Unable to exec the pre-command."
+# For security reasons, change the umask
+# for the backup-manager session.
+# Every file created by the process will be -rw------
+BM_UMASK=$(umask)
+umask 0077
+
+exec_pre_command || error "Unable to exec the pre-command"
 
 create_directories
 
@@ -217,5 +223,6 @@ exec_post_command || error "Unable to exec post-command."
 
 release_lock
 
+umask $BM_UMASK
 exit 0
 

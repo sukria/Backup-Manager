@@ -160,9 +160,11 @@ done
 source $conffile
 
 # Sanitize will try to find deprecated vartiables,
-# so the -u flag should not be enabled before.
 source $libdir/sanitize.sh
-set -u
+# so the -u flag should not be enabled before.
+# There are too much problems for enabling -u now.
+# Most of them with the pipe method...
+# set -u
 
 bm_init_env 
 check_logger

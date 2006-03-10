@@ -1,3 +1,11 @@
+2006-03-10  Alexis Sukrieh	<sukria@backup-manager.org>
+
+	* backup-manager:
+	  + Disabled the -u flag, too much problems with the pipe method.
+	* lib/backup-methods.sh:
+	  + Better layout of the __exec_meta_command.
+	  + Doesn't try to commit an archive if none.
+
 2006-03-09  Alexis Sukrieh	<sukria@backup-manager.org>
 
 	* backup-manager.conf.tpl:

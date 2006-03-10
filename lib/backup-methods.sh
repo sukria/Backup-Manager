@@ -70,68 +70,72 @@ __exec_meta_command()
     file_to_create="$2"
     compress="$3"
 
-    if [ -f $file_to_create ] && [ $force != true ]; then
+    if [ -f $file_to_create ] && [ $force != true ] 
+    
+    then
         warning "File \$file_to_create already exists, skipping."
-        return 0
-    fi
-    logfile=$(mktemp /tmp/bm-command.XXXXXX)
+        export BM_RET=""
+    else
+        logfile=$(mktemp /tmp/bm-command.XXXXXX)
 
-    case "$compress" in
-    "gzip"|"gz")
-        if [ -x $gzip ]; then
-            $command 2>$logfile | $gzip -f -q -9 > "$file_to_create.gz"
+        case "$compress" in
+        "gzip"|"gz")
+            if [ -x $gzip ]; then
+                $command 2>$logfile | $gzip -f -q -9 > "$file_to_create.gz"
+                words=$(wc -w $logfile | awk '{print $1}')
+                if [ $words -gt 0 ]; then
+                    warning "Unable to exec \$command; check \$logfile"
+                else
+                    rm -f $logfile
+                fi
+                file_to_create="$file_to_create.gz"
+            else
+                error "Compressor \$compress requires \$gzip"
+            fi
+        ;;
+        "bzip"|"bzip2")
+            if [ -x $bzip ]; then
+                $command 2>$logfile | $bzip -f -q -9 > "$file_to_create.bz2"
+                words=$(wc -w $logfile | awk '{print $1}')
+                if [ $words -gt 0 ]; then
+                    warning "Unable to exec \$command; check \$logfile"
+                else
+                    rm -f $logfile
+                fi
+                file_to_create="$file_to_create.bz2"
+            else
+                error "Compressor \$compress requires \$bzip"
+            fi
+        ;;
+        ""|"uncompressed"|"none")
+            $command 1> $file_to_create 2>$logfile || 
             words=$(wc -w $logfile | awk '{print $1}')
             if [ $words -gt 0 ]; then
                 warning "Unable to exec \$command; check \$logfile"
             else
                 rm -f $logfile
             fi
-            file_to_create="$file_to_create.gz"
-        else
-            error "Compressor \$compress requires \$gzip"
-        fi
-    ;;
-    "bzip"|"bzip2")
-        if [ -x $bzip ]; then
-            $command 2>$logfile | $bzip -f -q -9 > "$file_to_create.bz2"
-            words=$(wc -w $logfile | awk '{print $1}')
-            if [ $words -gt 0 ]; then
-                warning "Unable to exec \$command; check \$logfile"
-            else
-                rm -f $logfile
-            fi
-            file_to_create="$file_to_create.bz2"
-        else
-            error "Compressor \$compress requires \$bzip"
-        fi
-    ;;
-    ""|"uncompressed"|"none")
-        $command 1> $file_to_create 2>$logfile || 
-        words=$(wc -w $logfile | awk '{print $1}')
-        if [ $words -gt 0 ]; then
-            warning "Unable to exec \$command; check \$logfile"
-        else
-            rm -f $logfile
-        fi
-    ;;
-    *)
-        error "No such compressor supported: \$compress"
-    ;;
-    esac
+        ;;
+        *)
+            error "No such compressor supported: \$compress"
+        ;;
+        esac
 
-    # make sure we didn't loose the archive
-    if [ ! -e $file_to_create ]; then
-        error "Unable to find \$file_to_create" 
+        # make sure we didn't loose the archive
+        if [ ! -e $file_to_create ]; then
+            error "Unable to find \$file_to_create" 
+        fi
+        export BM_RET="$file_to_create"
     fi
-
-    export BM_RET="$file_to_create"
 }
 
 __create_file_with_meta_command()
 {
     __exec_meta_command "$command" "$file_to_create" "$compress"
     file_to_create="$BM_RET"
-    commit_archive "$file_to_create"
+    if [ -n "$BM_RET" ]; then
+        commit_archive "$file_to_create"
+    fi
 }
 
 __get_flags_tar_blacklist()
@@ -477,7 +481,7 @@ backup_method_pipe()
         filetype="${BM_PIPE_FILETYPE[$index]}"
         file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX-$archive.$TODAY.$filetype"
         compress="${BM_PIPE_COMPRESS[$index]}"
-        __create_file_with_meta_command
+        __create_file_with_meta_command || error "Cannot create archive."
 
         # update the index mark 
         index=$(($index + 1))

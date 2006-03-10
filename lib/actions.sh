@@ -23,6 +23,7 @@
 # Loop on the backup methods
 make_archives()
 {
+
     for method in $BM_ARCHIVE_METHOD
     do      
         case $method in

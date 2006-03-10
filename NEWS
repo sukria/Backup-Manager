@@ -1,3 +1,31 @@
+0.7.2
+    * New Features:
+        + It's now possible to use the burning system interactively in
+          order to burn the whole repository into several media.
+          [Michel Grentzinger, Alexis Sukrieh]
+        
+        + New option for the "--burn" switch, possible to give a
+          specific date for burning only data of that day 
+          (eg: `--burn 20060310').
+          [Michel Grentzinger, Alexis Sukrieh]
+        
+        + New kind of DVD media: "DVD-RW". This kind of medium implies
+          blanking the medium before burning data whereas the "DVD" kind
+          doesn't.
+          [Alexis Sukrieh]
+          
+    * Bug Fixes: 
+        + Incremental backup with dar now works correctly.
+        + This release closes a total of 16 known bugs since the last release.
+          [The Devel Team]
+          
+    * Changes:
+        + Added support for the ServerAliveInterval ssh option.
+          This helps when the "building file list" step of
+ 	      rsync takes a long time (high I/O load for example), and the
+	      connection is closed because of non-activity.
+          [ Reched Ben Mustapha ]
+
 0.7.1
     * New Features:
         + Full "dar" archives support.

@@ -166,7 +166,8 @@ check_what_to_backup()
 	fi
 }
 
-create_archive_root_if_not_exists()
+
+function create_directories()
 {
 	if [ ! -d $BM_REPOSITORY_ROOT ]
 	then

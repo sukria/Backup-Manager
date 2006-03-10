@@ -247,6 +247,7 @@ function __get_flags_tar_incremental()
     # if master day, we have to purge the incremental list if exists
     # so we'll generate a new one (and then, a full backup).
     if [ "$master_day" = "$BM_TARBALLINC_MASTERDATEVALUE" ] && [ -e $incremental_list ]; then
+        info "Making master backups."
         rm -f $incremental_list
     fi
     incremental="--listed-incremental $incremental_list"
@@ -290,7 +291,7 @@ __get_backup_tarball_command()
             command="$tar $incremental $blacklist $dumpsymlinks -p -c    -f "$file_to_create" "$target""
         ;;
         tar.gz)
-            command="$tar $incremental $blacklist $dumpsymlinks -p -c -z -f "$file_to_create" "$target""
+            command="$tar $incremental $blacklist $dumpsymlinks -p -c -z -v -f "$file_to_create" "$target""
         ;;
         tar.bz2|tar.bz) 
             command="$tar $incremental $blacklist $dumpsymlinks -p -c -j -f "$file_to_create" "$target""
@@ -324,6 +325,7 @@ __make_tarball_archives()
 		
         dir_name=$(get_dir_name "$target" $BM_TARBALL_NAMEFORMAT)
         file_to_create=$(__get_file_to_create "$target")
+    
         # handling of incremental options
         incremental=""
         if [ $method = tarball-incremental ]
@@ -344,6 +346,7 @@ __make_tarball_archives()
         command=$(__get_backup_tarball_command) || 
             error "The filetype \$BM_TARBALL_FILETYPE is not supported."
 
+
         # dar is not like tar, we have to manually check for existing .1.dar files
         if [ $BM_TARBALL_FILETYPE = dar ]; then
             file_to_check="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY.1.dar"
@@ -353,7 +356,7 @@ __make_tarball_archives()
         
         if [ ! -e $file_to_check ] || [ $force = true ]; then
             logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
-#            echo "DEBUG: '$command'" >&2
+#            __debug "$command"
             if ! $command > $logfile 2>&1 ; then
                 handle_tarball_error "$file_to_create" "$logfile"
             else

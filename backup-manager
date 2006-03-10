@@ -22,10 +22,11 @@
 set -e
 
 
-VERSION="0.7.1"
+VERSION="0.7.1+svn"
 
 # All the path we'll need
 libdir="/usr/share/backup-manager"
+vardir="/var/lib/backup-manager"
 zip="/usr/bin/zip"
 bzip="/usr/bin/bzip2"
 gzip="/bin/gzip"
@@ -171,7 +172,7 @@ check_what_to_backup
 
 exec_pre_command || error "Unable to exec the pre-command"
 
-create_archive_root_if_not_exists
+create_directories
 
 if [ "$upload" == "true" ]; then
 	upload_files

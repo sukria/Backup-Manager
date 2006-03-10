@@ -39,7 +39,7 @@ if [ -e $PWD/repository ]; then
 fi    
 
 # BM actions
-create_archive_root_if_not_exists
+create_directories
 make_archives
 
 # test of success/failure

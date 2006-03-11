@@ -134,7 +134,6 @@ function bm_init_env ()
 function bm_init_today()
 {
     export TODAY=`date +%Y%m%d`                  
-    export BM__BURNING_DATE="$TODAY"
 }
 
 # be sure that zip is supported.

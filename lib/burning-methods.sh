@@ -163,7 +163,7 @@ function burn_files_non_interactive()
 
     # We can't burn the whole repository, using only today's archives
     if [ $size -gt $BM_BURNING_MAXSIZE ] ||
-       [ "${TODAY}" != "${BM__BURNING_DATE}" ]; then
+       [ ! -z "${BM__BURNING_DATE}" ]; then
         info "Burning archives of \$BM__BURNING_DATE."
         size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")
         
@@ -173,7 +173,8 @@ function burn_files_non_interactive()
         fi
         find_what_to_burn "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*"
     else
-        find_what_to_burn "${BM_REPOSITORY_ROOT}"
+		BM__BURNING_DATE="$TODAY"
+        find_what_to_burn "${BM_REPOSITORY_ROOT}/*"
     fi
 
     burn_session "$what_to_burn"
@@ -185,12 +186,13 @@ function burn_files_non_interactive()
 function burn_files_interactive()
 {
     purge_indexes
-	if [ "${TODAY}" != "${BM__BURNING_DATE}" ] ; then
+ 	if [ ! -z "${BM__BURNING_DATE}" ] ; then
 		info "Burning archives of \$BM__BURNING_DATE"
 		find_what_to_burn "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*"
 		size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")
     else
 		info "Burning the whole archives."
+		BM__BURNING_DATE="$TODAY"
 		find_what_to_burn "${BM_REPOSITORY_ROOT}/*"
 		size=$(size_of_path "${BM_REPOSITORY_ROOT}")
 	fi
@@ -206,10 +208,10 @@ function burn_session()
     session_number="$2"
     number_of_indexes="$3"
 
-    if [ -z "$session_number" ]; then
-        title="Backups of ${TODAY}"
+    if [ -z "$session_number" ] || [ $session_number = 1 ]; then
+        title="Backups of ${BM__BURNING_DATE}"
     else
-        title="Backups of ${TODAY} - $session_number/$number_of_indexes"
+        title="Backups of ${BM__BURNING_DATE} - $session_number/$number_of_indexes"
     fi
     
     # Let's unmount the device first

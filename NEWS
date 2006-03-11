@@ -16,6 +16,7 @@
           
     * Bug Fixes: 
         + Incremental backup with dar now works correctly.
+        + MD5 hashes are updated in the .md5 file when rebuilding an existing archive.
         + Stop removing files located in $BM_REPOSITORY_ROOT that aren't archives.
         + This release closes a total of 16 known bugs since the last release.
           [The Devel Team]

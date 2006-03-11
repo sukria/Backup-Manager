@@ -1360,7 +1360,9 @@ cat > /etc/cron.daily/backup-manager
 /usr/sbin/backup-manager --verbose
 </example>
 
-<chapt id="about">Restoring Archives
+<!--
+
+<chapt id="restore">Restoring Archives
 <p>
 You make archives for being ready to back your system up when needed. When such a time
 comes, you will have to restore an archive. In the current version, Backup Manager does
@@ -1403,6 +1405,7 @@ We have to
 
 <sect id="restore-svn">SVN dumps
 
+-->
 
 </book>
 

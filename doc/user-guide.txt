@@ -1,10 +1,10 @@
 
-                       Backup Manager 0.6 User Guide
-                       -----------------------------
+                      Backup Manager 0.7.2 User Guide
+                      -------------------------------
 
                               Alexis Sukrieh
 
-                          0.2 - 16 December, 2005
+                           1.2 - 09 March, 2006
 
 
 -------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ Contents
      Whenever possible, advices and best practices are given.
 
      This manual also describes every configuration variables supported in
-     the version 0.6.
+     the version 0.7.2.
 
 
 1.2. Version
@@ -129,7 +129,7 @@ Contents
      _Backup Manager's behaviour is defined in configuration files.  You
      can run Backup Manager with different configuration files (at the same
      time or not).  This chapter will cover all the configuration keys
-     supported in version 0.6 and will explain their meaning._
+     supported in version 0.7.2 and will explain their meaning._
 
 
 2.1. Repository and Archives
@@ -249,7 +249,7 @@ Contents
      The core feature of Backup Manager is to make archives, for doing
      this, a _method_ is used.  Each method can require a set of
      configuration keys.  We will describe here every method supported in
-     the version 0.6.
+     the version 0.7.2.
 
      The method you choose must be defined in the configuration key
      `BM_ARCHIVE_METHOD'.  You can put here a list of all the different
@@ -303,17 +303,38 @@ Contents
 2.2.1.3. `BM_TARBALL_FILETYPE'
 ------------------------------
 
-     _Type: enum(tar, tar.gz, tar.bz2, zip), default: `tar.gz'._
+     _Type: enum(tar, tar.gz, tar.bz2, zip, dar), default: `tar.gz'._
 
      Basically, this configuration key defines the filetype of the
      resulting archive.  In a way, it defines which compressor to use (zip,
-     gzip or bzip2).  Here are the supported values: `tar', `tar.gz',
-     `tar.bz2', `zip'.  Note that depending on the filetype you choose, you
-     will have to make sure you have the corresponding compressor.
+     gzip, dar or bzip2).  Here are the supported values: `tar', `tar.gz',
+     `tar.bz2', `zip' and `dar'.  Note that depending on the filetype you
+     choose, you will have to make sure you have the corresponding
+     compressor installed.
 
      For the best compression rate, choose `tar.bz2'.
 
-2.2.1.4. `BM_TARBALL_DUMPSYMLINKS'
+     Since version 0.7.1, Backup Manager provides the _dar_ support.  This
+     archiver provides some interesting features like the archive slicing.
+
+2.2.1.4. `BM_TARBALL_SLICESIZE'
+-------------------------------
+
+     _Type: string_
+
+     If you want to make sure your archives won't exceed a given size (for
+     instance 2 GB) you can use that configuration variable, but only if
+     you are using the `dar' `BM_TARBALL_FILETYPE'.  Indeed this feature is
+     only supported by dar.
+
+     If you want to limit your archives size to 1 giga byte, use such a
+     statement:
+
+          BM_TARBALL_SLICESIZE="1000M"
+
+     Refer to the dar manpage for details about slices.
+
+2.2.1.5. `BM_TARBALL_DUMPSYMLINKS'
 ----------------------------------
 
      _Type: boolean, default: `true'._
@@ -327,7 +348,7 @@ Contents
 
      In most of the cases, you should not use this feature.
 
-2.2.1.5. `BM_TARBALL_DIRECTORIES'
+2.2.1.6. `BM_TARBALL_DIRECTORIES'
 ---------------------------------
 
      _Type: space-separated list, default: `""'._
@@ -338,6 +359,24 @@ Contents
      Example:
 
           export BM_TARBALL_DIRECTORIES="/etc /home /var/log/apache"
+
+2.2.1.7. `BM_TARBALL_BLACKLIST'
+-------------------------------
+
+     _Type: space-separated list, default: `"/proc /dev /sys /tmp"'._
+
+     It can be very useful to prevent some locations of your filesytem from
+     being included in the archives.  This is really useful when you use
+     wildcards in BM_TARBALL_DIRECTORIES.  Indeed, you may want to backup
+     every top-level directory of your filesystem (`/*') but without
+     volatile locations like `/tmp', `/dev' and `/proc'.
+
+     You can also use this variable for excluding every files of a given
+     extension, like for instance mp3 or mpg files.
+
+     Example:
+
+          export BM_TARBALL_BLACKLIST="/tmp /dev /proc *.mp3 *.mpg"
 
 2.2.2. Incremental tarballs
 ---------------------------
@@ -365,7 +404,7 @@ Contents
 
      This method uses all the tarball's configuration keys and adds two
      more.  One to define the kind of frequency, the other to choose on
-     which day the full backups should be made.
+     which day the full backups should be done.
 
 2.2.2.2. `BM_TARBALLINC_MASTERDATETYPE'
 ---------------------------------------
@@ -401,15 +440,33 @@ Contents
 2.2.3.2. `BM_MYSQL_DATABASES'
 -----------------------------
 
-     _Type: space-separated list, default: `mysql'._
+     _Type: space-separated list, default: `__ALL__'._
 
-     This is the list of databases you want to archive.
+     This is the list of databases you want to archive.  You can put the
+     keyword `__ALL__' if you like to backup every database without having
+     to list them.
 
      Example:
 
           export BM_MYSQL_DATABASES="mysql mybase wordpress dotclear phpbb2"
 
-2.2.3.3. `BM_MYSQL_ADMINLOGIN'
+2.2.3.3. `BM_MYSQL_SAFEDUMPS'
+-----------------------------
+
+     _Type: boolean, default: `true'._
+
+     The best way to produce MySQL dumps is done by using mysqldump's
+     `--opt' switch.  This makes the dump directly usable with mysql (adds
+     the drop table statements), locks tables during the dump generation
+     and other cool things (see `mysqldump').  This is recommended for
+     full-clean-safe backups, but needs a privileged user (for the lock
+     permissions).
+
+     Example:
+
+          export BM_MYSQL_SAFEDUMPS="true"
+
+2.2.3.4. `BM_MYSQL_ADMINLOGIN'
 ------------------------------
 
      _Type: string, default: `root'._
@@ -422,7 +479,7 @@ Contents
 
           export BM_MYSQL_ADMINLOGIN="root"
 
-2.2.3.4. `BM_MYSQL_HOST'
+2.2.3.5. `BM_MYSQL_HOST'
 ------------------------
 
      _Type: string, default: `localhost'._
@@ -433,7 +490,7 @@ Contents
 
           export BM_MYSQL_HOST="localhost"
 
-2.2.3.5. `BM_MYSQL_PORT'
+2.2.3.6. `BM_MYSQL_PORT'
 ------------------------
 
      _Type: string, default: `3306'._
@@ -444,7 +501,7 @@ Contents
 
           export BM_MYSQL_PORT="3306"
 
-2.2.3.6. `BM_MYSQL_FILETYPE'
+2.2.3.7. `BM_MYSQL_FILETYPE'
 ----------------------------
 
      _Type: enum(gzip, bzip2), default: `bzip2'._
@@ -554,7 +611,7 @@ Contents
      for achieving this goal : the upload methods._
 
      There are different upload methods, each of them behaves differently
-     and provides particular features.  In Backup Manager 0.6 you can use
+     and provides particular features.  In Backup Manager 0.7.2 you can use
      FTP, SSH or RSYNC uploads.
 
      In the same manner as for backup methods, you can choose to use as
@@ -829,15 +886,15 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
      _Another way of storing your archives to a safe place is to use
      external media._
 
-     In version 0.6, only CDs and DVDs are supported as external media, so
-     we will discuss in this section only the `BM_BURNING' features.  Other
-     exports are expected to come in next versions though.
+     In version 0.7.2, only CDs and DVDs are supported as external media,
+     so we will discuss in this section only the `BM_BURNING' features.
+     Other exports are expected to come in next versions though.
 
 2.4.1. Burning CDR/DVD media
 ----------------------------
 
-     In the version 0.6, Backup Manager supports three different kinds of
-     media: CDR, CDRW and DVDR.
+     In the version 0.7.2, Backup Manager supports four different kinds of
+     media: CDR, CDRW and DVD+R(W) and DVD-R(W).
 
 2.4.1.1. `BM_BURNING_METHOD'
 ----------------------------
@@ -851,13 +908,31 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
 
         * DVD
 
-     Any of these methods will try to put the whole archive repository in
-     the media, if it does not fit in the media, it will try to put only
-     the archives built on the day, if that's not possible, nothing will be
-     burned.
+        * DVD-RW
 
-     The CDRW and DVD methods will first blank the media, so you can safely
-     use these methods if you want to use the same media several times.
+     In _non-interactive mode_ (when backup-manager is not lauchned from a
+     terminal), any of these methods will try to put the whole archive
+     repository in the media, if it does not fit in the media, it will try
+     to put only the archives built on the day, if that's not possible,
+     nothing will be burned.
+
+     In _interactive mode_ (when backup-manager is launched from a
+     terminal), the whole repository will be burnt into as many media as
+     needed.  When a medium is satured with archives, backup-manager will
+     pause the process asking the user to put a new media inside.
+
+     The `CDRW' and `DVD-RW' methods will first blank the media, so you can
+     safely use these methods if you want to use the same media several
+     times.
+
+     The `CDR' and `DVD' medthods won't blank the device first (DVD+RW
+     media doesn't need blanking, it's possible to re-burn data on-the-fly
+     over such media)..
+
+     DVD media are handled by the tool `dvd+rw-tools', problems can occur
+     in CRON environment with `dvd+rw-tools' versions prior to `6.1', make
+     sure to have `6.1' or later if you want to burn DVD media with Backup
+     Manager.
 
      As usual, you can put `none' in order to disable the burning process.
 
@@ -907,7 +982,7 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
 
         * CDR/CDRW: 650, 700, 800
 
-        * DVD: 4200
+        * DVD: 4700
 
      When Backup Manager looks in the repository for burning data, it will
      try to put the whole archive repository in the media.  If the
@@ -923,7 +998,7 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
      Example for a DVD burner:
 
           export BM_BURNING_METHOD="DVD"
-          export BM_BURNING_MAXSIZE="4200"
+          export BM_BURNING_MAXSIZE="4700"
 
 2.4.1.5. `BM_BURNING_CHKMD5'
 ----------------------------
@@ -1047,7 +1122,7 @@ export BM_PRE_BACKUP_COMMAND="/usr/local/bin/backup-cleanup.pl $TODAY"
 3.1.1. Restrictions
 -------------------
 
-     In version 0.6, Backup Manager can only be used by `root', as it has
+     In version 0.7.2, Backup Manager can only be used by `root', as it has
      be designed as a systemwide tool.
 
           $ backup-manager
@@ -1158,12 +1233,21 @@ Entering directory /var/archives/lost+found.
      system, you can ask Backup Manager to perform the uploading session
      instead of the whole process with this switch.
 
-3.1.2.7. `--burn' or `-b'
--------------------------
+3.1.2.7. `--burn' or `-b' [<DATE>]
+----------------------------------
 
      If you have made a configuration file that enables the burning system,
      you can ask Backup Manager to perform the burning session instead of
      the whole process with this switch.
+
+     You can also ask Backup Manager to burn only the archive of a given
+     date with providing a timestamp after the `--burn' switch.
+
+     Example:
+
+     Burning all the archives made on March, 12nd 2006:
+
+          # backup-manager --bnurn 20060312
 
 3.1.2.8. `--md5check' or `-m'
 -----------------------------
@@ -1238,10 +1322,10 @@ Entering directory /var/archives/lost+found.
 -------------------------------------------------------------------------------
 
 
-     Backup Manager 0.6 User Guide
+     Backup Manager 0.7.2 User Guide
 
      Alexis Sukrieh
 
 
-     0.2 - 16 December, 2005
+     1.2 - 09 March, 2006
 

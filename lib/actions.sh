@@ -23,7 +23,6 @@
 # Loop on the backup methods
 make_archives()
 {
-
     for method in $BM_ARCHIVE_METHOD
     do      
         case $method in
@@ -46,6 +45,13 @@ make_archives()
             error "No such backup method: \$BM_ARCHIVE_METHOD"
         ;;
     esac
+
+    # Now make sure the md5 file is okay.
+	md5file="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5"
+    if [ -e $md5file ]; then
+        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $md5file
+        chmod 0660 $md5file
+    fi
 done
 }
 

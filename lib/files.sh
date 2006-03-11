@@ -256,8 +256,10 @@ purge_duplicate_archives()
 	fi
 
 	# we'll parse all the files of the same source
-	date_of_file=$(get_date_from_file $file_to_create) || error "Unable to get date from file."
-	file_pattern=$(echo $file_to_create | sed -e "s/$date_of_file.*$/\*/") || error "Unable to find the pattern of the file."
+	date_of_file=$(get_date_from_file $file_to_create) || 
+        error "Unable to get date from file."
+	file_pattern=$(echo $file_to_create | sed -e "s/$date_of_file.*$/\*/") || 
+        error "Unable to find the pattern of the file."
 	
 	for file in $file_pattern
 	do

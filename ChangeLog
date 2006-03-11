@@ -1,3 +1,13 @@
+2006-03-11  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* lib/actions.sh:
+	  + make_archives() now chown/chmod the md5 file to
+	  $BM_REPOSITORY_USER/$BM_REPOSITORY_USER.
+	* lib/backup-methods.sh:
+	  + minor fixes/typo
+	* lib/files.sh:
+	  + some formatting.
+
 2006-03-10  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* Setup an umask 0077 for creating files without world permissions.

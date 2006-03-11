@@ -34,7 +34,7 @@ commit_archive()
 	md5file="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5"
 
 	# Check if the md5file contains already the md5sum of the file_to_create.
-	# In this case, the new md5sum is overwrite to the old md5sum.
+	# In this case, the new md5sum overwrites the old one.
 	if grep "$base" $md5file >/dev/null 2>&1 ; then
 		previous_md5sum=$(get_md5sum_from_file $base $md5file)
 		sed -e "/$base/s/$previous_md5sum/$md5hash/" -i $md5file
@@ -43,7 +43,8 @@ commit_archive()
 	fi
 
     # Now that the file is created, remove previous duplicates if exists...
-    purge_duplicate_archives $file_to_create || error "Unable to purge duplicates of \$file_to_create"
+    purge_duplicate_archives $file_to_create || 
+        error "Unable to purge duplicates of \$file_to_create"
 
     # security fixes if BM_REPOSITORY_SECURE is set to true
     if [ $BM_REPOSITORY_SECURE = true ]; then
@@ -79,6 +80,7 @@ __exec_meta_command()
     command="$1"
     file_to_create="$2"
     compress="$3"
+    words=0
 
     if [ -f $file_to_create ] && [ $force != true ] 
     
@@ -118,7 +120,7 @@ __exec_meta_command()
             fi
         ;;
         ""|"uncompressed"|"none")
-            $command 1> $file_to_create 2>$logfile || 
+            $command 1> $file_to_create 2>$logfile
             words=$(wc -w $logfile | awk '{print $1}')
             if [ $words -gt 0 ]; then
                 warning "Unable to exec \$command; check \$logfile"
@@ -339,7 +341,7 @@ __make_tarball_archives()
     nb_err=0
 	for target in $BM_TARBALL_DIRECTORIES
 	do
-            # first be sure the target exists
+        # first be sure the target exists
 		if [ ! -e $target ] || [ ! -r $target ]; then
 			warning "Target \$target does not exist, skipping."
 			nb_err=$(($nb_err + 1))
@@ -354,7 +356,6 @@ __make_tarball_archives()
         if [ $method = tarball-incremental ]
         then
             case $BM_TARBALL_FILETYPE in
-                
                 dar)
                     __get_flags_dar_incremental $dir_name
                 ;;

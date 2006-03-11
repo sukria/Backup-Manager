@@ -239,11 +239,6 @@ clean_directory()
 purge_duplicate_archives()
 {
 	file_to_create="$1"
-    if [ ! -e $file_to_create ]; then
-        error "No such file \$file_to_create"
-        return 1
-    fi    
-	size_file=$(ls -l $file_to_create | awk '{print $5}')
 
 	# Only purge if BM_ARCHIVE_PURGEDUPS = true
 	if [ -z "$BM_ARCHIVE_PURGEDUPS" ] ||
@@ -251,25 +246,26 @@ purge_duplicate_archives()
 		return 0
 	fi
 
+    if [ ! -e $file_to_create ]; then
+        error "The given file does not exist: \$file_to_create"
+        return 1
+    fi    
+
 	if [ -z "$file_to_create" ]; then
 		error "No file given."
 	fi
 
-	if [ ! -e $file_to_create ]; then
-		error "The given file does not exist: \$file_to_create"
-	fi
-
 	# we'll parse all the files of the same source
 	date_of_file=$(get_date_from_file $file_to_create) || error "Unable to get date from file."
-	file_pattern=$(echo $file_to_create | sed -e "s/$date_of_file.*$//") || error "Unable to find the pattern of the file."
+	file_pattern=$(echo $file_to_create | sed -e "s/$date_of_file.*$/\*/") || error "Unable to find the pattern of the file."
 	
-	for file in $file_pattern*
+	for file in $file_pattern
 	do
 		if [ ! -L $file ] && 
 		   [ "$file" != "$file_to_create" ]; then
-			size=$(ls -l $file | awk '{print $5}')
+			md5sum_to_check=$(get_md5sum_from_file $file_to_create $BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5)
 
-			if [ "$size_file" = "$size" ]; then
+			if [ "$md5hash" = "$md5sum_to_check" ]; then
 				info "\$file is a duplicate of \$file_to_create (using symlink)."
 				rm -f $file
 				ln -s $file_to_create $file

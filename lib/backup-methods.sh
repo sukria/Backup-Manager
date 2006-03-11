@@ -30,7 +30,17 @@ commit_archive()
     if [ "$verbose" = "true" ]; then
         echo "$str ${md5hash})"
     fi
-    echo "$md5hash  $base" >> $BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5
+
+	md5file="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5"
+
+	# Check if the md5file contains already the md5sum of the file_to_create.
+	# In this case, the new md5sum is overwrite to the old md5sum.
+	if grep "$base" $md5file >/dev/null 2>&1 ; then
+		previous_md5sum=$(get_md5sum_from_file $base $md5file)
+		sed -e "/$base/s/$previous_md5sum/$md5hash/" -i $md5file
+	else
+		echo "$md5hash  $base" >> $md5file
+	fi
 
     # Now that the file is created, remove previous duplicates if exists...
     purge_duplicate_archives $file_to_create || error "Unable to purge duplicates of \$file_to_create"
@@ -280,12 +290,21 @@ function __get_flags_dar_incremental()
     fi
 }
 
-__get_dar_maxsize()
+__get_flags_dar_maxsize()
 {
     if [ -n "$BM_TARBALL_SLICESIZE" ]; then
         maxsize="--alter=SI -s $BM_TARBALL_SLICESIZE"
     fi
     echo "$maxsize"
+}
+
+__get_flags_dar_overwrite()
+{
+	if [ $force = true ] ; then
+		overwrite="-w"
+	fi
+	
+	echo "$overwrite"
 }
 
 __get_backup_tarball_command()
@@ -306,7 +325,7 @@ __get_backup_tarball_command()
         dar)
             blacklist=""
             blacklist="$(__get_flags_dar_blacklist "$target")"
-            command="$dar $incremental $blacklist $maxsize -z9 -Q -c "$file_to_create" -R "$target""
+            command="$dar $incremental $blacklist $maxsize $overwrite -z9 -Q -c "$file_to_create" -R "$target""
         ;;
         *)
             return 1
@@ -399,7 +418,8 @@ backup_method_tarball()
         dumpsymlinks="$(__get_flags_zip_dump_symlinks)"
     ;;
     dar)
-        maxsize="$(__get_dar_maxsize)"
+        maxsize="$(__get_flags_dar_maxsize)"
+        overwrite="$(__get_flags_dar_overwrite)"
     ;;
     esac
 

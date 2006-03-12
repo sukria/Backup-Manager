@@ -1,5 +1,11 @@
 2006-03-12  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* lib/files.sh:
+	  + Applyied patch 21 for closing #50. 
+	    (Stephen Kitt)
+
+2006-03-12  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* Makefile:
 	  + Stop rebuilding the backup-manager-upload.8 manpage ever and ever. If
 	  it exists, don't rebuild it.

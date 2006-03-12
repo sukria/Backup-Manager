@@ -914,7 +914,7 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
      terminal), any of these methods will try to put the whole archive
      repository in the media, if it does not fit in the media, it will try
      to put only the archives built on the day, if that's not possible,
-     nothing will be burned.
+     nothing will be burnt.
 
      In _interactive mode_ (when backup-manager is launched from a
      terminal), the whole repository will be burnt into as many media as
@@ -922,10 +922,10 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
      pause the process asking the user to put a new media inside.
 
      The `CDRW' and `DVD-RW' methods will first blank the media, so you can
-     safely use these methods if you want to use the same media several
+     safely use these methods if you want to use the same medium several
      times.
 
-     The `CDR' and `DVD' medthods won't blank the device first (DVD+RW
+     The `CDR' and `DVD' medthods won't blank the medium first (DVD+RW
      media doesn't need blanking, it's possible to re-burn data on-the-fly
      over such media)..
 
@@ -1099,11 +1099,11 @@ export BM_PRE_BACKUP_COMMAND="/usr/local/bin/backup-prepare.pl $TODAY"
 
      Example with a basic shell command:
 
-          export BM_PRE_BACKUP_COMMAND="umount /var/archives"
+          export BM_POST_BACKUP_COMMAND="umount /var/archives"
 
      Example with a custom script:
 
-export BM_PRE_BACKUP_COMMAND="/usr/local/bin/backup-cleanup.pl $TODAY"
+export BM_POST_BACKUP_COMMAND="/usr/local/bin/backup-cleanup.pl $TODAY"
 
 
 -------------------------------------------------------------------------------
@@ -1240,8 +1240,8 @@ Entering directory /var/archives/lost+found.
      you can ask Backup Manager to perform the burning session instead of
      the whole process with this switch.
 
-     You can also ask Backup Manager to burn only the archive of a given
-     date with providing a timestamp after the `--burn' switch.
+     You can also ask Backup Manager to burn only archives of a given date
+     with providing a timestamp after the `--burn' switch.
 
      Example:
 

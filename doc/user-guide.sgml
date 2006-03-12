@@ -961,7 +961,7 @@ Set the key <tt>BM_BURNING_METHOD</tt> to the method corresponding to the media 
 In <em>non-interactive mode</em> (when backup-manager is not lauchned from a terminal),
 any of these methods will try to put the whole archive repository in the media, if it does not 
 fit in the media, it will try to put only the archives built on the day, if that's not possible,
-nothing will be burned.
+nothing will be burnt.
 
 <p>
 In <em>interactive mode</em> (when backup-manager is launched from a terminal),
@@ -971,11 +971,12 @@ media inside.
 
 <p>
 The <tt>CDRW</tt> and <tt>DVD-RW</tt> methods will first blank the media, 
-so you can safely use these methods if you want to use the same media several times.
+so you can safely use these methods if you want to use the same medium several times.
 
 <p>
-The <tt>CDR</tt> and <tt>DVD</tt> medthods won't blank the device first (DVD+RW media doesn't need blanking, 
-it's possible to re-burn data on-the-fly over such media)..
+The <tt>CDR</tt> and <tt>DVD</tt> medthods won't blank the medium first 
+(DVD+RW media doesn't need blanking, it's possible to re-burn data on-the-fly 
+over such media)..
 
 <p>
 DVD media are handled by the tool <tt>dvd+rw-tools</tt>, problems can occur in CRON environment with 
@@ -1149,13 +1150,13 @@ syslog the post-command failure if the logger is enabled).
 <p>
 Example with a basic shell command:
 <example>
-export BM_PRE_BACKUP_COMMAND="umount /var/archives"
+export BM_POST_BACKUP_COMMAND="umount /var/archives"
 </example>
 
 <p>
 Example with a custom script:
 <example>
-export BM_PRE_BACKUP_COMMAND="/usr/local/bin/backup-cleanup.pl $TODAY"
+export BM_POST_BACKUP_COMMAND="/usr/local/bin/backup-cleanup.pl $TODAY"
 </example>
 
 <chapt id="using">Using &bmngr;
@@ -1283,7 +1284,7 @@ perform the uploading session instead of the whole process with this switch.
 If you have made a configuration file that enables the burning system, you can ask &bmngr; to 
 perform the burning session instead of the whole process with this switch.
 <p>
-You can also ask &bmngr; to burn only the archive of a given date with providing a timestamp 
+You can also ask &bmngr; to burn only archives of a given date with providing a timestamp 
 after the <tt>--burn</tt> switch.
 
 <p>

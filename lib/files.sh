@@ -260,14 +260,14 @@ purge_duplicate_archives()
 	# we'll parse all the files of the same source
 	date_of_file=$(get_date_from_file $file_to_create) || 
         error "Unable to get date from file."
-	file_pattern=$(echo $file_to_create | sed -e "s/$date_of_file.*$/\*/") || 
+	file_pattern=$(echo $file_to_create | sed -e "s/$date_of_file/\*/") || 
         error "Unable to find the pattern of the file."
 	
 	for file in $file_pattern
 	do
 		if [ ! -L $file ] && 
 		   [ "$file" != "$file_to_create" ]; then
-			md5sum_to_check=$(get_md5sum_from_file $file_to_create $BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5)
+			md5sum_to_check=$(get_md5sum_from_file $file $BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5)
 
 			if [ "$md5hash" = "$md5sum_to_check" ]; then
 				info "\$file is a duplicate of \$file_to_create (using symlink)."

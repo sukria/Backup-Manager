@@ -57,7 +57,7 @@ commit_archives()
 {    
 	file_to_create="$1"
     if [ "$BM_TARBALL_FILETYPE" = "dar" ]; then
-        for dar_file in $file_to_create.?.dar
+        for dar_file in $file_to_create.*.dar
         do
             commit_archive "$dar_file"
         done

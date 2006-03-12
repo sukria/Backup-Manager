@@ -1,3 +1,13 @@
+2006-03-12  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* Makefile:
+	  + Stop rebuilding the backup-manager-upload.8 manpage ever and ever. If
+	  it exists, don't rebuild it.
+	* VERSION:
+	  + Ready for the release 0.7.2
+	* backup-manager:
+	  + VERSION = 0.7.2
+
 2006-03-11  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* lib/actions.sh:

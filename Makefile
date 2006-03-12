@@ -70,10 +70,13 @@ install_deb:
 	mkdir -p $(PERL5DIR)/BackupManager
 	install --owner=root --group=root --mode=0644 BackupManager/*.pm $(PERL5DIR)/BackupManager
 
-# Installing the man pages.
-install_man: 
+# Building manpages
+man/backup-manager-upload.8:
 	@echo -e "\n*** generating manpages ***\n"
 	PERL5LIB=. pod2man --center="backup-manager-upload" backup-manager-upload > man/backup-manager-upload.8
+	
+# Installing the man pages.
+install_man: man/backup-manager-upload.8
 	@echo -e "\n*** Installing man pages ***\n"
 	install -d /usr/share/man/man8/
 	install --owner=root --group=root --mode=0644 man/*.8 /usr/share/man/man8/
@@ -88,6 +91,7 @@ deb:
 clean:
 	rm -f build-stamp
 	rm -rf debian/backup-manager
+	rm -f man/backup-manager-upload.8
 	$(MAKE) -C po clean
 	$(MAKE) -C doc clean
 

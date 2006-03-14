@@ -393,9 +393,6 @@ function __burn_session_from_file()
     
     burn_session "$what_to_burn_session" "$session_number" "$number_of_indexes"
 
-    # Remove the index file.
-    rm -f $index_file
-
 }
 
 function __append_index_paths_in_indexes()
@@ -437,4 +434,8 @@ function burn_multiples_media()
         __insert_new_medium
         __burn_session_from_file "$index" "$session_number" "$number_of_indexes"
     done
+
+	# Remove all the index files.
+	rm -f $indexes
+
 }

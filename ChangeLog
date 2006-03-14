@@ -1,3 +1,18 @@
+2006-03-14  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* backup-manager:
+	  + Added path for /usr/bin/7z
+	* lib/backup-methods.sh:
+	  + Some of the basic stuff for the 7z support.
+	  + Warning, the blacklist stuff is not working!
+	* lib/logger.sh:
+	  + umask redirected to /dev/null for getting rid of the crappy 
+	    output.
+	* t/t09-tarball-incremental.sh:
+	  + Never make master backups in that test.
+	* t/testlib.sh:
+	  + Added path for /usr/bin/7z
+
 2006-03-12  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* lib/files.sh:

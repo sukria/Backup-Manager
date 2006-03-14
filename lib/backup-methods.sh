@@ -150,21 +150,14 @@ __create_file_with_meta_command()
     fi
 }
 
-__get_flags_tar_blacklist()
-{
-    blacklist=""
-	for pattern in $BM_TARBALL_BLACKLIST
-	do
-		blacklist="$blacklist --exclude=$pattern"
-	done
-    echo "$blacklist"
-}
 
 # Thanks to Michel Grentzinger for his 
 # smart ideas/remarks about that function.
-__get_flags_dar_blacklist()
+function __get_flags_relative_blacklist()
 {
-    target="$1"
+    switch="$1"
+    target="$2"
+
     target=${target%/}
     blacklist=""
 	for pattern in $BM_TARBALL_BLACKLIST
@@ -182,18 +175,46 @@ __get_flags_dar_blacklist()
                 pattern=$(expr substr $pattern 2 $length)
 
                 # ...and blacklisting it
-                blacklist="$blacklist -P $pattern"
+                blacklist="$blacklist ${switch}${pattern}"
            fi
 
         # relative path are blindly appended to the blacklist
         else
-            blacklist="$blacklist -P $pattern"
+            blacklist="$blacklist ${switch}${pattern}"
         fi
     done
-    echo "$blacklist"
+
 }
 
-__get_flags_zip_dump_symlinks()
+function __get_flags_dar_blacklist()
+{
+    target="$1"
+    __get_flags_relative_blacklist "-P" "$target"
+}
+
+function __get_flags_tar_blacklist()
+{
+    target="$1"
+    __get_flags_relative_blacklist "--exclude=" "$target"
+}
+
+# FIXME blacklist seems to be broken in 7z...
+function __get_flags_7z_blacklist()
+{
+    target="$1"
+    warning "7z blacklist are not well supported..."
+
+    blacklist=""
+    excludelist=$(mktemp /tmp/bm-7z-exclude.XXXXXX)
+    for pattern in $BM_TARBALL_BLACKLIST
+    do
+        echo ${pattern#/} >> $excludelist
+    done
+    blacklist="-x@$excludelist"
+    #    __get_flags_relative_blacklist '-xr!*' "$target"
+}
+
+function __get_flags_zip_dump_symlinks()
 {
     export ZIP="" 
     export ZIPOPT="" 
@@ -308,28 +329,40 @@ __get_flags_dar_overwrite()
 	
 	echo "$overwrite"
 }
+# TODO
+function __get_flags_7z_dump_symlinks()
+{
+    echo ""
+}
 
 __get_backup_tarball_command()
 {
     case $BM_TARBALL_FILETYPE in
         tar) 
+            __get_flags_tar_blacklist "$target"
             command="$tar $incremental $blacklist $dumpsymlinks -p -c    -f "$file_to_create" "$target""
         ;;
         tar.gz)
+            __get_flags_tar_blacklist "$target"
             command="$tar $incremental $blacklist $dumpsymlinks -p -c -z -v -f "$file_to_create" "$target""
         ;;
         tar.bz2|tar.bz) 
+            __get_flags_tar_blacklist "$target"
             command="$tar $incremental $blacklist $dumpsymlinks -p -c -j -f "$file_to_create" "$target""
         ;;
         zip) 
             command="$zip $dumpsymlinks -r "$file_to_create" "$target""
         ;;
         dar)
-            blacklist=""
-            blacklist="$(__get_flags_dar_blacklist "$target")"
+            __get_flags_dar_blacklist "$target"
             command="$dar $incremental $blacklist $maxsize $overwrite -z9 -Q -c "$file_to_create" -R "$target""
         ;;
+        7z)
+            __get_flags_7z_blacklist "$target"
+            command="$_7z a -t7z -m0=lzma -mx=9 $blacklist $dumpsymlinks "$file_to_create" "$target""
+        ;;
         *)
+            error "The archive type \"\$BM_TARBALL_FILETYPE\" is not supported."
             return 1
         ;;
     esac
@@ -355,21 +388,17 @@ __make_tarball_archives()
         incremental=""
         if [ $method = tarball-incremental ]
         then
-            case $BM_TARBALL_FILETYPE in
-                dar)
+            case "$BM_TARBALL_FILETYPE" in
+                "dar")
                     __get_flags_dar_incremental $dir_name
                 ;;
-                
-                *)
-                    if [ "$BM_TARBALL_FILETYPE" != "zip" ]; then
-                        __get_flags_tar_incremental "$dir_name"
-                    fi
+                "tar"|"tar.gz"|"tar.bz2")
+                    __get_flags_tar_incremental "$dir_name"
                 ;;
             esac
         fi
         command=$(__get_backup_tarball_command) || 
             error "The filetype \$BM_TARBALL_FILETYPE is not supported."
-
 
         # dar is not like tar, we have to manually check for existing .1.dar files
         if [ $BM_TARBALL_FILETYPE = dar ]; then
@@ -378,9 +407,10 @@ __make_tarball_archives()
             file_to_check="$file_to_create"
         fi
         
+        
         if [ ! -e $file_to_check ] || [ $force = true ]; then
             logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
-#            __debug "$command"
+            __debug "$command"
             if ! $command > $logfile 2>&1 ; then
                 handle_tarball_error "$file_to_create" "$logfile"
             else
@@ -403,16 +433,7 @@ backup_method_tarball()
 	
     # build the command line
     case $BM_TARBALL_FILETYPE in 
-    tar.gz)
-        blacklist="$(__get_flags_tar_blacklist)"
-        dumpsymlinks="$(__get_flags_tar_dump_symlinks)"
-    ;;
-    tar)
-        blacklist="$(__get_flags_tar_blacklist)"
-        dumpsymlinks="$(__get_flags_tar_dump_symlinks)"
-    ;;
-    tar.bz2|tar.bz)
-        blacklist="$(__get_flags_tar_blacklist)"
+    tar|tar.bz2|tar.gz)
         dumpsymlinks="$(__get_flags_tar_dump_symlinks)"
     ;;
     zip)
@@ -421,6 +442,9 @@ backup_method_tarball()
     dar)
         maxsize="$(__get_flags_dar_maxsize)"
         overwrite="$(__get_flags_dar_overwrite)"
+    ;;
+    7z)
+        dumpsymlinks="$(__get_flags_7z_dump_symlinks)"
     ;;
     esac
 

@@ -21,6 +21,9 @@ export BM_TARBALL_DIRECTORIES="$PWD/testdir"
 export BM_TARBALLINC_MASTERDATETYPE="weekly"
 export BM_TARBALL_FILETYPE="tar.gz"
 
+# This test is for incremental backups, we don't want master backups!
+export BM_TARBALLINC_MASTERDATEVALUE="999"
+
 bm_init_env
 bm_init_today
 
@@ -38,6 +41,7 @@ sleep 5
 
 create_directories
 make_archives
+
 
 YESTERDAY=$(date +%Y%m%d --date '1 days ago')
 name=$(get_dir_name "$PWD/testdir" long)

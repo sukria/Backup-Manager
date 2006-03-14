@@ -130,7 +130,7 @@ warning()
 # remove the logfile
 _exit()
 {
-    umask $BM_UMASK
+    umask $BM_UMASK >/dev/null
 	info "Releasing lock"
 	release_lock
 	exit $@

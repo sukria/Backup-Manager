@@ -105,19 +105,27 @@ _exec_rsync_command()
 {
     info "Uploading \$directory to \${host}:\${BM_UPLOAD_RSYNC_DESTINATION}"
     logfile=$(mktemp /tmp/bm-rsync.XXXXXX)
+    if [ "$host" == "localhost" ]; then
+        host=""
+    fi
+    ssh_option=""
+    destination_option="$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR%/}/"
+    if [ -n "$host" ]; then
+        ssh_option="-e \"ssh -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}\" "
+        destination_option="${BM_UPLOAD_SSH_USER}@${host}:$destination_option"
+    fi
+    
     if [ "$UID" != 0 ]; then
-        if ! ${rsync} ${rsync_options} \
-             -e "ssh -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}" ${directory} \
-                 ${BM_UPLOAD_SSH_USER}@${host}:$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR}/\
+        if ! ${rsync} ${rsync_options} ${ssh_option} \
+                      ${directory} ${destination_option} \
                  >/dev/null 2>$logfile; then
             error "Upload of \$directory with rsync failed; check \$logfile."
         else
             rm -f $logfile
         fi
     else
-        if ! su $BM_UPLOAD_SSH_USER -c "${rsync} ${rsync_options} \
-             -e \"ssh -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}\" ${directory} \
-                 ${BM_UPLOAD_SSH_USER}@${host}:$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR}/" \
+        if ! su $BM_UPLOAD_SSH_USER -c "${rsync} \
+    ${rsync_options} ${ssh_option} ${directory} ${destination_option}" \
                  >/dev/null 2>$logfile; then
             error "Upload of \$directory with rsync failed; check \$logfile."
         else
@@ -132,13 +140,16 @@ bm_upload_rsync_common()
     bm_upload_hosts="$BM_UPLOAD_HOSTS $BM_UPLOAD_RSYNC_HOSTS"
     bm_upload_init "$bm_upload_hosts"
 
+    if [ -z "$bm_upload_hosts" ]; then
+        bm_upload_hosts="localhost"
+    fi
     if [ -z "$BM_UPLOAD_RSYNC_DESTINATION" ]; then
         BM_UPLOAD_RSYNC_DESTINATION="$BM_UPLOAD_DESTINATION"
     fi        
     if [ -z "$BM_UPLOAD_RSYNC_DESTINATION" ]; then
         error "No valid destination found, RSYNC upload not possible."
     fi
-
+    
     rsync_options="-va"
     if [ ! -z $BM_UPLOAD_RSYNC_DUMPSYMLINKS ]; then
         if [ "$BM_UPLOAD_RSYNC_DUMPSYMLINKS" = "true" ]; then
@@ -150,9 +161,9 @@ bm_upload_rsync_common()
     do
         if [ -n "$bm_upload_hosts" ]; then
             if [ -n "$BM_UPLOAD_SSH_KEY" ] && 
-               [ -n "$BM_UPLOAD_SSH_USER" ]; then
+            [ -n "$BM_UPLOAD_SSH_USER" ]; then
                 servers=`echo $bm_upload_hosts| sed 's/ /,/g'`
-
+                
                 for host in $servers
                 do
                     _exec_rsync_command
@@ -163,7 +174,8 @@ bm_upload_rsync_common()
         else
             warning "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
         fi
-      done
+    done
+
 }
 
 bm_upload_rsync()

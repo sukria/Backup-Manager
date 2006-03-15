@@ -1,3 +1,9 @@
+2006-03-15  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* lib/upload-methods.sh:
+	  + applied patch from Nicolas Rennert for closing #49.
+	  + make sure we don't have a trailing / at the end of the RSYNC command.
+
 2006-03-14  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* backup-manager:

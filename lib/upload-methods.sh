@@ -105,12 +105,17 @@ _exec_rsync_command()
 {
     info "Uploading \$directory to \${host}:\${BM_UPLOAD_RSYNC_DESTINATION}"
     logfile=$(mktemp /tmp/bm-rsync.XXXXXX)
-    if [ "$host" == "localhost" ]; then
-        host=""
-    fi
+
+    # default options for local rsync
     ssh_option=""
     destination_option="$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR%/}/"
-    if [ -n "$host" ]; then
+    
+    # remote hosts use SSH
+    if [ "$host" != "localhost" ]; then
+        if [ -n "$BM_UPLOAD_SSH_USER" ] || 
+           [ -n "$BM_UPLOAD_SSH_KEY" ]; then 
+            error "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
+        fi
         ssh_option="-e \"ssh -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}\" "
         destination_option="${BM_UPLOAD_SSH_USER}@${host}:$destination_option"
     fi
@@ -160,22 +165,15 @@ bm_upload_rsync_common()
     for directory in $BM_UPLOAD_RSYNC_DIRECTORIES
     do
         if [ -n "$bm_upload_hosts" ]; then
-            if [ -n "$BM_UPLOAD_SSH_KEY" ] && 
-            [ -n "$BM_UPLOAD_SSH_USER" ]; then
-                servers=`echo $bm_upload_hosts| sed 's/ /,/g'`
-                
-                for host in $servers
-                do
-                    _exec_rsync_command
-                done
-            else
-                error "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
-            fi
+            servers=`echo $bm_upload_hosts| sed 's/ /,/g'`
+            for host in $servers
+            do
+                _exec_rsync_command
+            done
         else
             warning "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
         fi
     done
-
 }
 
 bm_upload_rsync()

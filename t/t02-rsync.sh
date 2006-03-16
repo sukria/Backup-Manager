@@ -21,6 +21,14 @@ create_directories
 make_archives
 upload_files
 
+
+# same test without SSH keys
+export BM_UPLOAD_SSH_USER=""
+export BM_UPLOAD_SSH_KEY=""
+
+make_archives
+upload_files
+
 # remove the stuff generated
 rm -f repository/*
 

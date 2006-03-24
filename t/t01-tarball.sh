@@ -25,11 +25,12 @@ fi
 
 bm_init_env
 bm_init_today
+
 create_directories
 make_archives
 
 name=$(get_dir_name $PWD long)
-if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.tar.gz" ]; then
+if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.tar.gz" ]; then
     exit 0
 else
     exit 1

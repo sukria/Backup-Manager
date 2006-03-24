@@ -48,8 +48,10 @@ commit_archive()
 
     # security fixes if BM_REPOSITORY_SECURE is set to true
     if [ $BM_REPOSITORY_SECURE = true ]; then
-        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $file_to_create
-        chmod 660 $file_to_create
+        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $file_to_create || 
+            warning "Unable to change the owner of \"\$file_to_create\"."
+        chmod 660 $file_to_create ||
+            warning "Unable to change file permissions of \"\$file_to_create\"."
     fi
 }
 
@@ -238,10 +240,11 @@ __get_file_to_create()
 {
     target="$1"
     dir_name=$(get_dir_name $target $BM_TARBALL_NAMEFORMAT)
-    file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY.$BM_TARBALL_FILETYPE"
+    file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY${master}.$BM_TARBALL_FILETYPE"
+    
     # dar appends itself the ".dar" extension
     if [ "$BM_TARBALL_FILETYPE" = "dar" ]; then
-        file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY"
+        file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY${master}"
     fi
     echo "$file_to_create"
 }
@@ -283,10 +286,15 @@ function __get_flags_tar_incremental()
 
     # if master day, we have to purge the incremental list if exists
     # so we'll generate a new one (and then, a full backup).
-    if [ "$master_day" = "$BM_TARBALLINC_MASTERDATEVALUE" ] && [ -e $incremental_list ]; then
+    if [ "$master_day" = "$BM_TARBALLINC_MASTERDATEVALUE" ];  then
         info "Making master backups."
         rm -f $incremental_list
     fi
+
+    if [ -e $incremental_list ]; then
+        master=""
+    fi
+    
     incremental="--listed-incremental $incremental_list"
 
 }
@@ -295,8 +303,10 @@ function __get_flags_dar_incremental()
 {
     dir_name="$1"
     incremental=""
+    
     __get_master_day
     __init_masterdatevalue
+    
     yesterday=$(date +'%Y%m%d' --date '1 days ago')
     yesterday_dar="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.dar"
     yesterday_dar_first="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.1.dar"
@@ -307,6 +317,7 @@ function __get_flags_dar_incremental()
     if [ "$master_day" != "$BM_TARBALLINC_MASTERDATEVALUE" ]; then
         if [ -e $yesterday_dar ] || [ -e $yesterday_dar_first ]; then
             incremental="--ref $BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday"
+            master=""
         else
             incremental=""
         fi
@@ -382,7 +393,6 @@ __make_tarball_archives()
 		fi
 		
         dir_name=$(get_dir_name "$target" $BM_TARBALL_NAMEFORMAT)
-        file_to_create=$(__get_file_to_create "$target")
     
         # handling of incremental options
         incremental=""
@@ -397,6 +407,14 @@ __make_tarball_archives()
                 ;;
             esac
         fi
+        
+        # we assume we'll build a master backup (full archive).
+        # If we make incremental backup, the $master keyword 
+        # will be reset.
+        master=".master"
+
+        file_to_create=$(__get_file_to_create "$target")
+        
         command=$(__get_backup_tarball_command) || 
             error "The filetype \$BM_TARBALL_FILETYPE is not supported."
 
@@ -410,7 +428,7 @@ __make_tarball_archives()
         
         if [ ! -e $file_to_check ] || [ $force = true ]; then
             logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
-            __debug "$command"
+#            __debug "$command"
             if ! $command > $logfile 2>&1 ; then
                 handle_tarball_error "$file_to_create" "$logfile"
             else

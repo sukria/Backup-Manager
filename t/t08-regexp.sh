@@ -42,9 +42,9 @@ err_code=0
 for dir in $subdirs_to_create
 do
     name=$(get_dir_name $dir long)
-    if [ ! -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.tar.gz" ]; then
+    if [ ! -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.tar.gz" ]; then
         err_code=$(($err_code + 1))
-        echo "ERR: $BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX-$name.$TODAY.tar.gz"
+        echo "ERR: $BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX-$name.$TODAY.master.tar.gz"
     fi        
 done
 exit $err_code

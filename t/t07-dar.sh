@@ -32,7 +32,7 @@ create_directories
 make_archives
 
 name=$(get_dir_name $PWD long)
-if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.1.dar" ]; then
+if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.1.dar" ]; then
     exit 0
 else
     exit 1

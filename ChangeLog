@@ -1,4 +1,23 @@
-2006-03-16  Alexis Sukrieh,,,  <sukria@backup-manager.org>
+2006-03-24  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* lib/actions.sh:
+	  + Some more errors when failing to chown/chmod.
+	* lib/backup-methods.sh:
+	  + Some more errors when failing to chown/chmod.
+	  + Name differently master backups, using a ".master" suffix.
+	* t/confs/base.conf:
+	  + added BM_REPOSITORY_USER and BM_REPOSITORY_GROUP
+	* Changed all the tests to fit the new backup naming layout (.master):
+	  +	t/t01-tarball.sh
+	  + t/t04-tarball-blacklist.sh
+	  + t/t06-bug14.sh
+	  + t/t07-dar.sh
+	  + t/t08-regexp.sh
+	  + t/t09-tarball-incremental.sh
+	  + t/t10-tarball-dar-blacklist.sh
+	  + t/t12-tarball-incremental-dar.sh
+
+2006-03-16  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* lib/upload-methods.sh:
 	* t/t02-rsync.sh:

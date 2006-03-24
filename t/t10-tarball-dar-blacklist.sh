@@ -45,8 +45,8 @@ make_archives
 
 # test of success/failure
 name=$(get_dir_name "$PWD/var/www" "long")
-archive="$BM_ARCHIVE_PREFIX$name.$TODAY.1.dar"
-archive_name="$BM_ARCHIVE_PREFIX$name.$TODAY"
+archive="$BM_ARCHIVE_PREFIX$name.$TODAY.master.1.dar"
+archive_name="$BM_ARCHIVE_PREFIX$name.$TODAY.master"
 
 if [ -e $BM_REPOSITORY_ROOT/$archive ]
 then

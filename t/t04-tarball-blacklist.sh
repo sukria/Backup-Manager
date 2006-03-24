@@ -45,7 +45,7 @@ make_archives
 
 # test of success/failure
 name=$(get_dir_name "$PWD/var/www" "long")
-archive="$BM_ARCHIVE_PREFIX$name.$TODAY.tar.gz"
+archive="$BM_ARCHIVE_PREFIX$name.$TODAY.master.tar.gz"
 
 if [ -e $BM_REPOSITORY_ROOT/$archive ]
 then

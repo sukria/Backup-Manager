@@ -292,6 +292,11 @@ there are no changes in their content. See the <tt>tarball-incremental</tt>
 method if you want to optimize archives' size.
 
 <p>
+When building full backups (when not building incremental ones), &bmngr; will append 
+the keyword "master" to the name of the archive. This is very useful when using 
+the <tt>tarball-incremental</tt> method for seeing where the full backups are quickly.
+
+<p>
 A couple of options are available: the name format
 of the archive, the compression type (gzip, zip, bzip2, none) and the
 facility to dereference symlinks when building the tarball.

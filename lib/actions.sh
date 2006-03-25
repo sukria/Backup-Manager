@@ -137,6 +137,7 @@ exec_post_command()
 function bm_init_env ()
 {
     export TOOMUCH_TIME_AGO=`date +%d --date "$BM_ARCHIVE_TTL days ago"`
+    check_logger
 }
 
 function bm_init_today()

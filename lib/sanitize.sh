@@ -136,7 +136,8 @@ if [ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ] &&
         confkey_require "BM_TARBALLINC_MASTERDATETYPE" "weekly"
 fi
 
-if [ "$BM_ARCHIVE_METHOD" = "tarball" ]; then
+if [ "$BM_ARCHIVE_METHOD" = "tarball" ] || 
+   [ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ] ; then
 
 	confkey_handle_deprecated "BM_FILETYPE" "BM_TARBALL_FILETYPE"
 	confkey_require "BM_TARBALL_FILETYPE" "tar.gz"

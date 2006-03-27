@@ -287,7 +287,6 @@ function __get_flags_tar_incremental()
     # if master day, we have to purge the incremental list if exists
     # so we'll generate a new one (and then, a full backup).
     if [ "$master_day" = "$BM_TARBALLINC_MASTERDATEVALUE" ];  then
-        info "Making master backups."
         rm -f $incremental_list
     fi
 
@@ -299,6 +298,7 @@ function __get_flags_tar_incremental()
 
 }
 
+# This will set the appropriate dar options for making incremental backups.
 function __get_flags_dar_incremental()
 {
     dir_name="$1"
@@ -394,8 +394,14 @@ __make_tarball_archives()
 		
         dir_name=$(get_dir_name "$target" $BM_TARBALL_NAMEFORMAT)
     
+        # we assume we'll build a master backup (full archive).
+        # If we make incremental backup, the $master keyword 
+        # will be reset.
+        master=".master"
+        
         # handling of incremental options
         incremental=""
+        
         if [ $method = tarball-incremental ]
         then
             case "$BM_TARBALL_FILETYPE" in
@@ -407,11 +413,6 @@ __make_tarball_archives()
                 ;;
             esac
         fi
-        
-        # we assume we'll build a master backup (full archive).
-        # If we make incremental backup, the $master keyword 
-        # will be reset.
-        master=".master"
 
         file_to_create=$(__get_file_to_create "$target")
         

@@ -236,7 +236,7 @@ __get_flags_tar_dump_symlinks()
     echo "$h"
 }
 
-__get_file_to_create()
+function __get_file_to_create()
 {
     target="$1"
     dir_name=$(get_dir_name $target $BM_TARBALL_NAMEFORMAT)
@@ -246,6 +246,17 @@ __get_file_to_create()
     if [ "$BM_TARBALL_FILETYPE" = "dar" ]; then
         file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY${master}"
     fi
+    echo "$file_to_create"
+}
+
+function __get_file_to_create_remote()
+{
+    target="$1"
+    host="$2"
+    
+    dir_name=$(get_dir_name $target $BM_TARBALL_NAMEFORMAT)
+    file_to_create="$BM_REPOSITORY_ROOT/${host}${dir_name}.$TODAY${master}.$BM_TARBALL_FILETYPE"
+    
     echo "$file_to_create"
 }
 
@@ -346,6 +357,30 @@ function __get_flags_7z_dump_symlinks()
     echo ""
 }
 
+# FIXME : incremental is not possible remotely
+# in the current shape...
+__get_backup_tarball_remote_command()
+{
+    case $BM_TARBALL_FILETYPE in
+        tar) 
+            __get_flags_tar_blacklist "$target"
+            command="$tar $blacklist $dumpsymlinks -p -c "$target""
+        ;;
+        tar.gz)
+            __get_flags_tar_blacklist "$target"
+            command="$tar $blacklist $dumpsymlinks -p -c -z "$target""
+        ;;
+        tar.bz2|tar.bz) 
+            __get_flags_tar_blacklist "$target"
+            command="$tar $blacklist $dumpsymlinks -p -c -j "$target""
+        ;;
+        *)
+            error "Remote tarball building is not possible with this archive filetype: \"$BM_TARBALL_FILETYPE\"."
+        ;;
+    esac
+    echo "$command"
+}
+
 __get_backup_tarball_command()
 {
     case $BM_TARBALL_FILETYPE in
@@ -380,7 +415,79 @@ __get_backup_tarball_command()
     echo "$command"
 }
 
-__make_tarball_archives()
+
+function __build_local_archive()
+{
+    target="$1"
+    dir_name="$2"
+    
+    file_to_create=$(__get_file_to_create "$target")
+    command=$(__get_backup_tarball_command) || 
+        error "The filetype \$BM_TARBALL_FILETYPE is not supported."
+
+    # dar is not like tar, we have to manually check for existing .1.dar files
+    if [ $BM_TARBALL_FILETYPE = dar ]; then
+        file_to_check="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY.1.dar"
+    else
+        file_to_check="$file_to_create"
+    fi
+
+    # let's exec the command
+    if [ ! -e $file_to_check ] || [ $force = true ]; then
+        logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+#            __debug "$command"
+        if ! $command > $logfile 2>&1 ; then
+            handle_tarball_error "$file_to_create" "$logfile"
+        else
+            rm -f $logfile
+            commit_archives "$file_to_create"
+        fi
+    else
+        warning "File \$file_to_check already exists, skipping."
+        continue
+    fi
+}
+
+function __build_remote_archive()
+{
+    target="$1"
+    dir_name="$2"
+    
+
+    for host in $BM_UPLOAD_SSH_HOSTS
+    do
+        logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+        file_to_create=$(__get_file_to_create_remote "$target" "$host")
+        
+        command=$(__get_backup_tarball_remote_command) || 
+            error "The filetype \$BM_TARBALL_FILETYPE is not supported."
+        
+        remote_command="ssh -i ${BM_UPLOAD_SSH_KEY} -o BatchMode=yes ${BM_UPLOAD_SSH_USER}@${host} $command"
+
+        file_to_check="$file_to_create"
+        if [ ! -e $file_to_check ] || [ $force = true ]; then
+            
+            logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+            
+#            __debug "$remote_command > $file_to_create 2>$logfile"
+            $remote_command > "$file_to_create" 2>$logfile || 
+                error "unable to exec \$remote_command; check \$logfile"
+            
+            words=$(wc -l $logfile | awk '{print $1}')
+            if [ $words -gt 1 ]; then
+                handle_tarball_error "$file_to_create" "$logfile"
+            else
+                rm -f $logfile
+                commit_archives "$file_to_create"
+            fi
+        else
+            warning "File \$file_to_check already exists, skipping."
+            continue
+        fi
+    done
+}
+
+function __make_tarball_archives()
 {
     nb_err=0
 	for target in $BM_TARBALL_DIRECTORIES
@@ -414,31 +521,10 @@ __make_tarball_archives()
             esac
         fi
 
-        file_to_create=$(__get_file_to_create "$target")
-        
-        command=$(__get_backup_tarball_command) || 
-            error "The filetype \$BM_TARBALL_FILETYPE is not supported."
-
-        # dar is not like tar, we have to manually check for existing .1.dar files
-        if [ $BM_TARBALL_FILETYPE = dar ]; then
-            file_to_check="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY.1.dar"
+        if [ "$BM_TARBALL_OVER_SSH" != "true" ]; then
+            __build_local_archive "$target" "$dir_name"       
         else
-            file_to_check="$file_to_create"
-        fi
-        
-        
-        if [ ! -e $file_to_check ] || [ $force = true ]; then
-            logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
-#            __debug "$command"
-            if ! $command > $logfile 2>&1 ; then
-                handle_tarball_error "$file_to_create" "$logfile"
-            else
-                rm -f $logfile
-                commit_archives "$file_to_create"
-            fi
-        else
-            warning "File \$file_to_check already exists, skipping."
-            continue
+            __build_remote_archive "$target" "$dir_name"
         fi
     done
 }

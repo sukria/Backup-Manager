@@ -411,6 +411,62 @@ Example:
 export BM_TARBALL_BLACKLIST="/tmp /dev /proc *.mp3 *.mpg"
 </example>
 
+<sect2 id="BM_TARBALL_OVER_SSH"><tt>BM_TARBALL_OVER_SSH</tt>
+<p>
+<em>Type: boolean, default: <tt>false</tt>.</em>
+<p>
+<strong>Dependency: <tt>BM_UPLOAD_SSH</tt></strong>
+
+<p>
+If you want to archive some remote locations from a server where &bmngr; is insalled, you can choose to 
+build archives over SSH. This is useful if you don't want to install &bmngr; every where and setup some 
+upload methods from all thoses servers to a central data storage server.
+This way, &bmngr; will build some archives directly over SSH and will store the resulting tarballs locally,
+as if it was built like any other archive. The resulting archive will be prefixed with the remote hostname 
+instead of <tt>BM_ARCHIVE_PREFIX</tt>.
+
+<p>
+This feature requires that the following variables are set in the BM_UPLOAD_SSH section:
+<list>
+    <item><tt>BM_UPLOAD_SSH_USER</tt>: the user to use for connecting to the remote server. Note
+              that this user will run tar remotely, so take care to archive something this user can read!
+    <item><tt>BM_UPLOAD_SSH_KEY</tt>: as usal, the path to the private key to use for establishing the connection.
+    <item><tt>BM_UPLOAD_SSH_HOSTS</tt>: A list of hosts where to run the tarball builds.
+</list>
+
+<p>
+If you enable this feature, note that the resulting configuration file will have the following restrictions:
+<list>
+    <item>Remote tarball build only works with the <tt>tarball</tt> method, it will silently behaves the same 
+          with <tt>tarball-incremental</tt>.
+    <item>You cannot use the remote build and the local one in the same configuration file. If you want to do both,
+          use two configuration files.
+</list>
+
+<p>
+Example: You have three hosts: host01, host02 and host03. You want to set up
+host01 as a data storage server, it has a big /var/archives partition. You want
+to archive "/etc", "/home" and "/var/log" on box02 and box03 and store the archives on
+host01.
+
+<example>
+[...]
+export BM_ARCHIVE_METHOD="tarball"
+
+export BM_TARBALL_OVER_SSH="true"
+export BM_TARBALL_FILETYPE="tar.bz2"
+export BM_TARBALL_DIRECTORIES="/etc /home /var/log"
+
+export BM_UPLOAD_SSH_USER="bamuser"
+export BM_UPLOAD_SSH_KEY="/home/bamuser/.ssh/id_dsa"
+export BM_UPLOAD_SSH_HOSTS="box02 box03"
+
+</example>
+
+Of course, for this to work correctly, <tt>`bamuser'</tt> should be a valid user on box02
+and box03; it must be allowed to connect to them with SSH key autentication and 
+has to be able to read those directories.
+
 
 <sect1 id="tarballinc">Incremental tarballs
 <sect2 id="tarballinc-desc">Description

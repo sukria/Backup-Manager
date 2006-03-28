@@ -65,6 +65,15 @@ export BM_TARBALL_NAMEFORMAT="long"
 # Type of archives, available types are tar, tar.gz, tar.bz2, dar, zip.
 export BM_TARBALL_FILETYPE="tar.gz"
 
+# You can choose to build archives remotely over SSH.
+# You will then need to fill the BM_UPLOAD_SSH variables 
+# (BM_UPLOAD_SSH_HOSTS, BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY).
+# If this boolean is set to true, archive will be saved locally (in 
+# BM_REPOSITORY_ROOT but will be built by the remote host).
+# Thus, BM_TARBALL_DIRECTORIES will be used for backip up remote directories.
+# Those archive will be prefixed with the remote host name.
+export BM_TARBALL_OVER_SSH="true"
+
 # Do you want to dereference the files pointed by symlinks ? 
 # enter true or false (true can lead to huge archives, be careful).
 export BM_TARBALL_DUMPSYMLINKS="false"

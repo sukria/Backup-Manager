@@ -1,3 +1,17 @@
+2006-03-28  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* backup-manager.conf.tpl:
+	  + New configuration variable: BM_TARBALL_OVER_SSH 
+	* doc/user-guide.sgml:
+	  + Some bits about the new "tarball over ssh" thing.
+	* doc/user-guide.txt:
+	  + Up to date version.
+	* lib/backup-methods.sh:
+	  + It's now able to build archive locally (as before) or remotely
+	  (through SSH); closes: #58.
+	* lib/files.sh:
+	  + Some TODO tags.
+
 2006-03-24  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* lib/actions.sh:

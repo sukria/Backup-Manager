@@ -183,6 +183,8 @@ get_lock() {
 
 # Remove a file if its date is older than the 
 # date of expiration.
+# If the archive is a "master", do not remove it unless there
+# is a younger master.
 clean_file()
 {
 	date_to_remove=`date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago"`
@@ -198,6 +200,8 @@ clean_file()
 		if [ ! -z $date ]; then
 			if [ $date -lt $date_to_remove ] || 
 			   [ $date = $date_to_remove ]; then
+
+                # TODO check the master archives here
 				info "Removing \$file"
 				rm -f $file
 			fi

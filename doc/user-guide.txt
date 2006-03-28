@@ -282,6 +282,11 @@ Contents
      there are no changes in their content.  See the `tarball-incremental'
      method if you want to optimize archives' size.
 
+     When building full backups (when not building incremental ones),
+     Backup Manager will append the keyword "master" to the name of the
+     archive.  This is very useful when using the `tarball-incremental'
+     method for seeing where the full backups are quickly.
+
      A couple of options are available: the name format of the archive, the
      compression type (gzip, zip, bzip2, none) and the facility to
      dereference symlinks when building the tarball.
@@ -377,6 +382,66 @@ Contents
      Example:
 
           export BM_TARBALL_BLACKLIST="/tmp /dev /proc *.mp3 *.mpg"
+
+2.2.1.8. `BM_TARBALL_OVER_SSH'
+------------------------------
+
+     _Type: boolean, default: `false'._
+
+     _Dependency: `BM_UPLOAD_SSH'_
+
+     If you want to archive some remote locations from a server where
+     Backup Manager is insalled, you can choose to build archives over SSH.
+     This is useful if you don't want to install Backup Manager every where
+     and setup some upload methods from all thoses servers to a central
+     data storage server.  This way, Backup Manager will build some
+     archives directly over SSH and will store the resulting tarballs
+     locally, as if it was built like any other archive.  The resulting
+     archive will be prefixed with the remote hostname instead of
+     `BM_ARCHIVE_PREFIX'.
+
+     This feature requires that the following variables are set in the
+     BM_UPLOAD_SSH section:
+
+        * `BM_UPLOAD_SSH_USER': the user to use for connecting to the
+          remote server.  Note that this user will run tar remotely, so
+          take care to archive something this user can read!
+
+        * `BM_UPLOAD_SSH_KEY': as usal, the path to the private key to use
+          for establishing the connection.
+
+        * `BM_UPLOAD_SSH_HOSTS': A list of hosts where to run the tarball
+          builds.
+
+     If you enable this feature, note that the resulting configuration file
+     will have the following restrictions:
+
+        * Remote tarball build only works with the `tarball' method, it
+          will silently behaves the same with `tarball-incremental'.
+
+        * You cannot use the remote build and the local one in the same
+          configuration file.  If you want to do both, use two
+          configuration files.
+
+     Example: You have three hosts: host01, host02 and host03.  You want to
+     set up host01 as a data storage server, it has a big /var/archives
+     partition.  You want to archive "/etc", "/home" and "/var/log" on
+     box02 and box03 and store the archives on host01.
+
+          [...]
+          export BM_ARCHIVE_METHOD="tarball"
+          
+          export BM_TARBALL_OVER_SSH="true"
+          export BM_TARBALL_FILETYPE="tar.bz2"
+          export BM_TARBALL_DIRECTORIES="/etc /home /var/log"
+          
+          export BM_UPLOAD_SSH_USER="bamuser"
+          export BM_UPLOAD_SSH_KEY="/home/bamuser/.ssh/id_dsa"
+          export BM_UPLOAD_SSH_HOSTS="box02 box03"
+
+     Of course, for this to work correctly, ``bamuser'' should be a valid
+     user on box02 and box03; it must be allowed to connect to them with
+     SSH key autentication and has to be able to read those directories.
 
 2.2.2. Incremental tarballs
 ---------------------------

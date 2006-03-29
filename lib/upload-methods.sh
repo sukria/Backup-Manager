@@ -98,6 +98,45 @@ bm_upload_ftp()
 
 }
 
+# Manages S3 uploads
+bm_upload_s3()
+{
+    info "Using the upload method \"S3\"."
+
+    bm_upload_hosts="s3.amazon.com"
+    bm_upload_init "$bm_upload_hosts" 
+    
+    if [ -z "$BM_UPLOAD_S3_DESTINATION" ]; then
+	BM_UPLOAD_S3_DESTINATION=$BM_UPLOAD_DESTINATION
+    fi        
+
+    # flags for the S3 method
+    s3_purge_switch=""
+    if [ "$BM_UPLOAD_S3_PURGE" = "true" ]; then
+            s3_purge_switch="--s3-purge"
+    fi
+ 
+    if [ "$verbose" == "true" ]; then
+    info $bmu $v_switch $s3_purge_switch \
+        -m="s3" \
+        -h="$bm_upload_hosts" \
+        -u="$BM_UPLOAD_S3_ACCESS_KEY" \
+        -p="$BM_UPLOAD_S3_SECRET_KEY" \
+        -b="$BM_UPLOAD_S3_DESTINATION" \
+        -r="$BM_REPOSITORY_ROOT" today
+    fi
+    $bmu $v_switch $s3_purge_switch \
+        -m="s3" \
+        -h="$bm_upload_hosts" \
+        -u="$BM_UPLOAD_S3_ACCESS_KEY" \
+        -p="$BM_UPLOAD_S3_SECRET_KEY" \
+        -b="$BM_UPLOAD_S3_DESTINATION" \
+        -r="$BM_REPOSITORY_ROOT" today || 
+    error "Unable to call backup-manager-upload."
+
+}
+
+
 # this is done for behaving the right way depending on who is calling us
 # root should use su $BM_UPLOAD_SSH_USER -c ... and a regular user can just pray for being
 # $BM_UPLOAD_SSH_USER...

@@ -1,3 +1,15 @@
+2006-03-29  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* Closes bug #66 - Support of Amazon S3 uploads.
+	  + backup-manager-upload
+	  + backup-manager.conf.tpl
+	  + doc/user-guide.sgml
+	  + lib/actions.sh
+	  + lib/upload-methods.sh
+	* lib/backup-methods.sh:
+	  + Support of the new variable BM_TARBALL_EXTRA_OPTIONS for appending
+	  extra options to the command line.
+
 2006-03-28  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* backup-manager.conf.tpl:

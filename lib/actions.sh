@@ -75,6 +75,9 @@ upload_files ()
         rsync-snapshots|RSYNC-SNAPSHOTS)
             bm_upload_rsync_snapshots
         ;;
+        s3|S3)
+            bm_upload_s3
+        ;;
         none|disabled)
             info "No upload method used."
         ;;

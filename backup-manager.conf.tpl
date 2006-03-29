@@ -88,6 +88,11 @@ export BM_TARBALL_BLACKLIST="/dev /sys /proc /tmp"
 # With the "dar" filetype, you can choose a maximum slice limit.
 export BM_TARBALL_SLICESIZE="1000M"
 
+# Extra options to append to the tarball generation 
+# (take care to what you do; this will be silently added to the 
+# command line.)
+export BM_TARBALL_EXTRA_OPTIONS=""
+
 ##############################################################
 # The tarball-incremental method uses the same keys as the 
 # tarball method, plus two others.
@@ -209,13 +214,14 @@ export BM_PIPE_COMPRESS
 # - scp
 # - ftp
 # - rsync
+# - s3
 # - none
 
 # If you don't want to use any upload method (you don't want to
 # upload files to remote hosts) then choose "none"
 export BM_UPLOAD_METHOD=""
 
-# where to upload (global to all methods)
+# where to upload (global to all methods. Not required to be set for S3)
 export BM_UPLOAD_HOSTS=""
 
 # Where to put archives on the remote hosts (global)
@@ -259,6 +265,24 @@ export BM_UPLOAD_FTP_PURGE="false"
 # destination for FTP uploads (overrides BM_UPLOAD_DESTINATION)
 export BM_UPLOAD_FTP_DESTINATION=""
 
+##############################################################
+# The S3 method
+#############################################################
+
+# The Amazon S3 method requires that you secure an S3
+# account. See http://aws.amazon.com
+
+# The bucket to upload to. This bucket must be dedicated to backup-manager
+export BM_UPLOAD_S3_DESTINATION=""
+
+# the S3 access key provided to you
+export BM_UPLOAD_S3_ACCESS_KEY=""
+
+# the S3 secret key provided to you
+export BM_UPLOAD_S3_SECRET_KEY=""
+
+# purge archives on remote hosts before uploading?
+export BM_UPLOAD_S3_PURGE="false"
 
 ##############################################################
 # The RSYNC method

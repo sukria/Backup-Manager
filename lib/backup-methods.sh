@@ -364,15 +364,15 @@ __get_backup_tarball_remote_command()
     case $BM_TARBALL_FILETYPE in
         tar) 
             __get_flags_tar_blacklist "$target"
-            command="$tar $blacklist $dumpsymlinks -p -c "$target""
+            command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c "$target""
         ;;
         tar.gz)
             __get_flags_tar_blacklist "$target"
-            command="$tar $blacklist $dumpsymlinks -p -c -z "$target""
+            command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -z "$target""
         ;;
         tar.bz2|tar.bz) 
             __get_flags_tar_blacklist "$target"
-            command="$tar $blacklist $dumpsymlinks -p -c -j "$target""
+            command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j "$target""
         ;;
         *)
             error "Remote tarball building is not possible with this archive filetype: \"$BM_TARBALL_FILETYPE\"."
@@ -386,26 +386,26 @@ __get_backup_tarball_command()
     case $BM_TARBALL_FILETYPE in
         tar) 
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks -p -c    -f "$file_to_create" "$target""
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c    -f "$file_to_create" "$target""
         ;;
         tar.gz)
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks -p -c -z -v -f "$file_to_create" "$target""
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -z -v -f "$file_to_create" "$target""
         ;;
         tar.bz2|tar.bz) 
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks -p -c -j -f "$file_to_create" "$target""
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j -f "$file_to_create" "$target""
         ;;
         zip) 
-            command="$zip $dumpsymlinks -r "$file_to_create" "$target""
+            command="$zip $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -r "$file_to_create" "$target""
         ;;
         dar)
             __get_flags_dar_blacklist "$target"
-            command="$dar $incremental $blacklist $maxsize $overwrite -z9 -Q -c "$file_to_create" -R "$target""
+            command="$dar $incremental $blacklist $maxsize $overwrite $BM_TARBALL_EXTRA_OPTIONS -z9 -Q -c "$file_to_create" -R "$target""
         ;;
         7z)
             __get_flags_7z_blacklist "$target"
-            command="$_7z a -t7z -m0=lzma -mx=9 $blacklist $dumpsymlinks "$file_to_create" "$target""
+            command="$_7z a -t7z -m0=lzma -mx=9 $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS "$file_to_create" "$target""
         ;;
         *)
             error "The archive type \"\$BM_TARBALL_FILETYPE\" is not supported."

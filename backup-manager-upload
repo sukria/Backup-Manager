@@ -6,21 +6,22 @@ backup-manager-upload - Multiprotocol uploader for backup-manager.
 
 =head1 SYNOPSIS
 
- backup-manager-upload [options] date 
+backup-manager-upload [options] date 
 
 =head1 DESCRIPTION
 
 B<backup-manager-upload> will upload all the archives generated on the given 
 date to the specified host with either ftp or scp.
-Some metadates are available like today or yesterday.
+It's also possible to use this program for uploading data to an Amazon S3 account.
+Some metadates are available like "today" or "yesterday".
 
 =head1 REQUIRED ARGS
 
 =over 4
 
-=item B<--mode=>I<transfert-mode>
+=item B<--mode=>I<transfer-mode>
 
-Select the transfert mode to use : ftp or scp.
+Select the transfer mode to use : ftp, scp, or s3.
 
 =item B<--host=>I<hostname1,hostname2,...,hostnameN>
 
@@ -35,12 +36,12 @@ Select the user to use for connection.
 
 =item B<--password=>I<password>
 
-Select the ftp user's password (only needed for ftp transferts).
+Select the ftp user's password (only needed for ftp transfers).
 
 =item B<--key=>I<path_to_private_key>
 
-Select the ssh private key file to use when opening the ssh session for scp transfert.
-Obviously, this is only needed for scp transfert mode.
+Select the ssh private key file to use when opening the ssh session for scp transfer.
+Obviously, this is only needed for scp transfer mode.
 If you don't specify a key file, the user's default private key will be used.
 
 =item B<--directory=>I<directory>
@@ -48,14 +49,26 @@ If you don't specify a key file, the user's default private key will be used.
 Select the location on the remote host where files will be uploaded.
 Default is /backup/uploads.
 
+=item B<--bucket=>I<bucket>
+
+Sets the bucket name for the Amazon S3 service backup into.
+
 =item B<--root=>I<directory>
 
 Select the local directory where files are.
-Default is /backup.
+Default is /var/archives
 
 =item B<--list>
 
 Just list the files to upload.
+
+=item B<--ftp-purge>
+
+Purge the remote directory before uploading files in FTP mode.
+
+=item B<--s3-purge>
+
+Purge the remote directory before uploading files in FTP mode.
 
 =item B<--verbose>
 
@@ -89,23 +102,27 @@ my $g_host 	= undef;
 my $g_user 	= undef;
 my $g_pass 	= undef;
 my $g_ftpclean  = undef;
+my $g_s3clean   = undef;
 my $g_protocol 	= 'scp';
-my $g_remote_dir= '/backup/uploads';
-my $g_root_dir	= '/backup';
+my $g_remote_dir= '/var/archives/uploads';
+my $g_bucket    = undef;
+my $g_root_dir	= '/var/archives';
 my $g_key_file	= undef;
 
 # first get the args
 BackupManager::Config::getopt("$0 -m=mode -h=host -u=user [options] date\n
 -v|--verbose	: Print on STDOUT what happens.
--m|--mode	: Transfer mode to use : ftp or scp.
+-m|--mode	: Transfer mode to use : ftp, scp, or s3.
 -h|--host	: Remote hosts to connect to (separated by commas).
 -u|--user	: User to use for connection.
 -p|--password	: Password of remote host's user (only needed for ftp mode).
 -k|--key	: SSH key file to use for opening the scp session (only needed for scp mode).
--d|--directory	: Directory on the remote host where files will go (default is /backup/uploads).
--r|--root	: Root directory of your archives (default /backup).
+-d|--directory	: Directory on the remote host where files will go (default is /var/archives/uploads).
+-b|--bucket     : Amazon S3 storage bucket to use
+-r|--root	: Root directory of your archives (default /var/archives).
 -l|--list	: Only prints which files would be uploaded.
 --ftp-purge	: Purge the remote directory before uploading files in FTP mode.
+--s3-purge	: Purge the remote directory before uploading files in S3 mode.
 date		: All files >= date will be uploaded. Either a valid date (YYYYMMDD) or one of this words : today, yesterday",
 'verbose'	=> \$g_verbose,
 'mode|m=s' 	=> \$g_protocol,
@@ -113,9 +130,11 @@ date		: All files >= date will be uploaded. Either a valid date (YYYYMMDD) or on
 'user|u=s' 	=> \$g_user,
 'password|p=s' 	=> \$g_pass,
 'directory|d=s'	=> \$g_remote_dir,
+'bucket|b=s'	=> \$g_bucket,
 'key|k=s'	=> \$g_key_file,
 'root|r=s'	=> \$g_root_dir,
 'ftp-purge'	=> \$g_ftpclean,
+'s3-purge'	=> \$g_s3clean,
 'list'		=> \$g_list,
 );
 
@@ -197,7 +216,7 @@ sub send_file_with_scp($$$$)
 
 
 # How to upload files with scp.
-# Note that Key Authentification is used, see man ssh-keygen.
+# Note that Key Authentication is used, see man ssh-keygen.
 sub send_files_with_scp($$$$)
 {
 	# getting args
@@ -340,6 +359,133 @@ sub get_formated_date($)
 	}
 }
 
+# Function for purging a directory
+# from S3, the same way as the repository is purged.
+# Every files with a date field too old according to BM_ARCHIVE_TTL
+# will be deleted.
+sub s3_clean_directory($$)
+{
+    my ($s3, $bucket) = @_;
+    my $BM_ARCHIVE_TTL = $ENV{BM_ARCHIVE_TTL};
+    return 0 unless defined $BM_ARCHIVE_TTL;
+    my $date_to_remove = `date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago"`;
+    chomp $date_to_remove;
+
+    my $response = $s3->list_bucket( { bucket => $bucket } );
+    my @keys = @{ $response->{keys} };
+   
+    foreach my $key (@keys) {
+	my $date = undef;
+	if ($key->{key} =~ /[\.\-](\d{8})\./) {
+	    $date = $1;
+	    if ($date and ($date <= $date_to_remove)) {
+		verbose $key->{key} . " has to be deleted, too old ($date <= $date_to_remove).";
+		$s3->delete_key( { bucket => $bucket, key => $key->{key} } );
+	    }
+	}
+    }
+    return 1;
+}
+
+
+# How to upload files to s3.
+# We'll use the Net::Amazon::S3 module here.
+sub send_files_to_s3($$$$$$)
+{
+	# trying to get Net::Amazon::S3.
+	eval "use Net::Amazon::S3";
+	if ($@) {
+		error "Net::Net::Amazon::S3 is not available, cannot use S3 service";
+		return 0;
+	}
+
+	eval "use File::Slurp qw(slurp)";
+	if ($@) {
+		error "File::Slurp is not available, cannot use S3 service";
+		return 0;
+	}
+	
+	# getting args
+	my ($user, $passwd, $bucket, $ra_hosts, $repository, $ra_files) = @_;
+	unless (defined $user and 
+		defined $passwd and
+		defined $bucket and
+		defined $ra_hosts and
+		defined $ra_files and
+		defined $repository) {
+		error "required args needed";
+		return 0;
+	}
+
+	my $totalbytes;
+	my $starttime = time();
+	my %uploaded;
+	
+	# loop on each hosts given and connect to them.
+	foreach my $host (@{$ra_hosts}) {
+	    my $s3 = Net::Amazon::S3->new(
+					  {   
+					      aws_access_key_id => $user,
+					      aws_secret_access_key => $passwd
+					      }
+					  );
+
+	    if (defined $s3) {
+		verbose "Connected to $host";
+		my $response = $s3->buckets;
+		if (not ( grep { $_->{bucket} eq $bucket } @{ $response->{buckets} } ) ) {
+		    # create the bucket
+		    $s3->add_bucket( { bucket => $bucket } );
+		    # double check
+		    $response = $s3->buckets;
+		    verbose_error "Could not create bucket $bucket" if not ( grep { $_->{bucket} eq $bucket } @{ $response->{buckets} } );
+		}
+		s3_clean_directory($s3, $bucket) if ($g_s3clean);
+			    
+		foreach my $file (@{$ra_files}) {
+		    chomp $file;
+		    my ($filename) = ($file =~ /^.*[\\\/](.*)/ );
+		    my $contents = slurp( $file, binmode => ':raw');
+		    verbose "opened $file of length " . length($contents) . " and will name the key $filename";
+		    $totalbytes += length($contents);
+		    $s3->add_key(
+				 {
+				     bucket => $bucket,
+				     key => $filename,
+				     value => $contents,
+				     content_type => "application/binary"
+				     }
+				 );
+		    $uploaded{$filename} = length($contents);
+		}
+
+		# get a list of files and confirm uploads
+		$response = $s3->list_bucket( { bucket => $bucket } );
+		my @keys = @{ $response->{keys} };
+		foreach my $key ( @keys ) {
+		    if (not defined $uploaded{$key->{key}}) {
+			next;
+		    }
+		    if ($key->{size} == $uploaded{$key->{key}}) {
+			verbose $key->{key} . " uploaded sucessfully";
+			delete $uploaded{$key->{key}};
+		    } else {
+			verbose_error $key->{key} . " did not upload sucessfully. S3 reports $key is " . $key->{size} . " bytes rather than " . $uploaded{$key->{key}};
+			delete $uploaded{$key->{key}};
+		    }
+		}
+		foreach my $failed ( keys %uploaded ) {
+		    verbose_error "$failed did not upload at all";
+		}
+	    }
+	    else {
+		verbose_error "unable to connect to $host : $@\n";
+	    }
+	}
+	verbose "Uploaded $totalbytes of data to S3 in " . (time() - $starttime) . " seconds";
+}
+
+
 sub get_files_list_from_date($)
 {
 	my $date = shift;
@@ -406,6 +552,11 @@ if ($g_protocol eq 'ftp' and not defined $g_pass) {
 	exit 1;
 }
 
+if ($g_protocol eq 's3' and (not defined $g_bucket or not defined $g_pass)) {
+	print $BackupManager::Config::usage, "\n";
+	exit 1;
+}
+
 # storing hosts on memory
 my $ra_hosts = get_hosts_from_str($g_host);
 
@@ -424,7 +575,7 @@ if ($g_list) {
 	exit 0;
 }
 
-# We'll now send the files with the appropriate transfert protocol
+# We'll now send the files with the appropriate transfer protocol
 $g_protocol = lc $g_protocol;
 if ($g_protocol eq 'ftp') {
 	verbose "Trying to upload files with ftp";
@@ -433,6 +584,10 @@ if ($g_protocol eq 'ftp') {
 elsif ($g_protocol eq 'scp' or $g_protocol eq 'ssh') {
 	verbose "Trying to upload files with scp";
 	send_files_with_scp($g_user, $ra_hosts, $g_remote_dir, $ra_files);
+}
+elsif ($g_protocol eq 's3') {
+    verbose "Trying to upload files to s3 service";
+    send_files_to_s3($g_user, $g_pass, $g_bucket, $ra_hosts, $g_remote_dir, $ra_files);
 }
 else {
 	print STDERR "mode '$g_protocol' is not supported\n";

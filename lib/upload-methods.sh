@@ -107,24 +107,15 @@ bm_upload_s3()
     bm_upload_init "$bm_upload_hosts" 
     
     if [ -z "$BM_UPLOAD_S3_DESTINATION" ]; then
-	BM_UPLOAD_S3_DESTINATION=$BM_UPLOAD_DESTINATION
+	    BM_UPLOAD_S3_DESTINATION="$BM_UPLOAD_DESTINATION"
     fi        
 
     # flags for the S3 method
     s3_purge_switch=""
     if [ "$BM_UPLOAD_S3_PURGE" = "true" ]; then
-            s3_purge_switch="--s3-purge"
+        s3_purge_switch="--s3-purge"
     fi
  
-    if [ "$verbose" == "true" ]; then
-    info $bmu $v_switch $s3_purge_switch \
-        -m="s3" \
-        -h="$bm_upload_hosts" \
-        -u="$BM_UPLOAD_S3_ACCESS_KEY" \
-        -p="$BM_UPLOAD_S3_SECRET_KEY" \
-        -b="$BM_UPLOAD_S3_DESTINATION" \
-        -r="$BM_REPOSITORY_ROOT" today
-    fi
     $bmu $v_switch $s3_purge_switch \
         -m="s3" \
         -h="$bm_upload_hosts" \
@@ -133,7 +124,6 @@ bm_upload_s3()
         -b="$BM_UPLOAD_S3_DESTINATION" \
         -r="$BM_REPOSITORY_ROOT" today || 
     error "Unable to call backup-manager-upload."
-
 }
 
 

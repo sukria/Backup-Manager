@@ -93,8 +93,11 @@ version &bmngr-version;.
 <sect id="about-version">Version
 
 <p>
-This is the first version of this document, it was first released with 
-the release 0.6 of &bmngr;.
+This document is updated whenever a new release of &bmngr; is published.
+The current version covers all features and configuration details about version &bmngr-version;.
+
+<p>
+The first version of this document was written  with the release 0.6 of &bmngr;.
 
 
 <sect id="about-authors">Authors
@@ -107,7 +110,7 @@ While the author of this document has tried hard to avoid typos and other
 errors, these do still occur. If you discover an error in this manual or if
 you want to give any comments, suggestions, or criticisms please send an 
 email to the development list, backup-manager-devel@backup-manager.org, or submit
-a bug report against the "Documentation" product, in the bug tracking system.
+a bug report against the "Documentation" product, in the bug tracking system<footnote>http://bugzilla.backup-manager.org/</footnote>.
 
 <chapt id="configuration">Configuration files
 
@@ -218,6 +221,19 @@ One of the main concepts behind the handling of the repository is to purge
 deprecated archives automatically. The purge session is always performed
 when you launch &bmngr;. During this phase, all archives older than the
 authorized lifetime are dropped.
+
+<p>
+Since version 0.7.3, &bmngr; purges only files it has created whereas in previous
+versions, it used to purge also other files within the repository.
+
+<p>
+Note that when using the incremental method for building archives, &bmngr; will
+handle differently master backups and incremental ones. The incremental backups
+will be purged like any other archives (when exceeding the authorized lifetime).
+On the ohter hand, deprecated master backups won't be purged unless there is a
+younger master backup in the repository. Then, even with a lifetime set to three
+days, a master backup will live more than three days, until a newer master
+backup is built.
 
 <p>
 Example:
@@ -952,35 +968,29 @@ export BM_UPLOAD_FTP_PURGE="true"
 
 <sect1 id="upload-s3">Amazon S3 uploads
 <sect2 id="uploads-s3-desc">Description
-<p>
 
+<p>
 Amazon's new Simple Storage Service (S3) is an Internet "web service"
 that permits you to store unlimited blocks of data on their replicated
 and managed systems. See http://aws.amazon.com for more
 information. Registration is free and the rates are quite reasonable.
 
+<p>
 Using the S3 upload method will permit your archives to be stored on
 Amazon's S3 service. You must allocate a "bucket" to the exclusive use
 of Backup Manager. Each of your created archives will be uploaded to
 S3 and stored within this bucket in a key name that matches the name
 of the archive.
 
+<p>
 As with the other backup methods Backup Manager does not assist you in
 restoring files from archives. You must retrieve archives from S3
 using other mechanisms such as the S3Shell provided as an examle
 command line utility by Amazon.
 
-<sect2 id="BM_UPLOAD_HOSTS"><tt>BM_UPLOAD_HOSTS</tt>
 <p>
-<em>Type: string.</em>
-<p>
-This option is not required for the S3 upload method. Its value is
-ignored as there is only one Amazon S3 server.
-<p>
-Example:
-<example>
-export BM_UPLOAD_HOSTS=""
-</example>
+Note that when using this upload method, the <tt>BM_UPLOAD_HOSTS</tt> variable is 
+ignored as the only valid host for S3 uploads in <tt>s3.amazon.com</tt>.
 
 <sect2 id="BM_UPLOAD_S3_DESTINATION"><tt>BM_UPLOAD_S3_DESTINATION</tt>
 <p>

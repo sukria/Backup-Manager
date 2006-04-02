@@ -57,7 +57,8 @@ Contents
      2.3.2.         Global configuration keys
      2.3.3.         SSH uploads
      2.3.4.         FTP uploads
-     2.3.5.         RSYNC uploads
+     2.3.5.         Amazon S3 uploads
+     2.3.6.         RSYNC uploads
      2.4.      Exports
      2.4.1.         Burning CDR/DVD media
      2.5.      Advanced features
@@ -102,8 +103,12 @@ Contents
 1.2. Version
 ------------
 
-     This is the first version of this document, it was first released with
-     the release 0.6 of Backup Manager.
+     This document is updated whenever a new release of Backup Manager is
+     published.  The current version covers all features and configuration
+     details about version 0.7.2.
+
+     The first version of this document was written with the release 0.6 of
+     Backup Manager.
 
 
 1.3. Authors
@@ -117,7 +122,9 @@ Contents
      manual or if you want to give any comments, suggestions, or criticisms
      please send an email to the development list,
      backup-manager-devel@backup-manager.org, or submit a bug report
-     against the "Documentation" product, in the bug tracking system.
+     against the "Documentation" product, in the bug tracking system[1].
+
+[1]  http://bugzilla.backup-manager.org/
 
 
 -------------------------------------------------------------------------------
@@ -219,6 +226,19 @@ Contents
      purge deprecated archives automatically.  The purge session is always
      performed when you launch Backup Manager.  During this phase, all
      archives older than the authorized lifetime are dropped.
+
+     Since version 0.7.3, Backup Manager purges only files it has created
+     whereas in previous versions, it used to purge also other files within
+     the repository.
+
+     Note that when using the incremental method for building archives,
+     Backup Manager will handle differently master backups and incremental
+     ones.  The incremental backups will be purged like any other archives
+     (when exceeding the authorized lifetime).  On the ohter hand,
+     deprecated master backups won't be purged unless there is a younger
+     master backup in the repository.  Then, even with a lifetime set to
+     three days, a master backup will live more than three days, until a
+     newer master backup is built.
 
      Example:
 
@@ -339,7 +359,20 @@ Contents
 
      Refer to the dar manpage for details about slices.
 
-2.2.1.5. `BM_TARBALL_DUMPSYMLINKS'
+2.2.1.5. `BM_TARBALL_EXTRA_OPTIONS'
+-----------------------------------
+
+     _Type: string_
+
+     If you want to provide extra options to "tar" or "dar" you may do so
+     here.  Leave blank unless you know what you are doing.
+
+     Example: to enable verbosity with tar (which would appeard in the
+     logfiles), use this:
+
+          BM_TARBALL_EXTRA_OPTIONS="-v"
+
+2.2.1.6. `BM_TARBALL_DUMPSYMLINKS'
 ----------------------------------
 
      _Type: boolean, default: `true'._
@@ -353,7 +386,7 @@ Contents
 
      In most of the cases, you should not use this feature.
 
-2.2.1.6. `BM_TARBALL_DIRECTORIES'
+2.2.1.7. `BM_TARBALL_DIRECTORIES'
 ---------------------------------
 
      _Type: space-separated list, default: `""'._
@@ -365,7 +398,7 @@ Contents
 
           export BM_TARBALL_DIRECTORIES="/etc /home /var/log/apache"
 
-2.2.1.7. `BM_TARBALL_BLACKLIST'
+2.2.1.8. `BM_TARBALL_BLACKLIST'
 -------------------------------
 
      _Type: space-separated list, default: `"/proc /dev /sys /tmp"'._
@@ -383,7 +416,7 @@ Contents
 
           export BM_TARBALL_BLACKLIST="/tmp /dev /proc *.mp3 *.mpg"
 
-2.2.1.8. `BM_TARBALL_OVER_SSH'
+2.2.1.9. `BM_TARBALL_OVER_SSH'
 ------------------------------
 
      _Type: boolean, default: `false'._
@@ -677,15 +710,16 @@ Contents
 
      There are different upload methods, each of them behaves differently
      and provides particular features.  In Backup Manager 0.7.2 you can use
-     FTP, SSH or RSYNC uploads.
+     FTP, SSH, RSYNC or Amazon S3 uploads.
 
      In the same manner as for backup methods, you can choose to use as
      many upload methods as you like.  If you don't want to use this
      feature at all, just put the keyword `none' in the configuration
      `BM_UPLOAD_METHOD'.
 
-     Note that the FTP and SSH methods are dedicated to upload archives,
-     using those method depends on the use of at least one backup method.
+     Note that the FTP, SSH and S3 methods are dedicated to upload
+     archives, using those method depends on the use of at least one backup
+     method.
 
      On the opposite, the RSYNC method uploads a directory to remote
      locations, this directory can be your repository or whatever other
@@ -882,10 +916,91 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_FTP_PURGE="true"
 
-2.3.5. RSYNC uploads
---------------------
+2.3.5. Amazon S3 uploads
+------------------------
 
 2.3.5.1. Description
+--------------------
+
+     Amazon's new Simple Storage Service (S3) is an Internet "web service"
+     that permits you to store unlimited blocks of data on their replicated
+     and managed systems.  See http://aws.amazon.com for more information.
+     Registration is free and the rates are quite reasonable.
+
+     Using the S3 upload method will permit your archives to be stored on
+     Amazon's S3 service.  You must allocate a "bucket" to the exclusive
+     use of Backup Manager.  Each of your created archives will be uploaded
+     to S3 and stored within this bucket in a key name that matches the
+     name of the archive.
+
+     As with the other backup methods Backup Manager does not assist you in
+     restoring files from archives.  You must retrieve archives from S3
+     using other mechanisms such as the S3Shell provided as an examle
+     command line utility by Amazon.
+
+     Note that when using this upload method, the `BM_UPLOAD_HOSTS'
+     variable is ignored as the only valid host for S3 uploads in
+     `s3.amazon.com'.
+
+2.3.5.2. `BM_UPLOAD_S3_DESTINATION'
+-----------------------------------
+
+     _Type: string._
+
+     This option is required for the S3 upload method.  This specifies the
+     bucket used to store backup data.  If the bucket does not exist it
+     will be created as a private bucket.  This key overrides
+     `BM_UPLOAD_DESTINATION'.  Note that Amazon requires that bucket names
+     be globally unique.  Be creative picking one.
+
+     Example:
+
+          export BM_UPLOAD_S3_DESTINATION="my_backup_bucket"
+
+2.3.5.3. `BM_UPLOAD_S3_ACCESS_KEY'
+----------------------------------
+
+     _Type: string._
+
+     This option is required for the S3 upload method.  After you have
+     registered Amazon will provide you an access key.  You must use this
+     key to access your storage on S3.
+
+     Example:
+
+          export BM_UPLOAD_S3_ACCESS_KEY="a9sabkz0342dasv"
+
+2.3.5.4. `BM_UPLOAD_S3_SECRET_KEY'
+----------------------------------
+
+     _Type: string._
+
+     This option is required for the S3 upload method.  After you have
+     registered Amazon will provide you a secret key.  You must use this
+     key to write to your storage on S3.
+
+     Example:
+
+          export BM_UPLOAD_S3_SECRET_KEY="lkj2341askj123sa"
+
+2.3.5.5. `BM_UPLOAD_S3_PURGE'
+-----------------------------
+
+     _Type: boolean, default: `true'_
+
+     You can choose to purge deprecated archives before uploading new ones.
+     This purge is done over S3 and uses the configuration key
+     `BM_ARCHIVE_TTL' in the same manner as the local purge behaves (the S3
+     purge is not recursive though).
+
+     Example:
+
+          export BM_UPLOAD_S3_PURGE="true"
+
+2.3.6. RSYNC uploads
+--------------------
+
+2.3.6.1. Description
 --------------------
 
      You may want to upload some parts of your file system to some remote
@@ -897,7 +1012,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
      is a dependency against the keys `BM_UPLOAD_SSH_USER' and
      `BM_UPLOAD_SSH_KEY'.
 
-2.3.5.2. `BM_UPLOAD_RSYNC_DIRECTORIES'
+2.3.6.2. `BM_UPLOAD_RSYNC_DIRECTORIES'
 --------------------------------------
 
      _Type: space-separated list_
@@ -908,7 +1023,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
 export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
 
-2.3.5.3. `BM_UPLOAD_RSYNC_HOSTS'
+2.3.6.3. `BM_UPLOAD_RSYNC_HOSTS'
 --------------------------------
 
      _Type: space-separated list_
@@ -920,7 +1035,7 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
 
           export BM_UPLOAD_RSYNC_HOSTS="mirror5.lan.mysite.net"
 
-2.3.5.4. `BM_UPLOAD_RSYNC_DESTINATION'
+2.3.6.4. `BM_UPLOAD_RSYNC_DESTINATION'
 --------------------------------------
 
      _Type: string_
@@ -932,7 +1047,7 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
 
           export BM_UPLOAD_RSYNC_DESTINATION="/var/archives/rsync-snapshots"
 
-2.3.5.5. `BM_UPLOAD_RSYNC_DUMPSYMLINKS'
+2.3.6.5. `BM_UPLOAD_RSYNC_DUMPSYMLINKS'
 ---------------------------------------
 
      _Type: boolean, default: `false'._

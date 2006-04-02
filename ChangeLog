@@ -1,3 +1,22 @@
+2006-04-02  Alexis Sukrieh,,,  <sukria@backup-manager.org>
+
+	* AUTHORS:
+	  + added Brad Dixon about the S3 module.
+	* VERSION:
+	  + 0.7.3
+	* Updated the user guide about the new purging system + minor changes.
+	* lib/backup-methods.sh:
+	  + Some messages updated.
+	* lib/burning-methods.sh:
+	  + Some messages updated.
+	* lib/files.sh:
+	  + Rewrite of the purging system, better handling, support the new policy
+	  about master backups.
+	* po/fr.po:
+	  + Translation updates.
+	* t/run-tests.sh:
+	  + Better layout.
+
 2006-03-29  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* Closes bug #66 - Support of Amazon S3 uploads.

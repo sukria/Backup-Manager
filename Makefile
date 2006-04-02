@@ -5,7 +5,8 @@ PERL5DIR=$(DESTDIR)/usr/share/perl5
 LIBDIR=$(DESTDIR)/usr/share/backup-manager
 CONTRIB=$(LIBDIR)/contrib
 SHAREDIR=$(DESTDIR)/usr/share/backup-manager
-SHFILES=lib/dialog.sh \
+SHFILES=\
+	lib/dialog.sh \
 	lib/files.sh \
 	lib/actions.sh \
 	lib/backup-methods.sh\
@@ -17,7 +18,6 @@ SHFILES=lib/dialog.sh \
 	lib/gettext-dummy.sh \
 	lib/sanitize.sh \
 	lib/md5sum.sh 
-
 
 # For the backup-manager-doc package
 DOCDIR		= $(DESTDIR)/usr/share/doc/backup-manager
@@ -83,10 +83,6 @@ install_man: man/backup-manager-upload.8
 
 docs:
 	make -C doc all
-
-# Quick :)
-deb:
-	dpkg-buildpackage -us -uc -rfakeroot
 
 clean:
 	rm -f build-stamp

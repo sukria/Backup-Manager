@@ -2,6 +2,7 @@
 
 set -e
 
+
 source testlib.sh
 #verbose="true"
 #warnings="true"
@@ -17,6 +18,11 @@ export BM_TARBALL_FILETYPE="dar"
 export BM_TARBALL_DUMPSYMLINKS="no"
 export BM_TARBALL_DIRECTORIES="$PWD/var/www/"
 export BM_TARBALL_BLACKLIST="$PWD/var/www/xim $PWD/var/www/Upload/ /tmp/ titi"
+
+if [ ! -x $dar ]; then
+    info "cannot run test, need $dar"
+    exit 1
+fi
 
 # clean
 if [ -e $PWD/var ]; then

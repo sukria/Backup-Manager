@@ -423,7 +423,7 @@ function __build_local_archive()
     
     file_to_create=$(__get_file_to_create "$target")
     command=$(__get_backup_tarball_command) || 
-        error "The filetype \$BM_TARBALL_FILETYPE is not supported."
+        error "The archive type \"\$BM_TARBALL_FILETYPE\" is not supported."
 
     # dar is not like tar, we have to manually check for existing .1.dar files
     if [ $BM_TARBALL_FILETYPE = dar ]; then
@@ -460,7 +460,7 @@ function __build_remote_archive()
         file_to_create=$(__get_file_to_create_remote "$target" "$host")
         
         command=$(__get_backup_tarball_remote_command) || 
-            error "The filetype \$BM_TARBALL_FILETYPE is not supported."
+            error "The archive type \"\$BM_TARBALL_FILETYPE\" is not supported."
         
         remote_command="ssh -i ${BM_UPLOAD_SSH_KEY} -o BatchMode=yes ${BM_UPLOAD_SSH_USER}@${host} $command"
 

@@ -1,3 +1,13 @@
+2006-04-03  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* lib/files.sh:
+	  + applied patch from Mario Domgörgen for fixing the
+	  get_date_from_archive() function. (closes: #68)
+	* t/run-tests.sh:
+	  + Now redirect errors in /dev/null.
+	* t/t14-purging-system.sh:
+	  + switch the verbosity off.
+
 2006-04-02  Alexis Sukrieh,,,  <sukria@backup-manager.org>
 
 	* AUTHORS:

@@ -11,7 +11,7 @@ function test_failure()
 {
     file="$1"
     nb_failure=$(($nb_failure + 1))
-    echo "${c_h_red}failed${c_white}"
+    echo "failed"
 
 }
 
@@ -29,14 +29,6 @@ if [ -f ./backup-manager.conf ]; then
     source $libdir/sanitize.sh
     init_default_vars
 fi
-
-# colors
-c_white="\[\033[00m\]"
-c_h_red="\[\033[1;31m\]"
-
-echo $(eval "${c_h_red}toto")
-
-exit 
 
 total=0
 # Now process the tests

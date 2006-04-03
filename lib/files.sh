@@ -99,18 +99,11 @@ get_prefix_from_file()
     echo $prefix
 }
 
+
 # Will return the date contained in the file name
 get_date_from_file()
 {
-    filename="$1"
-    basename="${filename%.${BM_TARBALL_FILETYPE}}"
-    file_without_date="${basename%[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]}"
-    date="${basename#${file_without_date}}"
-
-    if [ $date = $filename ] ; then
-        date=""
-    fi
-    echo $date
+    get_date_from_archive "$1"
 }
 
 # This function is here to free each lock previously enabled.
@@ -186,13 +179,17 @@ get_lock() {
 
 function get_date_from_archive()
 {
-    archive="$1"
-    archive=$(basename "$archive")
-    date=$(echo "$archive" | sed -e 's/.*\([0-9]\{8\}\).*/\1/')
-    if [ "$date" = "$archive" ] ; then
-        date=""
-    fi
-    echo "$date"
+    filename="$1"
+    date_string="20[0-9][0-9][0-1][0-9][0-3][0-9]"
+    case "$filename" in 
+        *-*${date_string}.[!-]* ) 
+            __tmp="${filename#${filename%${date_string}*}}}"; 
+            echo "${__tmp%%.*}"; 
+        ;; 
+        *) 
+            echo ""
+        ;;
+    esac
 }
 
 # Returns the name of an archive.
@@ -268,7 +265,7 @@ function clean_file()
     name=$(get_name_from_archive "$file")
     master=$(get_master_from_archive "$file")
     
-    __debug "parsing $file ($prefix, $date, $name, $master)"
+#    __debug "parsing $file ($prefix, $date, $name, $master)"
                 
     # we assume that if we find that, we have an archive
     if [ -n "$date" ] && [ "$date" != "$(basename $file)" ] &&

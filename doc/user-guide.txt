@@ -1,10 +1,10 @@
 
-                      Backup Manager 0.7.2 User Guide
+                      Backup Manager 0.7.3 User Guide
                       -------------------------------
 
                               Alexis Sukrieh
 
-                           1.2 - 09 March, 2006
+                           1.3 - 02 April, 2006
 
 
 -------------------------------------------------------------------------------
@@ -97,7 +97,7 @@ Contents
      Whenever possible, advices and best practices are given.
 
      This manual also describes every configuration variables supported in
-     the version 0.7.2.
+     the version 0.7.3.
 
 
 1.2. Version
@@ -105,7 +105,7 @@ Contents
 
      This document is updated whenever a new release of Backup Manager is
      published.  The current version covers all features and configuration
-     details about version 0.7.2.
+     details about version 0.7.3.
 
      The first version of this document was written with the release 0.6 of
      Backup Manager.
@@ -136,7 +136,7 @@ Contents
      _Backup Manager's behaviour is defined in configuration files.  You
      can run Backup Manager with different configuration files (at the same
      time or not).  This chapter will cover all the configuration keys
-     supported in version 0.7.2 and will explain their meaning._
+     supported in version 0.7.3 and will explain their meaning._
 
 
 2.1. Repository and Archives
@@ -269,7 +269,7 @@ Contents
      The core feature of Backup Manager is to make archives, for doing
      this, a _method_ is used.  Each method can require a set of
      configuration keys.  We will describe here every method supported in
-     the version 0.7.2.
+     the version 0.7.3.
 
      The method you choose must be defined in the configuration key
      `BM_ARCHIVE_METHOD'.  You can put here a list of all the different
@@ -491,14 +491,20 @@ Contents
      tarball mehod).  All the days between two full backups, archives
      contain only the files that have changed from the previous archive.
 
-     For instance, let's say you want to backup /home with this method.
-     Your /home directory is composed by two sub-directories: /home/foo and
-     /home/bar.  You choose a weekly frequency and say that monday will be
-     the "fullbackup" day.  Obviously, you will have a full tarball of
-     /home on monday.  Then, if a file changed inside /home/foo and if
-     /home/bar remains unchanged, tuesday's archive will only contain the
-     modified files of /home/foo.  Using this method will save a lot of
-     disk space.
+     To build incremental tarballs, Backup Manager uses tar's switch
+     `--listed-incremental'.  This will create a file for each target which
+     will contain some statistics used by tar to figure out if a file
+     should be backed up or not.  When Backup Manager is run for the first
+     time, this file doesn't exist, so the first tarballs made are always
+     master backups.  If the _incremental list_ files get removed, the next
+     backups won't be incremental.
+
+     Since version 0.7.3, it's possible to see at the first glance if a
+     backup is a master or an incremental one: master backup have the
+     keyword `master' appended to the date.  When purging the repository,
+     the master backups are not removed as the incremental ones.  Backup
+     Manager always keep a master backup that is older than incremental
+     archives.
 
      This method uses all the tarball's configuration keys and adds two
      more.  One to define the kind of frequency, the other to choose on
@@ -709,7 +715,7 @@ Contents
      for achieving this goal : the upload methods._
 
      There are different upload methods, each of them behaves differently
-     and provides particular features.  In Backup Manager 0.7.2 you can use
+     and provides particular features.  In Backup Manager 0.7.3 you can use
      FTP, SSH, RSYNC or Amazon S3 uploads.
 
      In the same manner as for backup methods, you can choose to use as
@@ -1066,14 +1072,14 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
      _Another way of storing your archives to a safe place is to use
      external media._
 
-     In version 0.7.2, only CDs and DVDs are supported as external media,
+     In version 0.7.3, only CDs and DVDs are supported as external media,
      so we will discuss in this section only the `BM_BURNING' features.
      Other exports are expected to come in next versions though.
 
 2.4.1. Burning CDR/DVD media
 ----------------------------
 
-     In the version 0.7.2, Backup Manager supports four different kinds of
+     In the version 0.7.3, Backup Manager supports four different kinds of
      media: CDR, CDRW and DVD+R(W) and DVD-R(W).
 
 2.4.1.1. `BM_BURNING_METHOD'
@@ -1302,7 +1308,7 @@ export BM_POST_BACKUP_COMMAND="/usr/local/bin/backup-cleanup.pl $TODAY"
 3.1.1. Restrictions
 -------------------
 
-     In version 0.7.2, Backup Manager can only be used by `root', as it has
+     In version 0.7.3, Backup Manager can only be used by `root', as it has
      be designed as a systemwide tool.
 
           $ backup-manager
@@ -1502,10 +1508,10 @@ Entering directory /var/archives/lost+found.
 -------------------------------------------------------------------------------
 
 
-     Backup Manager 0.7.2 User Guide
+     Backup Manager 0.7.3 User Guide
 
      Alexis Sukrieh
 
 
-     1.2 - 09 March, 2006
+     1.3 - 02 April, 2006
 

@@ -524,6 +524,24 @@ remains unchanged, tuesday's archive will only contain the modified files of
 /home/foo. Using this method will save a lot of disk space.
 
 <p>
+To build incremental tarballs, &bmngr; uses tar's switch 
+<tt>--listed-incremental</tt>. This will create a file for each target which
+will contain some statistics used by tar to figure out if a file should be
+backed up or not.
+When &bmngr; is run for the first time, this file doesn't exist, so the first
+tarballs made are always master backups.
+If the <em>incremental list</em> files get removed, the next backups won't be
+incremental.
+
+<p>
+Since version 0.7.3, it's possible to see at the first glance if a backup is
+a master or an incremental one: master backup have the keyword <tt>master</tt>
+appended to the date.
+When purging the repository, the master backups are not removed as the
+incremental ones. &bmngr; always keep a master backup that is older than
+incremental archives. 
+
+<p>
 This method uses all the tarball's configuration keys and adds two more. One to
 define the kind of frequency, the other to choose on which day the full backups 
 should be done.

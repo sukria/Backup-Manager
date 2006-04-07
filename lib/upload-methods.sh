@@ -141,8 +141,8 @@ _exec_rsync_command()
     
     # remote hosts use SSH
     if [ "$host" != "localhost" ]; then
-        if [ -n "$BM_UPLOAD_SSH_USER" ] || 
-           [ -n "$BM_UPLOAD_SSH_KEY" ]; then 
+        if [ -z "$BM_UPLOAD_SSH_USER" ] || 
+           [ -z "$BM_UPLOAD_SSH_KEY" ]; then 
             error "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
         fi
         ssh_option="-e \"ssh -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}\" "

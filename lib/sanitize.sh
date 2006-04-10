@@ -109,7 +109,8 @@ replace_deprecated_booleans()
 
 confkey_handle_deprecated "BM_ARCHIVES_REPOSITORY" "BM_REPOSITORY_ROOT"
 confkey_require "BM_REPOSITORY_ROOT" "/var/archives" 
-
+# let's drop the trailing slash, if any.
+export BM_REPOSITORY_ROOT="${BM_REPOSITORY_ROOT%/}"
 
 confkey_require "BM_REPOSITORY_SECURE" "true" 
 if [ "$BM_REPOSITORY_SECURE" = "true" ]; then

@@ -63,10 +63,20 @@ check_cdrom_md5_sums()
         base_file=$(basename $file)
         date_of_file=$(get_date_from_file $file)
         prefix_of_file=$(get_prefix_from_file $file)
+
+	# Doesn't check the md5 sum of the md5sum file...
+	if [ "$base_file" = "${prefix_of_file}-${date_of_file}.md5" ] ; then
+		continue
+	fi
+
+       # Which file should contain the MD5 hashes for that file ?
+	if [ "$prefix_of_file" != "index" ]; then
+	    md5_file="$BM_REPOSITORY_ROOT/${prefix_of_file}-${date_of_file}.md5"
+	else
+	    md5_file="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX-${date_of_file}.md5"
+	fi
+
         str=$(echo_translated "Checking MD5 sum for \$base_file:")
-        
-        # Which file should contain the MD5 hashes for that file ?
-        md5_file="$BM_REPOSITORY_ROOT/${prefix_of_file}-${date_of_file}.md5"
 
         # if it does not exists, we create it (that will take much time).
         if [ ! -f $md5_file ]; then
@@ -85,14 +95,14 @@ check_cdrom_md5_sums()
         md5hash_cdrom=$(get_md5sum $file) || md5hash_cdrom="undefined"
         case "$md5hash_cdrom" in
             "$md5hash_trust")
-                echo_translated "\$str ok"
+                echo_translated "\$str ok."
             ;;
             "undefined")
-                echo_translated "\$str failed (read error)"
+                echo_translated "\$str failed (read error)."
                 has_error=1
             ;;
             *)
-                echo_translated "\$str failed (MD5 hash mismatch)"
+                echo_translated "\$str failed (MD5 hash mismatch)."
                 has_error=1
             ;;
         esac
@@ -164,6 +174,7 @@ function burn_files_non_interactive()
     # We can't burn the whole repository, using only today's archives
     if [ $size -gt $BM_BURNING_MAXSIZE ] ||
        [ ! -z "${BM__BURNING_DATE}" ]; then
+		BM__BURNING_DATE="$TODAY"
         info "Burning archives of \$BM__BURNING_DATE."
         size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")
         

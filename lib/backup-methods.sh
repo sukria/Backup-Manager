@@ -19,7 +19,7 @@
 
 # This should be called whenever an archive is made, it will dump some
 # informations (size, md5sum) and will add the archive in .md5 file.
-commit_archive()
+function commit_archive()
 {
 	file_to_create="$1"
     size=$(size_of_path $file_to_create)
@@ -55,7 +55,7 @@ commit_archive()
     fi
 }
 
-commit_archives()
+function commit_archives()
 {    
 	file_to_create="$1"
     if [ "$BM_TARBALL_FILETYPE" = "dar" ]; then
@@ -68,7 +68,7 @@ commit_archives()
     fi
 }
 
-handle_tarball_error()
+function handle_tarball_error()
 {
 	target="$1"
 	logfile="$2"
@@ -77,7 +77,7 @@ handle_tarball_error()
 	nb_err=$(($nb_err + 1))
 }
 
-__exec_meta_command()
+function __exec_meta_command()
 {
     command="$1"
     file_to_create="$2"
@@ -143,7 +143,7 @@ __exec_meta_command()
     fi
 }
 
-__create_file_with_meta_command()
+function __create_file_with_meta_command()
 {
     __exec_meta_command "$command" "$file_to_create" "$compress"
     file_to_create="$BM_RET"
@@ -227,7 +227,7 @@ function __get_flags_zip_dump_symlinks()
     echo "$y"
 }
 
-__get_flags_tar_dump_symlinks()
+function __get_flags_tar_dump_symlinks()
 {
 	h=""
 	if [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
@@ -335,7 +335,7 @@ function __get_flags_dar_incremental()
     fi
 }
 
-__get_flags_dar_maxsize()
+function __get_flags_dar_maxsize()
 {
     if [ -n "$BM_TARBALL_SLICESIZE" ]; then
         maxsize="--alter=SI -s $BM_TARBALL_SLICESIZE"
@@ -343,7 +343,7 @@ __get_flags_dar_maxsize()
     echo "$maxsize"
 }
 
-__get_flags_dar_overwrite()
+function __get_flags_dar_overwrite()
 {
 	if [ $force = true ] ; then
 		overwrite="-w"
@@ -351,6 +351,7 @@ __get_flags_dar_overwrite()
 	
 	echo "$overwrite"
 }
+
 # TODO
 function __get_flags_7z_dump_symlinks()
 {
@@ -359,7 +360,7 @@ function __get_flags_7z_dump_symlinks()
 
 # FIXME : incremental is not possible remotely
 # in the current shape...
-__get_backup_tarball_remote_command()
+function __get_backup_tarball_remote_command()
 {
     case $BM_TARBALL_FILETYPE in
         tar) 
@@ -381,7 +382,7 @@ __get_backup_tarball_remote_command()
     echo "$command"
 }
 
-__get_backup_tarball_command()
+function __get_backup_tarball_command()
 {
     case $BM_TARBALL_FILETYPE in
         tar) 
@@ -531,7 +532,7 @@ function __make_tarball_archives()
 
 # This manages both "tarball" and "tarball-incremental" methods.
 # configuration keys: BM_TARBALL_* and BM_TARBALLINC_*
-backup_method_tarball()
+function backup_method_tarball()
 {
     method="$1"
 	info "Using method \"\$method\"."
@@ -561,7 +562,7 @@ backup_method_tarball()
 	fi
 }
 
-backup_method_mysql()
+function backup_method_mysql()
 {
     method="$1"
 	info "Using method \"\$method\"."
@@ -590,7 +591,7 @@ backup_method_mysql()
     done   
 }
 
-backup_method_svn()
+function backup_method_svn()
 {
     method="$1"
     info "Using method \"\$method\"."
@@ -612,7 +613,7 @@ backup_method_svn()
     done
 }
 
-backup_method_pipe()
+function backup_method_pipe()
 {
     method="$1"
     info "Using method \"\$method\"."

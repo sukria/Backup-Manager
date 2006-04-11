@@ -172,8 +172,13 @@ function burn_files_non_interactive()
     size=$(size_of_path "$BM_REPOSITORY_ROOT")
 
     # We can't burn the whole repository, using only today's archives
-    if [ $size -gt $BM_BURNING_MAXSIZE ] ||
-       [ ! -z "${BM__BURNING_DATE}" ]; then
+    if [ $size -gt $BM_BURNING_MAXSIZE ] || 
+       [ -n "${BM__BURNING_DATE}" ]; then
+        
+        if [ -z "$BM__BURNING_DATE" ]; then
+            BM__BURNING_DATE="$TODAY"
+        fi
+
 		BM__BURNING_DATE="$TODAY"
         info "Burning archives of \$BM__BURNING_DATE."
         size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")

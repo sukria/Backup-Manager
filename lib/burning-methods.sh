@@ -435,7 +435,7 @@ function burn_multiples_media()
     __build_indexes_from_target "$target"
 
 	# Display the number of medias required by the burning systemp.
-	info "The burning process will need $number_of_indexes media(s)."
+	info "The burning process will need \$number_of_indexes media(s)."
 
     # Now that all indexes are built, list them so we can find
     # them all in the media.

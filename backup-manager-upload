@@ -298,10 +298,36 @@ sub send_files_with_ftp($$$$$)
 		return 0;
 	}
 	
+    # get the passive mode from the configuration
+    # default is set to true.
+    my $BM_UPLOAD_FTP_PASSIVE = $ENV{"BM_UPLOAD_FTP_PASSIVE"};
+    unless (defined $BM_UPLOAD_FTP_PASSIVE) {
+        $BM_UPLOAD_FTP_PASSIVE = "1";
+    }
+    if ($BM_UPLOAD_FTP_PASSIVE eq "true") {
+        $BM_UPLOAD_FTP_PASSIVE="1";
+    }
+    elsif ($BM_UPLOAD_FTP_PASSIVE eq "false") {
+        $BM_UPLOAD_FTP_PASSIVE="0";
+    }
+    else {
+        verbose_error "Unsupported value for BM_UPLOAD_FTP_PASSIVE : $BM_UPLOAD_FTP_PASSIVE";
+    }   
+    
 	# loop on each hosts given and connect to them.
 	foreach my $host (@{$ra_hosts}) {
-		my $ftp = new Net::FTP ($host, Debug => 0);
-		if (defined $ftp) {
+		my $ftp;
+        eval {
+            $ftp = new Net::FTP (
+                    $host, 
+                    Debug => 0,
+                    Passive => $BM_UPLOAD_FTP_PASSIVE);
+		};
+        if ($@) {
+            verbose_error "Unable to use the Net::FTP Perl module : $@";
+        }
+        
+        if (defined $ftp) {
 			verbose "Connected to $host";
 			
 			if ($ftp->login($user, $passwd) and

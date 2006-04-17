@@ -925,6 +925,19 @@ FTP method.
 One of the main pros of this method is that it can perform purging independently. You can safely use this method
 for uploading files to a host where you just have an FTP account.
 
+<sect2 id="BM_UPLOAD_FTP_PASSIVE"><tt>BM_UPLOAD_FTP_PASSIVE</tt>
+<p>
+<em>Type: boolean, default: true.</em>
+<p>
+If this variable is set to true, FTP transfers will be performed in passive mode, 
+which is mandatory in NATed/firewalled environments.
+<p>
+Example:
+<example>
+export BM_UPLOAD_FTP_PASSIVE="true"
+</example>
+
+
 <sect2 id="BM_UPLOAD_FTP_USER"><tt>BM_UPLOAD_FTP_USER</tt>
 <p>
 <em>Type: string.</em>

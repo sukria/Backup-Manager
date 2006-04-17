@@ -250,6 +250,10 @@ export BM_UPLOAD_SSH_DESTINATION=""
 # The FTP method
 #############################################################
 
+# Do you want to use FTP passive mode?
+# This is mandatory for NATed/firewalled environments 
+export BM_UPLOAD_FTP_PASSIVE="true"
+
 # the user to use for the FTP connections/transfers
 export BM_UPLOAD_FTP_USER=""
 

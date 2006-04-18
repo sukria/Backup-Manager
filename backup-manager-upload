@@ -385,6 +385,35 @@ sub get_formated_date($)
 	}
 }
 
+sub list_bucket($$) 
+{
+    my ($s3, $bucket) = @_;
+    my @keys;
+    my $response;
+
+    # Make sure we have an acceptable timeout value for listing the
+    # bucket contents. S3 can be slow with large bucket key sizes
+
+    #$s3->{ua}->timeout(300);
+    do {
+        my $last;
+        $response = undef;
+        if (defined $keys[-1]) {
+            $last = $keys[-1]->{key};
+            verbose "listing bucket $bucket starting at $last\n";
+            $response = $s3->list_bucket( { bucket => $bucket, marker => $last } );
+        } 
+        else {
+            verbose "listing bucket $bucket starting\n";
+            $response = $s3->list_bucket( { bucket => $bucket } );
+          }
+        push @keys, @{ $response->{keys} };
+    } 
+    until (not $response->{is_truncated} or not defined $response);
+    
+    return @keys;
+}
+
 # Function for purging a directory
 # from S3, the same way as the repository is purged.
 # Every files with a date field too old according to BM_ARCHIVE_TTL
@@ -398,8 +427,8 @@ sub s3_clean_directory($$)
     chomp $date_to_remove;
 
     my $response = $s3->list_bucket( { bucket => $bucket } );
-    my @keys = @{ $response->{keys} };
-   
+    my @keys = list_bucket( $s3, $bucket );   
+
     foreach my $key (@keys) {
 	my $date = undef;
 	if ($key->{key} =~ /[\.\-](\d{8})\./) {
@@ -486,8 +515,7 @@ sub send_files_to_s3($$$$$$)
 		}
 
 		# get a list of files and confirm uploads
-		$response = $s3->list_bucket( { bucket => $bucket } );
-		my @keys = @{ $response->{keys} };
+        my @keys = list_bucket($s3, $bucket);
 		foreach my $key ( @keys ) {
 		    if (not defined $uploaded{$key->{key}}) {
 			next;
@@ -521,7 +549,7 @@ sub get_files_list_from_date($)
 
 	unless (-d $g_root_dir) {
 		my $msg = "root dir specified does not exists : $g_root_dir";
-		print STDERR $msg."\n";
+		verbose_error $msg;
 		exit 1;
 	}
 

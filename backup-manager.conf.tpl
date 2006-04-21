@@ -212,6 +212,7 @@ export BM_PIPE_COMPRESS
 # multiple methods here.
 # Available methods:
 # - scp
+# - ssh-gpg
 # - ftp
 # - rsync
 # - s3
@@ -245,6 +246,17 @@ export BM_UPLOAD_SSH_PORT=""
 
 # destination for ssh uploads (overrides BM_UPLOAD_DESTINATION)
 export BM_UPLOAD_SSH_DESTINATION=""
+
+##############################################################
+# The SSH-GPG method
+# The ssh-gpg method uses the same configuration keys as the 
+# ssh method, plus one other
+#############################################################
+
+# The gpg public key used for encryption, this can be a short 
+# or long key id, or a descriptive name. See gpg man page for 
+# all possibilities how to specify a key.
+export BM_UPLOAD_SSHGPG_RECIPIENT=""
 
 ##############################################################
 # The FTP method

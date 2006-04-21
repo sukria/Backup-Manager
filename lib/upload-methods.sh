@@ -54,6 +54,7 @@ bm_upload_ssh()
     fi
 
     # Call to backup-manager-upload
+    logfile="$(mktemp /tmp/bmu-log.XXXXXX)"
     su $BM_UPLOAD_SSH_USER -s /bin/sh -c \
     "$bmu $v_switch \
           $k_switch \
@@ -61,8 +62,49 @@ bm_upload_ssh()
           -h=\"$bm_upload_hosts\" \
           -u=\"$BM_UPLOAD_SSH_USER\" \
           -d=\"$BM_UPLOAD_SSH_DESTINATION\" \
-          -r=\"$BM_REPOSITORY_ROOT\" today" || 
-    error "Unable to call backup-manager-upload."
+          -r=\"$BM_REPOSITORY_ROOT\" today" 2>$logfile || 
+    error "Error reported by backup-manager-upload for method \"scp\", check \"\$logfile\"."
+    rm -f $logfile
+}
+
+
+# Manages encrypted SSH uploads
+bm_upload_ssh_gpg()
+{
+    info "Using the upload method \"ssh-gpg\"."
+    
+    bm_upload_hosts="$BM_UPLOAD_HOSTS $BM_UPLOAD_SSH_HOSTS"
+    bm_upload_init "$bm_upload_hosts"
+
+    if [ -z "$BM_UPLOAD_SSH_DESTINATION" ]; then
+        BM_UPLOAD_SSH_DESTINATION="$BM_UPLOAD_DESTINATION"
+    fi        
+    if [ -z "$BM_UPLOAD_SSH_DESTINATION" ]; then
+        error "No valid destination found, SSH upload not possible."
+    fi        
+    if [ -z "$BM_UPLOAD_SSHGPG_RECIPIENT" ]; then
+        error "No gpg recipient given. Argument is mandatory if upload method ssh-gpg is used."
+    fi
+
+    # the flags for the SSH method
+    k_switch=""
+    if [ ! -z "$BM_UPLOAD_SSH_KEY" ]; then
+        k_switch="-k=\"$BM_UPLOAD_SSH_KEY\""
+    fi
+
+    # Call to backup-manager-upload
+    logfile="$(mktemp /tmp/bmu-log.XXXXXX)"
+    su $BM_UPLOAD_SSH_USER -s /bin/sh -command="\
+    $bmu $v_switch \
+         $k_switch \
+         -m=\"ssh-gpg\" \
+         -h=\"$bm_upload_hosts\" \
+         -u=\"$BM_UPLOAD_SSH_USER\" \
+         -d=\"$BM_UPLOAD_SSH_DESTINATION\" \
+         -r=\"$BM_REPOSITORY_ROOT\" \
+         --gpg-recipient=\"$BM_UPLOAD_SSHGPG_RECIPIENT\" today" 2>$logfile|| 
+    error "Error reported by backup-manager-upload for method \"ssh-gpg\", check \"\$logfile\"."
+    rm -f $logfile
 }
 
 # Manages FTP uploads
@@ -87,14 +129,16 @@ bm_upload_ftp()
             ftp_purge_switch="--ftp-purge"
     fi
  
+    logfile="$(mktemp /tmp/bmu-log.XXXXXX)"
     $bmu $v_switch $ftp_purge_switch \
         -m="ftp" \
         -h="$bm_upload_hosts" \
         -u="$BM_UPLOAD_FTP_USER" \
         -p="$BM_UPLOAD_FTP_PASSWORD" \
         -d="$BM_UPLOAD_FTP_DESTINATION" \
-        -r="$BM_REPOSITORY_ROOT" today || 
-    error "Unable to call backup-manager-upload."
+        -r="$BM_REPOSITORY_ROOT" today 2>$logfile|| 
+    error "Error reported by backup-manager-upload for method \"ftp\", check \"\$logfile\"."
+    rm -f $logfile
 
 }
 
@@ -116,14 +160,16 @@ bm_upload_s3()
         s3_purge_switch="--s3-purge"
     fi
  
+    logfile="$(mktemp /tmp/bmu-log.XXXXXX)"
     $bmu $v_switch $s3_purge_switch \
         -m="s3" \
         -h="$bm_upload_hosts" \
         -u="$BM_UPLOAD_S3_ACCESS_KEY" \
         -p="$BM_UPLOAD_S3_SECRET_KEY" \
         -b="$BM_UPLOAD_S3_DESTINATION" \
-        -r="$BM_REPOSITORY_ROOT" today || 
-    error "Unable to call backup-manager-upload."
+        -r="$BM_REPOSITORY_ROOT" today 2>$logfile || 
+    error "Error reported by backup-manager-upload for method \"s3\", check \"\$logfile\"."
+    rm -f $logfile
 }
 
 

@@ -67,8 +67,11 @@ upload_files ()
             bm_upload_ftp
         ;;
         ssh|SSH|scp|SCP)
-            bm_upload_ssh
+            bm_upload_ssh	    
         ;;
+	ssh-gpg|SSH-GPG)
+	    bm_upload_ssh_gpg
+	;;
         rsync|RSYNC)
             bm_upload_rsync
         ;;

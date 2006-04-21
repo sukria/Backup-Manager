@@ -1,3 +1,24 @@
+2006-04-22  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	[ Based on the work done by Jan Metzger ]
+	
+	* Support of the new upload method "ssh-gpg".
+	  + backup-manager-upload
+	    - Supports a new value for --method (ssh-gpg).
+		- New option --gpg-recipient
+		- Uses explicit error codes when needed.
+		- Stops using temp logfile, dump errors to stderr.
+	    - Updated the documentation (POD / man page).
+	  + backup-manager-conf.tpl
+	    - new upload method possible "ssh-gpg".
+	    - BM_UPLOAD_SSHGPG_RECIPENT added.
+	  + doc/user-guide.sgml / doc/user-guide.txt
+	    - Bits about the new upload method.
+	  + lib/actions.sh 
+	    - new switch for calling the ssh-gpg upload if needed.
+	  + lib/upload-methods.sh
+	    - bm_upload_ssh_gpg() added, wrapper to backup-manager-upload.
+
 2006-04-03  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* lib/files.sh:

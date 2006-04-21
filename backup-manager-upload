@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl 
 
 =head1 NAME
 
@@ -58,6 +58,12 @@ Sets the bucket name for the Amazon S3 service backup into.
 Select the local directory where files are.
 Default is /var/archives
 
+=item B<--gpg-recipient=>I<gpg-recipient> 
+
+Select the gpg public key for encryptiong the archives when uploading
+with the method ssh-gpg. This can be a short or long key id or a
+descriptive name. The precise syntax is described in the gpg man page.
+
 =item B<--list>
 
 Just list the files to upload.
@@ -78,24 +84,67 @@ Flag to enable verbose mode.
 
 Date pattern to select some files to upload, can be a valid date (YYYYMMDD) or 'today' or 'yesterday'.
 
+=head1 ERROR CODES
+
+If something goes wrong during an upload, backup-manager-upload will exit 
+with a non null value. In such a case every error messages are sent to 
+STDERR.
+
+Here are the possible error codes:
+
+=over 4
+
+=item bad command line (wrong arguments) : 10
+
+=item FTP transfer failure : 20
+
+=item SCP transfer failure : 21
+
+=item S3 transfer failure : 22
+
+=item Unknown upload method: 23
+
+=back
+
+=cut
+
+use constant E_SUCCESS    => 0;
+
+use constant E_INVALID    => 10;
+
+use constant E_FTP_FAILED => 20;
+use constant E_SCP_FAILED => 21;
+use constant E_S3_FAILED  => 22;
+use constant E_UNKNOWN    => 23;
+
 =head1 SEE ALSO
 
 L<backup-manager(3)>
 
-=cut
+=head1 AUTHORS
 
-#
-# uses
-#
+Alexis Sukrieh - main code and design
+
+Brad Dixon - Amazon S3 upload method
+
+Jan Metzger - ssh-gpg upload method
+
+=cut
 
 use strict;
 use warnings;
 use BackupManager::Config;
 use BackupManager::Logger;
 use POSIX qw(strftime);
+use File::Basename;
+
+use constant TRUE => 1;
+use constant FALSE => 0;
 
 # global vars
 my $scp = '/usr/bin/scp';
+my $ssh = '/usr/bin/ssh';
+my $gpg = '/usr/bin/gpg';
 my $g_verbose	= 0;
 my $g_list	= 0;
 my $g_host 	= undef;
@@ -108,11 +157,12 @@ my $g_remote_dir= '/var/archives/uploads';
 my $g_bucket    = undef;
 my $g_root_dir	= '/var/archives';
 my $g_key_file	= undef;
+my $g_gpg_recipient = undef;
 
 # first get the args
 BackupManager::Config::getopt("$0 -m=mode -h=host -u=user [options] date\n
 -v|--verbose	: Print on STDOUT what happens.
--m|--mode	: Transfer mode to use : ftp, scp, or s3.
+-m|--mode	: Transfer mode to use : ftp, scp, s3, or ssh-gpg.
 -h|--host	: Remote hosts to connect to (separated by commas).
 -u|--user	: User to use for connection.
 -p|--password	: Password of remote host's user (only needed for ftp mode).
@@ -121,6 +171,7 @@ BackupManager::Config::getopt("$0 -m=mode -h=host -u=user [options] date\n
 -b|--bucket     : Amazon S3 storage bucket to use
 -r|--root	: Root directory of your archives (default /var/archives).
 -l|--list	: Only prints which files would be uploaded.
+--gpg-recipient : Selects the public key used for gpg encryption (only for ssh-gpg mode).
 --ftp-purge	: Purge the remote directory before uploading files in FTP mode.
 --s3-purge	: Purge the remote directory before uploading files in S3 mode.
 date		: All files >= date will be uploaded. Either a valid date (YYYYMMDD) or one of this words : today, yesterday",
@@ -133,6 +184,7 @@ date		: All files >= date will be uploaded. Either a valid date (YYYYMMDD) or on
 'bucket|b=s'	=> \$g_bucket,
 'key|k=s'	=> \$g_key_file,
 'root|r=s'	=> \$g_root_dir,
+'gpg-recipient=s' => \$g_gpg_recipient,
 'ftp-purge'	=> \$g_ftpclean,
 's3-purge'	=> \$g_s3clean,
 'list'		=> \$g_list,
@@ -173,80 +225,107 @@ sub verbose_error ($)
 
 # send one file with scp
 # since Net::SSH is a wrapper to a system call of ssh, I don't use it.
-sub send_file_with_scp($$$$)
+sub send_file_with_scp($$$$$)
 {
-	my ($file, $user, $host, $location) = @_;
+    my ($file, $user, $host, $location, $g_gpg_recipient) = @_;
 	return 0 unless defined $file and 
 		defined $user and
 		defined $host and
 		defined $location;
+	
+	# look for a port to use
+	my $port_switch="";
+	if ($ENV{BM_UPLOAD_SSH_PORT}) {
+	    $port_switch = "-P ".$ENV{BM_UPLOAD_SSH_PORT};
+	}
     
-    # look for a port to use
-    my $port_switch="";
-    if ($ENV{BM_UPLOAD_SSH_PORT}) {
-        $port_switch = "-P ".$ENV{BM_UPLOAD_SSH_PORT};
-    }
-    
-    my $log_file = `mktemp /tmp/bm-upload.XXXXXX`;
-    chomp $log_file;
-    unless (-f $log_file) {
-        error "cannot create log file: '$log_file'";
-    }
-    
-	my $cmd;
+	# look for keyfile to use
+	my $keyfile_switch="";
 	if (defined $g_key_file and -f $g_key_file) {
-		$cmd = "$scp -i $g_key_file $port_switch -B $file $user".'@'.$host.':'.$location." >$log_file 2>&1";
+	    $keyfile_switch = "-i $g_key_file";
+	}
+
+
+	my $cmd = "";
+	if ( defined $g_gpg_recipient )	{	    
+	    my $file_base = basename($file);
+	    $cmd = "$gpg --encrypt --recipient $g_gpg_recipient --output - --batch $file | ";
+	    $cmd .= "$ssh -o \"BatchMode yes\" -e none $port_switch $keyfile_switch $user".'@'."$host ";
+	    $cmd .= "\"cat - > $location/$file_base.gpg\" >&2";
 	}
 	else {
-		$cmd = "$scp $port_switch -B $file $user".'@'.$host.':'.$location." >$log_file 2>&1";
+	    $cmd = "$scp $port_switch $keyfile_switch -B $file $user".'@'.$host.':'.$location." >&2";
 	}
 
 	# we use eval here to avoid crash with bad keys
 	my $ret = eval "system('$cmd')";
 	if ($@ or $ret) {
 		error "$scp failed for $file : $@ (command was : $cmd). " if $@;
-		error "$scp failed for $file (command was : $cmd). Check logs in $log_file" if $ret;
-        verbose_error "Unable to upload $file, check $log_file";
-		return 0;
+		error "$scp failed for $file (command was : $cmd)" if $ret;
+		verbose_error "Unable to upload \"$file\".";
+        return 0;
 	}
-    unlink $log_file;
-
 	return 1;
 }
 
-
 # How to upload files with scp.
 # Note that Key Authentication is used, see man ssh-keygen.
-sub send_files_with_scp($$$$)
+sub send_files_with_scp($$$$$)
 {
 	# getting args
-	my ($user, $ra_hosts, $repository, $ra_files) = @_;
+	my ($user, $ra_hosts, $repository, $ra_files, $g_gpg_recipient) = @_;
 	unless (defined $user and 
 		defined $ra_hosts and
 		defined $ra_files and
 		defined $repository) {
 		error "required args needed";
-		return 0;
+		return FALSE;
 	}
 
 	# is scp here ?
 	unless (-x $scp) {
 		verbose_error "$scp is not here, cannot use this mode for transfer.";
-		exit 1;
+        return FALSE;
+	}
+
+	# if gpg requested, is it here?
+	if (defined $g_gpg_recipient and (not -x $gpg)) {
+		verbose_error "$gpg is not here, cannot use this mode for transfer.";
+	    return FALSE;
+	}
+
+	# if gpg requested, check whether given key is valid	    
+	if (defined $g_gpg_recipient) {
+	    my $gpg_out = `$gpg --batch --list-keys '$g_gpg_recipient' 2>/dev/null`;
+
+	    if ($gpg_out !~ /^pub/mi) {
+		    verbose_error "gpg recipient $g_gpg_recipient is not a valid key, cannot use this mode for transfer.";
+            return FALSE;
+	    }
 	}
 
 	# loop on each hosts given and connect to them.
 	foreach my $host (@{$ra_hosts}) {
 		foreach my $file (@{$ra_files}) {
 			chomp $file;
-			if (-f $file and send_file_with_scp($file, $user, $host, $repository)) {
+            
+			if (-f $file and 
+                send_file_with_scp($file, $user, $host, 
+                                   $repository, $g_gpg_recipient)) {
 				verbose "File $file uploaded successfully.";
 			}
 			elsif (! -f $file) {
 				verbose_error "File $file cannot be uploaded, it does not exist locally.";
+                return FALSE;
 			}
+            else {
+                verbose_error "Error during the scp upload of $file";
+                return FALSE;
+            }
 		}
 	}
+
+    return TRUE;
 }
 
 # Function for purging a directory
@@ -284,7 +363,7 @@ sub send_files_with_ftp($$$$$)
 	eval "use Net::FTP";
 	if ($@) {
 		error "Net::FTP is not available, cannot use ftp transfer mode";
-		return 0;
+		return FALSE;
 	}
 	
 	# getting args
@@ -295,7 +374,7 @@ sub send_files_with_ftp($$$$$)
 		defined $ra_files and
 		defined $repository) {
 		error "required args needed";
-		return 0;
+		return FALSE;
 	}
 	
     # get the passive mode from the configuration
@@ -312,6 +391,7 @@ sub send_files_with_ftp($$$$$)
     }
     else {
         verbose_error "Unsupported value for BM_UPLOAD_FTP_PASSIVE : $BM_UPLOAD_FTP_PASSIVE";
+        return FALSE;
     }   
     
 	# loop on each hosts given and connect to them.
@@ -325,6 +405,7 @@ sub send_files_with_ftp($$$$$)
 		};
         if ($@) {
             verbose_error "Unable to use the Net::FTP Perl module : $@";
+            return FALSE;
         }
         
         if (defined $ftp) {
@@ -344,9 +425,11 @@ sub send_files_with_ftp($$$$$)
 					}
 					elsif (-f $file) {
 						verbose_error "File $file cannot be uploaded, remote host $host said : ".$ftp->message;
+                        return FALSE;
 					}
 					else {
 						verbose_error "File $file cannot be uploaded, it does not exist locally.";
+                        return FALSE;
 					}
 				}
 				verbose "Log out $host\n";
@@ -354,12 +437,16 @@ sub send_files_with_ftp($$$$$)
 			}
 			else {
 				verbose_error "unable to login and cwd on ${host}:${repository} in binary mode";
+                return FALSE;
 			}
 		}
 		else {
 			verbose_error "unable to connect to $host : $@\n";
+            return FALSE;
 		}
 	}	
+    
+    return TRUE;
 }
 
 sub get_formated_date($)
@@ -367,7 +454,7 @@ sub get_formated_date($)
 	my $date = shift;
 	unless (defined $date) {
 		verbose_error "date is required, enter today, yesterday or YYYYMMDD";
-		exit 1;
+		exit E_INVALID;
 	}
 
 	if ($date eq 'today') {
@@ -381,7 +468,7 @@ sub get_formated_date($)
 	}
 	else {
 		verbose_error "date $date is not valid, enter today, yesterday or YYYYMMDD";
-		exit 1;
+		exit E_INVALID;
 	}
 }
 
@@ -445,19 +532,19 @@ sub s3_clean_directory($$)
 
 # How to upload files to s3.
 # We'll use the Net::Amazon::S3 module here.
-sub send_files_to_s3($$$$$$)
+sub send_files_with_s3($$$$$$)
 {
 	# trying to get Net::Amazon::S3.
 	eval "use Net::Amazon::S3";
 	if ($@) {
 		error "Net::Net::Amazon::S3 is not available, cannot use S3 service";
-		return 0;
+		return FALSE;
 	}
 
 	eval "use File::Slurp qw(slurp)";
 	if ($@) {
 		error "File::Slurp is not available, cannot use S3 service";
-		return 0;
+		return FALSE;
 	}
 	
 	# getting args
@@ -469,7 +556,7 @@ sub send_files_to_s3($$$$$$)
 		defined $ra_files and
 		defined $repository) {
 		error "required args needed";
-		return 0;
+		return FALSE;
 	}
 
 	my $totalbytes;
@@ -485,7 +572,11 @@ sub send_files_to_s3($$$$$$)
 					      }
 					  );
 
-	    if (defined $s3) {
+	    unless (defined $s3) {
+		    verbose_error "unable to connect to $host : $@\n";
+            return FALSE;
+        }
+        
 		verbose "Connected to $host";
 		my $response = $s3->buckets;
 		if (not ( grep { $_->{bucket} eq $bucket } @{ $response->{buckets} } ) ) {
@@ -494,6 +585,7 @@ sub send_files_to_s3($$$$$$)
 		    # double check
 		    $response = $s3->buckets;
 		    verbose_error "Could not create bucket $bucket" if not ( grep { $_->{bucket} eq $bucket } @{ $response->{buckets} } );
+            return FALSE;
 		}
 		s3_clean_directory($s3, $bucket) if ($g_s3clean);
 			    
@@ -518,25 +610,23 @@ sub send_files_to_s3($$$$$$)
         my @keys = list_bucket($s3, $bucket);
 		foreach my $key ( @keys ) {
 		    if (not defined $uploaded{$key->{key}}) {
-			next;
+                next;
 		    }
 		    if ($key->{size} == $uploaded{$key->{key}}) {
-			verbose $key->{key} . " uploaded sucessfully";
-			delete $uploaded{$key->{key}};
-		    } else {
-			verbose_error $key->{key} . " did not upload sucessfully. S3 reports $key is " . $key->{size} . " bytes rather than " . $uploaded{$key->{key}};
-			delete $uploaded{$key->{key}};
+                verbose $key->{key} . " uploaded sucessfully";
+                delete $uploaded{$key->{key}};
+		    } 
+            else {
+			    verbose_error $key->{key} . " did not upload sucessfully. S3 reports $key is " . $key->{size} . " bytes rather than " . $uploaded{$key->{key}};
+    			delete $uploaded{$key->{key}};
+                return FALSE;
 		    }
 		}
-		foreach my $failed ( keys %uploaded ) {
-		    verbose_error "$failed did not upload at all";
-		}
-	    }
-	    else {
-		verbose_error "unable to connect to $host : $@\n";
-	    }
 	}
-	verbose "Uploaded $totalbytes of data to S3 in " . (time() - $starttime) . " seconds";
+
+	verbose "Uploaded $totalbytes of data to S3 in " . 
+            (time() - $starttime) . " seconds";
+    return TRUE;
 }
 
 
@@ -550,7 +640,7 @@ sub get_files_list_from_date($)
 	unless (-d $g_root_dir) {
 		my $msg = "root dir specified does not exists : $g_root_dir";
 		verbose_error $msg;
-		exit 1;
+        exit E_INVALID;
 	}
 
     # make sure we can read the root dir, when the secure mode is 
@@ -561,7 +651,7 @@ sub get_files_list_from_date($)
             verbose_error "The secure mode is enabled (BM_REPOSITORY_SECURE),";
             verbose_error "the upload user ($g_user) must be in the group \"BM_REPOSITORY_GROUP\".";
         }
-        exit 1;
+        exit E_INVALID;
     }
 
 	while (<$g_root_dir/*$date*>) {
@@ -598,17 +688,22 @@ unless (defined $g_host and
 	defined $g_user and 
 	defined $g_protocol) {
 	print $BackupManager::Config::usage, "\n";
-	exit 1;
+	exit E_INVALID;
 }
 
 if ($g_protocol eq 'ftp' and not defined $g_pass) {
 	print $BackupManager::Config::usage, "\n";
-	exit 1;
+	exit E_INVALID;
 }
 
 if ($g_protocol eq 's3' and (not defined $g_bucket or not defined $g_pass)) {
 	print $BackupManager::Config::usage, "\n";
-	exit 1;
+	exit E_INVALID;
+}
+
+if ($g_protocol eq 'ssh-gpg' and (not defined $g_gpg_recipient)) {        
+	print $BackupManager::Config::usage, "\n";
+	exit E_INVALID;
 }
 
 # storing hosts on memory
@@ -626,32 +721,64 @@ if ($g_list) {
 	foreach my $file (@{$ra_files}) {
 		print "- $file\n"; 
 	}
-	exit 0;
+	exit E_SUCCESS;
 }
 
 # We'll now send the files with the appropriate transfer protocol
 $g_protocol = lc $g_protocol;
+
+# FTP
 if ($g_protocol eq 'ftp') {
 	verbose "Trying to upload files with ftp";
-	send_files_with_ftp($g_user, $g_pass, $ra_hosts, $g_remote_dir, $ra_files);
+	if (! send_files_with_ftp ($g_user, 
+                               $g_pass, 
+                               $ra_hosts, 
+                               $g_remote_dir, 
+                               $ra_files)) {
+        verbose_error "The upload transfer \"$g_protocol\" failed.";
+        exit E_FTP_FAILED;
+    }
 }
-elsif ($g_protocol eq 'scp' or $g_protocol eq 'ssh') {
-	verbose "Trying to upload files with scp";
-	send_files_with_scp($g_user, $ra_hosts, $g_remote_dir, $ra_files);
+
+# SSH related tranfers
+elsif ($g_protocol eq 'scp' or 
+       $g_protocol eq 'ssh' or 
+       $g_protocol eq 'ssh-gpg') {
+    
+    if ($g_protocol eq 'ssh-gpg') {
+	    verbose "Trying to upload files with ssh-gpg";
+    }
+    else {
+	    $g_gpg_recipient = undef;
+	    verbose "Trying to upload files with scp";
+    }
+    
+    if (! send_files_with_scp ($g_user, 
+                               $ra_hosts, 
+                               $g_remote_dir, 
+                               $ra_files, 
+                               $g_gpg_recipient)) {
+        verbose_error "The upload transfer \"$g_protocol\" failed.";
+        exit E_SCP_FAILED;
+    }
 }
+
+# Amazon S3 WebService
 elsif ($g_protocol eq 's3') {
     verbose "Trying to upload files to s3 service";
-    send_files_to_s3($g_user, $g_pass, $g_bucket, $ra_hosts, $g_remote_dir, $ra_files);
+    if (! send_files_with_s3 ($g_user, 
+                            $g_pass, 
+                            $g_bucket, 
+                            $ra_hosts, 
+                            $g_remote_dir, 
+                            $ra_files)) {
+        verbose_error "The upload transfer \"$g_protocol\" failed.";
+        exit E_S3_FAILED;
+    }
 }
+
+# Unknown protocol
 else {
 	print STDERR "mode '$g_protocol' is not supported\n";
-	exit 1;
+	exit E_UNKNOWN;
 }
-
-=head1 AUTHOR
-
-Alexis Sukrieh <sukria@sukria.net>
-
-=cut
-
-

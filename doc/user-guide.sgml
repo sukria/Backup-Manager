@@ -916,6 +916,49 @@ Example:
 export BM_UPLOAD_SSH_DESTINATION="/var/archives/scp-uploads"
 </example>
 
+<sect1 id="upload-ssh-gpg"> Encrypted SSH uploads
+<sect2 id="upload-ssh-gpg-desc"> Description
+<p>
+<em>Method name: <tt>ssh-gpg</tt>, goal: encrypt arcives using public
+key encryption and upload the result to untrusted remote hosts
+over SSH. This method depends on a backup method.  </em>
+
+<p>
+The upload using SSH can also be combined with public key encryption
+provided by <tt>gpg</tt>. The archives will be encrypted using a
+public key prior to sending them over the network, so on the remote
+server your files are protected from inspection.  
+
+<p>
+This method can be used to protect your data from inspection on
+untrusted remote servers. However, since the encrypted files are not
+signed, this does not protect you from archive manipulation. So the
+<em>md5</em> hases are still needed.
+<p>
+This method uses all of the configuartion keys of the <em>ssh</em> method. One
+additional key is required.
+<sect2
+id="BM_UPLOAD_SSH_GPG_RECIPIENT"><tt>BM_UPLOAD_SSH_GPG_RECIPIENT</tt>
+
+<p>
+<em>Type: string</em>
+<p>
+This parameter sets the recipient for which the archive is
+encrypted. A valid specification is a short or long key id, or a
+descriptive name, as explained in the <tt>gpg</tt> man page. The public key for
+this identity must be in the key ring of the user running <tt>gpg</tt>, which
+is the same as specified by <tt>BM_UPLOAD_SSH_USER</tt>. To test this
+run the command <tt> gpg --list-keys ID </tt> as that user, where
+<tt>ID</tt> is the ID as you give it to this parameter. If <tt>gpg</tt>
+displays exactly one key, then you are fine. Refer to the <tt>gpg</tt> man page
+for further details.
+<p>
+Example:
+
+<example>
+export BM_UPLOAD_SSH_GPG_RECIPIENT="email@address.com"
+export BM_UPLOAD_SSH_GPG_RECIPIENT="ECE009856"
+</example>
 
 <sect1 id="upload-ftp">FTP uploads
 <sect2 id="uploads-ftp-desc">Description

@@ -980,6 +980,23 @@ Example:
 export BM_UPLOAD_FTP_PASSIVE="true"
 </example>
 
+<sect2 id="BM_UPLOAD_FTP_TTL"><tt>BM_UPLOAD_FTP_TTL</tt>
+<p>
+<em>Type: integer, default: $BM_ARCHIVE_TTL</em>
+<p>
+Using different <em>time to live</em> values for local and remote archives can
+be useful in certain situations.  For instance, it's possible to install &bmngr;
+locally, make it build archives, upload them to a remote FTP host and then purge
+them locally (but not on the remote host). Doing this is possible with setting a
+null value to the local TTL (BM_ARCHIVE_TTL) and a non-null value to
+BM_UPLOAD_FTP_TTL.
+<p>
+Example:
+<example>
+export BM_ARCHIVE_TTL="0"
+export BM_UPLOAD_FTP_TTL="5"
+export BM_POST_BACKUP_COMMAND="backup-manager --purge"
+</example>
 
 <sect2 id="BM_UPLOAD_FTP_USER"><tt>BM_UPLOAD_FTP_USER</tt>
 <p>

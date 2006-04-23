@@ -330,13 +330,20 @@ sub send_files_with_scp($$$$$)
 
 # Function for purging a directory
 # over FTP, the same way as the repository is purged.
-# Every files with a date field too old according to BM_ARCHIVE_TTL
+# Every files with a date field too old according to BM_UPLOAD_FTP_TTL
 # will be deleted.
 sub ftp_clean_directory($)
 {
     my $ftp = shift;
+    
+    # the remote time to leave could be different as the local one.
     my $BM_ARCHIVE_TTL = $ENV{BM_ARCHIVE_TTL};
+    if (defined $ENV{BM_UPLOAD_FTP_TTL} and
+        length ($ENV{BM_UPLOAD_FTP_TTL})) {
+        $BM_ARCHIVE_TTL = $ENV{BM_UPLOAD_FTP_TTL};
+    }
     return 0 unless defined $BM_ARCHIVE_TTL;
+
     my $date_to_remove = `date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago"`;
     chomp $date_to_remove;
    

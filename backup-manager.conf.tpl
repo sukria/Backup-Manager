@@ -266,6 +266,11 @@ export BM_UPLOAD_SSHGPG_RECIPIENT=""
 # This is mandatory for NATed/firewalled environments 
 export BM_UPLOAD_FTP_PASSIVE="true"
 
+# You can specify a time to live for archives uploaded with FTP
+# This can let you use different ttl's locally and remotely
+# By default, BM_ARCHIVE_TTL will be used.
+export BM_UPLOAD_FTP_TTL=""
+
 # the user to use for the FTP connections/transfers
 export BM_UPLOAD_FTP_USER=""
 

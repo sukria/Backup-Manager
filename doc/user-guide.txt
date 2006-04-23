@@ -56,9 +56,10 @@ Contents
      2.3.1.         Description
      2.3.2.         Global configuration keys
      2.3.3.         SSH uploads
-     2.3.4.         FTP uploads
-     2.3.5.         Amazon S3 uploads
-     2.3.6.         RSYNC uploads
+     2.3.4.         Encrypted SSH uploads
+     2.3.5.         FTP uploads
+     2.3.6.         Amazon S3 uploads
+     2.3.7.         RSYNC uploads
      2.4.      Exports
      2.4.1.         Burning CDR/DVD media
      2.5.      Advanced features
@@ -491,6 +492,15 @@ Contents
      tarball mehod).  All the days between two full backups, archives
      contain only the files that have changed from the previous archive.
 
+     For instance, let's say you want to backup /home with this method.
+     Your /home directory is composed by two sub-directories: /home/foo and
+     /home/bar.  You choose a weekly frequency and say that monday will be
+     the "fullbackup" day.  Obviously, you will have a full tarball of
+     /home on monday.  Then, if a file changed inside /home/foo and if
+     /home/bar remains unchanged, tuesday's archive will only contain the
+     modified files of /home/foo.  Using this method will save a lot of
+     disk space.
+
      To build incremental tarballs, Backup Manager uses tar's switch
      `--listed-incremental'.  This will create a file for each target which
      will contain some statistics used by tar to figure out if a file
@@ -850,10 +860,52 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_SSH_DESTINATION="/var/archives/scp-uploads"
 
-2.3.4. FTP uploads
-------------------
+2.3.4. Encrypted SSH uploads
+----------------------------
 
 2.3.4.1. Description
+--------------------
+
+     _Method name: `ssh-gpg', goal: encrypt arcives using public key
+     encryption and upload the result to untrusted remote hosts over SSH.
+     This method depends on a backup method._
+
+     The upload using SSH can also be combined with public key encryption
+     provided by `gpg'.  The archives will be encrypted using a public key
+     prior to sending them over the network, so on the remote server your
+     files are protected from inspection.
+
+     This method can be used to protect your data from inspection on
+     untrusted remote servers.  However, since the encrypted files are not
+     signed, this does not protect you from archive manipulation.  So the
+     _md5_ hases are still needed.
+
+     This method uses all of the configuartion keys of the _ssh_ method.
+     One additional key is required.
+
+2.3.4.2. `BM_UPLOAD_SSH_GPG_RECIPIENT'
+--------------------------------------
+
+     _Type: string_
+
+     This parameter sets the recipient for which the archive is encrypted.
+     A valid specification is a short or long key id, or a descriptive
+     name, as explained in the `gpg' man page.  The public key for this
+     identity must be in the key ring of the user running `gpg', which is
+     the same as specified by `BM_UPLOAD_SSH_USER'.  To test this run the
+     command `gpg --list-keys ID' as that user, where `ID' is the ID as you
+     give it to this parameter.  If `gpg' displays exactly one key, then
+     you are fine.  Refer to the `gpg' man page for further details.
+
+     Example:
+
+          export BM_UPLOAD_SSH_GPG_RECIPIENT="email@address.com"
+          export BM_UPLOAD_SSH_GPG_RECIPIENT="ECE009856"
+
+2.3.5. FTP uploads
+------------------
+
+2.3.5.1. Description
 --------------------
 
      If security does not matter much on your lan (between the two points
@@ -862,7 +914,37 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
      can safely use this method for uploading files to a host where you
      just have an FTP account.
 
-2.3.4.2. `BM_UPLOAD_FTP_USER'
+2.3.5.2. `BM_UPLOAD_FTP_PASSIVE'
+--------------------------------
+
+     _Type: boolean, default: true._
+
+     If this variable is set to true, FTP transfers will be performed in
+     passive mode, which is mandatory in NATed/firewalled environments.
+
+     Example:
+
+          export BM_UPLOAD_FTP_PASSIVE="true"
+
+2.3.5.3. `BM_UPLOAD_FTP_TTL'
+----------------------------
+
+     _Type: integer, default: $BM_ARCHIVE_TTL_
+
+     Using different _time to live_ values for local and remote archives
+     can be useful in certain situations.  For instance, it's possible to
+     install Backup Manager locally, make it build archives, upload them to
+     a remote FTP host and then purge them locally (but not on the remote
+     host).  Doing this is possible with setting a null value to the local
+     TTL (BM_ARCHIVE_TTL) and a non-null value to BM_UPLOAD_FTP_TTL.
+
+     Example:
+
+          export BM_ARCHIVE_TTL="0"
+          export BM_UPLOAD_FTP_TTL="5"
+          export BM_POST_BACKUP_COMMAND="backup-manager --purge"
+
+2.3.5.4. `BM_UPLOAD_FTP_USER'
 -----------------------------
 
      _Type: string._
@@ -873,7 +955,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_FTP_USER="bmngr"
 
-2.3.4.3. `BM_UPLOAD_FTP_PASSWORD'
+2.3.5.5. `BM_UPLOAD_FTP_PASSWORD'
 ---------------------------------
 
      _Type: string._
@@ -884,7 +966,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_FTP_USER="secret"
 
-2.3.4.4. `BM_UPLOAD_FTP_HOSTS'
+2.3.5.6. `BM_UPLOAD_FTP_HOSTS'
 ------------------------------
 
      _Type: space-separated list_
@@ -896,7 +978,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_FTP_HOSTS="mirror4.lan.mysite.net"
 
-2.3.4.5. `BM_UPLOAD_FTP_DESTINATION'
+2.3.5.7. `BM_UPLOAD_FTP_DESTINATION'
 ------------------------------------
 
      _Type: string_
@@ -908,7 +990,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_FTP_DESTINATION="/var/archives/ftp-uploads"
 
-2.3.4.6. `BM_UPLOAD_FTP_PURGE'
+2.3.5.8. `BM_UPLOAD_FTP_PURGE'
 ------------------------------
 
      _Type: boolean, default: `true'_
@@ -922,10 +1004,10 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_FTP_PURGE="true"
 
-2.3.5. Amazon S3 uploads
+2.3.6. Amazon S3 uploads
 ------------------------
 
-2.3.5.1. Description
+2.3.6.1. Description
 --------------------
 
      Amazon's new Simple Storage Service (S3) is an Internet "web service"
@@ -948,7 +1030,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
      variable is ignored as the only valid host for S3 uploads in
      `s3.amazon.com'.
 
-2.3.5.2. `BM_UPLOAD_S3_DESTINATION'
+2.3.6.2. `BM_UPLOAD_S3_DESTINATION'
 -----------------------------------
 
      _Type: string._
@@ -963,7 +1045,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_S3_DESTINATION="my_backup_bucket"
 
-2.3.5.3. `BM_UPLOAD_S3_ACCESS_KEY'
+2.3.6.3. `BM_UPLOAD_S3_ACCESS_KEY'
 ----------------------------------
 
      _Type: string._
@@ -976,7 +1058,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_S3_ACCESS_KEY="a9sabkz0342dasv"
 
-2.3.5.4. `BM_UPLOAD_S3_SECRET_KEY'
+2.3.6.4. `BM_UPLOAD_S3_SECRET_KEY'
 ----------------------------------
 
      _Type: string._
@@ -989,7 +1071,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_S3_SECRET_KEY="lkj2341askj123sa"
 
-2.3.5.5. `BM_UPLOAD_S3_PURGE'
+2.3.6.5. `BM_UPLOAD_S3_PURGE'
 -----------------------------
 
      _Type: boolean, default: `true'_
@@ -1003,10 +1085,10 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_S3_PURGE="true"
 
-2.3.6. RSYNC uploads
+2.3.7. RSYNC uploads
 --------------------
 
-2.3.6.1. Description
+2.3.7.1. Description
 --------------------
 
      You may want to upload some parts of your file system to some remote
@@ -1018,7 +1100,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
      is a dependency against the keys `BM_UPLOAD_SSH_USER' and
      `BM_UPLOAD_SSH_KEY'.
 
-2.3.6.2. `BM_UPLOAD_RSYNC_DIRECTORIES'
+2.3.7.2. `BM_UPLOAD_RSYNC_DIRECTORIES'
 --------------------------------------
 
      _Type: space-separated list_
@@ -1029,7 +1111,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
 export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
 
-2.3.6.3. `BM_UPLOAD_RSYNC_HOSTS'
+2.3.7.3. `BM_UPLOAD_RSYNC_HOSTS'
 --------------------------------
 
      _Type: space-separated list_
@@ -1041,7 +1123,7 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
 
           export BM_UPLOAD_RSYNC_HOSTS="mirror5.lan.mysite.net"
 
-2.3.6.4. `BM_UPLOAD_RSYNC_DESTINATION'
+2.3.7.4. `BM_UPLOAD_RSYNC_DESTINATION'
 --------------------------------------
 
      _Type: string_
@@ -1053,7 +1135,7 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
 
           export BM_UPLOAD_RSYNC_DESTINATION="/var/archives/rsync-snapshots"
 
-2.3.6.5. `BM_UPLOAD_RSYNC_DUMPSYMLINKS'
+2.3.7.5. `BM_UPLOAD_RSYNC_DUMPSYMLINKS'
 ---------------------------------------
 
      _Type: boolean, default: `false'._

@@ -345,6 +345,7 @@ clean_directory()
 purge_duplicate_archives()
 {
     file_to_create="$1"
+    md5hash=$(get_md5sum $file_to_create)
 
     # Only purge if BM_ARCHIVE_PURGEDUPS = true
     if [ -z "$BM_ARCHIVE_PURGEDUPS" ] ||
@@ -367,12 +368,25 @@ purge_duplicate_archives()
     file_pattern=$(echo $file_to_create | sed -e "s/$date_of_file/\*/") || 
         error "Unable to find the pattern of the file."
     
+    # loop on each archive occurences (eg: archivename-*-filetype)
     for file in $file_pattern
     do
-        if [ ! -L $file ] && 
-           [ "$file" != "$file_to_create" ]; then
-            md5sum_to_check=$(get_md5sum_from_file $file $BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5)
-
+        # handle only regular files
+        if [ ! -L $file ] && [ "$file" != "$file_to_create" ]; then
+            
+            # get the date of the file we parse
+            date_of_file=$(get_date_from_file $file) || 
+                error "Unable to get date from file."
+            
+            # get the md5 hash of the file we parse, in its .md5 file
+            md5file="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${date_of_file}.md5"
+            md5sum_to_check="$(get_md5sum_from_file $file $md5file)"
+            if [ -z "$md5sum_to_check" ]; then
+                warning "Unable to find the md5 hash of file \"\$file\" in file \"\$md5file\"."
+                continue
+            fi
+            
+            # if the md5 hashes are the same, purge the duplicate 
             if [ "$md5hash" = "$md5sum_to_check" ]; then
                 info "\$file is a duplicate of \$file_to_create (using symlink)."
                 rm -f $file

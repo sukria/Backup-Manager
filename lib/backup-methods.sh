@@ -362,6 +362,8 @@ function __get_flags_7z_dump_symlinks()
 # in the current shape...
 function __get_backup_tarball_remote_command()
 {
+    oldgzip="$GZIP"
+    export GZIP="-n"
     case $BM_TARBALL_FILETYPE in
         tar) 
             __get_flags_tar_blacklist "$target"
@@ -379,7 +381,9 @@ function __get_backup_tarball_remote_command()
             error "Remote tarball building is not possible with this archive filetype: \"$BM_TARBALL_FILETYPE\"."
         ;;
     esac
+    export GZIP="$oldgzip"
     echo "$command"
+    
 }
 
 function __get_backup_tarball_command()

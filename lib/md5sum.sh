@@ -28,18 +28,10 @@ get_md5sum_from_file()
 		error "No md5file found: \$md5file"
 	fi
 	
-	OLDIFS=$IFS
-	IFS=$'\n'
-	for line in `cat $md5file`
-	do
-		hash=$(echo $line | awk '{print $1}')
-		file=$(echo $line | awk '{print $2}')
-		if [ "$file" = "$filename" ]; then
-			echo $hash
-			break
-		fi
-	done
-	IFS=$OLDIFS
+    filename="$(basename $filename)"
+    md5=$(grep "$filename" $md5file | awk '{print $1}')
+    
+    echo "$md5"
 }
 
 # Just return the md5 hash of a file

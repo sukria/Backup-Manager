@@ -24,10 +24,16 @@ export BM_REPOSITORY_SECURE="true"
 # user:group pair if BM_REPOSITORY_SECURE is set to true.
 export BM_REPOSITORY_USER="root"
 export BM_REPOSITORY_GROUP="root"
+# You can also choose the permission to set the repository, default 
+# is 770, pay attention to what you do there!
+export BM_REPOSITORY_CHMOD="770"
 
 ##############################################################
 # Archives - let's focus on the precious tarballs...
 ##############################################################
+
+# Each archive generated will be chmoded for security reasons.
+export BM_ARCHIVE_CHMOD="660"
 
 # Number of days we have to keep an archive (Time To Live)
 export BM_ARCHIVE_TTL="5"

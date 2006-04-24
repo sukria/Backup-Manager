@@ -50,7 +50,7 @@ function commit_archive()
     if [ $BM_REPOSITORY_SECURE = true ]; then
         chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $file_to_create || 
             warning "Unable to change the owner of \"\$file_to_create\"."
-        chmod 660 $file_to_create ||
+        chmod $BM_ARCHIVE_CHMOD $file_to_create ||
             warning "Unable to change file permissions of \"\$file_to_create\"."
     fi
 }

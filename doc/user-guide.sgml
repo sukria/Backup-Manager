@@ -106,19 +106,20 @@ The first version of this document was made in late 2005, by Alexis Sukrieh and
 has been reviewed by Sven Joachim.
 
 <p>
-While the author of this document has tried hard to avoid typos and other 
-errors, these do still occur. If you discover an error in this manual or if
-you want to give any comments, suggestions, or criticisms please send an 
-email to the development list, backup-manager-devel@backup-manager.org, or submit
-a bug report against the "Documentation" product, in the bug tracking system<footnote>http://bugzilla.backup-manager.org/</footnote>.
+While the author of this document has tried hard to avoid typos and other
+errors, these do still occur. If you discover an error in this manual or if you
+want to give any comments, suggestions, or criticisms please send an email to
+the development list, backup-manager-devel@backup-manager.org, or submit a bug
+report against the "Documentation" product, in the bug tracking
+system<footnote>http://bugzilla.backup-manager.org/</footnote>.
 
 <chapt id="configuration">Configuration files
 
 <p>
-<em>&bmngr;'s behaviour is defined in configuration files. You can run &bmngr; with 
-different configuration files (at the same time or not). 
-This chapter will cover all the configuration keys supported in version
-&bmngr-version; and will explain their meaning.</em>
+<em>&bmngr;'s behaviour is defined in configuration files. You can run &bmngr;
+with different configuration files (at the same time or not).  This chapter will
+cover all the configuration keys supported in version &bmngr-version; and will
+explain their meaning.</em>
 
 <sect id="design">Repository and Archives
 
@@ -159,15 +160,19 @@ export BM_REPOSITORY_ROOT="/var/archives"
 <p>
 <em>Type: boolean, default: <tt>true</tt>.</em>
 
-<p>
-For security reasons, the repository can be accessible by a specific user/group
-pair. This will prevent the archives from being readable (and writable) by any user
-in the system. This mode is enabled by default (owned by <tt>root:root</tt>).
+<p> For security reasons, the repository can be accessible by a specific
+user/group pair. This will prevent the archives from being readable (and
+writable) by any user in the system. This mode is enabled by default (owned by
+<tt>root:root</tt>).
 
-<p>
-To enable this mode, set the configuration key <tt>BM_REPOSITORY_SECURE</tt> 
+<p> To enable this mode, set the configuration key <tt>BM_REPOSITORY_SECURE</tt>
 to <tt>yes</tt>, then update <tt>BM_REPOSITORY_USER</tt> and
 <tt>BM_REPOSITORY_GROUP</tt> to your needs.
+
+<p>
+You can also change the permission of the repository and the archives, that is
+possible with two configuration variables: <tt>BM_REPOSITORY_CHMOD</tt> and
+<tt>BM_ARCHIVE_CHMOD</tt>.
 
 <p>
 Example:
@@ -176,14 +181,16 @@ Example:
 export BM_REPOSITORY_SECURE="true"
 export BM_REPOSITORY_USER="root"
 export BM_REPOSITORY_GROUP="root"
+export BM_REPOSITORY_CHMOD="770"
+export BM_ARCHIVE_CHMOD="660"
 </example>
 
 <sect1 id="archives">Archives
 
 <p>
 <em>Archives are produced by backup methods, they can be virtually anything, but
-will always be named like the following: <tt>prefix-name-date.filetype</tt>.
-An archive is a file that contains data, it can be compressed or not, in a binary
+will always be named like the following: <tt>prefix-name-date.filetype</tt>.  An
+archive is a file that contains data, it can be compressed or not, in a binary
 form or not.</em>
 
 <sect2 id="BM_ARCHIVE_PURGEDUPS"><tt>BM_ARCHIVE_PURGEDUPS</tt>
@@ -194,11 +201,10 @@ form or not.</em>
 <p>
 If disk usage matters in your backup strategy, you might find useful to use
 &bmngr;'s duplicates purging feature. When an archive is generated, &bmngr;
-looks at the previous versions of this archive. 
-If it finds that a previous archive is the same file as the one it
-has just built, the previous one is replaced by a symlink to the new one.
-This is useful if you don't want to have the same archive twice in the
-repository.
+looks at the previous versions of this archive.  If it finds that a previous
+archive is the same file as the one it has just built, the previous one is
+replaced by a symlink to the new one.  This is useful if you don't want to have
+the same archive twice in the repository.
 
 <p>
 Example:

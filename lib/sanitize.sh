@@ -118,7 +118,10 @@ if [ "$BM_REPOSITORY_SECURE" = "true" ]; then
 	confkey_require "BM_REPOSITORY_USER" "root"
 	confkey_handle_deprecated "BM_GROUP" "BM_REPOSITORY_GROUP"
 	confkey_require "BM_REPOSITORY_GROUP" "root"
+    confkey_require "BM_REPOSITORY_CHMOD" "770"
+    confkey_require "BM_ARCHIVE_CHMOD" "660"
 fi
+
 
 confkey_handle_deprecated "BM_MAX_TIME_TO_LIVE" "BM_ARCHIVE_TTL"
 confkey_require "BM_ARCHIVE_TTL" "5"

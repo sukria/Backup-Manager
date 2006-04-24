@@ -48,10 +48,10 @@ make_archives()
 
     # Now make sure the md5 file is okay.
 	md5file="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5"
-    if [ -e $md5file ]; then
+    if [ -e $md5file ] && [ "$BM_REPOSITORY_SECURE" = "true" ]; then
         chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $md5file ||
             warning "Unable to change the owner of \"\$md5file\"."
-        chmod 0660 $md5file ||
+        chmod $BM_ARCHIVE_CHMOD $md5file ||
             warning "Unable to change file permissions of \"\$md5file\"."
     fi
 done
@@ -194,7 +194,7 @@ function create_directories()
 	# only BM_REPOSITORY_USER:BM_REPOSITORY_GROUP can read/write it. 
 	if [ "$BM_REPOSITORY_SECURE" = "true" ]; then
 		chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $BM_REPOSITORY_ROOT
-		chmod 770 $BM_REPOSITORY_ROOT
+		chmod $BM_REPOSITORY_CHMOD $BM_REPOSITORY_ROOT
 	fi
 }
 

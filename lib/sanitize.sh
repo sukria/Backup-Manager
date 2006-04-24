@@ -87,7 +87,7 @@ replace_deprecated_booleans()
             key=$(echo "$line" | awk -F '=' '{print $1}')
             value=$(echo "$line" | awk -F '=' '{print $2}')
           
-            if [ $(expr match $key BM_) -gt 0 ]; then
+            if [ $(expr match "$key" BM_) -gt 0 ]; then
                 if [ "$value" = "yes" ]; then
                     warning "Deprecated boolean, \$key is set to \"yes\", setting \"true\" instead."
 	                nb_warnings=$(($nb_warnings + 1))

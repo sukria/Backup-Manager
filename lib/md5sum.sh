@@ -29,7 +29,7 @@ get_md5sum_from_file()
 	fi
 	
     filename="$(basename $filename)"
-    md5=$(grep "$filename" $md5file | awk '{print $1}')
+    md5=$(grep "$filename" $md5file 2>/dev/null | awk '{print $1}')
     
     echo "$md5"
 }

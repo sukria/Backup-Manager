@@ -107,8 +107,12 @@ replace_deprecated_booleans()
 # the best possible, with default values and so on...
 #############################################################
 
+# First of all replace yes/no booleans with true/false ones.
+replace_deprecated_booleans
+
 confkey_handle_deprecated "BM_ARCHIVES_REPOSITORY" "BM_REPOSITORY_ROOT"
 confkey_require "BM_REPOSITORY_ROOT" "/var/archives" 
+
 # let's drop the trailing slash, if any.
 export BM_REPOSITORY_ROOT="${BM_REPOSITORY_ROOT%/}"
 
@@ -204,7 +208,6 @@ if [ -n "$BM_UPLOAD_MODE" ]; then
     confkey_handle_deprecated "BM_UPLOAD_DIR" "BM_UPLOAD_DESTINATION"
 fi        
 
-replace_deprecated_booleans
 
 confkey_require "BM_LOGGER" "true"
 if [ "$BM_LOGGER" = "true" ]; then 

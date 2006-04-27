@@ -48,7 +48,8 @@ make_archives()
 
     # Now make sure the md5 file is okay.
 	md5file="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5"
-    if [ -e $md5file ] && [ "$BM_REPOSITORY_SECURE" = "true" ]; then
+    if [ -e $md5file ] && 
+       [ "$BM_REPOSITORY_SECURE" = "true" ]; then
         chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $md5file ||
             warning "Unable to change the owner of \"\$md5file\"."
         chmod $BM_ARCHIVE_CHMOD $md5file ||

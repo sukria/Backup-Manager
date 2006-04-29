@@ -44,6 +44,7 @@ md5sum="/usr/bin/md5sum"
 bc="/usr/bin/bc"
 mysqldump="/usr/bin/mysqldump"
 svnadmin="/usr/bin/svnadmin"
+logger="/usr/bin/logger"
 
 # Load the backup-manager's library
 source $libdir/gettext.sh

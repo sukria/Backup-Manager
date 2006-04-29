@@ -575,7 +575,8 @@ sub send_files_with_s3($$$$$$)
 	    my $s3 = Net::Amazon::S3->new(
 					  {   
 					      aws_access_key_id => $user,
-					      aws_secret_access_key => $passwd
+					      aws_secret_access_key => $passwd,
+                          timeout => 300
 					      }
 					  );
 

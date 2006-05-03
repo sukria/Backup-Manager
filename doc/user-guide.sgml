@@ -413,17 +413,48 @@ In most of the cases, you should not use this feature.
 <sect2 id="BM_TARBALL_DIRECTORIES"><tt>BM_TARBALL_DIRECTORIES</tt>
 
 <p>
-<em>Type: space-separated list, default: <tt>""</tt>.</em>
+<em><strong>Deprecated</strong> - Type: space-separated list, default: <tt>null</tt>.</em>
 
 <p>
-You certainly want to backup something, don't you? So here is the place where
-you put that precious list of locations. 
+Since version 0.7.3, this variable is still supported for backward compatibility.
+
+<p>
+If you want to backup some targets that have spaces in their name (eg
+"Program Files"), you must not use this variable, but should use the array
+BM_TARBALL_TARGETS[] instead.  
+
+<p>
+For this reason this variable is deprecated, use BM_TARBALL_TARGETS instead.
 
 <p>
 Example: 
 
 <example>
 export BM_TARBALL_DIRECTORIES="/etc /home /var/log/apache"
+</example>
+
+<sect2 id="BM_TARBALL_TARGETS"><tt>BM_TARBALL_TARGETS</tt>
+
+<p>
+<em>Type: array, default: <tt>"/etc", "/boot"</tt>.</em>
+
+<p>
+This variable holds every place you want to backup. This is the recommanded
+variable to use for defining your backup targets (<tt>BM_TARBALL_DIRECTORIES</tt> is
+deprecated since version 0.7.3).
+
+<p>
+You can safely put items that contain spaces (eg: "Program Files") whereas you
+can't with <tt>BM_TARBALL_DIRECTORIES</tt>.
+
+<p>
+Example
+
+<example>
+BM_TARBALL_TARGETS[0]="/etc"
+BM_TARBALL_TARGETS[1]="/home/*"
+BM_TARBALL_TARGETS[2]="/boot"
+BM_TARBALL_TARGETS[3]="/mnt/win/Program Files"
 </example>
 
 <sect2 id="BM_TARBALL_BLACKLIST"><tt>BM_TARBALL_BLACKLIST</tt>

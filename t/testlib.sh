@@ -15,6 +15,7 @@ VERSION="0.7.1+svn"
 
 # All the path we'll need
 libdir="/usr/share/backup-manager"
+logger="/usr/bin/logger"
 zip="/usr/bin/zip"
 bzip="/usr/bin/bzip2"
 gzip="/bin/gzip"

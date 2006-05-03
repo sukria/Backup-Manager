@@ -39,10 +39,12 @@ get_dir_name()
     if [ "$format" = "long" ]
     then
         # first remove the trailing slash
-        base=$(echo $base | sed -e 's|/$||')
+        base=${base%/}
 
-        # then substitue every / by a -
-        dirname=`echo "$base" | sed 's/\//-/g'`
+        # every space by a _ 
+        dirname=$(echo "$base" | sed 's/\s/_/g')
+        # every / by a -
+        dirname=$(echo "$dirname" | sed 's/\//-/g')
         
     elif [ "$format" = "short" ]
     then
@@ -365,6 +367,10 @@ purge_duplicate_archives()
     # we'll parse all the files of the same source
     date_of_file=$(get_date_from_file $file_to_create) || 
         error "Unable to get date from file."
+    if [ -z "$date_of_file" ]; then
+        error "Unable to get date from file."
+    fi
+   
     file_pattern=$(echo $file_to_create | sed -e "s/$date_of_file/\*/") || 
         error "Unable to find the pattern of the file."
     

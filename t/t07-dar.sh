@@ -21,6 +21,8 @@ export BM_TARBALL_FILETYPE="dar"
 export BM_TARBALLINC_MASTERDATETYPE="weekly"
 export BM_TARBALLINC_MASTERDATEVALUE="1"
 
+source $locallib/sanitize.sh
+
 if [ ! -x $dar ]; then
     info "cannot run test, need $dar"
     exit 1

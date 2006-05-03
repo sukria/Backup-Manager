@@ -6,8 +6,8 @@ set -e
 source testlib.sh
 # When the test is ready, set this to false for nice outputs.
 # if you want to see what happens, use those flags
-#verbose="true"
-#warnings="true"
+# verbose="true"
+# warnings="true"
 
 # The conffile part of the test, see confs/* for details.
 source confs/base.conf
@@ -19,6 +19,8 @@ export BM_TARBALL_DIRECTORIES="$PWD"
 
 export BM_TARBALLINC_MASTERDATETYPE="weekly"
 export BM_TARBALLINC_MASTERDATEVALUE="1"
+
+source ../lib/sanitize.sh
 
 # The test actions
 if [ -e $BM_ARCHIVE_ROOT ]; then

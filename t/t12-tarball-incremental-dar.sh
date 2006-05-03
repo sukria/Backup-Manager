@@ -22,6 +22,7 @@ export BM_TARBALL_FILETYPE="dar"
 export BM_TARBALLINC_MASTERDATETYPE="weekly"
 # This test is for incremental backups, we don't want master backups!
 export BM_TARBALLINC_MASTERDATEVALUE="999"
+source $locallib/sanitize.sh
 
 # The test actions
 

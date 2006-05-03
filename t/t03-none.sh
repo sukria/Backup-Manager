@@ -14,6 +14,7 @@ source confs/base.conf
 export BM_ARCHIVE_METHOD="none"
 export BM_UPLOAD_METHOD="none"
 export BM_BURNING_METHOD="none"
+source $locallib/sanitize.sh
 
 # The test actions
 bm_init_env

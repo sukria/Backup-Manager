@@ -73,7 +73,7 @@ function handle_tarball_error()
 	target="$1"
 	logfile="$2"
 
-	warning "Unable to create \$target, check \$logfile"
+	warning "Unable to create \"\$target\", check \$logfile"
 	nb_err=$(($nb_err + 1))
 }
 
@@ -239,7 +239,7 @@ function __get_flags_tar_dump_symlinks()
 function __get_file_to_create()
 {
     target="$1"
-    dir_name=$(get_dir_name $target $BM_TARBALL_NAMEFORMAT)
+    dir_name=$(get_dir_name "$target" $BM_TARBALL_NAMEFORMAT)
     file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY${master}.$BM_TARBALL_FILETYPE"
     
     # dar appends itself the ".dar" extension
@@ -254,7 +254,7 @@ function __get_file_to_create_remote()
     target="$1"
     host="$2"
     
-    dir_name=$(get_dir_name $target $BM_TARBALL_NAMEFORMAT)
+    dir_name=$(get_dir_name "$target" $BM_TARBALL_NAMEFORMAT)
     file_to_create="$BM_REPOSITORY_ROOT/${host}${dir_name}.$TODAY${master}.$BM_TARBALL_FILETYPE"
     
     echo "$file_to_create"
@@ -391,26 +391,26 @@ function __get_backup_tarball_command()
     case $BM_TARBALL_FILETYPE in
         tar) 
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c    -f "$file_to_create" "$target""
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c    -f $file_to_create"
         ;;
         tar.gz)
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -z -v -f "$file_to_create" "$target""
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -z -v -f $file_to_create"
         ;;
         tar.bz2|tar.bz) 
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j -f "$file_to_create" "$target""
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j -f $file_to_create"
         ;;
         zip) 
-            command="$zip $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -r "$file_to_create" "$target""
+            command="$zip $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -r $file_to_create"
         ;;
         dar)
             __get_flags_dar_blacklist "$target"
-            command="$dar $incremental $blacklist $maxsize $overwrite $BM_TARBALL_EXTRA_OPTIONS -z9 -Q -c "$file_to_create" -R "$target""
+            command="$dar $incremental $blacklist $maxsize $overwrite $BM_TARBALL_EXTRA_OPTIONS -z9 -Q -c $file_to_create -R"
         ;;
         7z)
             __get_flags_7z_blacklist "$target"
-            command="$_7z a -t7z -m0=lzma -mx=9 $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS "$file_to_create" "$target""
+            command="$_7z a -t7z -m0=lzma -mx=9 $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS $file_to_create"
         ;;
         *)
             error "The archive type \"\$BM_TARBALL_FILETYPE\" is not supported."
@@ -427,7 +427,8 @@ function __build_local_archive()
     dir_name="$2"
     
     file_to_create=$(__get_file_to_create "$target")
-    command=$(__get_backup_tarball_command) || 
+
+    command="$(__get_backup_tarball_command)" || 
         error "The archive type \"\$BM_TARBALL_FILETYPE\" is not supported."
 
     # dar is not like tar, we have to manually check for existing .1.dar files
@@ -441,7 +442,7 @@ function __build_local_archive()
     if [ ! -e $file_to_check ] || [ $force = true ]; then
         logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
 #            __debug "$command"
-        if ! $command > $logfile 2>&1 ; then
+        if ! `$command "$target"> $logfile 2>&1`; then
             handle_tarball_error "$file_to_create" "$logfile"
         else
             rm -f $logfile
@@ -495,11 +496,17 @@ function __build_remote_archive()
 function __make_tarball_archives()
 {
     nb_err=0
-	for target in $BM_TARBALL_DIRECTORIES
-	do
+#   BM_TARBALL_DIRECTORIES=$(echo "$BM_TARBALL_DIRECTORIES" | sed -e 's/"\(.*\)"//g')
+#	for target in $BM_TARBALL_DIRECTORIES
+    for target in ${BM_TARBALL_TARGETS[*]}
+    do
+        if [ -z "$target" ]; then
+            continue
+        fi
+        
         # first be sure the target exists
-		if [ ! -e $target ] || [ ! -r $target ]; then
-			warning "Target \$target does not exist, skipping."
+		if [ ! -e "$target" ] || [ ! -r "$target" ]; then
+			warning "Target \"\$target\" does not exist, skipping."
 			nb_err=$(($nb_err + 1))
 			continue
 		fi
@@ -518,7 +525,7 @@ function __make_tarball_archives()
         then
             case "$BM_TARBALL_FILETYPE" in
                 "dar")
-                    __get_flags_dar_incremental $dir_name
+                    __get_flags_dar_incremental "$dir_name"
                 ;;
                 "tar"|"tar.gz"|"tar.bz2")
                     __get_flags_tar_incremental "$dir_name"

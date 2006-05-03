@@ -12,6 +12,7 @@ source confs/base.conf
 # http://bugzilla.backup-manager.org/cgi-bin/attachment.cgi?id=1&action=view
 export BM_REPOSITORY_ROOT="$PWD/repository"
 export BM_ARCHIVE_METHOD="pipe"
+source $locallib/sanitize.sh
 bm_init_env
 bm_init_today
 

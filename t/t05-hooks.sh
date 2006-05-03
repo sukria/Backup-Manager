@@ -13,6 +13,7 @@ source testlib.sh
 source confs/base.conf
 export BM_PRE_BACKUP_COMMAND="/bin/true"
 export BM_POST_BACKUP_COMMAND="echo true"
+source $locallib/sanitize.sh
 
 # The test actions
 bm_init_env

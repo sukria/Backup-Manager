@@ -23,6 +23,7 @@ export BM_TARBALL_FILETYPE="tar.gz"
 
 # This test is for incremental backups, we don't want master backups!
 export BM_TARBALLINC_MASTERDATEVALUE="999"
+source $locallib/sanitize.sh
 
 bm_init_env
 bm_init_today

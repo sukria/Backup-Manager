@@ -183,11 +183,17 @@ Contents
      to `yes', then update `BM_REPOSITORY_USER' and `BM_REPOSITORY_GROUP'
      to your needs.
 
+     You can also change the permission of the repository and the archives,
+     that is possible with two configuration variables:
+     `BM_REPOSITORY_CHMOD' and `BM_ARCHIVE_CHMOD'.
+
      Example:
 
           export BM_REPOSITORY_SECURE="true"
           export BM_REPOSITORY_USER="root"
           export BM_REPOSITORY_GROUP="root"
+          export BM_REPOSITORY_CHMOD="770"
+          export BM_ARCHIVE_CHMOD="660"
 
 2.1.2. Archives
 ---------------
@@ -390,16 +396,42 @@ Contents
 2.2.1.7. `BM_TARBALL_DIRECTORIES'
 ---------------------------------
 
-     _Type: space-separated list, default: `""'._
+     __Deprecated_ - Type: space-separated list, default: `null'._
 
-     You certainly want to backup something, don't you?  So here is the
-     place where you put that precious list of locations.
+     Since version 0.7.3, this variable is still supported for backward
+     compatibility.
+
+     If you want to backup some targets that have spaces in their name (eg
+     "Program Files"), you must not use this variable, but should use the
+     array BM_TARBALL_TARGETS[] instead.
+
+     For this reason this variable is deprecated, use BM_TARBALL_TARGETS
+     instead.
 
      Example:
 
           export BM_TARBALL_DIRECTORIES="/etc /home /var/log/apache"
 
-2.2.1.8. `BM_TARBALL_BLACKLIST'
+2.2.1.8. `BM_TARBALL_TARGETS'
+-----------------------------
+
+     _Type: array, default: `"/etc", "/boot"'._
+
+     This variable holds every place you want to backup.  This is the
+     recommanded variable to use for defining your backup targets
+     (`BM_TARBALL_DIRECTORIES' is deprecated since version 0.7.3).
+
+     You can safely put items that contain spaces (eg: "Program Files")
+     whereas you can't with `BM_TARBALL_DIRECTORIES'.
+
+     Example
+
+          BM_TARBALL_TARGETS[0]="/etc"
+          BM_TARBALL_TARGETS[1]="/home/*"
+          BM_TARBALL_TARGETS[2]="/boot"
+          BM_TARBALL_TARGETS[3]="/mnt/win/Program Files"
+
+2.2.1.9. `BM_TARBALL_BLACKLIST'
 -------------------------------
 
      _Type: space-separated list, default: `"/proc /dev /sys /tmp"'._
@@ -417,8 +449,8 @@ Contents
 
           export BM_TARBALL_BLACKLIST="/tmp /dev /proc *.mp3 *.mpg"
 
-2.2.1.9. `BM_TARBALL_OVER_SSH'
-------------------------------
+2.2.1.10. `BM_TARBALL_OVER_SSH'
+-------------------------------
 
      _Type: boolean, default: `false'._
 

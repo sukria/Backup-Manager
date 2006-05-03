@@ -17,6 +17,7 @@ export BM_REPOSITORY_ROOT="repository"
 export BM_ARCHIVE_METHOD="tarball"
 export BM_TARBALL_DIRECTORIES="$PWD"
 export BM_ARCHIVE_TTL="3"
+source $locallib/sanitize.sh
 
 # The test actions
 

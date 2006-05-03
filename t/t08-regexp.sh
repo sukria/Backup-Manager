@@ -16,16 +16,16 @@ source confs/tarball.conf
 export BM_ARCHIVE_ROOT="repository"
 export BM_ARCHIVE_METHOD="tarball"
 
-export BM_TARBALL_DIRECTORIES="foo-*.d bar[0-9][0-9] static rep-[a-zA-Z\-]*test"
-subdirs_to_create="foo-bar.d foo-foo.d bar01 bar21 static rep-sukria-test rep-BackupManagertest"
+export BM_TARBALL_DIRECTORIES="$PWD/foo-*.d $PWD/bar[0-9][0-9] $PWD/static $PWD/rep-[a-zA-Z\-]*test"
+subdirs_to_create="$PWD/foo-bar.d $PWD/foo-foo.d $PWD/bar01 $PWD/bar21 $PWD/static $PWD/rep-sukria-test $PWD/rep-BackupManagertest"
 subdirs_to_ignore="foo.d bar-foo rep-132312-test"
+source $locallib/sanitize.sh
 
 # The test actions
 
 if [ -e $BM_ARCHIVE_ROOT ]; then
     rm -f $BM_ARCHIVE_ROOT/*
 fi    
-
 
 for dir in "$subdirs_to_ignore $subdirs_to_create"
 do

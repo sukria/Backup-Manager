@@ -32,7 +32,8 @@ export BM_REPOSITORY_CHMOD="770"
 # Archives - let's focus on the precious tarballs...
 ##############################################################
 
-# Each archive generated will be chmoded for security reasons.
+# Each archive generated will be chmoded for security reasons
+# (BM_REPOSITORY_SECURE should be enabled for this).
 export BM_ARCHIVE_CHMOD="660"
 
 # Number of days we have to keep an archive (Time To Live)
@@ -76,7 +77,7 @@ export BM_TARBALL_FILETYPE="tar.gz"
 # (BM_UPLOAD_SSH_HOSTS, BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY).
 # If this boolean is set to true, archive will be saved locally (in 
 # BM_REPOSITORY_ROOT but will be built by the remote host).
-# Thus, BM_TARBALL_DIRECTORIES will be used for backip up remote directories.
+# Thus, BM_TARBALL_DIRECTORIES will be used for backup remote directories.
 # Those archive will be prefixed with the remote host name.
 export BM_TARBALL_OVER_SSH="true"
 
@@ -84,8 +85,15 @@ export BM_TARBALL_OVER_SSH="true"
 # enter true or false (true can lead to huge archives, be careful).
 export BM_TARBALL_DUMPSYMLINKS="false"
 
-# Directories you want to backup as tarballs (separated by spaces)
-export BM_TARBALL_DIRECTORIES="/etc /home"
+# Directories you want to backup as tarballs.
+# This is an array, take care to increment the index for
+# each item.
+declare -a BM_TARBALL_TARGETS
+
+BM_TARBALL_TARGETS[0]="/etc" 
+BM_TARBALL_TARGETS[1]="/boot"
+
+export BM_TARBALL_TARGETS
 
 # Files to exclude when generating tarballs, you can put absolute 
 # or relative paths, Bash wildcards are possible.

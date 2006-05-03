@@ -16,6 +16,7 @@ source confs/tarball.conf
 export BM_ARCHIVE_ROOT="repository"
 export BM_ARCHIVE_METHOD="tarball"
 export BM_TARBALL_DIRECTORIES="$PWD"
+source $locallib/sanitize.sh
 
 # The test actions
 

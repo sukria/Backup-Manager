@@ -17,6 +17,7 @@ export BM_TARBALL_FILETYPE="tar.gz"
 export BM_TARBALL_DUMPSYMLINKS="no"
 export BM_TARBALL_DIRECTORIES="$PWD/var/www/"
 export BM_TARBALL_BLACKLIST="$PWD/var/www/xim $PWD/var/www/Upload"
+source $locallib/sanitize.sh
 
 # clean
 if [ -e $PWD/var ]; then

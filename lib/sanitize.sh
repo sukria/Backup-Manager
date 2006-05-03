@@ -146,18 +146,31 @@ fi
 
 if [ "$BM_ARCHIVE_METHOD" = "tarball" ] || 
    [ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ] ; then
-
-	confkey_handle_deprecated "BM_FILETYPE" "BM_TARBALL_FILETYPE"
 	confkey_require "BM_TARBALL_FILETYPE" "tar.gz"
-
-	confkey_handle_deprecated "BM_NAME_FORMAT" "BM_TARBALL_NAMEFORMAT"
 	confkey_require "BM_TARBALL_NAMEFORMAT" "long"
-
-	confkey_handle_deprecated "BM_DUMP_SYMLINKS" "BM_TARBALL_DUMPSYMLINKS"
 	confkey_require "BM_TARBALL_DUMPSYMLINKS" "false"
+fi
 
-	confkey_handle_deprecated "BM_DIRECTORIES" "BM_TARBALL_DIRECTORIES"
-	confkey_handle_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
+confkey_handle_deprecated "BM_FILETYPE" "BM_TARBALL_FILETYPE"
+confkey_handle_deprecated "BM_NAME_FORMAT" "BM_TARBALL_NAMEFORMAT"
+confkey_handle_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
+confkey_handle_deprecated "BM_DUMP_SYMLINKS" "BM_TARBALL_DUMPSYMLINKS"
+
+# We handle there the case of BM_TARBALL_DIRECTORIES which is now replaced
+# by an array in order to support paths with spaces in their name
+# see bug #86 for details.
+if [ -n "$BM_DIRECTORIES" ]; then
+    BM_TARBALL_DIRECTORIES="$BM_DIRECTORIES"
+fi
+if [ -n "$BM_TARBALL_DIRECTORIES" ]; then
+    declare -a BM_TARBALL_TARGETS
+    index=0
+    for target in $BM_TARBALL_DIRECTORIES
+    do
+#        __debug "$index : $target"
+        BM_TARBALL_TARGETS[$index]="$target"
+        index=$(($index + 1))
+    done
 fi
 
 if [ "$BM_UPLOAD_METHOD" = "rsync" ]; then

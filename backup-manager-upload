@@ -388,7 +388,7 @@ sub send_files_with_ftp($$$$$)
     # default is set to true.
     my $BM_UPLOAD_FTP_PASSIVE = $ENV{"BM_UPLOAD_FTP_PASSIVE"};
     unless (defined $BM_UPLOAD_FTP_PASSIVE) {
-        $BM_UPLOAD_FTP_PASSIVE = "1";
+        $BM_UPLOAD_FTP_PASSIVE = "true";
     }
     if ($BM_UPLOAD_FTP_PASSIVE eq "true") {
         $BM_UPLOAD_FTP_PASSIVE="1";

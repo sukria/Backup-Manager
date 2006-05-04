@@ -126,7 +126,6 @@ if [ "$BM_REPOSITORY_SECURE" = "true" ]; then
     confkey_require "BM_ARCHIVE_CHMOD" "660"
 fi
 
-
 confkey_handle_deprecated "BM_MAX_TIME_TO_LIVE" "BM_ARCHIVE_TTL"
 confkey_require "BM_ARCHIVE_TTL" "5"
 
@@ -163,11 +162,11 @@ if [ -n "$BM_DIRECTORIES" ]; then
     BM_TARBALL_DIRECTORIES="$BM_DIRECTORIES"
 fi
 if [ -n "$BM_TARBALL_DIRECTORIES" ]; then
+    warning "The configuration variable \"BM_TARBALL_DIRECTORIES\" is deprecated, using \"BM_TARBALL_TARGETS[]\" instead."
     declare -a BM_TARBALL_TARGETS
     index=0
     for target in $BM_TARBALL_DIRECTORIES
     do
-#        __debug "$index : $target"
         BM_TARBALL_TARGETS[$index]="$target"
         index=$(($index + 1))
     done

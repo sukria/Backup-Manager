@@ -1,3 +1,26 @@
+0.7.3
+    * New Features:
+        + New upload method: ssh-gpg (upload backups encrypted on-the-fly with GPG).
+          Thanks to Jan Metzger for his work.
+        + Possible to choose which permissions to set on the repository/archives 
+          when using the secure mode.
+        + New configuration variable "BM_UPLOAD_TTL" so remote archives can live
+          longer than local ones.
+          
+    * Bug Fixes:
+        + Possible to enable FTP passive uploads for boxes behind a firewall.
+        + The .md5 files are not left on remote servers anymore during the FTP 
+          purging phase.
+        + Bugfix in the duplicates purging system.
+        + The burning system can now safely burn archives in non-interactive
+          mode. 
+        + Support for targets to backup with spaces in their names.
+        
+    * Changes:
+        + The variable BM_TARBALL_DIRECTORIES is deprecated, it's replaced by 
+          the array BM_TARBALL_TARGETS[]; so paths with spaces can be safely
+          handled.
+    
 0.7.2
     * New Features:
         + It's now possible to use the burning system interactively in

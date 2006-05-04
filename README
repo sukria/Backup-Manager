@@ -11,9 +11,8 @@ Description
 Backup Manager is a command line backup tool for GNU/Linux, designed 
 to help you make daily archives of your file system.
 
-Written in bash and perl, it can make tar, tar.gz, tar.bz2, and zip 
-archives and can be run in a parallel mode with different 
-configuration files.
+Written in bash and perl, it can make archives in many formats
+and can be run in a parallel mode with different configuration files.
 
 Archives are kept for a given number of days and the upload system can
 use ftp or scp to transfer the generated archives to a list of remote 
@@ -21,10 +20,12 @@ hosts.
 The configuration file is very simple and basic and gettext is used 
 for internationalization.
 
+
 Installation
 ---------------------------------------------------------------------
 
 See the file INSTALL
+
 
 Rporting Bugs
 ---------------------------------------------------------------------

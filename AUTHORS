@@ -2,16 +2,23 @@
 * Backup Manager 
     
     + Developers
+    
         - Alexis Sukrieh <sukria@backup-manager.org>
         - Andreas "Jimmy" Gredler <jimmy@backup-manager.org>
         - Michel Grentzinger <michelg@backup-manager.org>
     
-    + Patch submitters
-    Support for the Amazon S3 Web Service.
+    + Contributors
+    
+        Upload method ssh-gpg
+        - Jan Metzger <5cent1@gmx.net>
+    
+        Support for the Amazon S3 Web Service.
         - Brad Dixon <rbdixon@gmail.com>
-    Symbolic links dumping support for zip archives
+    
+        Symbolic links dumping support for zip archives
         - Sven Joachim <sven_joachim@web.de>
-    Support for multiple configuration files
+    
+        Support for multiple configuration files
         - Michael Prokop <mikap@grml.org> 
     
 * Documentation

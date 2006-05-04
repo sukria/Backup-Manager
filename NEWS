@@ -2,6 +2,10 @@
     * New Features:
         + New upload method: ssh-gpg (upload backups encrypted on-the-fly with GPG).
           Thanks to Jan Metzger for his work.
+        + New upload method: Support for the Amazon S3 Web Service.
+          Thanks to Brad Dixon <rbdixon@gmail.com> for his work.
+        + New option for the tarball generation: possible to build archives over
+          SSH (thanks to the new variable BM_TARBALL_OVER_SSH). 
         + Possible to choose which permissions to set on the repository/archives 
           when using the secure mode.
         + New configuration variable "BM_UPLOAD_TTL" so remote archives can live
@@ -20,6 +24,10 @@
         + The variable BM_TARBALL_DIRECTORIES is deprecated, it's replaced by 
           the array BM_TARBALL_TARGETS[]; so paths with spaces can be safely
           handled.
+        + Full backups are now named differently than incremental ones: the
+          suffix "master" is appended to them.
+        + During the purging phase, masters aren't purged unless a newer master
+          is present.
     
 0.7.2
     * New Features:

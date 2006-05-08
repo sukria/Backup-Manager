@@ -319,18 +319,32 @@ function __get_flags_dar_incremental()
     __init_masterdatevalue
     
     yesterday=$(date +'%Y%m%d' --date '1 days ago')
+    
     yesterday_dar="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.dar"
-    yesterday_dar_first="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.1.dar"
-
+    yesterday_dar_first_slice="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.1.dar"
+    
+    yesterday_dar_master="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.master.dar"
+    yesterday_dar_master_first_slice="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.master.1.dar"
+    
     # If we aren't the "full backup" day, we take the previous backup as 
     # a reference for the incremental stuff.
     # We have to find the previous backup for that...
-    if [ "$master_day" != "$BM_TARBALLINC_MASTERDATEVALUE" ]; then
-        if [ -e $yesterday_dar ] || [ -e $yesterday_dar_first ]; then
+    if [ "$master_day" != "$BM_TARBALLINC_MASTERDATEVALUE" ] ; then
+        
+        # Either we have a master backup made yesterday...
+    	if [ -e $yesterday_dar_master ] || 
+           [ -e $yesterday_dar_master_first_slice ] ; then
+            incremental="--ref $BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.master"
+    
+        # ... Or we have an incremental backup made yesterday
+        elif [ -e $yesterday_dar ] || 
+             [ -e $yesterday_dar_first_slice ] ; then
             incremental="--ref $BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday"
-            master=""
-        else
-            incremental=""
+        fi
+        
+        # if we use some --ref then, it's not a master but an incremental backup.
+	    if [ -n "$incremental" ] ; then
+    	    master=""
         fi
     fi
 }

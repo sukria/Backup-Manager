@@ -4,6 +4,15 @@
 
 set -e
 
+##############################################################
+
+# !!! This test is broken !!!
+
+exit 10
+
+#############################################################
+
+
 # Each test script should include testlib.sh
 source testlib.sh
 # When the test is ready, set this to false for nice outputs.

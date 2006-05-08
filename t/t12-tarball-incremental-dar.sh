@@ -55,10 +55,16 @@ if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.1.dar" ]; then
         saved=$(dar -l $BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master | grep $file | awk '{print $1}')
         if [ "$saved" == "[saved]" ]; then
             warning "$file is saved in last archive, shouldn't."
+            rm -rf $PWD/test
+            rm -rf repository
             exit 1
         fi
     done
+    rm -rf $PWD/test
+    rm -rf repository
     exit 0
 else
+    rm -rf $PWD/test
+    rm -rf repository
     exit 1
 fi        

@@ -48,7 +48,9 @@ for file in $files
 do
     if [ ! -e $file ]; then
         warning "file $file does not exist"
+        rm -rf $BM_ARCHIVE_ROOT
         exit 10
     fi
 done
+rm -rf $BM_ARCHIVE_ROOT
 exit 0

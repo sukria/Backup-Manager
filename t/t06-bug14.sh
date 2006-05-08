@@ -34,7 +34,9 @@ make_archives
 
 name=$(get_dir_name $PWD long)
 if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.tar.gz" ]; then
+    rm -rf $PWD/repository
     exit 0
 else
+    rm -rf $PWD/repository
     exit 1
 fi        

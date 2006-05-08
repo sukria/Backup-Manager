@@ -413,18 +413,18 @@ In most of the cases, you should not use this feature.
 <sect2 id="BM_TARBALL_DIRECTORIES"><tt>BM_TARBALL_DIRECTORIES</tt>
 
 <p>
-<em><strong>Deprecated</strong> - Type: space-separated list, default: <tt>null</tt>.</em>
+<em>Type: space-separated list, default: <tt>null</tt>.</em>
 
 <p>
-Since version 0.7.3, this variable is still supported for backward compatibility.
+Since version 0.7.3, this variable is replaced by the array BM_TARBALL_TARGETS[],
+it's still supported for backward compatibility though.
+You can use this variable for defining the locations to backup, but you must not
+use this variable if one or more of the paths you want to archive contain a space.
 
 <p>
 If you want to backup some targets that have spaces in their name (eg
-"Program Files"), you must not use this variable, but should use the array
+"Program Files"), you must not use this variable, but the array 
 BM_TARBALL_TARGETS[] instead.  
-
-<p>
-For this reason this variable is deprecated, use BM_TARBALL_TARGETS instead.
 
 <p>
 Example: 

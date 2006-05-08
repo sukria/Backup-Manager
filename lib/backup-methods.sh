@@ -496,9 +496,7 @@ function __build_remote_archive()
 function __make_tarball_archives()
 {
     nb_err=0
-#   BM_TARBALL_DIRECTORIES=$(echo "$BM_TARBALL_DIRECTORIES" | sed -e 's/"\(.*\)"//g')
-#	for target in $BM_TARBALL_DIRECTORIES
-    for target in ${BM_TARBALL_TARGETS[*]}
+    for target in "${BM_TARBALL_TARGETS[@]}"
     do
         if [ -z "$target" ]; then
             continue
@@ -512,6 +510,7 @@ function __make_tarball_archives()
 		fi
 		
         dir_name=$(get_dir_name "$target" $BM_TARBALL_NAMEFORMAT)
+    
     
         # we assume we'll build a master backup (full archive).
         # If we make incremental backup, the $master keyword 

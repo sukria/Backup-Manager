@@ -21,8 +21,7 @@
 
 set -e
 
-
-VERSION="0.7.3"
+VERSION="0.7.3.1"
 
 # All the path we'll need
 libdir="/usr/share/backup-manager"
@@ -172,7 +171,6 @@ bm_init_env
 check_logger
 get_lock
 check_filetypes
-check_what_to_backup
 
 # For security reasons, change the umask
 # for the backup-manager session.

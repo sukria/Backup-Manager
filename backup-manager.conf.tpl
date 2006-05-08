@@ -85,9 +85,21 @@ export BM_TARBALL_OVER_SSH="true"
 # enter true or false (true can lead to huge archives, be careful).
 export BM_TARBALL_DUMPSYMLINKS="false"
 
-# Directories you want to backup as tarballs.
-# This is an array, take care to increment the index for
-# each item.
+# Targets to backup
+
+# You can use two different variables for defining the targets of 
+# your backups, either a simple space-separated list (BM_TARBALL_DIRECTORIES)
+# or an array (BM_TARBALL_TARGETS[]).
+# Use the first one for simple path that doesn't contain spaces in their name.
+# Use the former if you want to specify paths to backups with spaces.
+
+# It's recommanded to use BM_TARBALL_TARGETS[] though.
+# Warning! You *must not* use both variables at the same time.
+
+# Paths without spaces in their name:
+# export BM_TARBALL_DIRECTORIES="/etc /boot"
+
+# If one or more of the targets contain a space, use the array:
 declare -a BM_TARBALL_TARGETS
 
 BM_TARBALL_TARGETS[0]="/etc" 

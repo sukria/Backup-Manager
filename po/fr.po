@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.7.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-27 15:00+0200\n"
+"POT-Creation-Date: 2006-05-04 23:20+0200\n"
 "PO-Revision-Date: 2006-04-02 17:06+0100\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "Language-Team: Debian l10n French Team <debian-l10n-french@lists.debian."
@@ -36,8 +36,8 @@ msgid "Unable to change file permissions of \"$file_to_create\"."
 msgstr "Impossible de changer les droits d'accès de « $file_to_create »."
 
 #: ../lib/backup-methods.sh:76
-#, sh-format
-msgid "Unable to create $target, check $logfile"
+#, fuzzy, sh-format
+msgid "Unable to create \"$target\", check $logfile"
 msgstr "Impossible de créer $target, voir $logfile pour les détails."
 
 #: ../lib/backup-methods.sh:90
@@ -84,60 +84,60 @@ msgstr "Aucune fréquence définie, changez BM_TARBALLINC_MASTERDATETYPE."
 msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr "Fréquence inconnue : $BM_TARBALLINC_MASTERDATETYPE"
 
-#: ../lib/backup-methods.sh:416 ../lib/backup-methods.sh:431
-#: ../lib/backup-methods.sh:468
+#: ../lib/backup-methods.sh:416 ../lib/backup-methods.sh:432
+#: ../lib/backup-methods.sh:469
 #, sh-format
 msgid "The archive type \"$BM_TARBALL_FILETYPE\" is not supported."
 msgstr "Le type d'archive « $BM_TARBALL_FILETYPE » n'est pas géré."
 
-#: ../lib/backup-methods.sh:451 ../lib/backup-methods.sh:489
+#: ../lib/backup-methods.sh:452 ../lib/backup-methods.sh:490
 #, sh-format
 msgid "File $file_to_check already exists, skipping."
 msgstr "Fichier $file_to_check existe déjà ; ignoré."
 
-#: ../lib/backup-methods.sh:479
+#: ../lib/backup-methods.sh:480
 #, sh-format
 msgid "unable to exec $remote_command; check $logfile"
 msgstr "Impossible d'exécuter $remote_command ; voir $logfile"
 
-#: ../lib/backup-methods.sh:502
-#, sh-format
-msgid "Target $target does not exist, skipping."
+#: ../lib/backup-methods.sh:509
+#, fuzzy, sh-format
+msgid "Target \"$target\" does not exist, skipping."
 msgstr "La cible $target n'existe pas ; ignoré."
 
-#: ../lib/backup-methods.sh:542 ../lib/backup-methods.sh:572
-#: ../lib/backup-methods.sh:601 ../lib/backup-methods.sh:623
+#: ../lib/backup-methods.sh:549 ../lib/backup-methods.sh:579
+#: ../lib/backup-methods.sh:608 ../lib/backup-methods.sh:630
 #, sh-format
 msgid "Using method \"$method\"."
 msgstr "Utilisation de la méthode « $method »."
 
-#: ../lib/backup-methods.sh:565
+#: ../lib/backup-methods.sh:572
 #, sh-format
 msgid "During the tarballs generation, $nb_err error(s) occurred."
 msgstr ""
 "Lors de la génération des archives, $nb_err erreur(s) se sont produite(s)."
 
-#: ../lib/backup-methods.sh:574
+#: ../lib/backup-methods.sh:581
 #, sh-format
 msgid "The \"mysql\" method is chosen, but $mysqldump is not found."
 msgstr "La méthode « mysql » est choisie, mais $mysqldump n'est pas présent."
 
-#: ../lib/backup-methods.sh:603
+#: ../lib/backup-methods.sh:610
 #, sh-format
 msgid "The \"svn\" method is chosen, but $svnadmin is not found."
 msgstr "La méthode « svn » est choisie, mais $svnadmin n'est pas présent."
 
-#: ../lib/backup-methods.sh:609
+#: ../lib/backup-methods.sh:616
 #, sh-format
 msgid "SVN repository \"$repository\" is not valid; skipping."
 msgstr "Le dépôt SVN « $repository » n'est pas valide ; ignoré."
 
-#: ../lib/backup-methods.sh:632
+#: ../lib/backup-methods.sh:639
 #, sh-format
 msgid "Not enough args for this archive ($archive), skipping."
 msgstr "Pas assez d'arguments pour cette archive ($archive) ; ignoré."
 
-#: ../lib/backup-methods.sh:639
+#: ../lib/backup-methods.sh:646
 msgid "Cannot create archive."
 msgstr "Impossible de créer l'archive."
 
@@ -175,7 +175,13 @@ msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
 msgstr ""
 "Booléen obsolète, $key vaut « no », utilisation de « false » à la place."
 
-#: ../lib/sanitize.sh:215
+#: ../lib/sanitize.sh:165
+msgid ""
+"The configuration variable \"BM_TARBALL_DIRECTORIES\" is deprecated, using "
+"\"BM_TARBALL_TARGETS[]\" instead."
+msgstr ""
+
+#: ../lib/sanitize.sh:230
 #, sh-format
 msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
@@ -183,94 +189,6 @@ msgid ""
 msgstr ""
 "Lors de la validation du fichier de configuration $conffile, $nb_warnings "
 "avertissements ont été détectés."
-
-#: ../lib/actions.sh:42
-msgid "No backup method used."
-msgstr "Aucune méthode d'archivage utilisée."
-
-#: ../lib/actions.sh:45
-#, sh-format
-msgid "No such backup method: $BM_ARCHIVE_METHOD"
-msgstr "Aucune méthode de ce type : $BM_ARCHIVE_METHOD"
-
-#: ../lib/actions.sh:53
-#, sh-format
-msgid "Unable to change the owner of \"$md5file\"."
-msgstr "Impossible de changer le propriétaire du fichier « $md5file »."
-
-#: ../lib/actions.sh:55
-#, sh-format
-msgid "Unable to change file permissions of \"$md5file\"."
-msgstr "Impossible de changer les droits d'accès au fichier « $md5file »."
-
-#: ../lib/actions.sh:85
-msgid "No upload method used."
-msgstr "Aucune méthode de téléchargement utilisée."
-
-#: ../lib/actions.sh:88
-#, sh-format
-msgid "The upload method \"$method\" is not supported; skipping."
-msgstr "La méthode de téléchargement « $method » n'est pas supportée ; ignoré."
-
-#: ../lib/actions.sh:98
-#, sh-format
-msgid "Cleaning $BM_REPOSITORY_ROOT"
-msgstr "Nettoyage de $BM_REPOSITORY_ROOT"
-
-#: ../lib/actions.sh:109
-#, sh-format
-msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND."
-msgstr "Lancement de la précommande : $BM_PRE_BACKUP_COMMAND"
-
-#: ../lib/actions.sh:113
-msgid "Pre-command failed. Stopping the process."
-msgstr "La précommande a échoué. Arrêt du processus."
-
-#: ../lib/actions.sh:118
-#, sh-format
-msgid "Pre-command returned: \"$RET\" (success)."
-msgstr "La pré-commande a retourné : « $RET » (succès)."
-
-#: ../lib/actions.sh:128
-#, sh-format
-msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
-msgstr "Lancement de la post-commande : $BM_POST_BACKUP_COMMAND"
-
-#: ../lib/actions.sh:132
-msgid "Post-command failed."
-msgstr "La post-commande a échoué."
-
-#: ../lib/actions.sh:137
-#, sh-format
-msgid "Post-command returned: \"$RET\" (success)."
-msgstr "La post-commande a retourné : « $RET » (succès)."
-
-#: ../lib/actions.sh:160
-msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
-msgstr "La clef BM_TARBALL_FILETYPE vaut « zip » mais zip n'est pas installé."
-
-#: ../lib/actions.sh:165
-msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
-"installed."
-msgstr ""
-"La clef BM_TARBALL_FILETYPE vaut « bzip2 » mais bzip2 n'est pas installé."
-
-#: ../lib/actions.sh:170
-msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
-msgstr "La clef BM_TARBALL_FILETYPE vaut « dar » mais dar n'est pas installé."
-
-#: ../lib/actions.sh:180
-#, sh-format
-msgid "The BM_TARBALL_DIRECTORIES conf key is not set in $conffile"
-msgstr "La clef BM_TARBALL_DIRECTORIES n'est pas définie dans $conffile"
-
-#: ../lib/actions.sh:189
-#, sh-format
-msgid "The repository $BM_REPOSITORY_ROOT does not exist, creating it."
-msgstr "Le dépôt « $BM_REPOSITORY_ROOT » n'existe pas ; création."
 
 #: ../lib/md5sum.sh:28
 #, sh-format
@@ -359,16 +277,104 @@ msgstr "Pas en mode interactif, impossible de continuer."
 msgid "Releasing lock"
 msgstr "Libération du verrou."
 
-#: ../lib/files.sh:71 ../lib/files.sh:84
+#: ../lib/actions.sh:42
+msgid "No backup method used."
+msgstr "Aucune méthode d'archivage utilisée."
+
+#: ../lib/actions.sh:45
+#, sh-format
+msgid "No such backup method: $BM_ARCHIVE_METHOD"
+msgstr "Aucune méthode de ce type : $BM_ARCHIVE_METHOD"
+
+#: ../lib/actions.sh:54
+#, sh-format
+msgid "Unable to change the owner of \"$md5file\"."
+msgstr "Impossible de changer le propriétaire du fichier « $md5file »."
+
+#: ../lib/actions.sh:56
+#, sh-format
+msgid "Unable to change file permissions of \"$md5file\"."
+msgstr "Impossible de changer les droits d'accès au fichier « $md5file »."
+
+#: ../lib/actions.sh:86
+msgid "No upload method used."
+msgstr "Aucune méthode de téléchargement utilisée."
+
+#: ../lib/actions.sh:89
+#, sh-format
+msgid "The upload method \"$method\" is not supported; skipping."
+msgstr "La méthode de téléchargement « $method » n'est pas supportée ; ignoré."
+
+#: ../lib/actions.sh:99
+#, sh-format
+msgid "Cleaning $BM_REPOSITORY_ROOT"
+msgstr "Nettoyage de $BM_REPOSITORY_ROOT"
+
+#: ../lib/actions.sh:110
+#, sh-format
+msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND."
+msgstr "Lancement de la précommande : $BM_PRE_BACKUP_COMMAND"
+
+#: ../lib/actions.sh:114
+msgid "Pre-command failed. Stopping the process."
+msgstr "La précommande a échoué. Arrêt du processus."
+
+#: ../lib/actions.sh:119
+#, sh-format
+msgid "Pre-command returned: \"$RET\" (success)."
+msgstr "La pré-commande a retourné : « $RET » (succès)."
+
+#: ../lib/actions.sh:129
+#, sh-format
+msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
+msgstr "Lancement de la post-commande : $BM_POST_BACKUP_COMMAND"
+
+#: ../lib/actions.sh:133
+msgid "Post-command failed."
+msgstr "La post-commande a échoué."
+
+#: ../lib/actions.sh:138
+#, sh-format
+msgid "Post-command returned: \"$RET\" (success)."
+msgstr "La post-commande a retourné : « $RET » (succès)."
+
+#: ../lib/actions.sh:161
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
+msgstr "La clef BM_TARBALL_FILETYPE vaut « zip » mais zip n'est pas installé."
+
+#: ../lib/actions.sh:166
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
+"installed."
+msgstr ""
+"La clef BM_TARBALL_FILETYPE vaut « bzip2 » mais bzip2 n'est pas installé."
+
+#: ../lib/actions.sh:171
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
+msgstr "La clef BM_TARBALL_FILETYPE vaut « dar » mais dar n'est pas installé."
+
+#: ../lib/actions.sh:181
+#, sh-format
+msgid "The BM_TARBALL_DIRECTORIES conf key is not set in $conffile"
+msgstr "La clef BM_TARBALL_DIRECTORIES n'est pas définie dans $conffile"
+
+#: ../lib/actions.sh:190
+#, sh-format
+msgid "The repository $BM_REPOSITORY_ROOT does not exist, creating it."
+msgstr "Le dépôt « $BM_REPOSITORY_ROOT » n'existe pas ; création."
+
+#: ../lib/files.sh:73 ../lib/files.sh:86
 msgid "No path given."
 msgstr "Aucun chemin fourni."
 
-#: ../lib/files.sh:150
+#: ../lib/files.sh:152
 #, sh-format
 msgid "Removing lock for old PID, $pid is not running."
 msgstr "Libération du verrou pour un vieux PID, $pid ne tourne plus."
 
-#: ../lib/files.sh:160
+#: ../lib/files.sh:162
 #, sh-format
 msgid ""
 "A backup-manager process ($pid) is already running with the conffile "
@@ -377,67 +383,67 @@ msgstr ""
 "Un processus backup-manager ($pid) tourne déjà avec le fichier de "
 "configuration $conffile"
 
-#: ../lib/files.sh:164 ../lib/files.sh:170
+#: ../lib/files.sh:166 ../lib/files.sh:172
 #, sh-format
 msgid "Getting lock for backup-manager $pid with $conffile"
 msgstr "Demande de verrou pour backup-manager, $pid avec $conffile"
 
-#: ../lib/files.sh:173
+#: ../lib/files.sh:175
 msgid "failed (check the file permissions)."
 msgstr "échec (vérifiez les permissions du fichier)."
 
-#: ../lib/files.sh:260
+#: ../lib/files.sh:262
 #, sh-format
 msgid "$file is not a regular file."
 msgstr "$file n'est pas un fichier régulier."
 
-#: ../lib/files.sh:286
+#: ../lib/files.sh:288
 #, sh-format
 msgid "Removing deprecated master backup: \"$file\"."
 msgstr "Suppression de l'archive maître obsolète : « $file »."
 
-#: ../lib/files.sh:294
+#: ../lib/files.sh:296
 #, sh-format
 msgid "Removing deprecated master backup (isolated): \"$file\"."
 msgstr "Suppression de l'archive maître (isolée) : « $file »."
 
-#: ../lib/files.sh:301
+#: ../lib/files.sh:303
 #, sh-format
 msgid "Removing archive \"$file\"."
 msgstr "Suppression de l'archive « $file »."
 
-#: ../lib/files.sh:323
+#: ../lib/files.sh:325
 msgid "Directory given is not found."
 msgstr "Le répertoire spécifié n'est pas trouvable."
 
-#: ../lib/files.sh:333
+#: ../lib/files.sh:335
 #, sh-format
 msgid "Entering directory $file"
 msgstr "Entrée dans le répertoire $file."
 
-#: ../lib/files.sh:357
+#: ../lib/files.sh:359
 #, sh-format
 msgid "The given file does not exist: $file_to_create"
 msgstr "Le fichier donné n'existe pas : $file_to_create"
 
-#: ../lib/files.sh:362
+#: ../lib/files.sh:364
 msgid "No file given."
 msgstr "Aucun fichier spécifié."
 
-#: ../lib/files.sh:367 ../lib/files.sh:379
+#: ../lib/files.sh:369 ../lib/files.sh:371 ../lib/files.sh:385
 msgid "Unable to get date from file."
 msgstr "Impossible de récupérer la date du fichier."
 
-#: ../lib/files.sh:369
+#: ../lib/files.sh:375
 msgid "Unable to find the pattern of the file."
 msgstr "Impossible de trouver le motif du fichier."
 
-#: ../lib/files.sh:385
+#: ../lib/files.sh:391
 #, fuzzy, sh-format
 msgid "Unable to find the md5 hash of file \"$file\" in file \"$md5file\"."
 msgstr "Impossible de changer les droits d'accès au fichier « $md5file »."
 
-#: ../lib/files.sh:391
+#: ../lib/files.sh:397
 #, sh-format
 msgid "$file is a duplicate of $file_to_create (using symlink)."
 msgstr ""
@@ -742,23 +748,23 @@ msgstr ""
 msgid "Burning content of $index"
 msgstr "Gravure du contenu de « $index »."
 
-#: ../backup-manager:81
+#: ../backup-manager:82
 msgid "backup-manager must be run as root."
 msgstr "backup-manager doit être lancé en tant que superutilisateur."
 
-#: ../backup-manager:114
+#: ../backup-manager:115
 msgid "The -b option must be followed by a valid date (YYYYMMDD)."
 msgstr "L'option -b doit être suivie d'une date valide (AAAAMMJJ)."
 
-#: ../backup-manager:145
+#: ../backup-manager:146
 msgid "The -c option must be followed by an existing filename."
 msgstr "L'option -c doit être suivie d'un nom de fichier existant."
 
-#: ../backup-manager:182
+#: ../backup-manager:183
 msgid "Unable to exec the pre-command"
 msgstr "Impossible d'exécuter la précommande."
 
-#: ../backup-manager:223
+#: ../backup-manager:224
 msgid "Unable to exec post-command."
 msgstr "Impossible d'exécuter la post-commande."
 

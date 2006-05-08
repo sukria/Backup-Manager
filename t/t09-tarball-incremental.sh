@@ -66,10 +66,16 @@ if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.tar.gz" ]; then
             if [ $verbose == true ]; then
                 tar tvzf $BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.tar.gz
             fi
+            rm -rf $BM_ARCHIVE_ROOT
+            rm -rf $testdir
             exit 10
         fi
     done
+    rm -rf $BM_ARCHIVE_ROOT
+    rm -rf $testdir
     exit 0
 else
+    rm -rf $BM_ARCHIVE_ROOT
+    rm -rf $testdir
     exit 20
 fi        

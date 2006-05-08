@@ -19,8 +19,10 @@ export BM_TARBALL_FILETYPE="tar.gz"
 export BM_TARBALL_DUMPSYMLINKS="false"
 export BM_ARCHIVE_ROOT="repository"
 export BM_ARCHIVE_METHOD="tarball"
-declare -a BM_TARBALL_DIRECTORY
-BM_TARBALL_DIRECTORY[0]="$PWD/Program Files"
+declare -a BM_TARBALL_TARGETS
+BM_TARBALL_TARGETS[0]="$PWD/dir1"
+BM_TARBALL_TARGETS[1]="$PWD/Program Files"
+BM_TARBALL_TARGETS[2]="$PWD/dir2"
 
 source $locallib/sanitize.sh
 
@@ -41,4 +43,8 @@ touch "Program Files"/toto
 create_directories
 make_archives
 
+rm -rf dir1
+rm -rf dir2
+rm -rf "Program Files"
+rm -rf repository
 exit 0

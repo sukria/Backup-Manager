@@ -95,5 +95,6 @@ if [ ! -e $BM_REPOSITORY_ROOT/ouranos-01020102-fdisk.incremental-list.txt ] ||
     exit 4
 fi
 
+rm -rf $BM_REPOSITORY_ROOT
 exit 0
 

@@ -24,4 +24,6 @@ make_archives
 upload_files
 burn_files
 
+rm -rf repository
+
 exit 0

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-27 15:00+0200\n"
+"POT-Creation-Date: 2006-05-04 23:20+0200\n"
 "PO-Revision-Date: 2005-07-12 23:09+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debiann.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -37,7 +37,7 @@ msgstr "Vytváøím $file_to_create: "
 
 #: ../lib/backup-methods.sh:76
 #, fuzzy, sh-format
-msgid "Unable to create $target, check $logfile"
+msgid "Unable to create \"$target\", check $logfile"
 msgstr "nemohu ze souboru získat datum"
 
 #: ../lib/backup-methods.sh:90
@@ -84,59 +84,59 @@ msgstr ""
 msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr ""
 
-#: ../lib/backup-methods.sh:416 ../lib/backup-methods.sh:431
-#: ../lib/backup-methods.sh:468
+#: ../lib/backup-methods.sh:416 ../lib/backup-methods.sh:432
+#: ../lib/backup-methods.sh:469
 #, fuzzy, sh-format
 msgid "The archive type \"$BM_TARBALL_FILETYPE\" is not supported."
 msgstr "Typ souboru $BM_FILETYPE není podporován."
 
-#: ../lib/backup-methods.sh:451 ../lib/backup-methods.sh:489
+#: ../lib/backup-methods.sh:452 ../lib/backup-methods.sh:490
 #, fuzzy, sh-format
 msgid "File $file_to_check already exists, skipping."
 msgstr "Soubor $file_to_create ji¾ existuje, pøeskakuji."
 
-#: ../lib/backup-methods.sh:479
+#: ../lib/backup-methods.sh:480
 #, fuzzy, sh-format
 msgid "unable to exec $remote_command; check $logfile"
 msgstr "nemohu ze souboru získat datum"
 
-#: ../lib/backup-methods.sh:502
+#: ../lib/backup-methods.sh:509
 #, fuzzy, sh-format
-msgid "Target $target does not exist, skipping."
+msgid "Target \"$target\" does not exist, skipping."
 msgstr "Soubor $file_to_create ji¾ existuje, pøeskakuji."
 
-#: ../lib/backup-methods.sh:542 ../lib/backup-methods.sh:572
-#: ../lib/backup-methods.sh:601 ../lib/backup-methods.sh:623
+#: ../lib/backup-methods.sh:549 ../lib/backup-methods.sh:579
+#: ../lib/backup-methods.sh:608 ../lib/backup-methods.sh:630
 #, fuzzy, sh-format
 msgid "Using method \"$method\"."
 msgstr "Pou¾ívám zálohovací metodu \"rsync\""
 
-#: ../lib/backup-methods.sh:565
+#: ../lib/backup-methods.sh:572
 #, sh-format
 msgid "During the tarballs generation, $nb_err error(s) occurred."
 msgstr ""
 
-#: ../lib/backup-methods.sh:574
+#: ../lib/backup-methods.sh:581
 #, sh-format
 msgid "The \"mysql\" method is chosen, but $mysqldump is not found."
 msgstr ""
 
-#: ../lib/backup-methods.sh:603
+#: ../lib/backup-methods.sh:610
 #, sh-format
 msgid "The \"svn\" method is chosen, but $svnadmin is not found."
 msgstr ""
 
-#: ../lib/backup-methods.sh:609
+#: ../lib/backup-methods.sh:616
 #, sh-format
 msgid "SVN repository \"$repository\" is not valid; skipping."
 msgstr ""
 
-#: ../lib/backup-methods.sh:632
+#: ../lib/backup-methods.sh:639
 #, sh-format
 msgid "Not enough args for this archive ($archive), skipping."
 msgstr ""
 
-#: ../lib/backup-methods.sh:639
+#: ../lib/backup-methods.sh:646
 msgid "Cannot create archive."
 msgstr ""
 
@@ -167,7 +167,13 @@ msgstr ""
 msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
 msgstr ""
 
-#: ../lib/sanitize.sh:215
+#: ../lib/sanitize.sh:165
+msgid ""
+"The configuration variable \"BM_TARBALL_DIRECTORIES\" is deprecated, using "
+"\"BM_TARBALL_TARGETS[]\" instead."
+msgstr ""
+
+#: ../lib/sanitize.sh:230
 #, sh-format
 msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
@@ -175,103 +181,6 @@ msgid ""
 msgstr ""
 "Pøi ovìøování konfiguraèního souboru $conffile bylo nalezeno $nb_warnings "
 "varování."
-
-#: ../lib/actions.sh:42
-msgid "No backup method used."
-msgstr ""
-
-#: ../lib/actions.sh:45
-#, sh-format
-msgid "No such backup method: $BM_ARCHIVE_METHOD"
-msgstr ""
-
-#: ../lib/actions.sh:53
-#, fuzzy, sh-format
-msgid "Unable to change the owner of \"$md5file\"."
-msgstr "nemohu ze souboru získat datum"
-
-#: ../lib/actions.sh:55
-#, sh-format
-msgid "Unable to change file permissions of \"$md5file\"."
-msgstr ""
-
-#: ../lib/actions.sh:85
-#, fuzzy
-msgid "No upload method used."
-msgstr "Pou¾ívám zálohovací metodu \"rsync\""
-
-#: ../lib/actions.sh:88
-#, fuzzy, sh-format
-msgid "The upload method \"$method\" is not supported; skipping."
-msgstr "Soubor $file_to_create ji¾ existuje, pøeskakuji."
-
-#: ../lib/actions.sh:98
-#, fuzzy, sh-format
-msgid "Cleaning $BM_REPOSITORY_ROOT"
-msgstr "Èistím $BM_ARCHIVES_REPOSITORY: "
-
-#: ../lib/actions.sh:109
-#, fuzzy, sh-format
-msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND."
-msgstr "Spou¹tím úvodní pøíkaz: $BM_PRE_BACKUP_COMMAND: "
-
-#: ../lib/actions.sh:113
-#, fuzzy
-msgid "Pre-command failed. Stopping the process."
-msgstr "Úvodní pøíkaz vrátil chybu. Zastavuji proces."
-
-#: ../lib/actions.sh:118
-#, sh-format
-msgid "Pre-command returned: \"$RET\" (success)."
-msgstr ""
-
-#: ../lib/actions.sh:128
-#, fuzzy, sh-format
-msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
-msgstr "Spou¹tím závìreèný pøíkaz: $BM_POST_BACKUP_COMMAND: "
-
-#: ../lib/actions.sh:132
-#, fuzzy
-msgid "Post-command failed."
-msgstr "Závìreèný pøíkaz vrátil chybu."
-
-#: ../lib/actions.sh:137
-#, sh-format
-msgid "Post-command returned: \"$RET\" (success)."
-msgstr ""
-
-#: ../lib/actions.sh:160
-#, fuzzy
-msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
-msgstr ""
-"Konfiguraèní klíè BM_FILETYPE je nastaven na \"zip\" ale zip není instalován."
-
-#: ../lib/actions.sh:165
-#, fuzzy
-msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
-"installed."
-msgstr ""
-"Konfiguraèní klíè BM_FILETYPE je nastaven na \"bzip2\" ale bzip2 není "
-"instalován."
-
-#: ../lib/actions.sh:170
-#, fuzzy
-msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
-msgstr ""
-"Konfiguraèní klíè BM_FILETYPE je nastaven na \"zip\" ale zip není instalován."
-
-#: ../lib/actions.sh:180
-#, fuzzy, sh-format
-msgid "The BM_TARBALL_DIRECTORIES conf key is not set in $conffile"
-msgstr "Konfiguraèní klíè BM_DIRECTORIES není v $conffile nastaven"
-
-#: ../lib/actions.sh:189
-#, fuzzy, sh-format
-msgid "The repository $BM_REPOSITORY_ROOT does not exist, creating it."
-msgstr "Adresáø $BM_ARCHIVES_REPOSITORY neexistuje, vytváøím jej"
 
 #: ../lib/md5sum.sh:28
 #, sh-format
@@ -363,17 +272,114 @@ msgstr ""
 msgid "Releasing lock"
 msgstr "Uvolòuji zámek: "
 
-#: ../lib/files.sh:71 ../lib/files.sh:84
+#: ../lib/actions.sh:42
+msgid "No backup method used."
+msgstr ""
+
+#: ../lib/actions.sh:45
+#, sh-format
+msgid "No such backup method: $BM_ARCHIVE_METHOD"
+msgstr ""
+
+#: ../lib/actions.sh:54
+#, fuzzy, sh-format
+msgid "Unable to change the owner of \"$md5file\"."
+msgstr "nemohu ze souboru získat datum"
+
+#: ../lib/actions.sh:56
+#, sh-format
+msgid "Unable to change file permissions of \"$md5file\"."
+msgstr ""
+
+#: ../lib/actions.sh:86
+#, fuzzy
+msgid "No upload method used."
+msgstr "Pou¾ívám zálohovací metodu \"rsync\""
+
+#: ../lib/actions.sh:89
+#, fuzzy, sh-format
+msgid "The upload method \"$method\" is not supported; skipping."
+msgstr "Soubor $file_to_create ji¾ existuje, pøeskakuji."
+
+#: ../lib/actions.sh:99
+#, fuzzy, sh-format
+msgid "Cleaning $BM_REPOSITORY_ROOT"
+msgstr "Èistím $BM_ARCHIVES_REPOSITORY: "
+
+#: ../lib/actions.sh:110
+#, fuzzy, sh-format
+msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND."
+msgstr "Spou¹tím úvodní pøíkaz: $BM_PRE_BACKUP_COMMAND: "
+
+#: ../lib/actions.sh:114
+#, fuzzy
+msgid "Pre-command failed. Stopping the process."
+msgstr "Úvodní pøíkaz vrátil chybu. Zastavuji proces."
+
+#: ../lib/actions.sh:119
+#, sh-format
+msgid "Pre-command returned: \"$RET\" (success)."
+msgstr ""
+
+#: ../lib/actions.sh:129
+#, fuzzy, sh-format
+msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
+msgstr "Spou¹tím závìreèný pøíkaz: $BM_POST_BACKUP_COMMAND: "
+
+#: ../lib/actions.sh:133
+#, fuzzy
+msgid "Post-command failed."
+msgstr "Závìreèný pøíkaz vrátil chybu."
+
+#: ../lib/actions.sh:138
+#, sh-format
+msgid "Post-command returned: \"$RET\" (success)."
+msgstr ""
+
+#: ../lib/actions.sh:161
+#, fuzzy
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
+msgstr ""
+"Konfiguraèní klíè BM_FILETYPE je nastaven na \"zip\" ale zip není instalován."
+
+#: ../lib/actions.sh:166
+#, fuzzy
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
+"installed."
+msgstr ""
+"Konfiguraèní klíè BM_FILETYPE je nastaven na \"bzip2\" ale bzip2 není "
+"instalován."
+
+#: ../lib/actions.sh:171
+#, fuzzy
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
+msgstr ""
+"Konfiguraèní klíè BM_FILETYPE je nastaven na \"zip\" ale zip není instalován."
+
+#: ../lib/actions.sh:181
+#, fuzzy, sh-format
+msgid "The BM_TARBALL_DIRECTORIES conf key is not set in $conffile"
+msgstr "Konfiguraèní klíè BM_DIRECTORIES není v $conffile nastaven"
+
+#: ../lib/actions.sh:190
+#, fuzzy, sh-format
+msgid "The repository $BM_REPOSITORY_ROOT does not exist, creating it."
+msgstr "Adresáø $BM_ARCHIVES_REPOSITORY neexistuje, vytváøím jej"
+
+#: ../lib/files.sh:73 ../lib/files.sh:86
 #, fuzzy
 msgid "No path given."
 msgstr "Nebyl zadán ¾ádný soubor"
 
-#: ../lib/files.sh:150
+#: ../lib/files.sh:152
 #, sh-format
 msgid "Removing lock for old PID, $pid is not running."
 msgstr "Odstraòuji zámek pro staré PID, $pid ji¾ nebì¾í."
 
-#: ../lib/files.sh:160
+#: ../lib/files.sh:162
 #, fuzzy, sh-format
 msgid ""
 "A backup-manager process ($pid) is already running with the conffile "
@@ -381,72 +387,72 @@ msgid ""
 msgstr ""
 "Proces backup-manageru ($pid) ji¾ bì¾í s konfiguraèním souborem $conffile."
 
-#: ../lib/files.sh:164 ../lib/files.sh:170
+#: ../lib/files.sh:166 ../lib/files.sh:172
 #, fuzzy, sh-format
 msgid "Getting lock for backup-manager $pid with $conffile"
 msgstr "Získávám zámek pro backup-manager $pid s $conffile: "
 
-#: ../lib/files.sh:173
+#: ../lib/files.sh:175
 #, fuzzy
 msgid "failed (check the file permissions)."
 msgstr "selhalo (zkontrolujte pøístupová práva souborù)"
 
-#: ../lib/files.sh:260
+#: ../lib/files.sh:262
 #, sh-format
 msgid "$file is not a regular file."
 msgstr "$file není bì¾ný soubor."
 
-#: ../lib/files.sh:286
+#: ../lib/files.sh:288
 #, sh-format
 msgid "Removing deprecated master backup: \"$file\"."
 msgstr ""
 
-#: ../lib/files.sh:294
+#: ../lib/files.sh:296
 #, sh-format
 msgid "Removing deprecated master backup (isolated): \"$file\"."
 msgstr ""
 
-#: ../lib/files.sh:301
+#: ../lib/files.sh:303
 #, fuzzy, sh-format
 msgid "Removing archive \"$file\"."
 msgstr "Odstraòuji $file: "
 
-#: ../lib/files.sh:323
+#: ../lib/files.sh:325
 #, fuzzy
 msgid "Directory given is not found."
 msgstr "Zadaný adresáø nebyl nalezen"
 
-#: ../lib/files.sh:333
+#: ../lib/files.sh:335
 #, fuzzy, sh-format
 msgid "Entering directory $file"
 msgstr "Vstupuji do adresáøe $file."
 
-#: ../lib/files.sh:357
+#: ../lib/files.sh:359
 #, sh-format
 msgid "The given file does not exist: $file_to_create"
 msgstr "Zadaný soubor neexistuje: $file_to_create"
 
-#: ../lib/files.sh:362
+#: ../lib/files.sh:364
 #, fuzzy
 msgid "No file given."
 msgstr "Nebyl zadán ¾ádný soubor"
 
-#: ../lib/files.sh:367 ../lib/files.sh:379
+#: ../lib/files.sh:369 ../lib/files.sh:371 ../lib/files.sh:385
 #, fuzzy
 msgid "Unable to get date from file."
 msgstr "nemohu ze souboru získat datum"
 
-#: ../lib/files.sh:369
+#: ../lib/files.sh:375
 #, fuzzy
 msgid "Unable to find the pattern of the file."
 msgstr "nemohu najít vzor souboru"
 
-#: ../lib/files.sh:385
+#: ../lib/files.sh:391
 #, sh-format
 msgid "Unable to find the md5 hash of file \"$file\" in file \"$md5file\"."
 msgstr ""
 
-#: ../lib/files.sh:391
+#: ../lib/files.sh:397
 #, fuzzy, sh-format
 msgid "$file is a duplicate of $file_to_create (using symlink)."
 msgstr "Vytváøím $file_to_create: "
@@ -743,25 +749,25 @@ msgstr ""
 msgid "Burning content of $index"
 msgstr ""
 
-#: ../backup-manager:81
+#: ../backup-manager:82
 msgid "backup-manager must be run as root."
 msgstr "backup-manager musí být spu¹tìn pod u¾ivatelem root."
 
-#: ../backup-manager:114
+#: ../backup-manager:115
 #, fuzzy
 msgid "The -b option must be followed by a valid date (YYYYMMDD)."
 msgstr "za volbou -c musí následovat jméno existujícího souboru"
 
-#: ../backup-manager:145
+#: ../backup-manager:146
 #, fuzzy
 msgid "The -c option must be followed by an existing filename."
 msgstr "za volbou -c musí následovat jméno existujícího souboru"
 
-#: ../backup-manager:182
+#: ../backup-manager:183
 msgid "Unable to exec the pre-command"
 msgstr "Nemohu spustit úvodní pøíkaz"
 
-#: ../backup-manager:223
+#: ../backup-manager:224
 #, fuzzy
 msgid "Unable to exec post-command."
 msgstr "Nemohu spustit závìreèný pøíkaz"

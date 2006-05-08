@@ -44,17 +44,22 @@ make_archives
 
 name=$(get_dir_name "$PWD/testdir" long)
 if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$YESTERDAY.master.tar.gz" ]; then
-
     bm_init_today
     make_archives
     
     if [ -L "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$YESTERDAY.master.tar.gz" ]; then
         info "Duplicate has been purged, succes."
+        rm -rf testdir
+        rm -rf $BM_ARCHIVE_ROOT
         exit 0
     else
         warning "Duplicate has not been purged, failure."
+        rm -rf testdir
+        rm -rf $BM_ARCHIVE_ROOT
         exit 1
     fi
 else
+    rm -rf testdir
+    rm -rf $BM_ARCHIVE_ROOT
     exit 20
 fi        

@@ -47,5 +47,12 @@ do
         echo "ERR: $BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX-$name.$TODAY.master.tar.gz"
     fi        
 done
+
+rm -rf $BM_ARCHIVE_ROOT
+for dir in "$subdirs_to_ignore $subdirs_to_create"
+do
+    rm -rf $dir        
+done
+
 exit $err_code
 

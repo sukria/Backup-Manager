@@ -155,14 +155,12 @@ confkey_handle_deprecated "BM_NAME_FORMAT" "BM_TARBALL_NAMEFORMAT"
 confkey_handle_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
 confkey_handle_deprecated "BM_DUMP_SYMLINKS" "BM_TARBALL_DUMPSYMLINKS"
 
-# We handle there the case of BM_TARBALL_DIRECTORIES which is now replaced
-# by an array in order to support paths with spaces in their name
+# Converting anything in BM_TARBALL_DIRECTORIES in the array BM_TARBALL_TARGETS[].
 # see bug #86 for details.
 if [ -n "$BM_DIRECTORIES" ]; then
     BM_TARBALL_DIRECTORIES="$BM_DIRECTORIES"
 fi
 if [ -n "$BM_TARBALL_DIRECTORIES" ]; then
-    warning "The configuration variable \"BM_TARBALL_DIRECTORIES\" is deprecated, using \"BM_TARBALL_TARGETS[]\" instead."
     declare -a BM_TARBALL_TARGETS
     index=0
     for target in $BM_TARBALL_DIRECTORIES

@@ -68,13 +68,19 @@ then
                 cat $tempfile
            fi
            rm -f $tempfile
+            rm -rf $PWD/repository
+            rm -rf $PWD/var
            exit 1
         else
             rm -f $tempfile
+            rm -rf $PWD/repository
+            rm -rf $PWD/var
             exit 0
         fi                
 else
     warning "$archive doesn't exists"
+    rm -rf $PWD/repository
+    rm -rf $PWD/var
     exit 1
 fi    
 

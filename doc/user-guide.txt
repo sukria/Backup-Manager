@@ -396,17 +396,17 @@ Contents
 2.2.1.7. `BM_TARBALL_DIRECTORIES'
 ---------------------------------
 
-     __Deprecated_ - Type: space-separated list, default: `null'._
+     _Type: space-separated list, default: `null'._
 
-     Since version 0.7.3, this variable is still supported for backward
-     compatibility.
+     Since version 0.7.3, this variable is replaced by the array
+     BM_TARBALL_TARGETS[], it's still supported for backward compatibility
+     though.  You can use this variable for defining the locations to
+     backup, but you must not use this variable if one or more of the paths
+     you want to archive contain a space.
 
      If you want to backup some targets that have spaces in their name (eg
-     "Program Files"), you must not use this variable, but should use the
-     array BM_TARBALL_TARGETS[] instead.
-
-     For this reason this variable is deprecated, use BM_TARBALL_TARGETS
-     instead.
+     "Program Files"), you must not use this variable, but the array
+     BM_TARBALL_TARGETS[] instead.
 
      Example:
 

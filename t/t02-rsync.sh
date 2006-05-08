@@ -31,6 +31,6 @@ make_archives
 upload_files
 
 # remove the stuff generated
-rm -f repository/*
+rm -rf repository
 
 exit 0

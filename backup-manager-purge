@@ -1,0 +1,105 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+=pod
+
+=head1 NAME
+
+backup-manager-purge - backup-manager's wrapper for outdating files
+
+=head1 SYNOPSIS
+
+backup-manager-purge [TTL] <options> 
+
+=head1 DESCRIPTION
+
+B<backup-manager-purge> is the only authorized entity that can say if an archive
+should be purged or not. Any tasks used by backup-manager may have to know if
+an archive is deprecated (eg: the purging phase of an upload method). This tool
+is here to fulfill that need.
+
+Given a I<time to live (TTL)> and a list of archives, B<backup-manager-purge>
+will return another list of archives, corresponding to the ones that are
+outdated by the TTL. 
+
+=head1 REQUIRED ARGS
+
+=over 4
+
+=item B<--ttl=>I<time-to-live>
+
+Specify the time to live (in days) for the archives. Any archive that is older
+than I<ttl> days will be outdated.
+
+=item B<--files-from=>file
+
+A file containing a list of archives to parse, one archive per line.
+
+=back
+
+=head1 RETURN
+
+B<backup-manager-purge> will return the list of outdated files on stdout, one
+file per line.
+
+=head1 ERROR CODES
+
+If an error occurs, it will print the error message on stderr and will exit with
+an error code greater than 0.
+
+Here are the possible error codes:
+
+=over 4
+
+=item bad command line (wrong arguments) : 10
+
+=item ... ...
+
+=back
+
+=head1 SEE ALSO
+
+backup-manager(8) backup-manager-upload(8)
+
+=head1 AUTHORS
+
+Concept and design by Alexis Sukrieh and Jan Metzger.
+
+=cut
+
+##############################################################
+# Uses
+##############################################################
+use BackupManager::Config;
+use BackupManager::Logger;
+use POSIX qw(strftime);
+use File::Basename;
+
+##############################################################
+# Constants
+##############################################################
+use constant E_SUCCESS => 0;
+use constant E_INVALID => 10;
+use constant TRUE => 1;
+use constant FALSE => 0;
+
+##############################################################
+# Global variables
+##############################################################
+my $g_ttl = undef;
+my $g_filelist = undef;
+
+##############################################################
+# Command line parsing
+##############################################################
+BackupManager::Config::getopt("$0 -ttl=<TTL> --files-from=<FILE>\n
+--ttl|-t:        the time to live for outdating files
+--files-from|-f: a file that contains the list of archives to process",
+'ttl|t=s'         => \$g_ttl,
+'files-from|f=s'  => \$g_filelist,
+);
+
+
+exit E_SUCCESS;

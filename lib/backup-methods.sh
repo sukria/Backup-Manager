@@ -516,14 +516,18 @@ function __make_tarball_archives()
             continue
         fi
         
+        target_expanded="$(eval 'echo $target')"
+        for t in $target_expanded
+        do
+        
         # first be sure the target exists
-		if [ ! -e "$target" ] || [ ! -r "$target" ]; then
-			warning "Target \"\$target\" does not exist, skipping."
+		if [ ! -e "$t" ] || [ ! -r "$t" ]; then
+			warning "Target \"\$t\" does not exist, skipping."
 			nb_err=$(($nb_err + 1))
 			continue
 		fi
 		
-        dir_name=$(get_dir_name "$target" $BM_TARBALL_NAMEFORMAT)
+        dir_name=$(get_dir_name "$t" $BM_TARBALL_NAMEFORMAT)
     
     
         # we assume we'll build a master backup (full archive).
@@ -547,10 +551,11 @@ function __make_tarball_archives()
         fi
 
         if [ "$BM_TARBALL_OVER_SSH" != "true" ]; then
-            __build_local_archive "$target" "$dir_name"       
+            __build_local_archive "$t" "$dir_name"       
         else
-            __build_remote_archive "$target" "$dir_name"
+            __build_remote_archive "$t" "$dir_name"
         fi
+    done
     done
 }
 

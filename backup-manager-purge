@@ -33,15 +33,19 @@ outdated by the TTL.
 Specify the time to live (in days) for the archives. Any archive that is older
 than I<ttl> days will be outdated.
 
+
+=head1 OPTIONAL ARGS
+
 =item B<--files-from=>file
 
 A file containing a list of archives to parse, one archive per line.
+If this option is not used, STDIN will be used for catching the files to parse.
 
 =back
 
 =head1 RETURN
 
-B<backup-manager-purge> will return the list of outdated files on stdout, one
+B<backup-manager-purge> will return the list of outdated files on STDOUT, one
 file per line.
 
 =head1 ERROR CODES
@@ -55,7 +59,7 @@ Here are the possible error codes:
 
 =item bad command line (wrong arguments) : 10
 
-=item ... ...
+=item internal error (should be reported as a bug) : 20
 
 =back
 
@@ -74,6 +78,7 @@ Concept and design by Alexis Sukrieh and Jan Metzger.
 ##############################################################
 use BackupManager::Config;
 use BackupManager::Logger;
+use BackupManager::Dialog;
 use POSIX qw(strftime);
 use File::Basename;
 
@@ -82,14 +87,20 @@ use File::Basename;
 ##############################################################
 use constant E_SUCCESS => 0;
 use constant E_INVALID => 10;
+use constant E_INTERNAL => 20;
 use constant TRUE => 1;
 use constant FALSE => 0;
+use constant DIALOG_VERBOSE => 1;
+use constant MSG_INTERNAL => "Internal system error, please report the bug.";
 
 ##############################################################
 # Global variables
 ##############################################################
 my $g_ttl = undef;
 my $g_filelist = undef;
+my @g_archives = ();
+my @g_outdated = ();
+my $g_fh = *STDIN;
 
 ##############################################################
 # Command line parsing
@@ -101,5 +112,102 @@ BackupManager::Config::getopt("$0 -ttl=<TTL> --files-from=<FILE>\n
 'files-from|f=s'  => \$g_filelist,
 );
 
+##############################################################
+# Subs
+##############################################################
+
+# Takes an archive an returns all meta-data contained in its name
+sub parse_archive ($)
+{
+    my ($archive) = @_;
+    unless (defined $archive) {
+        print_error MSG_INTERNAL;
+        exit E_INTERNAL;
+    }
+    my ($prefix, $name, $date, $master, $filetype);
+    $archive = basename ($archive);
+
+    if ($archive =~ /^\s*([^-]+)-(\S+)\.(\d{8})\.(\S+)\s*$/) {
+        $prefix = $1;
+        $name = $2;
+        $date = $3;
+        my $suffix = $4;
+        if ($suffix =~ /master\.(\S+)/) {
+            $master = 1;
+            $filetype = $1;
+        }
+        elsif ($suffix =~ /\.?(.+)/) {
+            $master = 0;
+            $filetype = $1;
+        }
+    }
+    return ($prefix, $name, $date, $master, $filetype);
+}
+
+# Takes a file handle and an array ref, parse the file's content
+# and store in the array exiting filenames.
+sub read_archives($$)
+{
+    my ($ra_archives, $fh) = @_;
+    
+    my $archive = "";
+    while (<$fh>) {
+        chomp();
+
+        if (/^\s*(\S+)\s*$/) {
+            $archive = $1;
+        }
+        else {
+        }
+
+        push @{$ra_archives}, $archive;
+    }
+}
+
+
+# Takes two array refs. Reads from the first one the list of archives 
+# to process, and push in the second one outdated archives.
+sub outdate_archives($$)
+{
+    my ($ra_archives, $ra_outdated) = @_;
+    unless (defined $ra_archives and
+            defined $ra_outdated) {
+        exit E_INTERNAL;
+    }
+
+    foreach my $archive (@{$ra_archives}) {
+        my ($prefix, $name, $date, $master, $filetype) = 
+            parse_archive ($archive);
+
+            print_info "$archive\n\tprefix: $prefix, ".
+                       "name: $name, ".
+                       "date: $date, ".
+                       "master: $master, ".
+                       "filetype: $filetype\n";
+    }
+}
+
+##############################################################
+# Main
+##############################################################
+
+init_dialog (DIALOG_VERBOSE);
+
+unless ($g_ttl) {
+    print_error "No TTL given";
+    exit E_INVALID;
+}
+
+if (defined $g_filelist and -f $g_filelist) {
+    print_info "Reading archives from $g_filelist";
+    open $g_fh, $g_filelist or die "Unable to open $g_filelist";
+}
+else {
+    print_info "Reading archives from STDIN";
+}
+    
+read_archives(\@g_archives, $g_fh);
+
+outdate_archives (\@g_archives, \@g_outdated);
 
 exit E_SUCCESS;

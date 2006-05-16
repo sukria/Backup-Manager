@@ -28,8 +28,8 @@ DOCPDF		= doc/user-guide.pdf
 DOCTXT		= doc/user-guide.txt
 
 # The backup-manager package
-install: install_lib install_deb install_contrib install_man install_po
-install_binary: install_lib install_deb 
+install: install_lib install_bin install_contrib install_man install_po
+install_binary: install_lib install_bin 
 
 install_contrib:
 	@echo -e "*** Contrib files ***\n"
@@ -57,12 +57,13 @@ install_lib:
 	install --owner=root --group=root --mode=0644 $(SHFILES) $(LIBDIR)
 
 # The main stuff to build the backup-manager package
-install_deb:
+install_bin:
 	@echo -e "\n*** Installing scripts ***\n"
 	mkdir -p $(DESTDIR)/usr/sbin
 	mkdir -p $(DESTDIR)/usr/bin
 	mkdir -p $(SHAREDIR)
 	install --owner=root --group=root --mode=0755 backup-manager $(DESTDIR)/usr/sbin
+	install --owner=root --group=root --mode=0755 backup-manager-purge $(DESTDIR)/usr/bin
 	install --owner=root --group=root --mode=0755 backup-manager-upload $(DESTDIR)/usr/bin
 	install --owner=root --group=root --mode=0644 backup-manager.conf.tpl $(SHAREDIR)
 	

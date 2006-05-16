@@ -129,6 +129,7 @@ sub parse_archive ($)
     my ($prefix, $name, $date, $master, $filetype);
     $archive = basename ($archive);
 
+    # The archive pattern
     if ($archive =~ /^\s*([^-]+)-(\S+)\.(\d{8})\.(\S+)\s*$/) {
         $prefix = $1;
         $name = $2;
@@ -143,6 +144,21 @@ sub parse_archive ($)
             $filetype = $1;
         }
     }
+
+    # The md5 file pattern
+    elsif ($archive =~ /^\s*([^-]+)-(\d{8})\.md5\s*$/) {
+        $prefix = $1;
+        $name = "$prefix-md5";
+        $date = $2;
+        $filetype = "md5";
+        $master = 0;
+    }
+
+    # Unknown pattern
+    else {
+        return undef;
+    }
+    
     return { prefix => $prefix, 
              name => $name, 
              date => $date, 

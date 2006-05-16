@@ -325,6 +325,8 @@ clean_directory()
         error "Directory given is not found."
     fi
 
+    # First list all the files to process
+    list=$(mktemp /tmp/bm-list.XXXXXX)
     for file in $directory/*
     do
         if [ ! -e $file ]; then
@@ -332,11 +334,17 @@ clean_directory()
         fi
         
         if [ -d $file ]; then
-            info "Entering directory \$file"
             clean_directory "$file"
         else 
-            clean_file "$file" "$purge_date"
+            echo "$file" >> $list
         fi
+    done
+
+    # Then ask bakup-manager-purge what to remove
+    for archive in `/usr/bin/backup-manager-purge --ttl=$BM_ARCHIVE_TTL < $list`
+    do
+        info "Removing archive \"\$archive\"."
+        rm -f $archive
     done
 }
 

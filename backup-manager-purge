@@ -81,6 +81,7 @@ use BackupManager::Logger;
 use BackupManager::Dialog;
 use POSIX qw(strftime);
 use File::Basename;
+use Data::Dumper;
 
 ##############################################################
 # Constants
@@ -90,7 +91,7 @@ use constant E_INVALID => 10;
 use constant E_INTERNAL => 20;
 use constant TRUE => 1;
 use constant FALSE => 0;
-use constant DIALOG_VERBOSE => 1;
+use constant DIALOG_VERBOSE => 0;
 use constant MSG_INTERNAL => "Internal system error, please report the bug.";
 
 ##############################################################
@@ -101,6 +102,7 @@ my $g_filelist = undef;
 my @g_archives = ();
 my @g_outdated = ();
 my $g_fh = *STDIN;
+my $g_rh_archives = {};
 
 ##############################################################
 # Command line parsing
@@ -141,7 +143,11 @@ sub parse_archive ($)
             $filetype = $1;
         }
     }
-    return ($prefix, $name, $date, $master, $filetype);
+    return { prefix => $prefix, 
+             name => $name, 
+             date => $date, 
+             master => $master, 
+             filetype => $filetype};
 }
 
 # Takes a file handle and an array ref, parse the file's content
@@ -157,11 +163,29 @@ sub read_archives($$)
         if (/^\s*(\S+)\s*$/) {
             $archive = $1;
         }
-        else {
+        
+        my $rh_data = parse_archive ($archive);
+        next unless defined $rh_data;
+        next unless defined $rh_data->{date};
+        
+        if ($rh_data->{master}) {
+            $g_rh_archives->{$rh_data->{name}}{pathByDateMasters}{$rh_data->{date}} = $archive;
         }
-
+        $g_rh_archives->{$rh_data->{name}}{pathByDate}{$rh_data->{date}} = $archive;
+        $g_rh_archives->{dataByPath}{$archive} = $rh_data;
+        
         push @{$ra_archives}, $archive;
     }
+}
+
+
+# Takes an archive and a meta-data hash ref
+# and return 1 if the archive is outded according to $g_ttl,
+# 0 else.
+sub outdate_master_archive($$$$$)
+{
+    my ($archive, $rh_meta, $purge_date,
+        $ra_archives, $ra_outdated) = @_;
 }
 
 
@@ -175,15 +199,43 @@ sub outdate_archives($$)
         exit E_INTERNAL;
     }
 
-    foreach my $archive (@{$ra_archives}) {
-        my ($prefix, $name, $date, $master, $filetype) = 
-            parse_archive ($archive);
+    my $purge_date = strftime ('%Y%m%d', 
+                               localtime(time() - $g_ttl * 24 * 3600)); 
 
-            print_info "$archive\n\tprefix: $prefix, ".
-                       "name: $name, ".
-                       "date: $date, ".
-                       "master: $master, ".
-                       "filetype: $filetype\n";
+    print_info "Outdating archives made before $purge_date";
+    
+    my %seen = ();
+    foreach my $archive (sort @{$ra_archives}) {
+        
+        my $data = $g_rh_archives->{dataByPath}{$archive};
+        next unless defined $data;
+        next unless defined $data->{date};
+        next if $seen{$archive};
+        $seen{$archive} = 1;
+       
+        # if the date of the archive is older than $purge_date, we may have to outdate it
+        # unless, nothing to do for that archive.
+        if ($data->{date} > $purge_date) {
+            next;
+        }
+
+        # we can outdate a master only if a younger master exists
+        if ($data->{master}) {
+            foreach my $master_date (
+                keys %{$g_rh_archives->{$data->{name}}{pathByDateMasters}}) {
+                if ($master_date > $data->{date}) {
+                    push @{$ra_outdated}, $archive;
+                    last;
+                }
+            }
+        }
+
+        # other archives are pretty easy to handle, ce can outade them 
+        # if the date is older than $purge_date, which is the case at this point 
+        # of the process.
+        else {
+            push @{$ra_outdated}, $archive;
+        }
     }
 }
 
@@ -191,13 +243,16 @@ sub outdate_archives($$)
 # Main
 ##############################################################
 
+# Init
 init_dialog (DIALOG_VERBOSE);
 
+# Args check
 unless ($g_ttl) {
     print_error "No TTL given";
     exit E_INVALID;
 }
 
+# In    
 if (defined $g_filelist and -f $g_filelist) {
     print_info "Reading archives from $g_filelist";
     open $g_fh, $g_filelist or die "Unable to open $g_filelist";
@@ -205,9 +260,14 @@ if (defined $g_filelist and -f $g_filelist) {
 else {
     print_info "Reading archives from STDIN";
 }
-    
-read_archives(\@g_archives, $g_fh);
+read_archives (\@g_archives, $g_fh);
 
+# Process
 outdate_archives (\@g_archives, \@g_outdated);
+
+# Out
+foreach my $archive (@g_outdated) {
+    print "$archive\n";
+}
 
 exit E_SUCCESS;

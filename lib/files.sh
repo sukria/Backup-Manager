@@ -346,6 +346,7 @@ clean_directory()
         info "Removing archive \"\$archive\"."
         rm -f $archive
     done
+    rm -f $list
 }
 
 # This takes a file and the md5sum of that file.

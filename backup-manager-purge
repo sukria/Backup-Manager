@@ -263,7 +263,7 @@ sub outdate_archives($$)
 init_dialog (DIALOG_VERBOSE);
 
 # Args check
-unless ($g_ttl) {
+unless (defined $g_ttl) {
     print_error "No TTL given";
     exit E_INVALID;
 }

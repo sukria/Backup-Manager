@@ -136,7 +136,7 @@ use warnings;
 use BackupManager::Config;
 use BackupManager::Logger;
 use POSIX qw(strftime);
-use File::Basename;
+use File::Temp qw(tempfile);
 
 use constant TRUE => 1;
 use constant FALSE => 0;
@@ -343,22 +343,27 @@ sub ftp_clean_directory($)
         $BM_ARCHIVE_TTL = $ENV{BM_UPLOAD_FTP_TTL};
     }
     return 0 unless defined $BM_ARCHIVE_TTL;
+    verbose "Cleaning remote directory through FTP";
 
-    my $date_to_remove = `date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago"`;
-    chomp $date_to_remove;
-   
+    # First, create the list of existing archives
+    my ($fh, $filename) = tempfile();
     my $ra_files = $ftp->ls();
     foreach my $file (@$ra_files) {
-        my $date = undef;
-        chomp $file;
-        if ($file =~ /[\.\-](\d{8})\./) {
-            $date = $1;
-            if ($date and ($date <= $date_to_remove)) {
-                verbose "$file has to be deleted, too old ($date <= $date_to_remove).";
-                $ftp->delete ($file) or error "Unable to delete $file.";
-            }
-        }
+        print $fh "$file\n";
     }
+    close $fh;
+    
+    # Then delete every file listed as "outaded" by backup-manager-purge
+    my ($fh_out, $out) =tempfile();
+    system ("/usr/bin/backup-manager-purge --ttl=$BM_ARCHIVE_TTL --files-from=$filename > $out");
+    open (STDOUT_CMD, "<$out");
+    while (<STDOUT_CMD>) {
+        chomp();
+        verbose "Purging $_";
+        $ftp->delete ($_) or error "Unable to delete \"$_\".";
+    }
+    close STDOUT_CMD;
+    undef $fh;
     return 1;
 }
 
@@ -423,7 +428,11 @@ sub send_files_with_ftp($$$$$)
 			    $ftp->cwd($repository)) {
 				verbose "Logged on $host, in $repository (binary mode)";
 
-                ftp_clean_directory($ftp) if ($g_ftpclean);
+                if ($g_ftpclean) {
+                    unless (ftp_clean_directory($ftp)) {
+                        verbose_error "Unable to clean the FTP directory.";
+                    }
+                }
 			    
 				foreach my $file (@{$ra_files}) {
 					chomp $file;
@@ -663,7 +672,7 @@ sub get_files_list_from_date($)
     }
 
 	while (<$g_root_dir/*$date*>) {
-		push @{$ra_files}, $_;
+        push @{$ra_files}, $_;
 	}
 
 	return $ra_files;

@@ -77,7 +77,7 @@ export BM_TARBALL_FILETYPE="tar.gz"
 # (BM_UPLOAD_SSH_HOSTS, BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY).
 # If this boolean is set to true, archive will be saved locally (in 
 # BM_REPOSITORY_ROOT but will be built by the remote host).
-# Thus, BM_TARBALL_DIRECTORIES will be used for backup remote directories.
+# Thus, BM_TARBALL_DIRECTORIES will be used to backup remote directories.
 # Those archive will be prefixed with the remote host name.
 export BM_TARBALL_OVER_SSH="true"
 

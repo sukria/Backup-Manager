@@ -42,7 +42,7 @@ get_dir_name()
         base=${base%/}
 
         # every space by a _ 
-        dirname=$(echo "$base" | sed 's/\s/_/g')
+        dirname=$(echo "$base" | sed 's/ /_/g')
         # every / by a -
         dirname=$(echo "$dirname" | sed 's/\//-/g')
         

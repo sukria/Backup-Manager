@@ -74,27 +74,28 @@ touch $BM_REPOSITORY_ROOT/ouranos01020102-fdisk.incremental-list.txt
 clean_directory "$BM_REPOSITORY_ROOT"
 
 # test what it did
+error=0
 if [ -e $BM_REPOSITORY_ROOT/ouranos-$date_4_days_ago.md5 ]; then
     info "$BM_REPOSITORY_ROOT/ouranos-$date_4_days_ago.md5 exists"
-    exit 1
+    error=1
 fi
 
 if [ ! -e $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_4_days_ago.master.tar.bz2 ]; then
     info "$BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_4_days_ago.master.tar.bz2 has been removed"
-    exit 2
+    error=2
 fi
 
 if [ ! -e $BM_REPOSITORY_ROOT/passwd ]; then
     info "$BM_REPOSITORY_ROOT/passwd has been removed"
-    exit 3
+    error=3
 fi
 
 if [ ! -e $BM_REPOSITORY_ROOT/ouranos-01020102-fdisk.incremental-list.txt ] ||
    [ ! -e $BM_REPOSITORY_ROOT/ouranos01020102-fdisk.incremental-list.txt ]; then
     info "files with 8 digits in their prefix removed"
-    exit 4
+    error=4
 fi
 
 rm -rf $BM_REPOSITORY_ROOT
-exit 0
+exit $error
 

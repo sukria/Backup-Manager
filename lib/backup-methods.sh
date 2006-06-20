@@ -507,46 +507,35 @@ function __build_remote_archive()
     done
 }
 
-function __make_tarball_archives()
+
+function __make_tarball_token
 {
-    nb_err=0
-    for target in "${BM_TARBALL_TARGETS[@]}"
-    do
-        if [ -z "$target" ]; then
-            continue
-        fi
-        
-        target_expanded="$(eval 'echo $target')"
-        for t in $target_expanded
-        do
-        
+    t="$1"
+
+    if [ ! -e "$t" ] || [ ! -r "$t" ]; then
         # first be sure the target exists
-		if [ ! -e "$t" ] || [ ! -r "$t" ]; then
-			warning "Target \"\$t\" does not exist, skipping."
-			nb_err=$(($nb_err + 1))
-			continue
-		fi
-		
-        dir_name=$(get_dir_name "$t" $BM_TARBALL_NAMEFORMAT)
+        warning "Target \"\$t\" does not exist, skipping."
+        nb_err=$(($nb_err + 1))
     
-    
+    else
         # we assume we'll build a master backup (full archive).
         # If we make incremental backup, the $master keyword 
         # will be reset.
+        dir_name=$(get_dir_name "$t" $BM_TARBALL_NAMEFORMAT)
         master=".master"
-        
+    
         # handling of incremental options
         incremental=""
-        
+
         if [ $method = tarball-incremental ]
         then
             case "$BM_TARBALL_FILETYPE" in
-                "dar")
-                    __get_flags_dar_incremental "$dir_name"
-                ;;
-                "tar"|"tar.gz"|"tar.bz2")
-                    __get_flags_tar_incremental "$dir_name"
-                ;;
+            "dar")
+                __get_flags_dar_incremental "$dir_name"
+            ;;
+            "tar"|"tar.gz"|"tar.bz2")
+                __get_flags_tar_incremental "$dir_name"
+            ;;
             esac
         fi
 
@@ -555,7 +544,31 @@ function __make_tarball_archives()
         else
             __build_remote_archive "$t" "$dir_name"
         fi
-    done
+    fi
+}
+
+function __make_tarball_archives()
+{
+    nb_err=0
+    for target in "${BM_TARBALL_TARGETS[@]}"
+    do
+        if [ -z "$target" ]; then
+            continue
+        fi
+
+        target_expanded="$(eval 'echo $target')"
+        
+        # if the target exists, handle it as a single token
+        if [ -r "$target_expanded" ]; then
+            __make_tarball_token "$target_expanded"
+
+        # else try to expand the target in several tokens
+        else
+            for t in $target_expanded
+            do
+                __make_tarball_token "$t"
+            done
+        fi            
     done
 }
 

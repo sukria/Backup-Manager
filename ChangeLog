@@ -1,3 +1,11 @@
+2006-06-20  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* NEWS:
+	  + Bits from the devel corner.
+	* lib/backup-methods.sh:
+	  + Support archive targets with spaces in their name and archive to
+	    expand as well.
+
 2006-04-22  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	[ Based on the work done by Jan Metzger ]

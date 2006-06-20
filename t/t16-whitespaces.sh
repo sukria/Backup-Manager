@@ -20,9 +20,8 @@ export BM_TARBALL_DUMPSYMLINKS="false"
 export BM_ARCHIVE_ROOT="repository"
 export BM_ARCHIVE_METHOD="tarball"
 declare -a BM_TARBALL_TARGETS
-BM_TARBALL_TARGETS[0]="$PWD/dir1"
-BM_TARBALL_TARGETS[1]="$PWD/Program Files"
-BM_TARBALL_TARGETS[2]="$PWD/dir2"
+BM_TARBALL_TARGETS[0]="$PWD/dir*"
+BM_TARBALL_TARGETS[1]="$PWD/Name with spaces and s"
 
 source $locallib/sanitize.sh
 
@@ -31,20 +30,21 @@ bm_init_today
 
 # The test actions
 rm -rf $BM_REPOSITORY_ROOT
-rm -rf dir1 dir2 "Program Files"
+rm -rf dir1 dir2 "Name with spaces and s"
 
 mkdir dir1
 cat /etc/passwd > dir1/file1
 
 mkdir dir2
-mkdir "Program Files"
-touch "Program Files"/toto
+mkdir "Name with spaces and s"
+touch "Name with spaces and s"/toto
 
 create_directories
 make_archives
 
 rm -rf dir1
 rm -rf dir2
-rm -rf "Program Files"
+rm -rf "Name with spaces and s"
 rm -rf repository
 exit 0
+

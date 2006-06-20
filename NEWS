@@ -2,11 +2,13 @@
     - Bug fixes
         - Can handle several targets in BM_TARBALL_TARGETS[] even if one the
           targets contains a space.
+        - Support for expandable targets in BM_TARBALL_TARGETS[] (eg: you can 
+          put /home/* and you'll get what you expect to).  
         - Default configuation file set BM_TARBALL_OVER_SSH to "false" instead 
           of "true".
         - Doesn't trigger an error when BM_TARBALL_DIRECTORIES is not set anymore.
         - BM_TARBALL_DIRECTORIES is not deprecated anymore, possible to use it as 
-          well as BM_TARBALL_TARGETS[].
+          well as BM_TARBALL_TARGETS[] the user can choose what he wants.
 
 0.7.3
     - New Features:

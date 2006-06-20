@@ -1,6 +1,15 @@
 2006-06-20  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* NEWS:
+	  + More details about bugs fixed in 0.7.4.
+	* backup-manager-upload:
+	  + Support of SSH purging (in the same manner as for FTP and S3).
+	* lib/upload-methods.sh:
+	  + Gently propagate the BM_UPLOAD_SSH_PURGE thing.
+
+2006-06-20  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* NEWS:
 	  + Bits from the devel corner.
 	* lib/backup-methods.sh:
 	  + Support archive targets with spaces in their name and archive to

@@ -1,4 +1,10 @@
 #!/usr/bin/perl 
+# Backup Manager Upload - Multiprotocol uploader for backup-manager.
+
+##############################################################
+# POD
+##############################################################
+# {{{
 
 =head1 NAME
 
@@ -76,6 +82,10 @@ Purge the remote directory before uploading files in FTP mode.
 
 Purge the remote directory before uploading files in FTP mode.
 
+=item B<--ssh-purge>
+
+Purge the remote directory before uploading files in SSH mode.
+
 =item B<--verbose>
 
 Flag to enable verbose mode.
@@ -108,14 +118,6 @@ Here are the possible error codes:
 
 =cut
 
-use constant E_SUCCESS    => 0;
-
-use constant E_INVALID    => 10;
-
-use constant E_FTP_FAILED => 20;
-use constant E_SCP_FAILED => 21;
-use constant E_S3_FAILED  => 22;
-use constant E_UNKNOWN    => 23;
 
 =head1 SEE ALSO
 
@@ -130,6 +132,7 @@ Brad Dixon - Amazon S3 upload method
 Jan Metzger - ssh-gpg upload method
 
 =cut
+# }}}
 
 use strict;
 use warnings;
@@ -140,6 +143,12 @@ use File::Temp qw(tempfile);
 
 use constant TRUE => 1;
 use constant FALSE => 0;
+use constant E_SUCCESS    => 0;
+use constant E_INVALID    => 10;
+use constant E_FTP_FAILED => 20;
+use constant E_SCP_FAILED => 21;
+use constant E_S3_FAILED  => 22;
+use constant E_UNKNOWN    => 23;
 
 # global vars
 my $scp = '/usr/bin/scp';
@@ -152,6 +161,7 @@ my $g_user 	= undef;
 my $g_pass 	= undef;
 my $g_ftpclean  = undef;
 my $g_s3clean   = undef;
+my $g_sshclean   = undef;
 my $g_protocol 	= 'scp';
 my $g_remote_dir= '/var/archives/uploads';
 my $g_bucket    = undef;
@@ -174,6 +184,7 @@ BackupManager::Config::getopt("$0 -m=mode -h=host -u=user [options] date\n
 --gpg-recipient : Selects the public key used for gpg encryption (only for ssh-gpg mode).
 --ftp-purge	: Purge the remote directory before uploading files in FTP mode.
 --s3-purge	: Purge the remote directory before uploading files in S3 mode.
+--ssh-purge	: Purge the remote directory before uploading files in SSH mode.
 date		: All files >= date will be uploaded. Either a valid date (YYYYMMDD) or one of this words : today, yesterday",
 'verbose'	=> \$g_verbose,
 'mode|m=s' 	=> \$g_protocol,
@@ -187,13 +198,16 @@ date		: All files >= date will be uploaded. Either a valid date (YYYYMMDD) or on
 'gpg-recipient=s' => \$g_gpg_recipient,
 'ftp-purge'	=> \$g_ftpclean,
 's3-purge'	=> \$g_s3clean,
+'ssh-purge'	=> \$g_sshclean,
 'list'		=> \$g_list,
 );
 
 
-#
-# subroutines
-#
+
+##############################################################
+# Common subs (for all methods)
+##############################################################
+# {{{
 
 # this is used to print mesasges to screen only if user wants verbose mode.
 sub verbose ($)
@@ -221,6 +235,132 @@ sub verbose_error ($)
 
 	error $message;
 	print STDERR $message."\n";
+}
+
+sub get_formated_date($)
+{
+	my $date = shift;
+	unless (defined $date) {
+		verbose_error "date is required, enter today, yesterday or YYYYMMDD";
+		exit E_INVALID;
+	}
+
+	if ($date eq 'today') {
+		return strftime ('%Y%m%d', localtime);
+	}
+	elsif ($date eq 'yesterday') {
+		return strftime ('%Y%m%d', localtime(time - (24 * 3600)));
+	}
+	elsif ($date =~ /^\d{4}\d{2}\d{2}$/) {
+		return $date;
+	}
+	else {
+		verbose_error "date $date is not valid, enter today, yesterday or YYYYMMDD";
+		exit E_INVALID;
+	}
+}
+
+sub get_files_list_from_date($)
+{
+	my $date = shift;
+	return [] unless defined $date;
+
+	my $ra_files = [];
+
+	unless (-d $g_root_dir) {
+		my $msg = "root dir specified does not exists : $g_root_dir";
+		verbose_error $msg;
+        exit E_INVALID;
+	}
+
+    # make sure we can read the root dir, when the secure mode is 
+    # enabled, the repository might not be readable by us...
+    unless (-r $g_root_dir) {
+        verbose_error "The repository $g_root_dir is not readable by user \"$ENV{USER}\".";
+        if ($ENV{BM_REPOSITORY_SECURE} eq "yes") {
+            verbose_error "The secure mode is enabled (BM_REPOSITORY_SECURE),";
+            verbose_error "the upload user ($g_user) must be in the group \"BM_REPOSITORY_GROUP\".";
+        }
+        exit E_INVALID;
+    }
+
+	while (<$g_root_dir/*$date*>) {
+        push @{$ra_files}, $_;
+	}
+
+	return $ra_files;
+}
+
+sub get_hosts_from_str($) {
+	my ($hosts_str) = @_;
+	return [] unless defined $hosts_str;
+
+	my $ra_hosts = [];
+
+	$hosts_str =~ s/\s//g;
+	foreach my $host (split /,/, $hosts_str) {
+		push @{$ra_hosts}, $host;
+	}
+
+	return $ra_hosts;
+}
+
+# }}}
+
+##############################################################
+# SSH Mode
+##############################################################
+# {{{
+
+# Purge remote archives over SSH
+# Uses backup-manager-purge
+sub ssh_clean_directory
+{
+    my ($user, $host, $location) = @_;
+	return 0 unless defined $user and
+		defined $host and
+		defined $location;
+	
+    # the remote time to leave could be different as the local one.
+    my $BM_ARCHIVE_TTL = $ENV{BM_ARCHIVE_TTL};
+    if (defined $ENV{BM_UPLOAD_SSH_TTL} and
+        length ($ENV{BM_UPLOAD_SSH_TTL})) {
+        $BM_ARCHIVE_TTL = $ENV{BM_UPLOAD_SSH_TTL};
+    }
+    return 0 unless defined $BM_ARCHIVE_TTL;
+    verbose "Cleaning remote directory through SSH";
+
+    # look for a port to use
+	my $port_switch="";
+	if ($ENV{BM_UPLOAD_SSH_PORT}) {
+	    $port_switch = "-P ".$ENV{BM_UPLOAD_SSH_PORT};
+	}
+    
+	# look for keyfile to use
+	my $keyfile_switch="";
+	if (defined $g_key_file and -f $g_key_file) {
+	    $keyfile_switch = "-i $g_key_file";
+	}
+
+    # First, create the list of existing archives
+    my ($fh, $in) =tempfile();
+    my $cmd = "$ssh $port_switch $keyfile_switch -o BatchMode=yes $user".'@'.$host." ls $location/*";
+    my $buffer = `$cmd`;
+    print $fh $buffer;
+    close $fh;
+
+    my ($fh_out, $out) =tempfile();
+    system("/usr/bin/backup-manager-purge --ttl=$BM_ARCHIVE_TTL --files-from=$in > $out");
+
+    open (STDOUT_CMD, $out);
+    while (<STDOUT_CMD>) {
+        chomp();
+        verbose "Purging $_";
+        $cmd = "$ssh $port_switch $keyfile_switch -o BatchMode=yes $user".'@'.$host." rm -f $_";
+        system ("$cmd");
+    }
+    close STDOUT_CMD;
+    undef $fh_out;
 }
 
 # send one file with scp
@@ -262,7 +402,7 @@ sub send_file_with_scp($$$$$)
 	if ($@ or $ret) {
 		error "$scp failed for $file : $@ (command was : $cmd). " if $@;
 		error "$scp failed for $file (command was : $cmd)" if $ret;
-		verbose_error "Unable to upload \"$file\".";
+		verbose_error ("Unable to upload \"$file\". ".$@ || $ret);
         return 0;
 	}
 	return 1;
@@ -304,8 +444,12 @@ sub send_files_with_scp($$$$$)
 	    }
 	}
 
-	# loop on each hosts given and connect to them.
+    # loop on each hosts given and connect to them.
 	foreach my $host (@{$ra_hosts}) {
+            
+        # cleaning the repo
+        ssh_clean_directory ($user, $host, $repository) if ($g_sshclean);
+	
 		foreach my $file (@{$ra_files}) {
 			chomp $file;
             
@@ -327,6 +471,12 @@ sub send_files_with_scp($$$$$)
 
     return TRUE;
 }
+# }}}
+
+##############################################################
+# FTP Mode
+##############################################################
+# {{{
 
 # Function for purging a directory
 # over FTP, the same way as the repository is purged.
@@ -465,28 +615,12 @@ sub send_files_with_ftp($$$$$)
     return TRUE;
 }
 
-sub get_formated_date($)
-{
-	my $date = shift;
-	unless (defined $date) {
-		verbose_error "date is required, enter today, yesterday or YYYYMMDD";
-		exit E_INVALID;
-	}
+# }}}
 
-	if ($date eq 'today') {
-		return strftime ('%Y%m%d', localtime);
-	}
-	elsif ($date eq 'yesterday') {
-		return strftime ('%Y%m%d', localtime(time - (24 * 3600)));
-	}
-	elsif ($date =~ /^\d{4}\d{2}\d{2}$/) {
-		return $date;
-	}
-	else {
-		verbose_error "date $date is not valid, enter today, yesterday or YYYYMMDD";
-		exit E_INVALID;
-	}
-}
+##############################################################
+# Amazon S3 Mode
+##############################################################
+# {{{
 
 sub list_bucket($$) 
 {
@@ -646,55 +780,12 @@ sub send_files_with_s3($$$$$$)
     return TRUE;
 }
 
+# }}}
 
-sub get_files_list_from_date($)
-{
-	my $date = shift;
-	return [] unless defined $date;
-
-	my $ra_files = [];
-
-	unless (-d $g_root_dir) {
-		my $msg = "root dir specified does not exists : $g_root_dir";
-		verbose_error $msg;
-        exit E_INVALID;
-	}
-
-    # make sure we can read the root dir, when the secure mode is 
-    # enabled, the repository might not be readable by us...
-    unless (-r $g_root_dir) {
-        verbose_error "The repository $g_root_dir is not readable by user \"$ENV{USER}\".";
-        if ($ENV{BM_REPOSITORY_SECURE} eq "yes") {
-            verbose_error "The secure mode is enabled (BM_REPOSITORY_SECURE),";
-            verbose_error "the upload user ($g_user) must be in the group \"BM_REPOSITORY_GROUP\".";
-        }
-        exit E_INVALID;
-    }
-
-	while (<$g_root_dir/*$date*>) {
-        push @{$ra_files}, $_;
-	}
-
-	return $ra_files;
-}
-
-sub get_hosts_from_str($) {
-	my ($hosts_str) = @_;
-	return [] unless defined $hosts_str;
-
-	my $ra_hosts = [];
-
-	$hosts_str =~ s/\s//g;
-	foreach my $host (split /,/, $hosts_str) {
-		push @{$ra_hosts}, $host;
-	}
-
-	return $ra_hosts;
-}
-
-#
-# main
-#
+##############################################################
+# Main
+##############################################################
+# {{{
 
 # date is always the last args.
 my $date = $ARGV[$#ARGV];
@@ -799,3 +890,6 @@ else {
 	print STDERR "mode '$g_protocol' is not supported\n";
 	exit E_UNKNOWN;
 }
+
+#}}}
+

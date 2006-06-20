@@ -53,11 +53,17 @@ bm_upload_ssh()
         k_switch="-k=\"$BM_UPLOAD_SSH_KEY\""
     fi
 
+    ssh_purge_switch=""
+    if [ "$BM_UPLOAD_SSH_PURGE" = "true" ]; then
+        ssh_purge_switch="--ssh-purge"
+    fi
+
     # Call to backup-manager-upload
     logfile="$(mktemp /tmp/bmu-log.XXXXXX)"
     su $BM_UPLOAD_SSH_USER -s /bin/sh -c \
     "$bmu $v_switch \
           $k_switch \
+          $ssh_purge_switch \
           -m=\"scp\" \
           -h=\"$bm_upload_hosts\" \
           -u=\"$BM_UPLOAD_SSH_USER\" \

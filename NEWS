@@ -1,4 +1,8 @@
 0.7.4
+    - New feature(s)
+        - Possible to purge remote archives through SSH (new configuration 
+          variables: BM_UPLOAD_SSH_PURGE, BM_UPLOAD_SSH_TTL).
+
     - Bug fixes
         - Can handle several targets in BM_TARBALL_TARGETS[] even if one the
           targets contains a space.

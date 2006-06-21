@@ -687,7 +687,7 @@ sub send_files_with_s3($$$$$$)
 	# trying to get Net::Amazon::S3.
 	eval "use Net::Amazon::S3";
 	if ($@) {
-		error "Net::Net::Amazon::S3 is not available, cannot use S3 service";
+		error "Net::Amazon::S3 is not available, cannot use S3 service : $@";
 		return FALSE;
 	}
 

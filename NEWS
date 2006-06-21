@@ -4,6 +4,8 @@
           variables: BM_UPLOAD_SSH_PURGE, BM_UPLOAD_SSH_TTL).
 
     - Bug fixes
+        - Handle smartly pipe commands, don't think a command failed if not 
+          (closes: #83).
         - Can handle several targets in BM_TARBALL_TARGETS[] even if one the
           targets contains a space.
         - Support for expandable targets in BM_TARBALL_TARGETS[] (eg: you can 

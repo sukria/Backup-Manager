@@ -1,5 +1,12 @@
 2006-06-21  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* NEWS:
+	  + Notes about last bug closed, #83).
+	* backup-manager-upload:
+	  + Fixed the 'Net::Amazon::S3' error message (closes: #93).
+
+2006-06-21  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* VERSION: 0.7.4
 	* lib/backup-methods.sh:
 	  + (__exec_meta_command) Handle nicely errors with $? instead of counting words sent to stderr

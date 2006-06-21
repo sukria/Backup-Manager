@@ -1,3 +1,13 @@
+2006-06-21  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* VERSION: 0.7.4
+	* lib/backup-methods.sh:
+	  + (__exec_meta_command) Handle nicely errors with $? instead of counting words sent to stderr
+	  by the command (Closes: #83).
+	  + Same fix for the remote_command stuff.
+	* t/t11-pipe-method.sh:
+	  + Template of a command that fails.
+
 2006-06-20  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* NEWS:

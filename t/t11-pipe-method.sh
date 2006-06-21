@@ -3,8 +3,8 @@
 set -e
 
 source testlib.sh
-#verbose="true"
-#warnings="true"
+# verbose="true"
+# warnings="true"
 
 source confs/base.conf
 
@@ -33,6 +33,11 @@ BM_PIPE_NAME[2]="ls-root"
 BM_PIPE_FILETYPE[2]="txt"
 BM_PIPE_COMPRESS[2]=""
 files[2]="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX-ls-root.$TODAY.txt"
+
+# BM_PIPE_COMMAND[3]="/usr/bin/tototot"
+# BM_PIPE_NAME[3]="failure"
+# BM_PIPE_FILETYPE[3]="txt"
+# BM_PIPE_COMPRESS[3]=""
 
 # clean
 if [ -e $PWD/repository ]; then

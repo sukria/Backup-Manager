@@ -82,7 +82,6 @@ function __exec_meta_command()
     command="$1"
     file_to_create="$2"
     compress="$3"
-    words=0
 
     if [ -f $file_to_create ] && [ $force != true ] 
     
@@ -95,37 +94,41 @@ function __exec_meta_command()
         case "$compress" in
         "gzip"|"gz")
             if [ -x $gzip ]; then
-                $command 2>$logfile | $gzip -f -q -9 > "$file_to_create.gz"
-                words=$(wc -w $logfile | awk '{print $1}')
-                if [ $words -gt 0 ]; then
+                # we cannot pipe the command to gzip here, or $? will _always_ be 0... 
+                $command 2>$logfile > $file_to_create
+                if [ $? -gt 0 ]; then
                     warning "Unable to exec \$command; check \$logfile"
+                    rm -f $file_to_create
                 else
                     rm -f $logfile
+                    $gzip -f -q -9 "$file_to_create"
+                    file_to_create="$file_to_create.gz"
                 fi
-                file_to_create="$file_to_create.gz"
             else
                 error "Compressor \$compress requires \$gzip."
             fi
         ;;
         "bzip"|"bzip2")
             if [ -x $bzip ]; then
-                $command 2>$logfile | $bzip -f -q -9 > "$file_to_create.bz2"
-                words=$(wc -w $logfile | awk '{print $1}')
-                if [ $words -gt 0 ]; then
+                # we cannot pipe the command to gzip here, or $? will _always_ be 0... 
+                $command 2>$logfile > $file_to_create
+                if [ $? -gt 0 ]; then
                     warning "Unable to exec \$command; check \$logfile"
+                    rm -f $file_to_create
                 else
                     rm -f $logfile
+                    $bzip -f -q -9 "$file_to_create"
+                    file_to_create="$file_to_create.bz2"
                 fi
-                file_to_create="$file_to_create.bz2"
             else
                 error "Compressor \$compress requires \$bzip."
             fi
         ;;
         ""|"uncompressed"|"none")
             $command 1> $file_to_create 2>$logfile
-            words=$(wc -w $logfile | awk '{print $1}')
-            if [ $words -gt 0 ]; then
+            if [ $? -gt 0 ]; then
                 warning "Unable to exec \$command; check \$logfile"
+                rm -f $file_to_create
             else
                 rm -f $logfile
             fi
@@ -473,7 +476,6 @@ function __build_remote_archive()
     target="$1"
     dir_name="$2"
     
-
     for host in $BM_UPLOAD_SSH_HOSTS
     do
         logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
@@ -488,13 +490,8 @@ function __build_remote_archive()
         if [ ! -e $file_to_check ] || [ $force = true ]; then
             
             logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
-            
-#            __debug "$remote_command > $file_to_create 2>$logfile"
-            $remote_command > "$file_to_create" 2>$logfile || 
-                error "unable to exec \$remote_command; check \$logfile"
-            
-            words=$(wc -l $logfile | awk '{print $1}')
-            if [ $words -gt 1 ]; then
+            $remote_command > "$file_to_create" 2>$logfile
+            if [ $? -gt 0 ]; then
                 handle_tarball_error "$file_to_create" "$logfile"
             else
                 rm -f $logfile

@@ -448,6 +448,11 @@ You can safely put items that contain spaces (eg: "Program Files") whereas you
 can't with <tt>BM_TARBALL_DIRECTORIES</tt>.
 
 <p>
+You can also put Bash patterns in BM_TARBALL_TARGETS[], it will be expanded at
+runtime to find the resulting targets. For instance :
+BM_TARBALL_TARGETS[0]="/home/*" will lead to backup every home's sub-directory.
+
+<p>
 Example
 
 <example>
@@ -939,6 +944,22 @@ Note that if you put some hosts in <tt>BM_UPLOAD_HOSTS</tt>, they will be used a
 Example:
 <example>
 export BM_UPLOAD_SSH_HOSTS="mirror3.lan.mysite.net"
+</example>
+
+<sect2 id="BM_UPLOAD_SSH_PURGE"><tt>BM_UPLOAD_SSH_PURGE</tt>
+<p>
+<em>Type: boolean</em>
+<p>
+If you set this boolean to "true", the remote archives will be purged before
+the new ones are uploaded.  The purging rules are the same as the ones &bmngr;
+uses for local purging. If <tt>BM_UPLOAD_SSH_TTL</tt> is defined, this time to
+live will be used, else <tt>BM_ARCHIVE_TTL</tt> will be used.
+
+<p>
+Example:
+<example>
+export BM_UPLOAD_SSH_PURGE="true"
+export BM_UPLOAD_SSH_TTL="10"
 </example>
 
 <sect2 id="BM_UPLOAD_SSH_DESTINATION"><tt>BM_UPLOAD_SSH_DESTINATION</tt>

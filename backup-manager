@@ -21,7 +21,7 @@
 
 set -e
 
-VERSION="0.7.3.1"
+VERSION="0.7.4"
 
 # All the path we'll need
 libdir="/usr/share/backup-manager"

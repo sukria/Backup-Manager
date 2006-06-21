@@ -1,5 +1,16 @@
 2006-06-21  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* backup-manager:
+	  + VERSION = 0.7.4
+	* backup-manager.conf.tpl:
+	  + New variables, BM_UPLOAD_SSH_PURGE / BM_UPLOAD_SSH_PURGE
+	  + BM_TARBALL_OVER_SSH set to false by default.
+	* doc/user-guide.sgml, doc/user-guide.txt:
+	  + Bits about SSH purging.
+	* lib/backup-methods.sh:
+
+2006-06-21  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* NEWS:
 	  + Notes about last bug closed, #83).
 	* backup-manager-upload:

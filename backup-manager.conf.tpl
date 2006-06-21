@@ -79,7 +79,7 @@ export BM_TARBALL_FILETYPE="tar.gz"
 # BM_REPOSITORY_ROOT but will be built by the remote host).
 # Thus, BM_TARBALL_DIRECTORIES will be used to backup remote directories.
 # Those archive will be prefixed with the remote host name.
-export BM_TARBALL_OVER_SSH="true"
+export BM_TARBALL_OVER_SSH="false"
 
 # Do you want to dereference the files pointed by symlinks ? 
 # enter true or false (true can lead to huge archives, be careful).
@@ -273,6 +273,15 @@ export BM_UPLOAD_SSH_PORT=""
 # destination for ssh uploads (overrides BM_UPLOAD_DESTINATION)
 export BM_UPLOAD_SSH_DESTINATION=""
 
+# purge archives on remote hosts before uploading?
+export BM_UPLOAD_SSH_PURGE="true"
+
+# If you set BM_UPLOAD_SSH_PURGE, you can specify a time to live 
+# for archives uploaded with SSH.
+# This can let you use different ttl's locally and remotely
+# By default, BM_ARCHIVE_TTL will be used.
+export BM_UPLOAD_SSH_TTL=""
+
 ##############################################################
 # The SSH-GPG method
 # The ssh-gpg method uses the same configuration keys as the 
@@ -292,11 +301,6 @@ export BM_UPLOAD_SSHGPG_RECIPIENT=""
 # This is mandatory for NATed/firewalled environments 
 export BM_UPLOAD_FTP_PASSIVE="true"
 
-# You can specify a time to live for archives uploaded with FTP
-# This can let you use different ttl's locally and remotely
-# By default, BM_ARCHIVE_TTL will be used.
-export BM_UPLOAD_FTP_TTL=""
-
 # the user to use for the FTP connections/transfers
 export BM_UPLOAD_FTP_USER=""
 
@@ -307,7 +311,12 @@ export BM_UPLOAD_FTP_PASSWORD=""
 export BM_UPLOAD_FTP_HOSTS=""
 
 # purge archives on remote hosts before uploading?
-export BM_UPLOAD_FTP_PURGE="false"
+export BM_UPLOAD_FTP_PURGE="true"
+
+# You can specify a time to live for archives uploaded with FTP
+# This can let you use different ttl's locally and remotely
+# By default, BM_ARCHIVE_TTL will be used.
+export BM_UPLOAD_FTP_TTL=""
 
 # destination for FTP uploads (overrides BM_UPLOAD_DESTINATION)
 export BM_UPLOAD_FTP_DESTINATION=""

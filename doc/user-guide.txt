@@ -424,6 +424,11 @@ Contents
      You can safely put items that contain spaces (eg: "Program Files")
      whereas you can't with `BM_TARBALL_DIRECTORIES'.
 
+     You can also put Bash patterns in BM_TARBALL_TARGETS[], it will be
+     expanded at runtime to find the resulting targets.  For instance :
+     BM_TARBALL_TARGETS[0]="/home/*" will lead to backup every home's
+     sub-directory.
+
      Example
 
           BM_TARBALL_TARGETS[0]="/etc"
@@ -880,7 +885,23 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_SSH_HOSTS="mirror3.lan.mysite.net"
 
-2.3.3.6. `BM_UPLOAD_SSH_DESTINATION'
+2.3.3.6. `BM_UPLOAD_SSH_PURGE'
+------------------------------
+
+     _Type: boolean_
+
+     If you set this boolean to "true", the remote archives will be purged
+     before the new ones are uploaded.  The purging rules are the same as
+     the ones Backup Manager uses for local purging.  If
+     `BM_UPLOAD_SSH_TTL' is defined, this time to live will be used, else
+     `BM_ARCHIVE_TTL' will be used.
+
+     Example:
+
+          export BM_UPLOAD_SSH_PURGE="true"
+          export BM_UPLOAD_SSH_TTL="10"
+
+2.3.3.7. `BM_UPLOAD_SSH_DESTINATION'
 ------------------------------------
 
      _Type: string_

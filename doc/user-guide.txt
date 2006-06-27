@@ -335,7 +335,8 @@ Contents
 2.2.1.3. `BM_TARBALL_FILETYPE'
 ------------------------------
 
-     _Type: enum(tar, tar.gz, tar.bz2, zip, dar), default: `tar.gz'._
+     _Type: enum(tar, tar.gz, tar.bz2, tar.lz, zip, dar), default:
+     `tar.gz'._
 
      Basically, this configuration key defines the filetype of the
      resulting archive.  In a way, it defines which compressor to use (zip,
@@ -344,10 +345,23 @@ Contents
      choose, you will have to make sure you have the corresponding
      compressor installed.
 
-     For the best compression rate, choose `tar.bz2'.
+     For the best compression rate, choose `tar.bz2' or `tar.lz'.
 
-     Since version 0.7.1, Backup Manager provides the _dar_ support.  This
+     Since version 0.7.1, Backup Manager supports _dar_ archives.  This
      archiver provides some interesting features like the archive slicing.
+
+     Since version 0.7.5, Backup Manager supports _lzma_ archives.
+
+     Make sure to statisfy dependencies according to the filetype you
+     choose:
+
+        * tar.bz2 : needs "bzip2".
+
+        * tar.lz : needs "lzma".
+
+        * dar : needs "dar".
+
+        * zip : needs "zip".
 
 2.2.1.4. `BM_TARBALL_SLICESIZE'
 -------------------------------

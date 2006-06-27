@@ -69,7 +69,11 @@ export BM_ARCHIVE_METHOD="tarball"
 # 	short : parentfolder.tar.gz
 export BM_TARBALL_NAMEFORMAT="long"
 
-# Type of archives, available types are tar, tar.gz, tar.bz2, dar, zip.
+# Type of archives
+# Available types are:
+#     tar, tar.gz, tar.bz2, tar.lz, dar, zip.
+# Make sure to satisfy the appropriate dependencies 
+# (bzip2, dar, lzma, ...).
 export BM_TARBALL_FILETYPE="tar.gz"
 
 # You can choose to build archives remotely over SSH.

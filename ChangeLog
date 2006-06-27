@@ -1,3 +1,16 @@
+2006-06-27  Alexis Sukrieh  <sukria@backup-manager.org>
+	
+	[ support for tar.lz archives ] 
+	* backup-manager:
+	  + path to /usr/bin/lzma
+	* backup-manager.conf.tpl:
+	  + adding support for BM_TARBALL_FILETYPE = tar.lz
+	* doc/user-guide.sgml:
+	* doc/user-guide.txt:
+	  + Bits in the documentation about tar.lz
+	* lib/backup-methods.sh:
+	  + command line for building tar.lz archives
+
 2006-06-21  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* backup-manager:

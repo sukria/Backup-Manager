@@ -341,7 +341,7 @@ Suggested value: <tt>long</tt>.
 <sect2 id="BM_TARBALL_FILETYPE"><tt>BM_TARBALL_FILETYPE</tt>
 
 <p>
-<em>Type: enum(tar, tar.gz, tar.bz2, zip, dar), default: <tt>tar.gz</tt>.</em>
+<em>Type: enum(tar, tar.gz, tar.bz2, tar.lz, zip, dar), default: <tt>tar.gz</tt>.</em>
 
 <p>
 Basically, this configuration key defines the filetype of the resulting archive.
@@ -352,11 +352,23 @@ Note that depending on the filetype you choose, you will have to
 make sure you have the corresponding compressor installed.
 
 <p>
-For the best compression rate, choose <tt>tar.bz2</tt>.
+For the best compression rate, choose <tt>tar.bz2</tt> or <tt>tar.lz</tt>.
 
 <p>
-Since version 0.7.1, &bmngr; provides the <em>dar</em> support. This archiver 
+Since version 0.7.1, &bmngr; supports <em>dar</em> archives. This archiver 
 provides some interesting features like the archive slicing.
+<p>
+Since version 0.7.5, &bmngr; supports <em>lzma</em> archives. 
+
+<p>
+Make sure to statisfy dependencies according to the filetype you choose:
+
+<list>
+<item> tar.bz2 : needs "bzip2".
+<item> tar.lz : needs "lzma".
+<item> dar : needs "dar".
+<item> zip : needs "zip".
+</list>
 
 <sect2 id="BM_TARBALL_SLICESIZE"><tt>BM_TARBALL_SLICESIZE</tt>
 

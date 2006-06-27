@@ -203,21 +203,6 @@ function __get_flags_tar_blacklist()
     __get_flags_relative_blacklist "--exclude=" "$target"
 }
 
-# FIXME blacklist seems to be broken in 7z...
-function __get_flags_7z_blacklist()
-{
-    target="$1"
-    warning "7z blacklist are not well supported..."
-
-    blacklist=""
-    excludelist=$(mktemp /tmp/bm-7z-exclude.XXXXXX)
-    for pattern in $BM_TARBALL_BLACKLIST
-    do
-        echo ${pattern#/} >> $excludelist
-    done
-    blacklist="-x@$excludelist"
-    #    __get_flags_relative_blacklist '-xr!*' "$target"
-}
 
 function __get_flags_zip_dump_symlinks()
 {
@@ -369,12 +354,6 @@ function __get_flags_dar_overwrite()
 	echo "$overwrite"
 }
 
-# TODO
-function __get_flags_7z_dump_symlinks()
-{
-    echo ""
-}
-
 # FIXME : incremental is not possible remotely
 # in the current shape...
 function __get_backup_tarball_remote_command()
@@ -408,26 +387,38 @@ function __get_backup_tarball_command()
     case $BM_TARBALL_FILETYPE in
         tar) 
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c    -f $file_to_create"
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f $file_to_create"
         ;;
         tar.gz)
             __get_flags_tar_blacklist "$target"
             command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -z -v -f $file_to_create"
         ;;
         tar.bz2|tar.bz) 
+            if [ ! -x $bzip ]; then
+                error "The archive type \"tar.bz2\" depends on the tool \"\$bzip\"."
+            fi
             __get_flags_tar_blacklist "$target"
             command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j -f $file_to_create"
         ;;
+        tar.lz)
+            if [ ! -x $lzma ]; then
+                error "The archive type \"tar.lz\" depends on the tool \"\$lzma\"."
+            fi
+            __get_flags_tar_blacklist "$target"
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target | $lzma -si e $file_to_create"
+        ;;
         zip) 
+            if [ ! -x $zip ]; then
+                error "The archive type \"zip\" depends on the tool \"\$zip\"."
+            fi
             command="$zip $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -r $file_to_create"
         ;;
         dar)
+            if [ ! -x $dar ]; then
+                error "The archive type \"dar\" depends on the tool \"\$dar\"."
+            fi
             __get_flags_dar_blacklist "$target"
             command="$dar $incremental $blacklist $maxsize $overwrite $BM_TARBALL_EXTRA_OPTIONS -z9 -Q -c $file_to_create -R"
-        ;;
-        7z)
-            __get_flags_7z_blacklist "$target"
-            command="$_7z a -t7z -m0=lzma -mx=9 $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS $file_to_create"
         ;;
         *)
             error "The archive type \"\$BM_TARBALL_FILETYPE\" is not supported."
@@ -458,12 +449,24 @@ function __build_local_archive()
     # let's exec the command
     if [ ! -e $file_to_check ] || [ $force = true ]; then
         logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
-#            __debug "$command"
-        if ! `$command "$target"> $logfile 2>&1`; then
-            handle_tarball_error "$file_to_create" "$logfile"
+        # This is a dirty hack, we have to do it like that unless 
+        # tar provides support for lzma compression internally.
+        if [ "$BM_TARBALL_FILETYPE" = "tar.lz" ];then
+            $tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile
+            if [ $? -gt 0 ]; then
+                handle_tarball_error "$file_to_create" "$logfile"
+            else
+                rm -f $logfile
+                commit_archives "$file_to_create"
+            fi
+        # The common case
         else
-            rm -f $logfile
-            commit_archives "$file_to_create"
+            if ! `$command "$target"> $logfile 2>&1`; then
+                handle_tarball_error "$file_to_create" "$logfile"
+            else
+                rm -f $logfile
+                commit_archives "$file_to_create"
+            fi
         fi
     else
         warning "File \$file_to_check already exists, skipping."
@@ -587,9 +590,6 @@ function backup_method_tarball()
     dar)
         maxsize="$(__get_flags_dar_maxsize)"
         overwrite="$(__get_flags_dar_overwrite)"
-    ;;
-    7z)
-        dumpsymlinks="$(__get_flags_7z_dump_symlinks)"
     ;;
     esac
 

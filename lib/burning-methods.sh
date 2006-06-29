@@ -253,7 +253,7 @@ function burn_session()
             fi
             
             info "Exporting archives to the DVD+R(W) media in \$BM_BURNING_DEVICE."
-            $growisofs -Z ${BM_BURNING_DEVICE} -R -J -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
+            $growisofs -use-the-force-luke -Z ${BM_BURNING_DEVICE} -R -J -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
         
@@ -270,7 +270,7 @@ function burn_session()
                 error "Unable to blank the DVD-R(W) media (check \$logfile)."
             
             info "Exporting archives to the DVD-R(W) media in \$BM_BURNING_DEVICE."
-            $growisofs -Z ${BM_BURNING_DEVICE} -R -J -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
+            $growisofs -use-the-force-luke -Z ${BM_BURNING_DEVICE} -R -J -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
         

@@ -1,3 +1,10 @@
+2006-06-29  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* lib/burning-methods.sh:
+	  + Apply patch for adding the "-use-the-force-luke" switch in growisofs
+	  commands, possible to burn DVD+RW media within the CRON environement.
+	  (closes #102)
+
 2006-06-27  Alexis Sukrieh  <sukria@backup-manager.org>
 	
 	[ support for tar.lz archives ] 

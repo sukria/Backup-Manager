@@ -1,3 +1,9 @@
+2006-06-29  Alexis Sukrieh <sukria@backup-manager.org>
+
+	* lib/burning-methods.sh:
+	  + Correct syntax for the "-use-the-force-luke=tty" option in growisofs
+	  command lines (Thanks to Rached en Mustapha).
+
 2006-06-29  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* lib/burning-methods.sh:

@@ -1,3 +1,17 @@
+2006-06-30  Alexis Sukrieh  <sukria@backup-manager.org>
+	
+	[ Support for non-Joliet disc images (closes: #89) ]
+	* backup-manager.conf.tpl:
+	  + New variable BM_BURNING_ISO_FLAGS for letting the suer choose which
+	    disc image to use (default "-R -J").
+	* doc/user-guide.sgml:
+	  + Bits about BM_BURNING_ISO_FLAGS
+	* lib/burning-methods.sh:
+	  + Default BM_BURNING_ISO_FLAGS to "-R -J" if not defined for backward 
+	    compatibility.
+	  + Uses $BM_BURNING_ISO_FLAGS instead of "-R -J" in mkisofs/growisofs
+	    commands. 
+
 2006-06-29  Alexis Sukrieh <sukria@backup-manager.org>
 
 	* lib/burning-methods.sh:

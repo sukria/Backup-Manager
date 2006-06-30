@@ -399,6 +399,12 @@ export BM_BURNING_DEVICE="/dev/cdrom"
 # If none specified, the default cdrecord device will be used.
 export BM_BURNING_DEVFORCED=""
 
+# By default backup-manager will make Joliet media (using the mkisofs switches
+# : "-R -J"). You can change these if you want to use non-Joliet disc images.
+# Change this only if you know what you're doing. Refer to mkisofs(8) for
+# details.
+export BM_BURNING_ISO_FLAGS="-R -J"
+
 # enter here the max size of your media 
 # (usal sizes are 4200 for DVD media and 700 or 800 for CDR media)
 export BM_BURNING_MAXSIZE="650"

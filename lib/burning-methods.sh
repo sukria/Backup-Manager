@@ -224,6 +224,13 @@ function burn_session()
     session_number="$2"
     number_of_indexes="$3"
 
+    # Since version 0.7.5 disc-image can be non-joliet.
+    # This is handled by $BM_BURNING_ISO_FLAGS, let's default that 
+    # variable for backward compat.
+    if [ -z "$BM_BURNING_ISO_FLAGS" ]; then
+        BM_BURNING_ISO_FLAGS="-R -J"
+    fi
+
     if [ -z "$session_number" ] || [ $session_number = 1 ]; then
         title="Backups of ${BM__BURNING_DATE}"
     else
@@ -246,14 +253,13 @@ function burn_session()
     
     # burning the iso with the user choosen method
     case "$BM_BURNING_METHOD" in
-        
         "DVD")
             if [ ! -x $growisofs ]; then
                 error "DVD+R(W) burning requires \$growisofs, aborting."
             fi
             
             info "Exporting archives to the DVD+R(W) media in \$BM_BURNING_DEVICE."
-            $growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} -R -J -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
+            $growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
         
@@ -270,7 +276,7 @@ function burn_session()
                 error "Unable to blank the DVD-R(W) media (check \$logfile)."
             
             info "Exporting archives to the DVD-R(W) media in \$BM_BURNING_DEVICE."
-            $growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} -R -J -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
+            $growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
         
@@ -284,7 +290,7 @@ function burn_session()
                 error "failed, check \$logfile"
             
             info "Burning data to \$BM_BURNING_DEVICE."
-            ${mkisofs} -V "${title}" -q -R -J ${what_to_burn} | \
+            ${mkisofs} -V "${title}" -q ${BM_BURNING_ISO_FLAGS} ${what_to_burn} | \
             ${cdrecord} -tao $devforced - > ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
@@ -295,7 +301,7 @@ function burn_session()
             fi
 
             info "Burning data to \$BM_BURNING_DEVICE."
-            ${mkisofs} -V "${title}" -q -R -J ${what_to_burn} | \
+            ${mkisofs} -V "${title}" -q ${BM_BURNING_ISO_FLAGS} ${what_to_burn} | \
             ${cdrecord} -tao $devforced - > ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;

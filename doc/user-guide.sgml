@@ -1324,7 +1324,6 @@ As usual, you can put <tt>none</tt> in order to disable the burning process.
 All those burning methods share the same configuration keys, so it's easy to
 switch from a medium to another.
 
-
 <sect2 id="BM_BURNING_DEVICE"><tt>BM_BURNING_DEVICE</tt>
 <p>
 <em>Type: string, default: <tt>/dev/cdrom</tt>.</em>
@@ -1354,6 +1353,29 @@ in this case, &bmngr; will use the default cdrecord device for burning CDR media
 Example:
 <example>
 export BM_BURNING_DEVFORCED="/dev/cdrom"
+</example>
+
+<sect2 id="BM_BURNING_ISO_FLAGS"><tt>BM_BURNING_ISO_FLAGS</tt>
+<p>
+<em>Type: string, default: "-R -J"</em>
+
+<p>
+Media burned with &bmngr; will be made using a Joliet disc image. 
+The flags defined in that variable will be appended to the mkisofs command
+lines in order to specify wich media image to use.
+
+<p>
+The default value "-R -J" produces a Joliet image, if you want to make 
+non-Joliet disc images, you can change these flags. Refer to the manpage of
+mkisofs for details about possible disc images.
+
+<p>
+Don't change that variable if you don't know what you're doing.
+
+<p>
+Example:
+<example>
+export BM_BURNING_ISO_FLAGS="-R -J"
 </example>
 
 <sect2 id="BM_BURNING_MAXSIZE"><tt>BM_BURNING_MAXSIZE</tt>

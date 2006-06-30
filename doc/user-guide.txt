@@ -1,5 +1,5 @@
 
-                      Backup Manager 0.7.4 User Guide
+                      Backup Manager 0.7.5 User Guide
                       -------------------------------
 
                               Alexis Sukrieh
@@ -98,7 +98,7 @@ Contents
      Whenever possible, advices and best practices are given.
 
      This manual also describes every configuration variables supported in
-     the version 0.7.4.
+     the version 0.7.5.
 
 
 1.2. Version
@@ -106,7 +106,7 @@ Contents
 
      This document is updated whenever a new release of Backup Manager is
      published.  The current version covers all features and configuration
-     details about version 0.7.4.
+     details about version 0.7.5.
 
      The first version of this document was written with the release 0.6 of
      Backup Manager.
@@ -137,7 +137,7 @@ Contents
      _Backup Manager's behaviour is defined in configuration files.  You
      can run Backup Manager with different configuration files (at the same
      time or not).  This chapter will cover all the configuration keys
-     supported in version 0.7.4 and will explain their meaning._
+     supported in version 0.7.5 and will explain their meaning._
 
 
 2.1. Repository and Archives
@@ -276,7 +276,7 @@ Contents
      The core feature of Backup Manager is to make archives, for doing
      this, a _method_ is used.  Each method can require a set of
      configuration keys.  We will describe here every method supported in
-     the version 0.7.4.
+     the version 0.7.5.
 
      The method you choose must be defined in the configuration key
      `BM_ARCHIVE_METHOD'.  You can put here a list of all the different
@@ -776,7 +776,7 @@ Contents
      for achieving this goal : the upload methods._
 
      There are different upload methods, each of them behaves differently
-     and provides particular features.  In Backup Manager 0.7.4 you can use
+     and provides particular features.  In Backup Manager 0.7.5 you can use
      FTP, SSH, RSYNC or Amazon S3 uploads.
 
      In the same manner as for backup methods, you can choose to use as
@@ -1221,14 +1221,14 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
      _Another way of storing your archives to a safe place is to use
      external media._
 
-     In version 0.7.4, only CDs and DVDs are supported as external media,
+     In version 0.7.5, only CDs and DVDs are supported as external media,
      so we will discuss in this section only the `BM_BURNING' features.
      Other exports are expected to come in next versions though.
 
 2.4.1. Burning CDR/DVD media
 ----------------------------
 
-     In the version 0.7.4, Backup Manager supports four different kinds of
+     In the version 0.7.5, Backup Manager supports four different kinds of
      media: CDR, CDRW and DVD+R(W) and DVD-R(W).
 
 2.4.1.1. `BM_BURNING_METHOD'
@@ -1307,7 +1307,26 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
 
           export BM_BURNING_DEVFORCED="/dev/cdrom"
 
-2.4.1.4. `BM_BURNING_MAXSIZE'
+2.4.1.4. `BM_BURNING_ISO_FLAGS'
+-------------------------------
+
+     _Type: string, default: "-R -J"_
+
+     Media burned with Backup Manager will be made using a Joliet disc
+     image.  The flags defined in that variable will be appended to the
+     mkisofs command lines in order to specify wich media image to use.
+
+     The default value "-R -J" produces a Joliet image, if you want to make
+     non-Joliet disc images, you can change these flags.  Refer to the
+     manpage of mkisofs for details about possible disc images.
+
+     Don't change that variable if you don't know what you're doing.
+
+     Example:
+
+          export BM_BURNING_ISO_FLAGS="-R -J"
+
+2.4.1.5. `BM_BURNING_MAXSIZE'
 -----------------------------
 
      _Type: integer, default: `700'._
@@ -1335,7 +1354,7 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
           export BM_BURNING_METHOD="DVD"
           export BM_BURNING_MAXSIZE="4700"
 
-2.4.1.5. `BM_BURNING_CHKMD5'
+2.4.1.6. `BM_BURNING_CHKMD5'
 ----------------------------
 
      _Type: boolean, default: `true'._
@@ -1457,7 +1476,7 @@ export BM_POST_BACKUP_COMMAND="/usr/local/bin/backup-cleanup.pl $TODAY"
 3.1.1. Restrictions
 -------------------
 
-     In version 0.7.4, Backup Manager can only be used by `root', as it has
+     In version 0.7.5, Backup Manager can only be used by `root', as it has
      be designed as a systemwide tool.
 
           $ backup-manager
@@ -1657,7 +1676,7 @@ Entering directory /var/archives/lost+found.
 -------------------------------------------------------------------------------
 
 
-     Backup Manager 0.7.4 User Guide
+     Backup Manager 0.7.5 User Guide
 
      Alexis Sukrieh
 

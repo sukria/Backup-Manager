@@ -285,16 +285,14 @@ function __get_flags_tar_incremental()
 
     # if master day, we have to purge the incremental list if exists
     # so we'll generate a new one (and then, a full backup).
-    if [ "$master_day" = "$BM_TARBALLINC_MASTERDATEVALUE" ];  then
+    if [ "$master_day" -eq "$BM_TARBALLINC_MASTERDATEVALUE" ];  then
+        info "Building master backup for target : \$dir_name"
         rm -f $incremental_list
     fi
-
     if [ -e $incremental_list ]; then
         master=""
     fi
-    
     incremental="--listed-incremental $incremental_list"
-
 }
 
 # This will set the appropriate dar options for making incremental backups.

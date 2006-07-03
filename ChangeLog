@@ -1,3 +1,9 @@
+2006-07-03  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* lib/backup-methods.sh:
+	  + Uses -eq instead of = when testing BM_TARBALLINC_MASTERDATEVALUE
+	  (closes: #104).
+
 2006-06-30  Alexis Sukrieh  <sukria@backup-manager.org>
 	
 	[ Support for non-Joliet disc images (closes: #89) ]

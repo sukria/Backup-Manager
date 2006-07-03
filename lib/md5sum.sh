@@ -24,12 +24,17 @@ get_md5sum_from_file()
 	filename="$1"
 	md5file="$2"
 
+    if [ -z "$filename" ] || 
+       [ -z "$md5file" ]; then
+        error "System error: bad usage of function get_md5sum_from_file()"
+    fi
+
 	if [ ! -f $md5file ]; then
 		error "No md5file found: \$md5file"
 	fi
 	
     filename="$(basename $filename)"
-    md5=$(grep "$filename" $md5file 2>/dev/null | awk '{print $1}')
+    md5=$(grep "$filename" $md5file 2>/dev/null | awk '{print $1}') || md5=""
     
     echo "$md5"
 }
@@ -71,5 +76,6 @@ save_md5_sum()
 	else
 		warning "Archive given does not exist in the repository: \$archive"
 	fi
+
 }
 

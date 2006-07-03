@@ -1,5 +1,15 @@
 2006-07-03  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* lib/burning-methods.sh:
+	  + Fix the way md5 sums are checked (closes: #92)
+	* lib/md5sum.sh:
+	  + safe_unmount() now works correctly and is able to unmount several
+	  times the media pointed by $BM_BURNING_DEVICE.
+	* po/fr.po:
+	  + Fix about a bad translated message.
+
+2006-07-03  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* lib/backup-methods.sh:
 	  + Uses -eq instead of = when testing BM_TARBALLINC_MASTERDATEVALUE
 	  (closes: #104).

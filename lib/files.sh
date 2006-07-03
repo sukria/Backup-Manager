@@ -181,18 +181,10 @@ get_lock() {
 
 function get_date_from_archive()
 {
-    filename="$1"
-    date_string="20[0-9][0-9][0-1][0-9][0-3][0-9]"
-    case "$filename" in 
-        *-*${date_string}.[!-]* ) 
-            __tmp="${filename#${filename%${date_string}*}}}"; 
-            echo "${__tmp%%.*}"; 
-        ;; 
-        *) 
-            echo ""
-        ;;
-    esac
-}
+    file="$1"
+    date=$(echo $file | sed -e 's/.*\(20[0-9][0-9][0-9][0-9][0-3][0-9]\).*/\1/')
+    echo "$date"
+}   
 
 # Returns the name of an archive.
 # eg: get_name_from_archive "ouranos-usr-bin.20060329.tar.bz2"

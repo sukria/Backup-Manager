@@ -569,7 +569,7 @@ msgstr "Le point de montage « $mount_point » n'est pas présent."
 #: ../lib/burning-methods.sh:56
 #, sh-format
 msgid "Mounting $BM_BURNING_DEVICE on $mount_point."
-msgstr "Impossible de monter $BM_BURNING_DEVICE sur $mount_point."
+msgstr "Montage de $BM_BURNING_DEVICE sur $mount_point."
 
 #: ../lib/burning-methods.sh:79
 #, sh-format

@@ -26,11 +26,20 @@
 function bm_safe_unmount
 {
     device="$1"
-    if grep $device /etc/mtab >/dev/null 2>&1; then
-        info "\$device is mounted, unmounting it."
-        umount $device || warning "Unable to unmount the device \$device"
+    realdevice=$(ls -l $device | awk '{print $10}')
+    if [ -n "$realdevice" ]; then
+        device="$realdevice"
+        __debug "device : $realdevice"
     fi
+
+    for m in `grep $device /etc/mtab 2>/dev/null| awk '{print $2}'`
+    do
+        info "Device \"/dev/\$device\" is mounted on \"\$m\", unmounting it."
+        umount $m 2>/dev/null
+        sleep 1
+    done
 }
+
 
 # This will get all the md5 sums of the day,
 # mount the BM_BURNING_DEVICE on /tmp/device and check 
@@ -69,16 +78,17 @@ check_cdrom_md5_sums()
 		continue
 	fi
 
+
        # Which file should contain the MD5 hashes for that file ?
-	if [ "$prefix_of_file" != "index" ]; then
-	    md5_file="$BM_REPOSITORY_ROOT/${prefix_of_file}-${date_of_file}.md5"
-	else
-	    md5_file="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX-${date_of_file}.md5"
-	fi
+       if [ "$prefix_of_file" != "index" ]; then
+           md5_file="$BM_REPOSITORY_ROOT/${prefix_of_file}-${date_of_file}.md5"
+       else
+           md5_file="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX-${date_of_file}.md5"
+       fi
+        
+       str=$(echo_translated "Checking MD5 sum for \$base_file:")
 
-        str=$(echo_translated "Checking MD5 sum for \$base_file:")
-
-        # if it does not exists, we create it (that will take much time).
+        # if it does not exist, we create it (that will take much time).
         if [ ! -f $md5_file ]; then
             save_md5_sum $file $md5_file || continue
         fi

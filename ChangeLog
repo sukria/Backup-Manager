@@ -1,3 +1,20 @@
+2006-07-05  Alexis Sukrieh  <sukria@backup-manager.org>
+	
+	[ Add support for local encryption with GPG - closes: #82 ]
+	* backup-manager:
+	  + path to /usr/bin/gpg
+	* backup-manager.conf.tpl:
+	  + New configuration variables
+	    - BM_ENCRYPTION_METHOD (gpg, none)
+		- BM_ENCRYPTION_RECIPIENT (gpg ID)
+	* lib/backup-methods.sh:
+	   + Support for encrypted archives, the build command is piped to gpg
+	   	 directly.
+	* t/testlib.sh:
+	   + path to /usr/bin/gpg
+	* t/t18-tarball-encryption.sh:
+	   + Test script for that new feature (builds a tar.gz.gpg archive).
+
 2006-07-03  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* lib/burning-methods.sh:

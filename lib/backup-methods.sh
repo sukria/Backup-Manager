@@ -385,38 +385,38 @@ function __get_backup_tarball_command()
     case $BM_TARBALL_FILETYPE in
         tar) 
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f $file_to_create"
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f"
         ;;
         tar.gz)
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -z -v -f $file_to_create"
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -z -f"
         ;;
         tar.bz2|tar.bz) 
             if [ ! -x $bzip ]; then
                 error "The archive type \"tar.bz2\" depends on the tool \"\$bzip\"."
             fi
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j -f $file_to_create"
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j -f"
         ;;
         tar.lz)
             if [ ! -x $lzma ]; then
                 error "The archive type \"tar.lz\" depends on the tool \"\$lzma\"."
             fi
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target | $lzma -si e $file_to_create"
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target | $lzma -si e"
         ;;
         zip) 
             if [ ! -x $zip ]; then
                 error "The archive type \"zip\" depends on the tool \"\$zip\"."
             fi
-            command="$zip $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -r $file_to_create"
+            command="$zip $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -r"
         ;;
         dar)
             if [ ! -x $dar ]; then
                 error "The archive type \"dar\" depends on the tool \"\$dar\"."
             fi
             __get_flags_dar_blacklist "$target"
-            command="$dar $incremental $blacklist $maxsize $overwrite $BM_TARBALL_EXTRA_OPTIONS -z9 -Q -c $file_to_create -R"
+            command="$dar $incremental $blacklist $maxsize $overwrite $BM_TARBALL_EXTRA_OPTIONS -z9 -Q -R -c"
         ;;
         *)
             error "The archive type \"\$BM_TARBALL_FILETYPE\" is not supported."
@@ -426,6 +426,53 @@ function __get_backup_tarball_command()
     echo "$command"
 }
 
+function build_clear_archive
+{
+    logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+
+    # This is a dirty hack, we have to do it like that unless 
+    # tar provides support for lzma compression internally.
+    if [ "$BM_TARBALL_FILETYPE" = "tar.lz" ];then
+        $tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile
+        if [ $? -gt 0 ]; then
+            handle_tarball_error "$file_to_create" "$logfile"
+        else
+            rm -f $logfile
+            commit_archives "$file_to_create"
+        fi
+    # The common case
+    else
+        if ! `$command $file_to_create "$target"> $logfile 2>&1`; then
+            handle_tarball_error "$file_to_create" "$logfile"
+        else
+            rm -f $logfile
+            commit_archives "$file_to_create"
+        fi
+    fi
+}
+
+function build_encrypted_archive
+{
+    logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+
+    if [ -z "$BM_ENCRYPTION_RECIPIENT" ]; then
+        error "The configuration variable \"\$BM_ENCRYPTION_RECIPIENT\" must be defined."
+    fi
+
+    if [ "$BM_TARBALL_FILETYPE" = "tar.lz" ] || 
+       [ "$BM_TARBALL_FILETYPE" = "zip" ] ||
+       [ "$BM_TARBALL_FILETYPE" = "dar" ]; then
+        error "The encryption is not yet possible with \"\$BM_TARBALL_FILETYPE\" archives."
+    fi
+
+    file_to_create="$file_to_create.gpg"
+    if ! `$command - "$target" 2>>$logfile | $gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create 2>> $logfile`; then
+        handle_tarball_error "$file_to_create" "$logfile"
+    else
+        rm -f $logfile
+        commit_archives "$file_to_create"
+    fi
+}
 
 function __build_local_archive()
 {
@@ -433,7 +480,6 @@ function __build_local_archive()
     dir_name="$2"
     
     file_to_create=$(__get_file_to_create "$target")
-
     command="$(__get_backup_tarball_command)" || 
         error "The archive type \"\$BM_TARBALL_FILETYPE\" is not supported."
 
@@ -446,25 +492,13 @@ function __build_local_archive()
 
     # let's exec the command
     if [ ! -e $file_to_check ] || [ $force = true ]; then
-        logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
-        # This is a dirty hack, we have to do it like that unless 
-        # tar provides support for lzma compression internally.
-        if [ "$BM_TARBALL_FILETYPE" = "tar.lz" ];then
-            $tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile
-            if [ $? -gt 0 ]; then
-                handle_tarball_error "$file_to_create" "$logfile"
-            else
-                rm -f $logfile
-                commit_archives "$file_to_create"
+        if [ "$BM_ENCRYPTION_METHOD" = "gpg" ]; then
+            if [ ! -x $gpg ]; then
+                error "The binary \"\$gpg\" is needed."
             fi
-        # The common case
+            build_encrypted_archive
         else
-            if ! `$command "$target"> $logfile 2>&1`; then
-                handle_tarball_error "$file_to_create" "$logfile"
-            else
-                rm -f $logfile
-                commit_archives "$file_to_create"
-            fi
+            build_clear_archive
         fi
     else
         warning "File \$file_to_check already exists, skipping."

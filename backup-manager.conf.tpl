@@ -60,6 +60,28 @@ export BM_ARCHIVE_PREFIX="$HOSTNAME"
 export BM_ARCHIVE_METHOD="tarball"
 
 ##############################################################
+# Encryption - because you cannot trust the place your 
+#              archives are
+##############################################################
+
+# If you want to encrypt your archives locally, Backup Manager 
+# can use GPG while building the archive (so the archive is never
+# written to the disk without being encrypted.
+
+# Note: this feature is only possible with the following archive types:
+# tar, tar.gz, tar.bz2
+
+# Uncomment the following line if you want to enable encryption
+# export BM_ENCRYPTION_METHOD="gpg"
+
+# The encryption will be made using a GPG ID
+# Examples:
+# export BM_ENCRYPTION_RECIPIENT="0x1EE5DD34"
+# export BM_ENCRYPTION_RECIPIENT="Alexis Sukrieh"
+# export BM_ENCRYPTION_RECIPIENT="sukria@sukria.net"
+
+
+##############################################################
 # Section "TARBALL"
 # - Backup method: tarball
 #############################################################

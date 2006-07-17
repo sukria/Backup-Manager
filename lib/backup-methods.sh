@@ -416,7 +416,7 @@ function __get_backup_tarball_command()
                 error "The archive type \"dar\" depends on the tool \"\$dar\"."
             fi
             __get_flags_dar_blacklist "$target"
-            command="$dar $incremental $blacklist $maxsize $overwrite $BM_TARBALL_EXTRA_OPTIONS -z9 -Q -R -c"
+            command="$dar $incremental $blacklist $maxsize $overwrite $BM_TARBALL_EXTRA_OPTIONS -z9 -Q -c -R"
         ;;
         *)
             error "The archive type \"\$BM_TARBALL_FILETYPE\" is not supported."

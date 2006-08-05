@@ -50,8 +50,10 @@ bm_upload_ssh()
     # the flags for the SSH method
     k_switch=""
     if [ ! -z "$BM_UPLOAD_SSH_KEY" ]; then
-        k_switch="-k=\"$BM_UPLOAD_SSH_KEY\""
+        k_switch="-k=$BM_UPLOAD_SSH_KEY"
     fi
+
+    info "totoototo"
 
     ssh_purge_switch=""
     if [ "$BM_UPLOAD_SSH_PURGE" = "true" ]; then
@@ -60,15 +62,11 @@ bm_upload_ssh()
 
     # Call to backup-manager-upload
     logfile="$(mktemp /tmp/bmu-log.XXXXXX)"
-    su $BM_UPLOAD_SSH_USER -s /bin/sh -c \
-    "$bmu $v_switch \
-          $k_switch \
-          $ssh_purge_switch \
-          -m=\"scp\" \
-          -h=\"$bm_upload_hosts\" \
-          -u=\"$BM_UPLOAD_SSH_USER\" \
-          -d=\"$BM_UPLOAD_SSH_DESTINATION\" \
-          -r=\"$BM_REPOSITORY_ROOT\" today" 2>$logfile || 
+    $bmu $v_switch $k_switch $ssh_purge_switch -m="scp" \
+          -h="$bm_upload_hosts" \
+          -u="$BM_UPLOAD_SSH_USER" \
+          -d="$BM_UPLOAD_SSH_DESTINATION" \
+          -r="$BM_REPOSITORY_ROOT" today 2>$logfile || 
     error "Error reported by backup-manager-upload for method \"scp\", check \"\$logfile\"."
     rm -f $logfile
 }
@@ -95,20 +93,17 @@ bm_upload_ssh_gpg()
     # the flags for the SSH method
     k_switch=""
     if [ ! -z "$BM_UPLOAD_SSH_KEY" ]; then
-        k_switch="-k=\"$BM_UPLOAD_SSH_KEY\""
+        k_switch="-k=$BM_UPLOAD_SSH_KEY"
     fi
 
     # Call to backup-manager-upload
     logfile="$(mktemp /tmp/bmu-log.XXXXXX)"
-    su $BM_UPLOAD_SSH_USER -s /bin/sh -command="\
-    $bmu $v_switch \
-         $k_switch \
-         -m=\"ssh-gpg\" \
-         -h=\"$bm_upload_hosts\" \
-         -u=\"$BM_UPLOAD_SSH_USER\" \
-         -d=\"$BM_UPLOAD_SSH_DESTINATION\" \
-         -r=\"$BM_REPOSITORY_ROOT\" \
-         --gpg-recipient=\"$BM_UPLOAD_SSHGPG_RECIPIENT\" today" 2>$logfile|| 
+    $bmu $v_switch $k_switch -m="ssh-gpg" \
+         -h="$bm_upload_hosts" \
+         -u="$BM_UPLOAD_SSH_USER" \
+         -d="$BM_UPLOAD_SSH_DESTINATION" \
+         -r="$BM_REPOSITORY_ROOT" \
+         --gpg-recipient="$BM_UPLOAD_SSHGPG_RECIPIENT" today 2>$logfile|| 
     error "Error reported by backup-manager-upload for method \"ssh-gpg\", check \"\$logfile\"."
     rm -f $logfile
 }
@@ -178,10 +173,6 @@ bm_upload_s3()
     rm -f $logfile
 }
 
-
-# this is done for behaving the right way depending on who is calling us
-# root should use su $BM_UPLOAD_SSH_USER -c ... and a regular user can just pray for being
-# $BM_UPLOAD_SSH_USER...
 _exec_rsync_command()
 {
     info "Uploading \$directory to \${host}:\${BM_UPLOAD_RSYNC_DESTINATION}"
@@ -210,9 +201,7 @@ _exec_rsync_command()
             rm -f $logfile
         fi
     else
-        if ! su $BM_UPLOAD_SSH_USER -c "${rsync} \
-    ${rsync_options} ${ssh_option} ${directory} ${destination_option}" \
-                 >/dev/null 2>$logfile; then
+        if ! ${rsync} ${rsync_options} ${ssh_option} ${directory} ${destination_option} >/dev/null 2>$logfile; then
             error "Upload of \$directory with rsync failed; check \$logfile."
         else
             rm -f $logfile

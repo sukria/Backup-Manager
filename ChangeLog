@@ -1,3 +1,10 @@
+2006-08-05  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* backup-manager-upload:
+	* lib/upload-methods.sh:
+	  + No more su to $BM_UPLOAD_USER, it's useless.
+	    (closes: #105)
+
 2006-07-05  Alexis Sukrieh  <sukria@backup-manager.org>
 	
 	[ Add support for local encryption with GPG - closes: #82 ]

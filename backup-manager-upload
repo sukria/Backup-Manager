@@ -338,9 +338,13 @@ sub ssh_clean_directory
     
 	# look for keyfile to use
 	my $keyfile_switch="";
-	if (defined $g_key_file and -f $g_key_file) {
+	if (defined $g_key_file and (-e $g_key_file)) {
 	    $keyfile_switch = "-i $g_key_file";
 	}
+    elsif (! (-e $g_key_file)) {
+        verbose_error "Unable to read the SSH identity key : $g_key_file";
+        exit E_SCP_FAILED;
+    }
 
     # First, create the list of existing archives
     my ($fh, $in) =tempfile();
@@ -381,12 +385,15 @@ sub send_file_with_scp($$$$$)
     
 	# look for keyfile to use
 	my $keyfile_switch="";
-	if (defined $g_key_file and -f $g_key_file) {
+	if (defined $g_key_file and (-e $g_key_file)) {
 	    $keyfile_switch = "-i $g_key_file";
 	}
-
-
-	my $cmd = "";
+    elsif (! -e $g_key_file) {
+        verbose_error "Unable to read the SSH identity key : $g_key_file";
+        exit E_SCP_FAILED;
+    }
+	
+    my $cmd = "";
 	if ( defined $g_gpg_recipient )	{	    
 	    my $file_base = basename($file);
 	    $cmd = "$gpg --encrypt --recipient $g_gpg_recipient --output - --batch $file | ";

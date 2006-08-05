@@ -1,5 +1,11 @@
 2006-08-05  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* backup-manager:
+	  + Possible to use BM with an unprivileged user thanks to the new path
+	  used for the lockfile if run by a non-root user.
+
+2006-08-05  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* backup-manager-upload:
 	* lib/upload-methods.sh:
 	  + No more su to $BM_UPLOAD_USER, it's useless.

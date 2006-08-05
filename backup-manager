@@ -40,12 +40,22 @@ growisofs="/usr/bin/growisofs"
 dvdrwformat="/usr/bin/dvd+rw-format"
 cdrecord="/usr/bin/cdrecord"
 bmu="/usr/bin/backup-manager-upload"
-lockfile="/var/run/backup-manager.pid"
 md5sum="/usr/bin/md5sum"
 bc="/usr/bin/bc"
 mysqldump="/usr/bin/mysqldump"
 svnadmin="/usr/bin/svnadmin"
 logger="/usr/bin/logger"
+
+# Find which lockfile to use
+# If we are called by an unprivileged user, use a lockfile inside the user's home;
+# else, use /var/run/backup-manager.lock
+systemlockfile="/var/run/backup-manager.lock"
+userlockfile="$HOME/.backup-manager.lock"
+if [ "$UID" != 0 ]; then
+    lockfile="$userlockfile"
+else
+    lockfile="$systemlockfile"
+fi
 
 # Load the backup-manager's library
 source $libdir/gettext.sh
@@ -78,11 +88,6 @@ noupload="false"
 # set useful global variables and initial
 # checks
 bm_init_today
-
-if [ "$UID" != 0 ]; then
-	echo_translated "backup-manager must be run as root."
-	exit 1
-fi
 
 # Catch signals for a nice exit.
 trap stop_me SIGINT SIGTERM SIGKILL

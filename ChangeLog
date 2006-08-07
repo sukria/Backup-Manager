@@ -1,3 +1,9 @@
+2006-08-07  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* lib/backup-methods.sh:
+	  + the dar build commandline is now working.
+	    (closes: #109)
+
 2006-08-05  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* backup-manager:

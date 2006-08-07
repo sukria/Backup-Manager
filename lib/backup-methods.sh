@@ -416,7 +416,7 @@ function __get_backup_tarball_command()
                 error "The archive type \"dar\" depends on the tool \"\$dar\"."
             fi
             __get_flags_dar_blacklist "$target"
-            command="$dar $incremental $blacklist $maxsize $overwrite $BM_TARBALL_EXTRA_OPTIONS -z9 -Q -c -R"
+            command="$dar $incremental $blacklist $maxsize $overwrite $BM_TARBALL_EXTRA_OPTIONS -z9 -Q -c $file_to_create -R"
         ;;
         *)
             error "The archive type \"\$BM_TARBALL_FILETYPE\" is not supported."
@@ -430,25 +430,40 @@ function build_clear_archive
 {
     logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
 
-    # This is a dirty hack, we have to do it like that unless 
-    # tar provides support for lzma compression internally.
-    if [ "$BM_TARBALL_FILETYPE" = "tar.lz" ];then
-        $tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile
-        if [ $? -gt 0 ]; then
-            handle_tarball_error "$file_to_create" "$logfile"
-        else
-            rm -f $logfile
-            commit_archives "$file_to_create"
-        fi
-    # The common case
-    else
-        if ! `$command $file_to_create "$target"> $logfile 2>&1`; then
-            handle_tarball_error "$file_to_create" "$logfile"
-        else
-            rm -f $logfile
-            commit_archives "$file_to_create"
-        fi
-    fi
+    # A couple of archive types have a special command line
+    case "$BM_TARBALL_FILETYPE" in 
+
+        # lzma archives should be piped manually
+        "tar.lz")
+            $tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile
+            if [ $? -gt 0 ]; then
+                handle_tarball_error "$file_to_create" "$logfile"
+            else
+                rm -f $logfile
+                commit_archives "$file_to_create"
+            fi
+        ;;
+        
+        # dar has a special commandline, that cannot fit the common tar way
+        "dar")
+            if ! `$command "$target"> $logfile 2>&1`; then
+                handle_tarball_error "$file_to_create" "$logfile"
+            else
+                rm -f $logfile
+                commit_archives "$file_to_create"
+            fi
+        ;;
+
+        # the common commandline
+        *)
+            if ! `$command $file_to_create "$target"> $logfile 2>&1`; then
+                handle_tarball_error "$file_to_create" "$logfile"
+            else
+                rm -f $logfile
+                commit_archives "$file_to_create"
+            fi
+        ;;
+    esac
 }
 
 function build_encrypted_archive

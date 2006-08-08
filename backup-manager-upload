@@ -140,6 +140,7 @@ use BackupManager::Config;
 use BackupManager::Logger;
 use POSIX qw(strftime);
 use File::Temp qw(tempfile);
+use File::Basename;
 
 use constant TRUE => 1;
 use constant FALSE => 0;

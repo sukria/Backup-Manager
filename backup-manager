@@ -25,7 +25,9 @@
 
 set -e
 
-VERSION="0.7.5"
+RELEASE="false"
+REVISION='$Revision$'
+VERSION="0.7.4"
 
 # All the paths we provide
 libdir="/usr/share/backup-manager"
@@ -89,6 +91,12 @@ conffile="/etc/backup-manager.conf"
 nopurge="false"
 noburn="false"
 noupload="false"
+
+# Init the version / revision flag
+if [ "$RELEASE" = "false" ]; then    
+    rev=$(echo "$REVISION" | sed -e 's/.Revision: \([0-9]*\).*/\1/g')
+    VERSION="${VERSION}r${rev}"
+fi
 
 # set useful global variables and initial
 # checks
@@ -179,8 +187,6 @@ source $libdir/sanitize.sh
 # There are too much problems for enabling -u now.
 # Most of them with the pipe method...
 # set -u
-
-
 
 bm_init_env 
 check_logger

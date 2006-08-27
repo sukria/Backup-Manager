@@ -1,5 +1,14 @@
 2006-08-27  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* backup-manager:
+	  + Replaced static paths to external programs by $(which statement).
+	    (closes: #114)
+	* t/testlib.sh:
+	  + Applied the same changes to the teslib.sh library so the test scripts
+	    behave the same way.
+
+2006-08-27  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* BackupManager/Logger.pm:
 	  + Applied patch from ilya margolin for propagating 
 	    BM_LOGGER_FACILITY (closes #115).

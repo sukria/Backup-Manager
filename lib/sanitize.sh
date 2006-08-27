@@ -155,6 +155,19 @@ confkey_handle_deprecated "BM_NAME_FORMAT" "BM_TARBALL_NAMEFORMAT"
 confkey_handle_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
 confkey_handle_deprecated "BM_DUMP_SYMLINKS" "BM_TARBALL_DUMPSYMLINKS"
 
+# The TARBALL_OVER_SSH thing
+if [ "$BM_TARBALL_OVER_SSH" = "true" ]; then
+    if [ -z "$BM_UPLOAD_SSH_HOSTS" ]; then
+        confkey_error "BM_UPLOAD_SSH_HOSTS" "BM_TARBALL_OVER_SSH"
+    fi
+    if [ -z "$BM_UPLOAD_SSH_KEY" ]; then
+        confkey_error "BM_UPLOAD_SSH_KEY" "BM_TARBALL_OVER_SSH"
+    fi
+    if [ -z "$BM_UPLOAD_SSH_USER" ]; then
+        confkey_error "BM_UPLOAD_SSH_USER" "BM_TARBALL_OVER_SSH"
+    fi
+fi
+
 # Converting anything in BM_TARBALL_DIRECTORIES in the array BM_TARBALL_TARGETS[].
 # see bug #86 for details.
 if [ -n "$BM_DIRECTORIES" ]; then

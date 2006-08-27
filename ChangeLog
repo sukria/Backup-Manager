@@ -1,3 +1,11 @@
+2006-08-27  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* BackupManager/Logger.pm:
+	  + Applied patch from ilya margolin for propagating 
+	    BM_LOGGER_FACILITY (closes #115).
+	* backup-manager:
+	  + Added a copyright header when BM is launched on verbose mode.
+
 2006-08-07  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* lib/backup-methods.sh:

@@ -61,12 +61,15 @@ my %g_rh_label = (
 	alert   => 'alert'
 );
 
+my $facility;
+
 
 BEGIN {
 	$basename = $0;
 	$basename =~ s%^.*/%%;
+	$facility=DEFAULT_FACILITY unless $facility=$ENV{BM_LOGGER_FACILITY};
 	setlogsock('unix');		
-	openlog($basename, 'pid', DEFAULT_FACILITY);
+	openlog($basename, 'pid', $facility);
 }
 
 END {

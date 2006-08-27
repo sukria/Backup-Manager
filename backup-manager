@@ -166,6 +166,7 @@ done
 
 
 source $conffile
+info "Backup Manager $VERSION - Copyright (c) 2004-2006 Alexis Sukrieh"
 
 # Sanitize will try to find deprecated vartiables,
 source $libdir/sanitize.sh
@@ -173,6 +174,8 @@ source $libdir/sanitize.sh
 # There are too much problems for enabling -u now.
 # Most of them with the pipe method...
 # set -u
+
+
 
 bm_init_env 
 check_logger

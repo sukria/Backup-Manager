@@ -1,3 +1,10 @@
+2006-08-31  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* lib/gettext.sh
+	  + Do not source /usr/share/backup-manager but $libdir instead (was
+	    breaking test scripts on boxes where BM isn't installed).
+	* Replaced every #!/bin/sh by #!/bin/bash in test scripts.
+
 2006-08-27  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* lib/sanitize.sh:

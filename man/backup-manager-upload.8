@@ -25,11 +25,11 @@
 ..
 .\" Set up some character translations and predefined strings.  \*(-- will
 .\" give an unbreakable dash, \*(PI will give pi, \*(L" will give a left
-.\" double quote, and \*(R" will give a right double quote.  | will give a
-.\" real vertical bar.  \*(C+ will give a nicer C++.  Capital omega is used to
-.\" do unbreakable dashes and therefore won't be available.  \*(C` and \*(C'
-.\" expand to `' in nroff, nothing in troff, for use with C<>.
-.tr \(*W-|\(bv\*(Tr
+.\" double quote, and \*(R" will give a right double quote.  \*(C+ will
+.\" give a nicer C++.  Capital omega is used to do unbreakable dashes and
+.\" therefore won't be available.  \*(C` and \*(C' expand to `' in nroff,
+.\" nothing in troff, for use with C<>.
+.tr \(*W-
 .ds C+ C\v'-.1v'\h'-1p'\s-2+\h'-1p'+\s0\v'.1v'\h'-1p'
 .ie n \{\
 .    ds -- \(*W-
@@ -129,24 +129,23 @@
 .\" ========================================================================
 .\"
 .IX Title "BACKUP-MANAGER-UPLOAD 1"
-.TH BACKUP-MANAGER-UPLOAD 1 "2006-02-27" "perl v5.8.8" "backup-manager-upload"
+.TH BACKUP-MANAGER-UPLOAD 1 "2006-08-08" "perl v5.8.8" "backup-manager-upload"
 .SH "NAME"
 backup\-manager\-upload \- Multiprotocol uploader for backup\-manager.
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
-.Vb 1
-\& backup\-manager\-upload [options] date
-.Ve
+backup-manager-upload [options] date 
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
 \&\fBbackup-manager-upload\fR will upload all the archives generated on the given 
 date to the specified host with either ftp or scp.
-Some metadates are available like today or yesterday.
+It's also possible to use this program for uploading data to an Amazon S3 account.
+Some metadates are available like \*(L"today\*(R" or \*(L"yesterday\*(R".
 .SH "REQUIRED ARGS"
 .IX Header "REQUIRED ARGS"
-.IP "\fB\-\-mode=\fR\fItransfert-mode\fR" 4
-.IX Item "--mode=transfert-mode"
-Select the transfert mode to use : ftp or scp.
+.IP "\fB\-\-mode=\fR\fItransfer-mode\fR" 4
+.IX Item "--mode=transfer-mode"
+Select the transfer mode to use : ftp, scp, or s3.
 .IP "\fB\-\-host=\fR\fIhostname1,hostname2,...,hostnameN\fR" 4
 .IX Item "--host=hostname1,hostname2,...,hostnameN"
 Select a list of remote hosts to connect to.
@@ -157,32 +156,75 @@ Select the user to use for connection.
 .IX Header "OPTIONAL ARGS"
 .IP "\fB\-\-password=\fR\fIpassword\fR" 4
 .IX Item "--password=password"
-Select the ftp user's password (only needed for ftp transferts).
+Select the ftp user's password (only needed for ftp transfers).
 .IP "\fB\-\-key=\fR\fIpath_to_private_key\fR" 4
 .IX Item "--key=path_to_private_key"
-Select the ssh private key file to use when opening the ssh session for scp transfert.
-Obviously, this is only needed for scp transfert mode.
+Select the ssh private key file to use when opening the ssh session for scp transfer.
+Obviously, this is only needed for scp transfer mode.
 If you don't specify a key file, the user's default private key will be used.
 .IP "\fB\-\-directory=\fR\fIdirectory\fR" 4
 .IX Item "--directory=directory"
 Select the location on the remote host where files will be uploaded.
 Default is /backup/uploads.
+.IP "\fB\-\-bucket=\fR\fIbucket\fR" 4
+.IX Item "--bucket=bucket"
+Sets the bucket name for the Amazon S3 service backup into.
 .IP "\fB\-\-root=\fR\fIdirectory\fR" 4
 .IX Item "--root=directory"
 Select the local directory where files are.
-Default is /backup.
+Default is /var/archives
+.IP "\fB\-\-gpg\-recipient=\fR\fIgpg-recipient\fR" 4
+.IX Item "--gpg-recipient=gpg-recipient"
+Select the gpg public key for encryptiong the archives when uploading
+with the method ssh\-gpg. This can be a short or long key id or a
+descriptive name. The precise syntax is described in the gpg man page.
 .IP "\fB\-\-list\fR" 4
 .IX Item "--list"
 Just list the files to upload.
+.IP "\fB\-\-ftp\-purge\fR" 4
+.IX Item "--ftp-purge"
+Purge the remote directory before uploading files in \s-1FTP\s0 mode.
+.IP "\fB\-\-s3\-purge\fR" 4
+.IX Item "--s3-purge"
+Purge the remote directory before uploading files in \s-1FTP\s0 mode.
+.IP "\fB\-\-ssh\-purge\fR" 4
+.IX Item "--ssh-purge"
+Purge the remote directory before uploading files in \s-1SSH\s0 mode.
 .IP "\fB\-\-verbose\fR" 4
 .IX Item "--verbose"
 Flag to enable verbose mode.
 .IP "\fBdate\fR" 4
 .IX Item "date"
 Date pattern to select some files to upload, can be a valid date (\s-1YYYYMMDD\s0) or 'today' or 'yesterday'.
+.SH "ERROR CODES"
+.IX Header "ERROR CODES"
+If something goes wrong during an upload, backup-manager-upload will exit 
+with a non null value. In such a case every error messages are sent to 
+\&\s-1STDERR\s0.
+.Sp
+Here are the possible error codes:
+.RS 4
+.IP "bad command line (wrong arguments) : 10" 4
+.IX Item "bad command line (wrong arguments) : 10"
+.PD 0
+.IP "\s-1FTP\s0 transfer failure : 20" 4
+.IX Item "FTP transfer failure : 20"
+.IP "\s-1SCP\s0 transfer failure : 21" 4
+.IX Item "SCP transfer failure : 21"
+.IP "S3 transfer failure : 22" 4
+.IX Item "S3 transfer failure : 22"
+.IP "Unknown upload method: 23" 4
+.IX Item "Unknown upload method: 23"
+.RE
+.RS 4
+.PD
 .SH "SEE ALSO"
 .IX Header "SEE ALSO"
 \&\fIbackup\-manager\fR\|(3)
-.SH "AUTHOR"
-.IX Header "AUTHOR"
-Alexis Sukrieh <sukria@sukria.net>
+.SH "AUTHORS"
+.IX Header "AUTHORS"
+Alexis Sukrieh \- main code and design
+.Sp
+Brad Dixon \- Amazon S3 upload method
+.Sp
+Jan Metzger \- ssh-gpg upload method

@@ -1,5 +1,25 @@
 2006-09-01  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	[ Thomas Parmelan ]
+
+	* Support for optional recursive purging (closes: #121)
+	  + Added BM_REPOSITORY_RECURSIVEPURGE in backup-manager.conf.tpl (plus
+	    examples).
+	  + Documentation about BM_REPOSITORY_RECURSIVEPURGE in the user guide
+	    (doc/user-guide.sgml and doc/user-guide.txt).
+	  + Change the depth passed to "find" according to
+	    BM_REPOSITORY_RECURSIVEPURGE in lib/files.sh.
+	  + Make sure BM_REPOSITORY_RECURSIVEPURGE is set in lib/sanitize.sh.
+	
+	[ Alexis Sukrieh ]
+	
+	* Make sure the new variable BM_REPOSITORY_RECURSIVEPURGE is set in
+	  base.conf so tests scripts don't produce warnings (t/confs/base.conf).
+	* Test the purging system with/without recursion
+	  (t/t14-purging-system.sh).
+
+2006-09-01  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* lib/files.sh:
 	  + Applied patch from Thomas Parmelan for closing bug #120. The recursive
 	    purging phase now uses 'find' for building the archive list.

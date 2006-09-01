@@ -16,8 +16,6 @@ source confs/tarball.conf
 export BM_ARCHIVE_ROOT="repository"
 export BM_ARCHIVE_METHOD="tarball"
 export BM_TARBALL_DIRECTORIES="$PWD"
-export BM_TARBALL_FILETYPE=""
-
 check_logger
 source $locallib/sanitize.sh
 

@@ -311,16 +311,20 @@ clean_directory()
     directory="$1"
     purge_date=$(date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago")
 
-#    __debug "Purging archives older than $purge_date"
-
     if [ ! -d $directory ]; then
         error "Directory given is not found."
+    fi
+
+    if [ "$BM_REPOSITORY_RECURSIVEPURGE" = "true" ]; then
+	maxdepth=""
+    else
+	maxdepth="-maxdepth 1"
     fi
 
     # First list all the files to process
     # and ask backup-manager-purge what to remove
     list=$(mktemp /tmp/bm-list.XXXXXX)
-    find -H "$directory" \
+    find -H "$directory" $maxdepth \
          -type f -print \
          | /usr/bin/backup-manager-purge --ttl=$BM_ARCHIVE_TTL > $list
 

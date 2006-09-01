@@ -20,6 +20,9 @@
     
         Support for multiple configuration files
         - Michael Prokop <mikap@grml.org> 
+
+        Support for optional recursive purge
+        - Thomas Parmelan <tom+backup-manager@ankh.fr.eu.org>
     
 * Documentation
 

@@ -251,7 +251,29 @@ Contents
 
           export BM_ARCHIVE_TTL="5"
 
-2.1.2.3. `BM_ARCHIVE_PREFIX'
+2.1.2.3. `BM_REPOSITORY_RECURSIVEPURGE'
+---------------------------------------
+
+     _Type: boolean, default: `false'._
+
+     On most setups, all the archives are stored in the top-level directory
+     specified by the configuration key `BM_REPOSITORY_ROOT'.  But it can
+     make sense to have subdirectories, for instance to store archives
+     uploaded from other hosts running Backup Manager.  In this case, it is
+     possible to ask Backup Manager to purge those directories too, by
+     setting `BM_REPOSITORY_RECURSIVEPURGE' to `true'.
+
+     Please note that the `BM_ARCHIVE_TTL' value is global, so if you want
+     to have different lifetimes for some archives, this is not the way to
+     go.  In this case you should save them outside `BM_REPOSITORY_ROOT'
+     and write a cron job to do the purge (possibly calling `backup-manager
+     --purge' with an alternate configuration file).
+
+     Example:
+
+          export BM_REPOSITORY_RECURSIVEPURGE="false"
+
+2.1.2.4. `BM_ARCHIVE_PREFIX'
 ----------------------------
 
      _Type: string, default: `$HOSTNAME'._

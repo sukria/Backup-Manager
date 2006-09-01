@@ -39,6 +39,10 @@ export BM_ARCHIVE_CHMOD="660"
 # Number of days we have to keep an archive (Time To Live)
 export BM_ARCHIVE_TTL="5"
 
+# Do you want to purge only the top-level directory or all
+# directories under BM_REPOSITORY_ROOT?
+export BM_REPOSITORY_RECURSIVEPURGE="false"
+
 # Do you want to replace duplicates by symlinks? 
 # (archive-DAY is a duplicate of archive-(DAY - 1) if they 
 # are both the same size).

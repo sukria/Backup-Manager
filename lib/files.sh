@@ -319,18 +319,9 @@ clean_directory()
 
     # First list all the files to process
     list=$(mktemp /tmp/bm-list.XXXXXX)
-    for file in $directory/*
-    do
-        if [ ! -e $file ]; then
-            continue
-        fi
-        
-        if [ -d $file ]; then
-            clean_directory "$file"
-        else 
-            echo "$file" >> $list
-        fi
-    done
+    find -H "$directory" \
+         -type f -print \
+         | /usr/bin/backup-manager-purge --ttl=$BM_ARCHIVE_TTL > $list
 
     # Then ask bakup-manager-purge what to remove
     for archive in `/usr/bin/backup-manager-purge --ttl=$BM_ARCHIVE_TTL < $list`

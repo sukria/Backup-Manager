@@ -1,5 +1,15 @@
 2006-09-01  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* lib/files.sh:
+	  + Applied patch from Thomas Parmelan for closing bug #120. The recursive
+	    purging phase now uses 'find' for building the archive list.
+		(closes: #120)
+	* t/t14-purging-system.sh:
+	  + Added some sub-directories in the test repository in order to
+	    reproduce bug #120.
+
+2006-09-01  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* t/testlib.sh:
 	  + That file was hit by bug#119 too, all the test scripts were broken.
 

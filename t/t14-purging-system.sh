@@ -70,6 +70,15 @@ touch $BM_REPOSITORY_ROOT/ouranos-etc.$date_4_days_ago.master.txt
 touch $BM_REPOSITORY_ROOT/ouranos-01020102-fdisk.incremental-list.txt
 touch $BM_REPOSITORY_ROOT/ouranos01020102-fdisk.incremental-list.txt
 
+for dir in subdir1 subdir2 subdir3 subdir4
+do
+    mkdir -p $BM_REPOSITORY_ROOT/$dir
+    touch "$BM_REPOSITORY_ROOT/$dir/host-path-to-dir.$date_1_days_ago.master.txt"
+    touch "$BM_REPOSITORY_ROOT/$dir/host-path-to-dir.$date_2_days_ago.txt"
+    touch "$BM_REPOSITORY_ROOT/$dir/host-path-to-dir.$date_3_days_ago.txt"
+    touch "$BM_REPOSITORY_ROOT/$dir/host-path-to-dir.$date_4_days_ago.txt"
+done
+
 # call the purging system
 clean_directory "$BM_REPOSITORY_ROOT"
 

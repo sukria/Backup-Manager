@@ -15,23 +15,23 @@ source $locallib/actions.sh
 VERSION="0.7.1+svn"
 
 # external programs (cannot be sure where the are)
-zip=$(which zip)
-bzip=$(which bzip2)
-gzip=$(which gzip)
-gpg=$(which gpg)
-lzma=$(which lzma)
-dar=$(which dar)
-tar=$(which tar)
-rsync=$(which rsync)
-mkisofs=$(which mkisofs)
-growisofs=$(which growisofs)
-dvdrwformat=$(which dvd+rw-format)
-cdrecord=$(which cdrecord)
-md5sum=$(which md5sum)
-bc=$(which bc)
-mysqldump=$(which mysqldump)
-svnadmin=$(which svnadmin)
-logger=$(which logger)
+zip=$(which zip) || true
+bzip=$(which bzip2) || true
+gzip=$(which gzip) || true
+gpg=$(which gpg) || true
+lzma=$(which lzma) || true
+dar=$(which dar) || true
+tar=$(which tar) || true
+rsync=$(which rsync) || true
+mkisofs=$(which mkisofs) || true
+growisofs=$(which growisofs) || true
+dvdrwformat=$(which dvd+rw-format) || true
+cdrecord=$(which cdrecord) || true
+md5sum=$(which md5sum) || true
+bc=$(which bc) || true
+mysqldump=$(which mysqldump) || true
+svnadmin=$(which svnadmin) || true
+logger=$(which logger) || true
 
 # Find which lockfile to use
 # If we are called by an unprivileged user, use a lockfile inside the user's home;

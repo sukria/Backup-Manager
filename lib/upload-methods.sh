@@ -180,7 +180,7 @@ _exec_rsync_command()
 
     # default options for local rsync
     ssh_option=""
-    destination_option="$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR%/}/"
+    destination_option="$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR%/}"
     
     # remote hosts use SSH
     if [ "$host" != "localhost" ]; then
@@ -188,25 +188,19 @@ _exec_rsync_command()
            [ -z "$BM_UPLOAD_SSH_KEY" ]; then 
             error "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
         fi
-        ssh_option="-e \"ssh -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}\" "
-        destination_option="${BM_UPLOAD_SSH_USER}@${host}:$destination_option"
+        ssh_option="ssh -l ${BM_UPLOAD_SSH_USER} -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}"
+        destination_option="${BM_UPLOAD_SSH_USER}@${host}:${destination_option}"
     fi
     
-    if [ "$UID" != 0 ]; then
-        if ! ${rsync} ${rsync_options} ${ssh_option} \
-                      ${directory} ${destination_option} \
-                 >/dev/null 2>$logfile; then
-            error "Upload of \$directory with rsync failed; check \$logfile."
-        else
-            rm -f $logfile
-        fi
+    # Due to a very weird behaviour in the rsync's argument-processing phase;
+    # it's safer to use RSYNC_RSH to pass ssh options than using the -e '' flag.
+    command="${rsync_options} ${directory} ${destination_option}"
+    if ! RSYNC_RSH="$ssh_option" \
+         $rsync $command >$logfile 2>&1; then
+        error "Upload of \$directory with rsync failed; check \$logfile."
     else
-        if ! ${rsync} ${rsync_options} ${ssh_option} ${directory} ${destination_option} >/dev/null 2>$logfile; then
-            error "Upload of \$directory with rsync failed; check \$logfile."
-        else
-            rm -f $logfile
-        fi
-    fi
+        rm -f $logfile
+    fi        
 }
 
 # Manages RSYNC uploads

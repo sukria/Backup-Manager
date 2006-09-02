@@ -88,7 +88,7 @@ msgstr "Création de l'archive maître pour la cible : $dir_name"
 #: ../lib/backup-methods.sh:396
 #, sh-format
 msgid "The archive type \"tar.bz2\" depends on the tool \"$bzip\"."
-msgstr "Le type d'archive « tar.bz2 » dépend de l'outil « bzip »."
+msgstr "Le type d'archive « tar.bz2 » dépend de l'outil « $bzip »."
 
 #: ../lib/backup-methods.sh:403
 #, sh-format

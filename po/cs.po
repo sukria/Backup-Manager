@@ -1,182 +1,183 @@
 # Czech translation of backup-manager
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the backup-manager package.
-# Miroslav Kure <kurem@debian.cz>, 2005.
+# Miroslav Kure <kurem@debian.cz>, 2005,2006.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-28 10:37+0200\n"
-"PO-Revision-Date: 2005-07-12 23:09+0200\n"
-"Last-Translator: Miroslav Kure <kurem@debiann.cz>\n"
+"POT-Creation-Date: 2006-08-27 18:19+0200\n"
+"PO-Revision-Date: 2006-08-27 18:35+0200\n"
+"Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../lib/backup-methods.sh:26
-#, fuzzy, sh-format
+#, sh-format
 msgid "$file_to_create: ok (${size}M,"
-msgstr "ok (${size}M, "
+msgstr "$file_to_create: ok (${size}M,"
 
 #: ../lib/backup-methods.sh:47
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to purge duplicates of $file_to_create"
-msgstr "Vytv·¯Ìm $file_to_create: "
+msgstr "Nemohu smazat duplik√°ty $file_to_create"
 
 #: ../lib/backup-methods.sh:52
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to change the owner of \"$file_to_create\"."
-msgstr "Vytv·¯Ìm $file_to_create: "
+msgstr "Nemohu zmƒõnit vlastn√≠ka \"$file_to_create\"."
 
 #: ../lib/backup-methods.sh:54
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to change file permissions of \"$file_to_create\"."
-msgstr "Vytv·¯Ìm $file_to_create: "
+msgstr "Nemohu zmƒõnit opr√°vnƒõn√≠ k \"$file_to_create\"."
 
 #: ../lib/backup-methods.sh:76
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to create \"$target\", check $logfile"
-msgstr "nemohu ze souboru zÌskat datum"
+msgstr "Nemohu vytvo≈ôit \"$target\", zkontrolujte $logfile"
 
 #: ../lib/backup-methods.sh:89
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
-msgstr "Soubor $file_to_create jiæ existuje, p¯eskakuji."
+msgstr "Soubor $file_to_create ji≈æ existuje, p≈ôeskakuji."
 
 #: ../lib/backup-methods.sh:100 ../lib/backup-methods.sh:116
 #: ../lib/backup-methods.sh:130
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to exec $command; check $logfile"
-msgstr "nemohu ze souboru zÌskat datum"
+msgstr "Nemohu spustit $command, zkontrolujte $logfile"
 
 #: ../lib/backup-methods.sh:108
 #, sh-format
 msgid "Compressor $compress requires $gzip."
-msgstr ""
+msgstr "Komprese $compress vy≈æaduje $gzip."
 
 #: ../lib/backup-methods.sh:124
 #, sh-format
 msgid "Compressor $compress requires $bzip."
-msgstr ""
+msgstr "Komprese $compress vy≈æaduje $bzip."
 
 #: ../lib/backup-methods.sh:137
 #, sh-format
 msgid "No such compressor supported: $compress."
-msgstr ""
+msgstr "Tato komprese nen√≠ podporovan√°: $compress."
 
 #: ../lib/backup-methods.sh:143
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to find $file_to_create"
-msgstr "Vytv·¯Ìm $file_to_create: "
+msgstr "Nemohu naj√≠t $file_to_create"
 
 #: ../lib/backup-methods.sh:254
 msgid "No frequency given, set BM_TARBALLINC_MASTERDATETYPE."
-msgstr ""
+msgstr "Nebyla zad√°na frekvence, nastavte BM_TARBALLINC_MASTERDATETYPE."
 
 #: ../lib/backup-methods.sh:265
 #, sh-format
 msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
-msgstr ""
+msgstr "Nezn√°m√° frekvence: $BM_TARBALLINC_MASTERDATETYPE"
 
 #: ../lib/backup-methods.sh:289
 #, sh-format
 msgid "Building master backup for target : $dir_name"
-msgstr ""
+msgstr "Vytv√°≈ô√≠m hlavn√≠ z√°lohu pro c√≠l: $dir_name"
 
 #: ../lib/backup-methods.sh:396
 #, sh-format
 msgid "The archive type \"tar.bz2\" depends on the tool \"$bzip\"."
-msgstr ""
+msgstr "Typ archivu \"tar.bz2\" z√°vis√≠ na n√°stroji \"$bzip\"."
 
 #: ../lib/backup-methods.sh:403
 #, sh-format
 msgid "The archive type \"tar.lz\" depends on the tool \"$lzma\"."
-msgstr ""
+msgstr "Typ archivu \"tar.lz\" z√°vis√≠ na n√°stroji \"$lzma\"."
 
 #: ../lib/backup-methods.sh:410
 #, sh-format
 msgid "The archive type \"zip\" depends on the tool \"$zip\"."
-msgstr ""
+msgstr "Typ archivu \"zip\" z√°vis√≠ na n√°stroji \"$zip\"."
 
 #: ../lib/backup-methods.sh:416
 #, sh-format
 msgid "The archive type \"dar\" depends on the tool \"$dar\"."
-msgstr ""
+msgstr "Typ archivu \"dar\" z√°vis√≠ na n√°stroji \"$dar\"."
 
 #: ../lib/backup-methods.sh:422 ../lib/backup-methods.sh:499
 #: ../lib/backup-methods.sh:535
-#, fuzzy, sh-format
+#, sh-format
 msgid "The archive type \"$BM_TARBALL_FILETYPE\" is not supported."
-msgstr "Typ souboru $BM_FILETYPE nenÌ podporov·n."
+msgstr "Typ archivu \"$BM_TARBALL_FILETYPE\" nen√≠ podporov√°n."
 
 #: ../lib/backup-methods.sh:474
 #, sh-format
 msgid ""
 "The configuration variable \"$BM_ENCRYPTION_RECIPIENT\" must be defined."
 msgstr ""
+"Konfiguraƒçn√≠ promƒõnn√° \"$BM_ENCRYPTION_RECIPIENT\" mus√≠ b√Ωt definov√°na."
 
 #: ../lib/backup-methods.sh:480
 #, sh-format
 msgid ""
 "The encryption is not yet possible with \"$BM_TARBALL_FILETYPE\" archives."
-msgstr ""
+msgstr "≈†ifrov√°n√≠ archiv≈Ø \"$BM_TARBALL_FILETYPE\" zat√≠m nen√≠ mo≈æn√©."
 
 #: ../lib/backup-methods.sh:512
 #, sh-format
 msgid "The binary \"$gpg\" is needed."
-msgstr ""
+msgstr "Je vy≈æadov√°na bin√°rka \"$gpg\"."
 
 #: ../lib/backup-methods.sh:519 ../lib/backup-methods.sh:551
-#, fuzzy, sh-format
+#, sh-format
 msgid "File $file_to_check already exists, skipping."
-msgstr "Soubor $file_to_create jiæ existuje, p¯eskakuji."
+msgstr "Soubor $file_to_check ji≈æ existuje, p≈ôeskakuji."
 
 #: ../lib/backup-methods.sh:564
-#, fuzzy, sh-format
+#, sh-format
 msgid "Target \"$t\" does not exist, skipping."
-msgstr "Soubor $file_to_create jiæ existuje, p¯eskakuji."
+msgstr "C√≠l \"$t\" neexistuje, p≈ôeskakuji."
 
 #: ../lib/backup-methods.sh:627 ../lib/backup-methods.sh:654
 #: ../lib/backup-methods.sh:683 ../lib/backup-methods.sh:705
-#, fuzzy, sh-format
+#, sh-format
 msgid "Using method \"$method\"."
-msgstr "PouæÌv·m z·lohovacÌ metodu \"rsync\""
+msgstr "Pou≈æ√≠v√°m metodu \"$method\"."
 
 #: ../lib/backup-methods.sh:647
 #, sh-format
 msgid "During the tarballs generation, $nb_err error(s) occurred."
-msgstr ""
+msgstr "Bƒõhem vytv√°≈ôen√≠ tar archiv≈Ø se vyskytly chyby (celkem $nb_err)."
 
 #: ../lib/backup-methods.sh:656
 #, sh-format
 msgid "The \"mysql\" method is chosen, but $mysqldump is not found."
-msgstr ""
+msgstr "Je vybr√°na metoda \"mysql\", av≈°ak $mysqldump nelze nal√©zt."
 
 #: ../lib/backup-methods.sh:685
 #, sh-format
 msgid "The \"svn\" method is chosen, but $svnadmin is not found."
-msgstr ""
+msgstr "Je vybr√°na metoda \"svn\", av≈°ak $svnadmin nelze nal√©zt."
 
 #: ../lib/backup-methods.sh:691
 #, sh-format
 msgid "SVN repository \"$repository\" is not valid; skipping."
-msgstr ""
+msgstr "SVN repozit√°≈ô \"$repository\" nen√≠ platn√Ω; p≈ôeskakuji."
 
 #: ../lib/backup-methods.sh:714
 #, sh-format
 msgid "Not enough args for this archive ($archive), skipping."
-msgstr ""
+msgstr "Pro tento archiv ($archive) nem√°m dost argument≈Ø, p≈ôeskakuji."
 
 #: ../lib/backup-methods.sh:721
 msgid "Cannot create archive."
-msgstr ""
+msgstr "Nemohu vytvo≈ôit archiv."
 
 #: ../lib/sanitize.sh:29
 #, sh-format
 msgid "The configuration key $key is not set, using \"$default\"."
-msgstr "KonfiguraËnÌ klÌË $key nenÌ naastaven, pouæÌv·m \"$default\"."
+msgstr "Konfiguraƒçn√≠ kl√≠ƒç $key nen√≠ nastaven, pou≈æ√≠v√°m \"$default\"."
 
 #: ../lib/sanitize.sh:39
 #, sh-format
@@ -184,21 +185,23 @@ msgid ""
 "The configuration key \"$deprecated_key\" is deprecated, you should rename "
 "it \"$new_key\". Using \"$deprecated_value\"."
 msgstr ""
+"Konfiguraƒçn√≠ kl√≠ƒç \"$deprecated_key\" je zastaral√Ω, mƒõli byste jej "
+"p≈ôejmenovat na \"$new_key\". Pou≈æ√≠v√°m \"$deprecated_value\"."
 
 #: ../lib/sanitize.sh:74
 #, sh-format
 msgid "The configuration key $key is not set but $keymandatory is enabled."
-msgstr "KonfiguraËnÌ klÌË $key nenÌ nastaven, ale $keymandatory je povolen."
+msgstr "Konfiguraƒçn√≠ kl√≠ƒç $key nen√≠ nastaven, ale $keymandatory je povolen."
 
 #: ../lib/sanitize.sh:92
 #, sh-format
 msgid "Deprecated boolean, $key is set to \"yes\", setting \"true\" instead."
-msgstr ""
+msgstr "Zmƒõnƒõn typ boolean, $key m√° hodnotu \"yes\", nastavuji na \"true\"."
 
 #: ../lib/sanitize.sh:97
 #, sh-format
 msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
-msgstr ""
+msgstr "Zmƒõnƒõn typ boolean, $key m√° hodnotu \"no\", nastavuji na \"false\"."
 
 #: ../lib/sanitize.sh:241
 #, sh-format
@@ -206,299 +209,280 @@ msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
 "found."
 msgstr ""
-"P¯i ovÏ¯ov·nÌ konfiguraËnÌho souboru $conffile bylo nalezeno $nb_warnings "
-"varov·nÌ."
-
-#: ../lib/actions.sh:42
-msgid "No backup method used."
-msgstr ""
-
-#: ../lib/actions.sh:45
-#, sh-format
-msgid "No such backup method: $BM_ARCHIVE_METHOD"
-msgstr ""
-
-#: ../lib/actions.sh:54
-#, fuzzy, sh-format
-msgid "Unable to change the owner of \"$md5file\"."
-msgstr "nemohu ze souboru zÌskat datum"
-
-#: ../lib/actions.sh:56
-#, sh-format
-msgid "Unable to change file permissions of \"$md5file\"."
-msgstr ""
-
-#: ../lib/actions.sh:86
-#, fuzzy
-msgid "No upload method used."
-msgstr "PouæÌv·m z·lohovacÌ metodu \"rsync\""
-
-#: ../lib/actions.sh:89
-#, fuzzy, sh-format
-msgid "The upload method \"$method\" is not supported; skipping."
-msgstr "Soubor $file_to_create jiæ existuje, p¯eskakuji."
-
-#: ../lib/actions.sh:99
-#, fuzzy, sh-format
-msgid "Cleaning $BM_REPOSITORY_ROOT"
-msgstr "»istÌm $BM_ARCHIVES_REPOSITORY: "
-
-#: ../lib/actions.sh:110
-#, fuzzy, sh-format
-msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND."
-msgstr "SpouπtÌm ˙vodnÌ p¯Ìkaz: $BM_PRE_BACKUP_COMMAND: "
-
-#: ../lib/actions.sh:114
-#, fuzzy
-msgid "Pre-command failed. Stopping the process."
-msgstr "⁄vodnÌ p¯Ìkaz vr·til chybu. Zastavuji proces."
-
-#: ../lib/actions.sh:119
-#, sh-format
-msgid "Pre-command returned: \"$RET\" (success)."
-msgstr ""
-
-#: ../lib/actions.sh:129
-#, fuzzy, sh-format
-msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
-msgstr "SpouπtÌm z·vÏreËn˝ p¯Ìkaz: $BM_POST_BACKUP_COMMAND: "
-
-#: ../lib/actions.sh:133
-#, fuzzy
-msgid "Post-command failed."
-msgstr "Z·vÏreËn˝ p¯Ìkaz vr·til chybu."
-
-#: ../lib/actions.sh:138
-#, sh-format
-msgid "Post-command returned: \"$RET\" (success)."
-msgstr ""
-
-#: ../lib/actions.sh:161
-#, fuzzy
-msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
-msgstr ""
-"KonfiguraËnÌ klÌË BM_FILETYPE je nastaven na \"zip\" ale zip nenÌ instalov·n."
-
-#: ../lib/actions.sh:166
-#, fuzzy
-msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
-"installed."
-msgstr ""
-"KonfiguraËnÌ klÌË BM_FILETYPE je nastaven na \"bzip2\" ale bzip2 nenÌ "
-"instalov·n."
-
-#: ../lib/actions.sh:171
-#, fuzzy
-msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
-msgstr ""
-"KonfiguraËnÌ klÌË BM_FILETYPE je nastaven na \"zip\" ale zip nenÌ instalov·n."
-
-#: ../lib/actions.sh:181
-#, fuzzy, sh-format
-msgid "The repository $BM_REPOSITORY_ROOT does not exist, creating it."
-msgstr "Adres·¯ $BM_ARCHIVES_REPOSITORY neexistuje, vytv·¯Ìm jej"
+"P≈ôi ovƒõ≈ôov√°n√≠ konfiguraƒçn√≠ho souboru $conffile bylo nalezeno $nb_warnings "
+"varov√°n√≠."
 
 #: ../lib/md5sum.sh:29
 msgid "System error: bad usage of function get_md5sum_from_file()"
-msgstr ""
+msgstr "Syst√©mov√° chyba: chybn√© pou≈æit√≠ funkce get_md5sum_from_file()"
 
 #: ../lib/md5sum.sh:33
 #, sh-format
 msgid "No md5file found: $md5file"
-msgstr "Nebyl nalezen soubor s md5 souËty: $md5file"
+msgstr "Nebyl nalezen soubor s md5 souƒçty: $md5file"
 
 #: ../lib/md5sum.sh:77
-#, fuzzy, sh-format
+#, sh-format
 msgid "Archive given does not exist in the repository: $archive"
-msgstr "Zadan˝ archiv v ˙loæiπti neexistuje: $archive"
+msgstr "Zadan√Ω archiv v √∫lo≈æi≈°ti neexistuje: $archive"
 
 #: ../lib/dialog.sh:27
 msgid "Output:"
-msgstr "V˝stup:"
+msgstr "V√Ωstup:"
 
 #: ../lib/dialog.sh:28
 msgid "Print this short help message."
-msgstr "Vytiskne tuto kr·tkou n·povÏdu."
+msgstr "Vytiskne tuto kr√°tkou n√°povƒõdu."
 
 #: ../lib/dialog.sh:29
 msgid "Print what happens on STDOUT."
-msgstr "Vytiskne na STDOUT prov·dÏnÈ kroky."
+msgstr "Vytiskne na STDOUT prov√°dƒõn√© kroky."
 
 #: ../lib/dialog.sh:30
 msgid "Disable warnings."
-msgstr "Zak·æe varov·nÌ."
+msgstr "Zak√°≈æe varov√°n√≠."
 
 #: ../lib/dialog.sh:33
 msgid "Single actions:"
-msgstr "SamostatnÈ akce:"
+msgstr "Samostatn√© akce:"
 
 #: ../lib/dialog.sh:34
 msgid "Just upload the files of the day."
-msgstr "Pouze nahraje dennÌ soubory."
+msgstr "Pouze nahraje denn√≠ soubory."
 
 #: ../lib/dialog.sh:35
 msgid "Just burn the files of the day."
-msgstr "Pouze vyp·lÌ dennÌ soubory."
+msgstr "Pouze vyp√°l√≠ denn√≠ soubory."
 
 #: ../lib/dialog.sh:36
 msgid "Just test the md5 sums."
-msgstr "Pouze zkontroluje md5 souËty."
+msgstr "Pouze zkontroluje md5 souƒçty."
 
 #: ../lib/dialog.sh:37
 msgid "Just purge old archives."
-msgstr "Pouze smaæe starÈ archivy."
+msgstr "Pouze sma≈æe star√© archivy."
 
 #: ../lib/dialog.sh:40
 msgid "Behaviour:"
-msgstr "Chov·nÌ:"
+msgstr "Chov√°n√≠:"
 
 #: ../lib/dialog.sh:41
 msgid "Choose an alternate config file."
-msgstr "Pouæije alternativnÌ konfiguraËnÌ soubor."
+msgstr "Pou≈æije alternativn√≠ konfiguraƒçn√≠ soubor."
 
 #: ../lib/dialog.sh:42
 msgid "Force overwrite of existing archives."
-msgstr "PovolÌ p¯eps·nÌ st·vajÌcÌch archiv˘."
+msgstr "Povol√≠ p≈ôeps√°n√≠ st√°vaj√≠c√≠ch archiv≈Ø."
 
 #: ../lib/dialog.sh:45
 msgid "Unwanted actions:"
-msgstr "ZakazujÌcÌ akce:"
+msgstr "Zakazuj√≠c√≠ akce:"
 
 #: ../lib/dialog.sh:46
 msgid "Disable the upload process."
-msgstr "Zak·æe nahr·nÌ na jin˝ poËÌtaË."
+msgstr "Zak√°≈æe nahr√°n√≠ na jin√Ω poƒç√≠taƒç."
 
 #: ../lib/dialog.sh:47
 msgid "Disable the burning process."
-msgstr "Zak·æe vypalov·nÌ."
+msgstr "Zak√°≈æe vypalov√°n√≠."
 
 #: ../lib/dialog.sh:48
 msgid "Disable the purge process."
-msgstr "Zak·æe promaz·nÌ star˝ch archiv˘."
+msgstr "Zak√°≈æe promaz√°n√≠ star√Ωch archiv≈Ø."
 
 #: ../lib/dialog.sh:60
-#, fuzzy
 msgid "Warning, process interupted, archives may be corrupted."
-msgstr ""
-"Varov·nÌ, byl jsem zastaven p¯ed dokonËenÌm svÈho ˙kolu. Archivy mohou b˝t "
-"poruπeny."
+msgstr "Varov√°n√≠, proces p≈ôeru≈°en, archivy mohou b√Ωt poru≈°eny."
 
 #: ../lib/dialog.sh:74 ../lib/dialog.sh:93
 msgid "Not in interactive mode, cannot follow."
-msgstr ""
+msgstr "Nejsem v interaktivn√≠m re≈æimu, nemohu n√°sledovat."
 
 #: ../lib/logger.sh:134
-#, fuzzy
 msgid "Releasing lock"
-msgstr "UvolÚuji z·mek: "
+msgstr "Uvol≈àuji z√°mek"
 
-#: ../lib/archives.sh:31
-msgid "System error: wrong call to bm_merge_incremental_backups()."
+#: ../lib/actions.sh:42
+msgid "No backup method used."
+msgstr "Nen√≠ pou≈æita ≈æ√°dn√° z√°lohovac√≠ metoda."
+
+#: ../lib/actions.sh:45
+#, sh-format
+msgid "No such backup method: $BM_ARCHIVE_METHOD"
+msgstr "Tato z√°lohovac√≠ metoda neexistuje: $BM_ARCHIVE_METHOD"
+
+#: ../lib/actions.sh:54
+#, sh-format
+msgid "Unable to change the owner of \"$md5file\"."
+msgstr "Nemohu zmƒõnit vlastn√≠ka \"$md5file\"."
+
+#: ../lib/actions.sh:56
+#, sh-format
+msgid "Unable to change file permissions of \"$md5file\"."
+msgstr "Nemohu zmƒõnit opr√°vnƒõn√≠ k \"$md5file\"."
+
+#: ../lib/actions.sh:86
+msgid "No upload method used."
+msgstr "Nen√≠ pou≈æita ≈æ√°dn√° nahr√°vac√≠ metoda."
+
+#: ../lib/actions.sh:89
+#, sh-format
+msgid "The upload method \"$method\" is not supported; skipping."
+msgstr "Nahr√°vac√≠ metoda \"$method\" nen√≠ podporovan√°; p≈ôeskakuji."
+
+#: ../lib/actions.sh:99
+#, sh-format
+msgid "Cleaning $BM_REPOSITORY_ROOT"
+msgstr "ƒåist√≠m $BM_REPOSITORY_ROOT"
+
+#: ../lib/actions.sh:110
+#, sh-format
+msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND."
+msgstr "Spou≈°t√≠m √∫vodn√≠ p≈ô√≠kaz: $BM_PRE_BACKUP_COMMAND."
+
+#: ../lib/actions.sh:114
+msgid "Pre-command failed. Stopping the process."
+msgstr "√övodn√≠ p≈ô√≠kaz selhal. Zastavuji proces."
+
+#: ../lib/actions.sh:119
+#, sh-format
+msgid "Pre-command returned: \"$RET\" (success)."
+msgstr "√övodn√≠ p≈ô√≠kaz vr√°til: \"$RET\" (√∫spƒõch)."
+
+#: ../lib/actions.sh:129
+#, sh-format
+msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
+msgstr "Spou≈°t√≠m z√°vƒõreƒçn√Ω p≈ô√≠kaz: $BM_POST_BACKUP_COMMAND"
+
+#: ../lib/actions.sh:133
+msgid "Post-command failed."
+msgstr "Z√°vƒõreƒçn√Ω p≈ô√≠kaz selhal."
+
+#: ../lib/actions.sh:138
+#, sh-format
+msgid "Post-command returned: \"$RET\" (success)."
+msgstr "Z√°vƒõreƒçn√Ω p≈ô√≠kaz vr√°til: \"$RET\" (√∫spƒõch)."
+
+#: ../lib/actions.sh:161
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
 msgstr ""
+"Konfiguraƒçn√≠ kl√≠ƒç BM_TARBALL_FILETYPE je nastaven na \"zip\", ale zip nen√≠ "
+"nainstalov√°n."
+
+#: ../lib/actions.sh:166
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
+"installed."
+msgstr ""
+"Konfiguraƒçn√≠ kl√≠ƒç BM_TARBALL_FILETYPE je nastaven na \"bzip2\", ale bzip2 "
+"nen√≠ nainstalov√°n."
+
+#: ../lib/actions.sh:171
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
+msgstr ""
+"Konfiguraƒçn√≠ kl√≠ƒç BM_TARBALL_FILETYPE je nastaven na \"dar\", ale dar nen√≠ "
+"nainstalov√°n."
+
+#: ../lib/actions.sh:181
+#, sh-format
+msgid "The repository $BM_REPOSITORY_ROOT does not exist, creating it."
+msgstr "√ölo≈æi≈°tƒõ $BM_REPOSITORY_ROOT neexistuje, vytv√°≈ô√≠m je."
 
 #: ../lib/files.sh:73 ../lib/files.sh:86
-#, fuzzy
 msgid "No path given."
-msgstr "Nebyl zad·n æ·dn˝ soubor"
+msgstr "Nebyla zad√°na cesta."
 
 #: ../lib/files.sh:152
 #, sh-format
 msgid "Removing lock for old PID, $pid is not running."
-msgstr "OdstraÚuji z·mek pro starÈ PID, $pid jiæ nebÏæÌ."
+msgstr "Odstra≈àuji z√°mek pro star√© PID, $pid ji≈æ nebƒõ≈æ√≠."
 
 #: ../lib/files.sh:162
-#, fuzzy, sh-format
+#, sh-format
 msgid ""
 "A backup-manager process ($pid) is already running with the conffile "
 "$conffile"
 msgstr ""
-"Proces backup-manageru ($pid) jiæ bÏæÌ s konfiguraËnÌm souborem $conffile."
+"Proces backup-manageru ($pid) ji≈æ bƒõ≈æ√≠ s konfiguraƒçn√≠m souborem $conffile"
 
 #: ../lib/files.sh:166 ../lib/files.sh:172
-#, fuzzy, sh-format
+#, sh-format
 msgid "Getting lock for backup-manager $pid with $conffile"
-msgstr "ZÌsk·v·m z·mek pro backup-manager $pid s $conffile: "
+msgstr "Z√≠sk√°v√°m z√°mek pro backup-manager $pid s $conffile"
 
 #: ../lib/files.sh:175
-#, fuzzy
 msgid "failed (check the file permissions)."
-msgstr "selhalo (zkontrolujte p¯Ìstupov· pr·va soubor˘)"
+msgstr "selhalo (zkontrolujte p≈ô√≠stupov√° pr√°va soubor≈Ø)."
 
 #: ../lib/files.sh:254
 #, sh-format
 msgid "$file is not a regular file."
-msgstr "$file nenÌ bÏæn˝ soubor."
+msgstr "$file nen√≠ bƒõ≈æn√Ω soubor."
 
 #: ../lib/files.sh:280
 #, sh-format
 msgid "Removing deprecated master backup: \"$file\"."
-msgstr ""
+msgstr "Odstra≈àuji zastaralou hlavn√≠ z√°lohu: \"$file\"."
 
 #: ../lib/files.sh:288
 #, sh-format
 msgid "Removing deprecated master backup (isolated): \"$file\"."
-msgstr ""
+msgstr "Odstra≈àuji zastaralou hlavn√≠ z√°lohu (izolovan√°): \"$file\"."
 
 #: ../lib/files.sh:295
-#, fuzzy, sh-format
+#, sh-format
 msgid "Removing archive \"$file\"."
-msgstr "OdstraÚuji $file: "
+msgstr "Odstra≈àuji archiv \"$file\"."
 
 #: ../lib/files.sh:317
-#, fuzzy
 msgid "Directory given is not found."
-msgstr "Zadan˝ adres·¯ nebyl nalezen"
+msgstr "Zadan√Ω adres√°≈ô nebyl nalezen."
 
 #: ../lib/files.sh:338
-#, fuzzy, sh-format
+#, sh-format
 msgid "Removing archive \"$archive\"."
-msgstr "OdstraÚuji $file: "
+msgstr "Odstra≈àuji archiv \"$archive\"."
 
 #: ../lib/files.sh:360
 #, sh-format
 msgid "The given file does not exist: $file_to_create"
-msgstr "Zadan˝ soubor neexistuje: $file_to_create"
+msgstr "Zadan√Ω soubor neexistuje: $file_to_create"
 
 #: ../lib/files.sh:365
-#, fuzzy
 msgid "No file given."
-msgstr "Nebyl zad·n æ·dn˝ soubor"
+msgstr "Nebyl zad√°n ≈æ√°dn√Ω soubor."
 
 #: ../lib/files.sh:370 ../lib/files.sh:372 ../lib/files.sh:386
-#, fuzzy
 msgid "Unable to get date from file."
-msgstr "nemohu ze souboru zÌskat datum"
+msgstr "Nemohu ze souboru z√≠skat datum."
 
 #: ../lib/files.sh:376
-#, fuzzy
 msgid "Unable to find the pattern of the file."
-msgstr "nemohu najÌt vzor souboru"
+msgstr "Nemohu naj√≠t vzor souboru."
 
 #: ../lib/files.sh:392
 #, sh-format
 msgid "Unable to find the md5 hash of file \"$file\" in file \"$md5file\"."
-msgstr ""
+msgstr "Nemohu naj√≠t md5 hash souboru \"$file\" v souboru \"$md5file\"."
 
 #: ../lib/files.sh:398
-#, fuzzy, sh-format
+#, sh-format
 msgid "$file is a duplicate of $file_to_create (using symlink)."
-msgstr "Vytv·¯Ìm $file_to_create: "
+msgstr "$file je kopi√≠ $file_to_create (pou≈æ√≠v√°m symbolick√Ω odkaz)."
 
 #: ../lib/upload-methods.sh:38
-#, fuzzy
 msgid "Using the upload method \"ssh\"."
-msgstr "PouæÌv·m z·lohovacÌ metodu \"rsync\""
+msgstr "Pou≈æ√≠v√°m nahr√°vac√≠ metodu \"ssh\"."
 
 #: ../lib/upload-methods.sh:47 ../lib/upload-methods.sh:87
 msgid "No valid destination found, SSH upload not possible."
-msgstr ""
+msgstr "Nebyl nalezen platn√Ω c√≠l, nahr√°n√≠ p≈ôes SSH nen√≠ mo≈æn√©."
 
 #: ../lib/upload-methods.sh:56
 msgid "totoototo"
-msgstr ""
+msgstr "tut≈Øtutu"
 
 #: ../lib/upload-methods.sh:70
 #, sh-format
@@ -506,17 +490,20 @@ msgid ""
 "Error reported by backup-manager-upload for method \"scp\", check \"$logfile"
 "\"."
 msgstr ""
+"Metoda \"scp\" programu backup-manager-upload vr√°tila chybu, zkontrolujte "
+"\"$logfile\"."
 
 #: ../lib/upload-methods.sh:78
-#, fuzzy
 msgid "Using the upload method \"ssh-gpg\"."
-msgstr "PouæÌv·m z·lohovacÌ metodu \"rsync\""
+msgstr "Pou≈æ√≠v√°m nahr√°vac√≠ metodu \"ssh-gpg\"."
 
 #: ../lib/upload-methods.sh:90
 msgid ""
 "No gpg recipient given. Argument is mandatory if upload method ssh-gpg is "
 "used."
 msgstr ""
+"Nebyl zad√°n ≈æ√°dn√Ω gpg p≈ô√≠jemce. P≈ôi pou≈æit√≠ metody ssh-gpg je argument "
+"povinn√Ω."
 
 #: ../lib/upload-methods.sh:107
 #, sh-format
@@ -524,15 +511,16 @@ msgid ""
 "Error reported by backup-manager-upload for method \"ssh-gpg\", check "
 "\"$logfile\"."
 msgstr ""
+"Metoda \"ssh-gpg\" programu backup-manager-upload vr√°tila chybu, "
+"zkontrolujte \"$logfile\"."
 
 #: ../lib/upload-methods.sh:114
-#, fuzzy
 msgid "Using the upload method \"ftp\"."
-msgstr "PouæÌv·m z·lohovacÌ metodu \"rsync\""
+msgstr "Pou≈æ√≠v√°m nahr√°vac√≠ metodu \"ftp\"."
 
 #: ../lib/upload-methods.sh:124
 msgid "No valid destination found, FTP upload not possible."
-msgstr ""
+msgstr "Nebyl nalezen platn√Ω c√≠l, nahr√°n√≠ p≈ôes FTP nen√≠ mo≈æn√©."
 
 #: ../lib/upload-methods.sh:141
 #, sh-format
@@ -540,11 +528,12 @@ msgid ""
 "Error reported by backup-manager-upload for method \"ftp\", check \"$logfile"
 "\"."
 msgstr ""
+"Metoda \"ftp\" programu backup-manager-upload vr√°tila chybu, zkontrolujte "
+"\"$logfile\"."
 
 #: ../lib/upload-methods.sh:149
-#, fuzzy
 msgid "Using the upload method \"S3\"."
-msgstr "PouæÌv·m z·lohovacÌ metodu \"rsync\""
+msgstr "Pou≈æ√≠v√°m nahr√°vac√≠ metodu \"S3\"."
 
 #: ../lib/upload-methods.sh:172
 #, sh-format
@@ -552,43 +541,45 @@ msgid ""
 "Error reported by backup-manager-upload for method \"s3\", check \"$logfile"
 "\"."
 msgstr ""
+"Metoda \"s3\" programu backup-manager-upload vr√°tila chybu, zkontrolujte "
+"\"$logfile\"."
 
 #: ../lib/upload-methods.sh:178
 #, sh-format
 msgid "Uploading $directory to ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
-msgstr ""
+msgstr "Nahr√°v√°m $directory na ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
 
 #: ../lib/upload-methods.sh:189
 msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
 msgstr ""
+"Pou≈æit√≠ rsync vy≈æaduje kl√≠ƒç (nastavte BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
 
 #: ../lib/upload-methods.sh:199 ../lib/upload-methods.sh:205
 #, sh-format
 msgid "Upload of $directory with rsync failed; check $logfile."
-msgstr ""
+msgstr "Nahr√°n√≠ $directory pomoc√≠ rsync selhalo; zkontrolujte $logfile."
 
 #: ../lib/upload-methods.sh:225
 msgid "No valid destination found, RSYNC upload not possible."
-msgstr ""
+msgstr "Nebyl nalezen platn√Ω c√≠l, nahr√°n√≠ p≈ôes RSYNC nen√≠ mo≈æn√©."
 
 #: ../lib/upload-methods.sh:244
 msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
 msgstr ""
+"Metodƒõ rsync nebyl p≈ôed√°n ≈æ√°dn√Ω poƒç√≠taƒç, nastavte BM_UPLOAD_RSYNC_HOSTS."
 
 #: ../lib/upload-methods.sh:251
-#, fuzzy
 msgid "Using the upload method \"rsync\"."
-msgstr "PouæÌv·m z·lohovacÌ metodu \"rsync\""
+msgstr "Pou≈æ√≠v√°m nahr√°vac√≠ metodu \"rsync\"."
 
 #: ../lib/upload-methods.sh:258
-#, fuzzy
 msgid "Using the upload method \"rsync-snapshots\"."
-msgstr "PouæÌv·m z·lohovacÌ metodu \"rsync\""
+msgstr "Pou≈æ√≠v√°m nahr√°vac√≠ metodu \"rsync-snapshots\"."
 
 #: ../lib/burning-methods.sh:37
 #, sh-format
 msgid "Device \"/dev/$device\" is mounted on \"$m\", unmounting it."
-msgstr ""
+msgstr "Za≈ô√≠zen√≠ \"/dev/$device\" je p≈ôipojeno na \"$m\", odpojuji."
 
 #: ../lib/burning-methods.sh:52
 #, sh-format
@@ -596,109 +587,112 @@ msgid ""
 "MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE "
 "in $conffile"
 msgstr ""
+"MD5 souƒçet se poƒç√≠t√° pouze na CD m√©diu. V $conffile pros√≠m nastavte kl√≠ƒç "
+"BM_BURNING_DEVICE"
 
 #: ../lib/burning-methods.sh:58
-#, fuzzy, sh-format
+#, sh-format
 msgid "The mount point $mount_point is not there."
-msgstr "P¯Ìpojn˝ bod $mount_point neexistuje"
+msgstr "P≈ô√≠pojn√Ω bod $mount_point neexistuje."
 
 #: ../lib/burning-methods.sh:65
-#, fuzzy, sh-format
+#, sh-format
 msgid "Mounting $BM_BURNING_DEVICE on $mount_point."
-msgstr "nemohu p¯ipojit $BM_BURNING_DEVICE na $mount_point"
+msgstr "P≈ôipojuji $BM_BURNING_DEVICE na $mount_point."
 
 #: ../lib/burning-methods.sh:89
-#, fuzzy, sh-format
+#, sh-format
 msgid "Checking MD5 sum for $base_file:"
-msgstr "Kontroluji MD5 souËet $base_file: "
+msgstr "Kontroluji MD5 souƒçet $base_file:"
 
 #: ../lib/burning-methods.sh:108
 #, sh-format
 msgid "$str ok."
-msgstr ""
+msgstr "$str ok."
 
 #: ../lib/burning-methods.sh:111
-#, fuzzy, sh-format
+#, sh-format
 msgid "$str failed (read error)."
-msgstr "selhalo (chyba ËtenÌ)"
+msgstr "$str selhalo (chyba ƒçten√≠)."
 
 #: ../lib/burning-methods.sh:115
-#, fuzzy, sh-format
+#, sh-format
 msgid "$str failed (MD5 hash mismatch)."
-msgstr "selhalo (MD5 nesouhlasÌ)"
+msgstr "$str selhalo (MD5 nesouhlas√≠)."
 
 #: ../lib/burning-methods.sh:122
 msgid "Errors encountered during MD5 controls."
-msgstr "BÏhem MD5 kontrol byly zaznamen·ny chyby."
+msgstr "Bƒõhem MD5 kontrol byly zaznamen√°ny chyby."
 
 #: ../lib/burning-methods.sh:126
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to unmount the mount point $mount_point"
-msgstr "nemohu odpojit p¯Ìpojn˝ bod $mount_point"
+msgstr "Nemohu odpojit p≈ô√≠pojn√Ω bod $mount_point"
 
 #: ../lib/burning-methods.sh:127
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to remove the mount point $mount_point"
-msgstr "nemohu odstranit p¯Ìpojn˝ bod $mount_point"
+msgstr "Nemohu odstranit p≈ô√≠pojn√Ω bod $mount_point"
 
 #: ../lib/burning-methods.sh:144
 msgid "No burning method used."
-msgstr ""
+msgstr "Nen√≠ pou≈æita ≈æ√°dn√° vypalovac√≠ metoda."
 
 #: ../lib/burning-methods.sh:164
-#, fuzzy, sh-format
+#, sh-format
 msgid "Number of files to burn: $nb_file."
-msgstr "Nebyl nalezen soubor s md5 souËty: $md5file"
+msgstr "Poƒçet soubor≈Ø k vyp√°len√≠: $nb_file."
 
 #: ../lib/burning-methods.sh:166
 #, sh-format
 msgid ""
 "Nothing to burn for the $BM__BURNING_DATE, try the '--burn <date>' switch."
 msgstr ""
+"Pro den $BM__BURNING_DATE nem√°m nic k vyp√°len√≠; zkuste p≈ôep√≠naƒç '--burn "
+"datum'."
 
 #: ../lib/burning-methods.sh:193 ../lib/burning-methods.sh:216
-#, fuzzy, sh-format
+#, sh-format
 msgid "Burning archives of $BM__BURNING_DATE."
-msgstr "Vypaluji data na $BM_BURNING_DEVICE: "
+msgstr "Vypaluji archivy ze dne $BM__BURNING_DATE."
 
 #: ../lib/burning-methods.sh:198
-#, fuzzy, sh-format
+#, sh-format
 msgid ""
 "Cannot burn archives of the $BM__BURNING_DATE, too big: ${size}M, must fit "
 "in $BM_BURNING_MAXSIZE"
 msgstr ""
-"Nemohu vyp·lit archivy z $TODAY, jsou p¯Ìliπ velkÈ: ${size}M, se musÌ vejÌt "
-"do $BM_BURNING_MAXSIZE"
+"Nemohu vyp√°lit archivy ze dne $BM__BURNING_DATE, jsou p≈ô√≠li≈° velk√©: ${size}"
+"M, se mus√≠ vej√≠t do $BM_BURNING_MAXSIZE"
 
 #: ../lib/burning-methods.sh:220
-#, fuzzy
 msgid "Burning the whole archives."
-msgstr "Pouze smaæe starÈ archivy."
+msgstr "Vypaluji cel√© archivy."
 
 #: ../lib/burning-methods.sh:225
 #, sh-format
 msgid "Trying to burn $BM_REPOSITORY_ROOT ($size MB) in interactive mode."
-msgstr ""
+msgstr "Zkou≈°√≠m vyp√°lit $BM_REPOSITORY_ROOT ($size MB) v interaktivn√≠m re≈æimu."
 
 #: ../lib/burning-methods.sh:255
-#, fuzzy, sh-format
+#, sh-format
 msgid "Redirecting burning logs into $logfile"
-msgstr "P¯esmÏrov·v·m hl·πenÌ cdrecordu do $logfile"
+msgstr "P≈ôesmƒõrov√°v√°m hl√°≈°en√≠ o vypalov√°n√≠ do $logfile"
 
 #: ../lib/burning-methods.sh:260
 #, sh-format
 msgid "Forcing dev=${BM_BURNING_DEVFORCED} for cdrecord commands."
-msgstr ""
+msgstr "Pro p≈ô√≠kazy cdrecordu vynucuji dev=${BM_BURNING_DEVFORCED}."
 
 #: ../lib/burning-methods.sh:268
 #, sh-format
 msgid "DVD+R(W) burning requires $growisofs, aborting."
-msgstr ""
+msgstr "Vypalov√°n√≠ DVD+R(W) vy≈æaduje $growisofs, konƒç√≠m."
 
 #: ../lib/burning-methods.sh:271
-#, fuzzy, sh-format
+#, sh-format
 msgid "Exporting archives to the DVD+R(W) media in $BM_BURNING_DEVICE."
-msgstr "Maæu CDRW v $BM_BURNING_DEVICE: "
+msgstr "Exportuji archivy na DVD+R(W) m√©dium v $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:273 ../lib/burning-methods.sh:290
 #: ../lib/burning-methods.sh:300 ../lib/burning-methods.sh:305
@@ -710,46 +704,46 @@ msgstr "selhalo, zkontrolujte $logfile"
 #: ../lib/burning-methods.sh:278
 #, sh-format
 msgid "DVD-R(W) burning requires $growisofs, aborting."
-msgstr ""
+msgstr "Vypalov√°n√≠ DVD-R(W) vy≈æaduje $growisofs, konƒç√≠m."
 
 #: ../lib/burning-methods.sh:281
 #, sh-format
 msgid "DVD-R(W) burning requires $dvdrwformat, aborting."
-msgstr ""
+msgstr "Vypalov√°n√≠ DVD-R(W) vy≈æaduje $dvdrwformat, konƒç√≠m."
 
 #: ../lib/burning-methods.sh:284
-#, fuzzy, sh-format
+#, sh-format
 msgid "Blanking the DVD-R(W) media in $BM_BURNING_DEVICE"
-msgstr "Maæu CDRW v $BM_BURNING_DEVICE: "
+msgstr "Ma≈æu DVD-R(W) m√©dium v $BM_BURNING_DEVICE"
 
 #: ../lib/burning-methods.sh:286
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to blank the DVD-R(W) media (check $logfile)."
-msgstr "nemohu ze souboru zÌskat datum"
+msgstr "Nemohu smazat DVD-R(W) m√©dium (zkontrolujte $logfile)."
 
 #: ../lib/burning-methods.sh:288
-#, fuzzy, sh-format
+#, sh-format
 msgid "Exporting archives to the DVD-R(W) media in $BM_BURNING_DEVICE."
-msgstr "Maæu CDRW v $BM_BURNING_DEVICE: "
+msgstr "Exportuji archivy na DVD-R(W) m√©dium v $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
 #, sh-format
 msgid "CDROM burning requires $cdrecord, aborting."
-msgstr ""
+msgstr "Vypalov√°n√≠ CD vy≈æaduje $cdrecord, konƒç√≠m."
 
 #: ../lib/burning-methods.sh:298
-#, fuzzy, sh-format
+#, sh-format
 msgid "Blanking the CDRW in $BM_BURNING_DEVICE."
-msgstr "Maæu CDRW v $BM_BURNING_DEVICE: "
+msgstr "Ma≈æu CDRW v $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:302 ../lib/burning-methods.sh:313
-#, fuzzy, sh-format
+#, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
-msgstr "Vypaluji data na $BM_BURNING_DEVICE: "
+msgstr "Vypaluji data na $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:320
 msgid "Nothing to burn."
-msgstr ""
+msgstr "Nic k vyp√°len√≠."
 
 #: ../lib/burning-methods.sh:324
 #, sh-format
@@ -757,187 +751,153 @@ msgid ""
 "The requested burning method is not supported, check BM_BURNING_METHOD in "
 "$conffile"
 msgstr ""
+"Po≈æadovan√Ω zp≈Øsob vypalov√°n√≠ nen√≠ podporovan√Ω, zkontrolujte promƒõnnou "
+"BM_BURNING_METHOD v souboru $conffile"
 
 #: ../lib/burning-methods.sh:373
 #, sh-format
 msgid "Not burning $file because it does not fit in the medium."
-msgstr ""
+msgstr "Nevypaluji soubor $file, proto≈æe se nevejde na m√©dium."
 
 #: ../lib/burning-methods.sh:414
-#, fuzzy, sh-format
+#, sh-format
 msgid "No such index file : $index_file"
-msgstr "Vytv·¯Ìm $file_to_create: "
+msgstr "Tento indexov√Ω soubor neexistuje: $index_file"
 
 #: ../lib/burning-methods.sh:454
 #, sh-format
 msgid "The burning process will need $number_of_indexes media(s)."
-msgstr ""
+msgstr "Poƒçet m√©di√≠ nutn√Ωch pro vyp√°len√≠: $number_of_indexes."
 
 #: ../lib/burning-methods.sh:465
 #, sh-format
 msgid "Burning content of $index"
-msgstr ""
+msgstr "Vypaluji obsah $index"
 
 #: ../backup-manager:134
-#, fuzzy
 msgid "The -b option must be followed by a valid date (YYYYMMDD)."
-msgstr "za volbou -c musÌ n·sledovat jmÈno existujÌcÌho souboru"
+msgstr "Za volbou -b mus√≠ n√°sledovat platn√Ω datum (YYYYMMDD)."
 
 #: ../backup-manager:165
-#, fuzzy
 msgid "The -c option must be followed by an existing filename."
-msgstr "za volbou -c musÌ n·sledovat jmÈno existujÌcÌho souboru"
+msgstr "Za volbou -c mus√≠ n√°sledovat jm√©no existuj√≠c√≠ho souboru"
 
 #: ../backup-manager:202
 msgid "Unable to exec the pre-command"
-msgstr "Nemohu spustit ˙vodnÌ p¯Ìkaz"
+msgstr "Nemohu spustit √∫vodn√≠ p≈ô√≠kaz"
 
 #: ../backup-manager:243
-#, fuzzy
 msgid "Unable to exec post-command."
-msgstr "Nemohu spustit z·vÏreËn˝ p¯Ìkaz"
+msgstr "Nemohu spustit z√°vƒõreƒçn√Ω p≈ô√≠kaz."
 
-#, fuzzy
+#~ msgid "7z blacklist are not well supported..."
+#~ msgstr "Blacklisty 7z nejsou podporov√°ny zrovna nejl√©pe..."
+
 #~ msgid "unable to exec $remote_command; check $logfile"
-#~ msgstr "nemohu ze souboru zÌskat datum"
+#~ msgstr "Nemohu spustit $remote_command, zkontrolujte $logfile"
 
-#, fuzzy
-#~ msgid "The BM_TARBALL_DIRECTORIES conf key is not set in $conffile"
-#~ msgstr "KonfiguraËnÌ klÌË BM_DIRECTORIES nenÌ v $conffile nastaven"
-
-#, fuzzy
-#~ msgid "Entering directory $file"
-#~ msgstr "Vstupuji do adres·¯e $file."
-
-#, fuzzy
 #~ msgid "Unable to unmount the device $device"
-#~ msgstr "Nemohu odpojit za¯ÌzenÌ $BM_BURNING_DEVICE"
+#~ msgstr "Nemohu odpojit za≈ô√≠zen√≠ $device"
 
 #~ msgid "backup-manager must be run as root."
-#~ msgstr "backup-manager musÌ b˝t spuπtÏn pod uæivatelem root."
+#~ msgstr "backup-manager mus√≠ b√Ωt spu≈°tƒõn pod u≈æivatelem root."
 
-#, fuzzy
-#~ msgid "Unable to mount $BM_BURNING_DEVICE on $mount_point."
-#~ msgstr "nemohu p¯ipojit $BM_BURNING_DEVICE na $mount_point"
+#~ msgid "The BM_TARBALL_DIRECTORIES conf key is not set in $conffile"
+#~ msgstr "Konfiguraƒçn√≠ kl√≠ƒç BM_TARBALL_DIRECTORIES nen√≠ v $conffile nastaven"
 
-#, fuzzy
-#~ msgid "unable to unmount $mount_point"
-#~ msgstr "nemohu odpojit p¯Ìpojn˝ bod $mount_point"
+#~ msgid "Entering directory $file"
+#~ msgstr "Vstupuji do adres√°≈ôe $file"
 
-#, fuzzy
-#~ msgid "unable to remove $mount_point"
-#~ msgstr "nemohu odstranit p¯Ìpojn˝ bod $mount_point"
-
-#, fuzzy
-#~ msgid "Archive does not exist: $archive"
-#~ msgstr "Zadan˝ archiv v ˙loæiπti neexistuje: $archive"
-
-#, fuzzy
 #~ msgid "Unable to call backup-manager-upload."
-#~ msgstr "nemohu zavolat backup-manager-upload"
+#~ msgstr "Nemohu zavolat backup-manager-upload."
+
+#~ msgid "$command ended, but $file_to_create not found; check $logfile"
+#~ msgstr ""
+#~ "$command skonƒçil, ale $file_to_create nebyl nalezen; zkontrolujte $logfile"
+
+#~ msgid "Using method \"$BM_ARCHIVE_METHOD\""
+#~ msgstr "Pou≈æ√≠v√°m metodu \"$BM_ARCHIVE_METHOD\""
+
+#~ msgid "Unable to mount $BM_BURNING_DEVICE on $mount_point."
+#~ msgstr "Nemohu p≈ôipojit $BM_BURNING_DEVICE na $mount_point."
+
+#~ msgid ""
+#~ "$BM_BURNING_DEVICE is mounted, unmounting before the burning session."
+#~ msgstr "$BM_BURNING_DEVICE je p≈ôipojeno, p≈ôed vypalov√°n√≠m odpojuji."
+
+#~ msgid "unable to unmount $mount_point"
+#~ msgstr "nemohu odpojit $mount_point"
+
+#~ msgid "unable to remove $mount_point"
+#~ msgstr "nemohu odstranit $mount_point"
 
 #~ msgid "unable to call backup-manager-upload"
 #~ msgstr "nemohu zavolat backup-manager-upload"
 
 #~ msgid "Mounting $BM_BURNING_DEVICE: "
-#~ msgstr "P¯ipojuji $BM_BURNING_DEVICE: "
-
-#~ msgid "ok"
-#~ msgstr "ok"
+#~ msgstr "P≈ôipojuji $BM_BURNING_DEVICE: "
 
 #~ msgid "The burning system is disabled in the conf file."
-#~ msgstr "VypalovacÌ systÈm je v konfiguraËnÌm souboru zak·z·n."
-
-#, fuzzy
-#~ msgid "Using the \"mysql\" backup method."
-#~ msgstr "PouæÌv·m z·lohovacÌ metodu \"mysql\""
-
-#, fuzzy
-#~ msgid "Using the \"rsync\" backup method."
-#~ msgstr "PouæÌv·m z·lohovacÌ metodu \"rsync\""
-
-#, fuzzy
-#~ msgid "Using the \"tarball\" backup method."
-#~ msgstr "PouæÌv·m z·lohovacÌ metodu \"tarball\""
-
-#, fuzzy
-#~ msgid "Using the \"pipe\" backup method."
-#~ msgstr "PouæÌv·m z·lohovacÌ metodu \"pipe\""
-
-#, fuzzy
-#~ msgid "Using the \"svn\" backup method."
-#~ msgstr "PouæÌv·m z·lohovacÌ metodu \"rsync\""
+#~ msgstr "Vypalovac√≠ syst√©m je v konfiguraƒçn√≠m souboru zak√°z√°n."
 
 #~ msgid "The upload system is disabled in the conf file."
-#~ msgstr "Nahr·v·nÌ na vzd·len˝ poËÌtaË je v konfiguraËnÌm souboru zak·z·no."
-
-#~ msgid "failed"
-#~ msgstr "selhalo"
+#~ msgstr "Nahr√°v√°n√≠ na vzd√°len√Ω poƒç√≠taƒç je v konfiguraƒçn√≠m souboru zak√°z√°no."
 
 #~ msgid "unable to purge duplicates"
-#~ msgstr "nemohu smazat duplik·ty"
+#~ msgstr "nemohu smazat duplik√°ty"
 
 #~ msgid "Need a key to use rsync"
-#~ msgstr "Pro pouæitÌ programu rsync pot¯ebuji klÌË"
+#~ msgstr "Pro pou≈æit√≠ programu rsync pot≈ôebuji kl√≠ƒç"
+
+#~ msgid "Unable to dump the content of the database $database"
+#~ msgstr "Nemohu vysypat obsah datab√°ze $database"
+
+#~ msgid "Unable to bzip2 $file_to_create"
+#~ msgstr "Nemohu vytvo≈ôit bzip2 $file_to_create"
+
+#~ msgid "This compression format is not supported: $BM_MYSQL_FILETYPE"
+#~ msgstr "Tento kompresn√≠ form√°t nen√≠ podporov√°n: $BM_MYSQL_FILETYPE"
+
+#~ msgid "backup_method_pipe is not yet supported"
+#~ msgstr "backup_method_pipe zat√≠m nen√≠ podporov√°na"
 
 #~ msgid "Unmounting $BM_BURNING_DEVICE: "
 #~ msgstr "Odpojuji $BM_BURNING_DEVICE: "
 
 #~ msgid "Removing $mount_point: "
-#~ msgstr "OdstraÚuji $mount_point: "
+#~ msgstr "Odstra≈àuji $mount_point: "
 
 #~ msgid ""
 #~ "The configuration key BM_UPLOAD_PASSWD is not set but BM_UPLOAD_MODE is "
 #~ "set to \"ftp\"."
 #~ msgstr ""
-#~ "KonfiguraËnÌ klÌË BM_UPLOAD_PASSWD nenÌ nastaven, ale BM_UPLOAD_MODE je "
+#~ "Konfiguraƒçn√≠ kl√≠ƒç BM_UPLOAD_PASSWD nen√≠ nastaven, ale BM_UPLOAD_MODE je "
 #~ "nastaven na \"ftp\"."
-
-#, fuzzy
-#~ msgid "Unable to dump the content of the database $database"
-#~ msgstr "nemohu najÌt vzor souboru"
-
-#, fuzzy
-#~ msgid "Unable to bzip2 $file_to_create"
-#~ msgstr "Vytv·¯Ìm $file_to_create: "
-
-#~ msgid "backup_method_pipe is not yet supported"
-#~ msgstr "backup_method_pipe zatÌm nenÌ podporov·na"
-
-#~ msgid "backup_method_mysql is not yet supported"
-#~ msgstr "backup_method_mysql zatÌm nenÌ podporov·na"
-
-#~ msgid "~"
-#~ msgstr "~"
-
-#~ msgid "Error during MD5 controls. Run $0 --md5check --verbose for details"
-#~ msgstr ""
-#~ "Chyba bÏhem kontroly MD5. Pro detaily spusªte $0 --md5check --verbose"
 
 #~ msgid ""
 #~ "Please set the BM_BURNING_MEDIA conf key in $conffile, I assume you want "
 #~ "'cdrom'"
 #~ msgstr ""
-#~ "V souboru $conffile nastavte prosÌm konfiguraËnÌ klÌË BM_BURNING_MEDIA, "
-#~ "p¯edpokl·d·m, æe chcete pouæÌt 'cdrom'"
+#~ "V souboru $conffile nastavte pros√≠m konfiguraƒçn√≠ kl√≠ƒç BM_BURNING_MEDIA, "
+#~ "p≈ôedpokl√°d√°m, ≈æe chcete pou≈æ√≠t 'cdrom'"
 
 #~ msgid ""
 #~ "Please set the BM_BURNING_DEVICE conf key in $conffile, I assume you want "
 #~ "'/dev/cdrom'"
 #~ msgstr ""
-#~ "V souboru $conffile nastavte prosÌm konfiguraËnÌ klÌË BM_BURNING_DEVICE, "
-#~ "p¯edpokl·d·m, æe chcete pouæÌt '/dev/cdrom'"
+#~ "V souboru $conffile nastavte pros√≠m konfiguraƒçn√≠ kl√≠ƒç BM_BURNING_DEVICE, "
+#~ "p≈ôedpokl√°d√°m, ≈æe chcete pou≈æ√≠t '/dev/cdrom'"
 
 #~ msgid ""
 #~ "Please set the BM_BURNING_METHOD conf key in $conffile, I assume you want "
 #~ "'CDRW'"
 #~ msgstr ""
-#~ "V souboru $conffile nastavte prosÌm konfiguraËnÌ klÌË BM_BURNING_METHOD, "
-#~ "p¯edpokl·d·m, æe chcete pouæÌt 'CDRW'"
+#~ "V souboru $conffile nastavte pros√≠m konfiguraƒçn√≠ kl√≠ƒç BM_BURNING_METHOD, "
+#~ "p≈ôedpokl√°d√°m, ≈æe chcete pou≈æ√≠t 'CDRW'"
 
 #~ msgid ""
 #~ "Please set the BM_BURNING_MAXSIZE conf key in $conffile, I assume you "
 #~ "want '650'"
 #~ msgstr ""
-#~ "V souboru $conffile nastavte prosÌm konfiguraËnÌ klÌË BM_BURNING_MAXSIZE, "
-#~ "p¯edpokl·d·m, æe chcete pouæÌt '650'"
+#~ "V souboru $conffile nastavte pros√≠m konfiguraƒçn√≠ kl√≠ƒç BM_BURNING_MAXSIZE, "
+#~ "p≈ôedpokl√°d√°m, ≈æe chcete pou≈æ√≠t '650'"

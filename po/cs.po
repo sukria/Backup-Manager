@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-27 18:19+0200\n"
+"POT-Creation-Date: 2006-09-03 12:30+0200\n"
 "PO-Revision-Date: 2006-08-27 18:35+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -81,8 +81,8 @@ msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr "Neznámá frekvence: $BM_TARBALLINC_MASTERDATETYPE"
 
 #: ../lib/backup-methods.sh:289
-#, sh-format
-msgid "Building master backup for target : $dir_name"
+#, fuzzy, sh-format
+msgid "Building master backup for target: \"$dir_name\"."
 msgstr "Vytvářím hlavní zálohu pro cíl: $dir_name"
 
 #: ../lib/backup-methods.sh:396
@@ -125,8 +125,8 @@ msgid ""
 msgstr "Šifrování archivů \"$BM_TARBALL_FILETYPE\" zatím není možné."
 
 #: ../lib/backup-methods.sh:512
-#, sh-format
-msgid "The binary \"$gpg\" is needed."
+#, fuzzy, sh-format
+msgid "The program \"$gpg\" is needed."
 msgstr "Je vyžadována binárka \"$gpg\"."
 
 #: ../lib/backup-methods.sh:519 ../lib/backup-methods.sh:551
@@ -139,38 +139,42 @@ msgstr "Soubor $file_to_check již existuje, přeskakuji."
 msgid "Target \"$t\" does not exist, skipping."
 msgstr "Cíl \"$t\" neexistuje, přeskakuji."
 
-#: ../lib/backup-methods.sh:627 ../lib/backup-methods.sh:654
-#: ../lib/backup-methods.sh:683 ../lib/backup-methods.sh:705
+#: ../lib/backup-methods.sh:627 ../lib/backup-methods.sh:656
+#: ../lib/backup-methods.sh:685 ../lib/backup-methods.sh:707
 #, sh-format
 msgid "Using method \"$method\"."
 msgstr "Používám metodu \"$method\"."
 
 #: ../lib/backup-methods.sh:647
-#, sh-format
-msgid "During the tarballs generation, $nb_err error(s) occurred."
-msgstr "Během vytváření tar archivů se vyskytly chyby (celkem $nb_err)."
+msgid "1 error occurred during the tarball generation."
+msgstr ""
 
-#: ../lib/backup-methods.sh:656
+#: ../lib/backup-methods.sh:649
+#, sh-format
+msgid "$nb_err errors occurred during the tarball generation."
+msgstr ""
+
+#: ../lib/backup-methods.sh:658
 #, sh-format
 msgid "The \"mysql\" method is chosen, but $mysqldump is not found."
 msgstr "Je vybrána metoda \"mysql\", avšak $mysqldump nelze nalézt."
 
-#: ../lib/backup-methods.sh:685
+#: ../lib/backup-methods.sh:687
 #, sh-format
 msgid "The \"svn\" method is chosen, but $svnadmin is not found."
 msgstr "Je vybrána metoda \"svn\", avšak $svnadmin nelze nalézt."
 
-#: ../lib/backup-methods.sh:691
+#: ../lib/backup-methods.sh:693
 #, sh-format
 msgid "SVN repository \"$repository\" is not valid; skipping."
 msgstr "SVN repozitář \"$repository\" není platný; přeskakuji."
 
-#: ../lib/backup-methods.sh:714
+#: ../lib/backup-methods.sh:716
 #, sh-format
 msgid "Not enough args for this archive ($archive), skipping."
 msgstr "Pro tento archiv ($archive) nemám dost argumentů, přeskakuji."
 
-#: ../lib/backup-methods.sh:721
+#: ../lib/backup-methods.sh:723
 msgid "Cannot create archive."
 msgstr "Nemohu vytvořit archiv."
 
@@ -203,7 +207,7 @@ msgstr "Změněn typ boolean, $key má hodnotu \"yes\", nastavuji na \"true\"."
 msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
 msgstr "Změněn typ boolean, $key má hodnotu \"no\", nastavuji na \"false\"."
 
-#: ../lib/sanitize.sh:241
+#: ../lib/sanitize.sh:243
 #, sh-format
 msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
@@ -211,96 +215,6 @@ msgid ""
 msgstr ""
 "Při ověřování konfiguračního souboru $conffile bylo nalezeno $nb_warnings "
 "varování."
-
-#: ../lib/md5sum.sh:29
-msgid "System error: bad usage of function get_md5sum_from_file()"
-msgstr "Systémová chyba: chybné použití funkce get_md5sum_from_file()"
-
-#: ../lib/md5sum.sh:33
-#, sh-format
-msgid "No md5file found: $md5file"
-msgstr "Nebyl nalezen soubor s md5 součty: $md5file"
-
-#: ../lib/md5sum.sh:77
-#, sh-format
-msgid "Archive given does not exist in the repository: $archive"
-msgstr "Zadaný archiv v úložišti neexistuje: $archive"
-
-#: ../lib/dialog.sh:27
-msgid "Output:"
-msgstr "Výstup:"
-
-#: ../lib/dialog.sh:28
-msgid "Print this short help message."
-msgstr "Vytiskne tuto krátkou nápovědu."
-
-#: ../lib/dialog.sh:29
-msgid "Print what happens on STDOUT."
-msgstr "Vytiskne na STDOUT prováděné kroky."
-
-#: ../lib/dialog.sh:30
-msgid "Disable warnings."
-msgstr "Zakáže varování."
-
-#: ../lib/dialog.sh:33
-msgid "Single actions:"
-msgstr "Samostatné akce:"
-
-#: ../lib/dialog.sh:34
-msgid "Just upload the files of the day."
-msgstr "Pouze nahraje denní soubory."
-
-#: ../lib/dialog.sh:35
-msgid "Just burn the files of the day."
-msgstr "Pouze vypálí denní soubory."
-
-#: ../lib/dialog.sh:36
-msgid "Just test the md5 sums."
-msgstr "Pouze zkontroluje md5 součty."
-
-#: ../lib/dialog.sh:37
-msgid "Just purge old archives."
-msgstr "Pouze smaže staré archivy."
-
-#: ../lib/dialog.sh:40
-msgid "Behaviour:"
-msgstr "Chování:"
-
-#: ../lib/dialog.sh:41
-msgid "Choose an alternate config file."
-msgstr "Použije alternativní konfigurační soubor."
-
-#: ../lib/dialog.sh:42
-msgid "Force overwrite of existing archives."
-msgstr "Povolí přepsání stávajících archivů."
-
-#: ../lib/dialog.sh:45
-msgid "Unwanted actions:"
-msgstr "Zakazující akce:"
-
-#: ../lib/dialog.sh:46
-msgid "Disable the upload process."
-msgstr "Zakáže nahrání na jiný počítač."
-
-#: ../lib/dialog.sh:47
-msgid "Disable the burning process."
-msgstr "Zakáže vypalování."
-
-#: ../lib/dialog.sh:48
-msgid "Disable the purge process."
-msgstr "Zakáže promazání starých archivů."
-
-#: ../lib/dialog.sh:60
-msgid "Warning, process interupted, archives may be corrupted."
-msgstr "Varování, proces přerušen, archivy mohou být porušeny."
-
-#: ../lib/dialog.sh:74 ../lib/dialog.sh:93
-msgid "Not in interactive mode, cannot follow."
-msgstr "Nejsem v interaktivním režimu, nemohu následovat."
-
-#: ../lib/logger.sh:134
-msgid "Releasing lock"
-msgstr "Uvolňuji zámek"
 
 #: ../lib/actions.sh:42
 msgid "No backup method used."
@@ -390,6 +304,107 @@ msgstr ""
 msgid "The repository $BM_REPOSITORY_ROOT does not exist, creating it."
 msgstr "Úložiště $BM_REPOSITORY_ROOT neexistuje, vytvářím je."
 
+#: ../lib/md5sum.sh:29
+#, fuzzy
+msgid "Internal error: bad usage of function get_md5sum_from_file()"
+msgstr "Systémová chyba: chybné použití funkce get_md5sum_from_file()"
+
+#: ../lib/md5sum.sh:33
+#, sh-format
+msgid "No md5file found: $md5file"
+msgstr "Nebyl nalezen soubor s md5 součty: $md5file"
+
+#: ../lib/md5sum.sh:77
+#, sh-format
+msgid "Archive given does not exist in the repository: $archive"
+msgstr "Zadaný archiv v úložišti neexistuje: $archive"
+
+#: ../lib/dialog.sh:27
+msgid "Output:"
+msgstr "Výstup:"
+
+#: ../lib/dialog.sh:28
+msgid "Print this short help message."
+msgstr "Vytiskne tuto krátkou nápovědu."
+
+#: ../lib/dialog.sh:29
+msgid "Print what happens on STDOUT."
+msgstr "Vytiskne na STDOUT prováděné kroky."
+
+#: ../lib/dialog.sh:30
+msgid "Disable warnings."
+msgstr "Zakáže varování."
+
+#: ../lib/dialog.sh:33
+msgid "Single actions:"
+msgstr "Samostatné akce:"
+
+#: ../lib/dialog.sh:34
+msgid "Just upload the files of the day."
+msgstr "Pouze nahraje denní soubory."
+
+#: ../lib/dialog.sh:35
+msgid "Just burn the files of the day."
+msgstr "Pouze vypálí denní soubory."
+
+#: ../lib/dialog.sh:36
+msgid "Just test the md5 sums."
+msgstr "Pouze zkontroluje md5 součty."
+
+#: ../lib/dialog.sh:37
+msgid "Just purge old archives."
+msgstr "Pouze smaže staré archivy."
+
+#: ../lib/dialog.sh:40
+msgid "Behaviour:"
+msgstr "Chování:"
+
+#: ../lib/dialog.sh:41
+msgid "Choose an alternate config file."
+msgstr "Použije alternativní konfigurační soubor."
+
+#: ../lib/dialog.sh:42
+msgid "Force overwrite of existing archives."
+msgstr "Povolí přepsání stávajících archivů."
+
+#: ../lib/dialog.sh:45
+msgid "Unwanted actions:"
+msgstr "Zakazující akce:"
+
+#: ../lib/dialog.sh:46
+msgid "Disable the upload process."
+msgstr "Zakáže nahrání na jiný počítač."
+
+#: ../lib/dialog.sh:47
+msgid "Disable the burning process."
+msgstr "Zakáže vypalování."
+
+#: ../lib/dialog.sh:48
+msgid "Disable the purge process."
+msgstr "Zakáže promazání starých archivů."
+
+#: ../lib/dialog.sh:60
+#, fuzzy
+msgid "Warning, process interrupted, archives may be corrupted."
+msgstr "Varování, proces přerušen, archivy mohou být porušeny."
+
+#: ../lib/dialog.sh:74
+#, fuzzy
+msgid "Not in interactive mode, cannot continue."
+msgstr "Nejsem v interaktivním režimu, nemohu následovat."
+
+#: ../lib/dialog.sh:93
+msgid "Not in interactive mode, cannot follow."
+msgstr "Nejsem v interaktivním režimu, nemohu následovat."
+
+#: ../lib/logger.sh:134
+msgid "Releasing lock"
+msgstr "Uvolňuji zámek"
+
+#: ../lib/archives.sh:31
+msgid "Internal error: wrong call to bm_merge_incremental_backups()."
+msgstr ""
+
 #: ../lib/files.sh:73 ../lib/files.sh:86
 msgid "No path given."
 msgstr "Nebyla zadána cesta."
@@ -422,13 +437,13 @@ msgid "$file is not a regular file."
 msgstr "$file není běžný soubor."
 
 #: ../lib/files.sh:280
-#, sh-format
-msgid "Removing deprecated master backup: \"$file\"."
+#, fuzzy, sh-format
+msgid "Removing obsolete master backup: \"$file\"."
 msgstr "Odstraňuji zastaralou hlavní zálohu: \"$file\"."
 
 #: ../lib/files.sh:288
-#, sh-format
-msgid "Removing deprecated master backup (isolated): \"$file\"."
+#, fuzzy, sh-format
+msgid "Removing obsolete master backup (isolated): \"$file\"."
 msgstr "Odstraňuji zastaralou hlavní zálohu (izolovaná): \"$file\"."
 
 #: ../lib/files.sh:295
@@ -436,38 +451,39 @@ msgstr "Odstraňuji zastaralou hlavní zálohu (izolovaná): \"$file\"."
 msgid "Removing archive \"$file\"."
 msgstr "Odstraňuji archiv \"$file\"."
 
-#: ../lib/files.sh:317
-msgid "Directory given is not found."
+#: ../lib/files.sh:315
+#, fuzzy
+msgid "Directory given was not found."
 msgstr "Zadaný adresář nebyl nalezen."
 
-#: ../lib/files.sh:338
+#: ../lib/files.sh:334
 #, sh-format
 msgid "Removing archive \"$archive\"."
 msgstr "Odstraňuji archiv \"$archive\"."
 
-#: ../lib/files.sh:360
+#: ../lib/files.sh:356
 #, sh-format
 msgid "The given file does not exist: $file_to_create"
 msgstr "Zadaný soubor neexistuje: $file_to_create"
 
-#: ../lib/files.sh:365
+#: ../lib/files.sh:361
 msgid "No file given."
 msgstr "Nebyl zadán žádný soubor."
 
-#: ../lib/files.sh:370 ../lib/files.sh:372 ../lib/files.sh:386
+#: ../lib/files.sh:366 ../lib/files.sh:368 ../lib/files.sh:382
 msgid "Unable to get date from file."
 msgstr "Nemohu ze souboru získat datum."
 
-#: ../lib/files.sh:376
+#: ../lib/files.sh:372
 msgid "Unable to find the pattern of the file."
 msgstr "Nemohu najít vzor souboru."
 
-#: ../lib/files.sh:392
+#: ../lib/files.sh:388
 #, sh-format
 msgid "Unable to find the md5 hash of file \"$file\" in file \"$md5file\"."
 msgstr "Nemohu najít md5 hash souboru \"$file\" v souboru \"$md5file\"."
 
-#: ../lib/files.sh:398
+#: ../lib/files.sh:394
 #, sh-format
 msgid "$file is a duplicate of $file_to_create (using symlink)."
 msgstr "$file je kopií $file_to_create (používám symbolický odkaz)."
@@ -554,25 +570,25 @@ msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
 msgstr ""
 "Použití rsync vyžaduje klíč (nastavte BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
 
-#: ../lib/upload-methods.sh:199 ../lib/upload-methods.sh:205
+#: ../lib/upload-methods.sh:200
 #, sh-format
 msgid "Upload of $directory with rsync failed; check $logfile."
 msgstr "Nahrání $directory pomocí rsync selhalo; zkontrolujte $logfile."
 
-#: ../lib/upload-methods.sh:225
+#: ../lib/upload-methods.sh:219
 msgid "No valid destination found, RSYNC upload not possible."
 msgstr "Nebyl nalezen platný cíl, nahrání přes RSYNC není možné."
 
-#: ../lib/upload-methods.sh:244
+#: ../lib/upload-methods.sh:238
 msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
 msgstr ""
 "Metodě rsync nebyl předán žádný počítač, nastavte BM_UPLOAD_RSYNC_HOSTS."
 
-#: ../lib/upload-methods.sh:251
+#: ../lib/upload-methods.sh:245
 msgid "Using the upload method \"rsync\"."
 msgstr "Používám nahrávací metodu \"rsync\"."
 
-#: ../lib/upload-methods.sh:258
+#: ../lib/upload-methods.sh:252
 msgid "Using the upload method \"rsync-snapshots\"."
 msgstr "Používám nahrávací metodu \"rsync-snapshots\"."
 
@@ -621,7 +637,8 @@ msgid "$str failed (MD5 hash mismatch)."
 msgstr "$str selhalo (MD5 nesouhlasí)."
 
 #: ../lib/burning-methods.sh:122
-msgid "Errors encountered during MD5 controls."
+#, fuzzy
+msgid "Errors encountered during MD5 checks."
 msgstr "Během MD5 kontrol byly zaznamenány chyby."
 
 #: ../lib/burning-methods.sh:126
@@ -690,8 +707,8 @@ msgid "DVD+R(W) burning requires $growisofs, aborting."
 msgstr "Vypalování DVD+R(W) vyžaduje $growisofs, končím."
 
 #: ../lib/burning-methods.sh:271
-#, sh-format
-msgid "Exporting archives to the DVD+R(W) media in $BM_BURNING_DEVICE."
+#, fuzzy, sh-format
+msgid "Exporting archives to the DVD+R(W) medium in $BM_BURNING_DEVICE."
 msgstr "Exportuji archivy na DVD+R(W) médium v $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:273 ../lib/burning-methods.sh:290
@@ -712,18 +729,18 @@ msgid "DVD-R(W) burning requires $dvdrwformat, aborting."
 msgstr "Vypalování DVD-R(W) vyžaduje $dvdrwformat, končím."
 
 #: ../lib/burning-methods.sh:284
-#, sh-format
-msgid "Blanking the DVD-R(W) media in $BM_BURNING_DEVICE"
+#, fuzzy, sh-format
+msgid "Blanking the DVD-R(W) medium in $BM_BURNING_DEVICE"
 msgstr "Mažu DVD-R(W) médium v $BM_BURNING_DEVICE"
 
 #: ../lib/burning-methods.sh:286
-#, sh-format
-msgid "Unable to blank the DVD-R(W) media (check $logfile)."
+#, fuzzy, sh-format
+msgid "Unable to blank the DVD-R(W) medium (check $logfile)."
 msgstr "Nemohu smazat DVD-R(W) médium (zkontrolujte $logfile)."
 
 #: ../lib/burning-methods.sh:288
-#, sh-format
-msgid "Exporting archives to the DVD-R(W) media in $BM_BURNING_DEVICE."
+#, fuzzy, sh-format
+msgid "Exporting archives to the DVD-R(W) medium in $BM_BURNING_DEVICE."
 msgstr "Exportuji archivy na DVD-R(W) médium v $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
@@ -760,16 +777,21 @@ msgid "Not burning $file because it does not fit in the medium."
 msgstr "Nevypaluji soubor $file, protože se nevejde na médium."
 
 #: ../lib/burning-methods.sh:414
-#, sh-format
-msgid "No such index file : $index_file"
+#, fuzzy, sh-format
+msgid "No such index file: \"$index_file\"."
 msgstr "Tento indexový soubor neexistuje: $index_file"
 
-#: ../lib/burning-methods.sh:454
-#, sh-format
-msgid "The burning process will need $number_of_indexes media(s)."
+#: ../lib/burning-methods.sh:455
+#, fuzzy
+msgid "The burning process will need one medium."
 msgstr "Počet médií nutných pro vypálení: $number_of_indexes."
 
-#: ../lib/burning-methods.sh:465
+#: ../lib/burning-methods.sh:457
+#, fuzzy, sh-format
+msgid "The burning process will need $number_of_indexes media."
+msgstr "Počet médií nutných pro vypálení: $number_of_indexes."
+
+#: ../lib/burning-methods.sh:469
 #, sh-format
 msgid "Burning content of $index"
 msgstr "Vypaluji obsah $index"
@@ -789,6 +811,9 @@ msgstr "Nemohu spustit úvodní příkaz"
 #: ../backup-manager:243
 msgid "Unable to exec post-command."
 msgstr "Nemohu spustit závěrečný příkaz."
+
+#~ msgid "During the tarballs generation, $nb_err error(s) occurred."
+#~ msgstr "Během vytváření tar archivů se vyskytly chyby (celkem $nb_err)."
 
 #~ msgid "7z blacklist are not well supported..."
 #~ msgstr "Blacklisty 7z nejsou podporovány zrovna nejlépe..."

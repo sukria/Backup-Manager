@@ -119,7 +119,7 @@ check_cdrom_md5_sums()
     done
 
     if [ $has_error = 1 ]; then
-        warning "Errors encountered during MD5 controls."
+        warning "Errors encountered during MD5 checks."
     fi
 
     # remove the mount point
@@ -268,7 +268,7 @@ function burn_session()
                 error "DVD+R(W) burning requires \$growisofs, aborting."
             fi
             
-            info "Exporting archives to the DVD+R(W) media in \$BM_BURNING_DEVICE."
+            info "Exporting archives to the DVD+R(W) medium in \$BM_BURNING_DEVICE."
             $growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
@@ -281,11 +281,11 @@ function burn_session()
                 error "DVD-R(W) burning requires \$dvdrwformat, aborting."
             fi
             
-            info "Blanking the DVD-R(W) media in \$BM_BURNING_DEVICE"
+            info "Blanking the DVD-R(W) medium in \$BM_BURNING_DEVICE"
             $dvdrwformat -blank $BM_BURNING_DEVICE > $logfile 2>&1 || 
-                error "Unable to blank the DVD-R(W) media (check \$logfile)."
+                error "Unable to blank the DVD-R(W) medium (check \$logfile)."
             
-            info "Exporting archives to the DVD-R(W) media in \$BM_BURNING_DEVICE."
+            info "Exporting archives to the DVD-R(W) medium in \$BM_BURNING_DEVICE."
             $growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
@@ -401,7 +401,7 @@ function __build_indexes_from_target()
 
 function __insert_new_medium()
 {
-    bm_pause "$(translate "Please insert a new media in \$BM_BURNING_DEVICE")"
+    bm_pause "$(translate "Please insert a new medium in \$BM_BURNING_DEVICE")"
 }
 
 function __burn_session_from_file()
@@ -411,7 +411,7 @@ function __burn_session_from_file()
     number_of_indexes="$3"
 
     if [ ! -e "$index_file" ]; then
-        error "No such index file : \$index_file"
+        error "No such index file: \"\$index_file\"."
     fi
 	
     what_to_burn_session=""
@@ -451,7 +451,11 @@ function burn_multiples_media()
     __build_indexes_from_target "$target"
 
 	# Display the number of medias required by the burning systemp.
-	info "The burning process will need \$number_of_indexes media(s)."
+    if [ $number_of_indexes -eq 1 ]; then
+    	info "The burning process will need one medium."
+    else 
+    	info "The burning process will need \$number_of_indexes media."
+    fi        
 
     # Now that all indexes are built, list them so we can find
     # them all in the media.

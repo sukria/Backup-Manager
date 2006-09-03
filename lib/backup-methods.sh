@@ -286,7 +286,7 @@ function __get_flags_tar_incremental()
     # if master day, we have to purge the incremental list if exists
     # so we'll generate a new one (and then, a full backup).
     if [ "$master_day" -eq "$BM_TARBALLINC_MASTERDATEVALUE" ];  then
-        info "Building master backup for target : \$dir_name"
+        info "Building master backup for target: \"\$dir_name\"."
         rm -f $incremental_list
     fi
     if [ -e $incremental_list ]; then
@@ -509,7 +509,7 @@ function __build_local_archive()
     if [ ! -e $file_to_check ] || [ $force = true ]; then
         if [ "$BM_ENCRYPTION_METHOD" = "gpg" ]; then
             if [ ! -x $gpg ]; then
-                error "The binary \"\$gpg\" is needed."
+                error "The program \"\$gpg\" is needed."
             fi
             build_encrypted_archive
         else
@@ -643,9 +643,11 @@ function backup_method_tarball()
     __make_tarball_archives
 	
     # Handle errors
-	if [ $nb_err -gt 0 ]; then
-		error "During the tarballs generation, \$nb_err error(s) occurred."
-	fi
+	if [ $nb_err -eq 1 ]; then
+		error "1 error occurred during the tarball generation."
+	else if [ $nb_err -gt 1 ]; then
+		error "\$nb_err errors occurred during the tarball generation."
+    fi
 }
 
 function backup_method_mysql()

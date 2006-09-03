@@ -266,7 +266,7 @@ function clean_file()
        [ -n "$prefix" ] && [ "$prefix" != "$(basename $file)" ] &&
        [ -n "$name" ] && [ "$name" != "$(basename $file)" ]; then
         
-        # look if the archive is deprecated
+        # look if the archive is obsolete
         if [ "$date" -lt "$purge_date" ] || 
            [ "$date" = "$purge_date" ]; then
            
@@ -277,7 +277,7 @@ function clean_file()
                 # if the master returned is not the same as the one we have, 
                 # the one we have can be deleted, because it's older.
                 if [ "$master_archive" != "$file" ]; then
-                    info "Removing deprecated master backup: \"\$file\"."
+                    info "Removing obsolete master backup: \"\$file\"."
                     rm -f "$file"
                 
                 # else, we can only remove the master archive if we cannot find any 
@@ -285,7 +285,7 @@ function clean_file()
                 else
                     nb_incrementals=$(ls -l $BM_REPOSITORY_ROOT/$prefix-$name.*.* | wc -l)
                     if [ "$nb_incrementals" = "1" ]; then
-                        info "Removing deprecated master backup (isolated): \"\$file\"."
+                        info "Removing obsolete master backup (isolated): \"\$file\"."
                         rm -f $file
                     fi
                 fi
@@ -312,7 +312,7 @@ clean_directory()
     purge_date=$(date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago")
 
     if [ ! -d $directory ]; then
-        error "Directory given is not found."
+        error "Directory given was not found."
     fi
 
     if [ "$BM_REPOSITORY_RECURSIVEPURGE" = "true" ]; then

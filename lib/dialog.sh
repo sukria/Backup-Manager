@@ -57,7 +57,7 @@ usage()
 stop_me()
 {
 	echo ""
-	error "Warning, process interupted, archives may be corrupted."
+	error "Warning, process interrupted, archives may be corrupted."
 	release_lock
 }
 
@@ -71,7 +71,7 @@ function bm_prompt()
     question="$1"
          
     if ! tty -s ; then
-        error "Not in interactive mode, cannot follow."
+        error "Not in interactive mode, cannot continue."
     fi
     
     echo -n "$question "; echo "[y/N] "

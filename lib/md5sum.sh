@@ -26,7 +26,7 @@ get_md5sum_from_file()
 
     if [ -z "$filename" ] || 
        [ -z "$md5file" ]; then
-        error "System error: bad usage of function get_md5sum_from_file()"
+        error "Internal error: bad usage of function get_md5sum_from_file()"
     fi
 
 	if [ ! -f $md5file ]; then

@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.7.4\n"
-"Report-Msgid-Bugs-To: Alexis Sukrieh <sukria@backup-manager.org>\n"
-"POT-Creation-Date: 2006-08-28 10:37+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-09-03 12:30+0200\n"
 "PO-Revision-Date: 2006-08-28 21:17+0200\n"
 "Last-Translator: Sven Joachim <sven_joachim@web.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
@@ -75,8 +75,7 @@ msgstr "Kann $file_to_create nicht finden"
 
 #: ../lib/backup-methods.sh:254
 msgid "No frequency given, set BM_TARBALLINC_MASTERDATETYPE."
-msgstr ""
-"Keine Häufigkeit angegeben, setzen Sie $BM_TARBALLINC_MASTERDATETYPE."
+msgstr "Keine Häufigkeit angegeben, setzen Sie $BM_TARBALLINC_MASTERDATETYPE."
 
 #: ../lib/backup-methods.sh:265
 #, sh-format
@@ -85,8 +84,8 @@ msgstr "Unbekannte Häufigkeit: $BM_TARBALLINC_MASTERDATETYPE"
 
 # FIXME: remove the space before the colon?
 #: ../lib/backup-methods.sh:289
-#, sh-format
-msgid "Building master backup for target : $dir_name"
+#, fuzzy, sh-format
+msgid "Building master backup for target: \"$dir_name\"."
 msgstr "Erstellen des Master-Backups für das Ziel $dir_name"
 
 #: ../lib/backup-methods.sh:396
@@ -133,8 +132,8 @@ msgstr ""
 # FIXME: better say "program" instead of "binary"? Would be more consistent
 # with the other messages.
 #: ../lib/backup-methods.sh:512
-#, sh-format
-msgid "The binary \"$gpg\" is needed."
+#, fuzzy, sh-format
+msgid "The program \"$gpg\" is needed."
 msgstr "Das Programm »$gpg« wird benötigt."
 
 #: ../lib/backup-methods.sh:519 ../lib/backup-methods.sh:551
@@ -147,42 +146,42 @@ msgstr "Datei $file_to_check existiert bereits, wird übergangen."
 msgid "Target \"$t\" does not exist, skipping."
 msgstr "Ziel »$t« existiert nicht, wird übergangen."
 
-#: ../lib/backup-methods.sh:627 ../lib/backup-methods.sh:654
-#: ../lib/backup-methods.sh:683 ../lib/backup-methods.sh:705
+#: ../lib/backup-methods.sh:627 ../lib/backup-methods.sh:656
+#: ../lib/backup-methods.sh:685 ../lib/backup-methods.sh:707
 #, sh-format
 msgid "Using method \"$method\"."
 msgstr "Verwende die Methode »$method«."
 
-# FIXME: this does not translate well into German (and maybe other languages).
-# Maybe split this into two messages, one for the singular and one for the
-# plural case?
 #: ../lib/backup-methods.sh:647
-#, sh-format
-msgid "During the tarballs generation, $nb_err error(s) occurred."
-msgstr "$nb_err Fehler beim Erzeugen der Tarbälle aufgetreten."
+msgid "1 error occurred during the tarball generation."
+msgstr ""
 
-#: ../lib/backup-methods.sh:656
+#: ../lib/backup-methods.sh:649
+#, sh-format
+msgid "$nb_err errors occurred during the tarball generation."
+msgstr ""
+
+#: ../lib/backup-methods.sh:658
 #, sh-format
 msgid "The \"mysql\" method is chosen, but $mysqldump is not found."
-msgstr ""
-"Die »mysql«-Methode ist gewählt, aber $mysqldump wurde nicht gefunden."
+msgstr "Die »mysql«-Methode ist gewählt, aber $mysqldump wurde nicht gefunden."
 
-#: ../lib/backup-methods.sh:685
+#: ../lib/backup-methods.sh:687
 #, sh-format
 msgid "The \"svn\" method is chosen, but $svnadmin is not found."
 msgstr "Die »svn«-Methode ist gewählt, aber $svnadmin wurde nicht gefunden."
 
-#: ../lib/backup-methods.sh:691
+#: ../lib/backup-methods.sh:693
 #, sh-format
 msgid "SVN repository \"$repository\" is not valid; skipping."
 msgstr "SVN-Depot »$repository« ist nicht gültig; wird übergangen."
 
-#: ../lib/backup-methods.sh:714
+#: ../lib/backup-methods.sh:716
 #, sh-format
 msgid "Not enough args for this archive ($archive), skipping."
 msgstr "Zu wenige Argumente für dieses Archiv ($archive), wird übergangen."
 
-#: ../lib/backup-methods.sh:721
+#: ../lib/backup-methods.sh:723
 msgid "Cannot create archive."
 msgstr "Kann Archiv nicht erzeugen."
 
@@ -195,11 +194,11 @@ msgstr ""
 #: ../lib/sanitize.sh:39
 #, sh-format
 msgid ""
-"The configuration key \"$deprecated_key\" is deprecated, you should "
-"rename it \"$new_key\". Using \"$deprecated_value\"."
+"The configuration key \"$deprecated_key\" is deprecated, you should rename "
+"it \"$new_key\". Using \"$deprecated_value\"."
 msgstr ""
-"Die Konfigurationsvariable »$deprecated_key« wird missbilligt, Sie "
-"sollten sie in »$new_key« umbenennen. Verwende »$deprecated_value«."
+"Die Konfigurationsvariable »$deprecated_key« wird missbilligt, Sie sollten "
+"sie in »$new_key« umbenennen. Verwende »$deprecated_value«."
 
 #: ../lib/sanitize.sh:74
 #, sh-format
@@ -210,25 +209,23 @@ msgstr ""
 
 #: ../lib/sanitize.sh:92
 #, sh-format
-msgid ""
-"Deprecated boolean, $key is set to \"yes\", setting \"true\" instead."
+msgid "Deprecated boolean, $key is set to \"yes\", setting \"true\" instead."
 msgstr ""
-"Missbilligter boolescher Wert, $key ist auf »yes« gesetzt, wird "
-"stattdessen auf »true« gesetzt."
+"Missbilligter boolescher Wert, $key ist auf »yes« gesetzt, wird stattdessen "
+"auf »true« gesetzt."
 
 #: ../lib/sanitize.sh:97
 #, sh-format
-msgid ""
-"Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
+msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
 msgstr ""
-"Missbilligter boolescher Wert, $key ist auf »no« gesetzt, wird "
-"stattdessen auf »false« gesetzt."
+"Missbilligter boolescher Wert, $key ist auf »no« gesetzt, wird stattdessen "
+"auf »false« gesetzt."
 
-#: ../lib/sanitize.sh:241
+#: ../lib/sanitize.sh:243
 #, sh-format
 msgid ""
-"When validating the configuration file $conffile, $nb_warnings warnings "
-"were found."
+"When validating the configuration file $conffile, $nb_warnings warnings were "
+"found."
 msgstr ""
 "Beim Überprüfen der Konfigurationsdatei $conffile wurden $nb_warnings "
 "Warnungen gefunden."
@@ -298,27 +295,25 @@ msgstr "Post-command gab »$RET« (Erfolg) zurück."
 
 #: ../lib/actions.sh:161
 msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not "
-"installed."
+"The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
 msgstr ""
-"Die Konfigurationsvariable BM_TARBALL_FILETYPE ist auf »zip« gesetzt, "
-"aber zip ist nicht installiert."
+"Die Konfigurationsvariable BM_TARBALL_FILETYPE ist auf »zip« gesetzt, aber "
+"zip ist nicht installiert."
 
 #: ../lib/actions.sh:166
 msgid ""
 "The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
 "installed."
 msgstr ""
-"Die Konfigurationsvariable BM_TARBALL_FILETYPE ist auf »bzip2« gesetzt, "
-"aber bzip2 ist nicht installiert."
+"Die Konfigurationsvariable BM_TARBALL_FILETYPE ist auf »bzip2« gesetzt, aber "
+"bzip2 ist nicht installiert."
 
 #: ../lib/actions.sh:171
 msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not "
-"installed."
+"The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
 msgstr ""
-"Die Konfigurationsvariable BM_TARBALL_FILETYPE ist auf »dar« gesetzt, "
-"aber dar ist nicht installiert."
+"Die Konfigurationsvariable BM_TARBALL_FILETYPE ist auf »dar« gesetzt, aber "
+"dar ist nicht installiert."
 
 #: ../lib/actions.sh:181
 #, sh-format
@@ -327,7 +322,8 @@ msgstr "Das Depot $BM_REPOSITORY_ROOT existiert nicht, wird angelegt."
 
 # FIXME: maybe better use "Internal error"?
 #: ../lib/md5sum.sh:29
-msgid "System error: bad usage of function get_md5sum_from_file()"
+#, fuzzy
+msgid "Internal error: bad usage of function get_md5sum_from_file()"
 msgstr "Systemfehler: falscher Aufruf der Funktion get_md5sum_from_file()"
 
 #: ../lib/md5sum.sh:33
@@ -406,11 +402,18 @@ msgstr "Löschen alter Archive deaktivieren."
 
 # FIXME: spelling error: interupted -> interrupted
 #: ../lib/dialog.sh:60
-msgid "Warning, process interupted, archives may be corrupted."
+#, fuzzy
+msgid "Warning, process interrupted, archives may be corrupted."
 msgstr "Warnung, Prozess wurde unterbrochen. Archive könnten defekt sein."
 
 # FIXME: maybe better use "continue" instead of "follow"?
-#: ../lib/dialog.sh:74 ../lib/dialog.sh:93
+#: ../lib/dialog.sh:74
+#, fuzzy
+msgid "Not in interactive mode, cannot continue."
+msgstr "Nicht in interaktivem Modus, kann nicht fortsetzen."
+
+# FIXME: maybe better use "continue" instead of "follow"?
+#: ../lib/dialog.sh:93
 msgid "Not in interactive mode, cannot follow."
 msgstr "Nicht in interaktivem Modus, kann nicht fortsetzen."
 
@@ -420,7 +423,8 @@ msgstr "Freigabe der Sperre"
 
 # FIXME: maybe better use "Internal error"?
 #: ../lib/archives.sh:31
-msgid "System error: wrong call to bm_merge_incremental_backups()."
+#, fuzzy
+msgid "Internal error: wrong call to bm_merge_incremental_backups()."
 msgstr "Systemfehler: falscher Aufruf von bm_merge_incremental_backups()."
 
 #: ../lib/files.sh:73 ../lib/files.sh:86
@@ -438,8 +442,8 @@ msgid ""
 "A backup-manager process ($pid) is already running with the conffile "
 "$conffile"
 msgstr ""
-"Ein backup-manager-Prozess ($pid) läuft bereits mit der "
-"Konfigurationsdatei $conffile"
+"Ein backup-manager-Prozess ($pid) läuft bereits mit der Konfigurationsdatei "
+"$conffile"
 
 #: ../lib/files.sh:166 ../lib/files.sh:172
 #, sh-format
@@ -457,14 +461,14 @@ msgstr "$file ist keine reguläre Datei."
 
 # FIXME: better use "obsolete" or "unwanted" instead of "deprecated"?
 #: ../lib/files.sh:280
-#, sh-format
-msgid "Removing deprecated master backup: \"$file\"."
+#, fuzzy, sh-format
+msgid "Removing obsolete master backup: \"$file\"."
 msgstr "Löschen des veralteten Master-Backups: »$file«."
 
 # FIXME: better use "obsolete" or "unwanted" instead of "deprecated"?
 #: ../lib/files.sh:288
-#, sh-format
-msgid "Removing deprecated master backup (isolated): \"$file\"."
+#, fuzzy, sh-format
+msgid "Removing obsolete master backup (isolated): \"$file\"."
 msgstr "Löschen des veralteten Master-Backups (isoliert): »$file«."
 
 #: ../lib/files.sh:295
@@ -474,39 +478,40 @@ msgstr "Löschen des Archivs »$file«."
 
 # FIXME: "was not found", "has not been found", or just "not found"
 # would be better Englisch.
-#: ../lib/files.sh:317
-msgid "Directory given is not found."
+#: ../lib/files.sh:315
+#, fuzzy
+msgid "Directory given was not found."
 msgstr "Angegebenes Verzeichnis wurde nicht gefunden."
 
-#: ../lib/files.sh:338
+#: ../lib/files.sh:334
 #, sh-format
 msgid "Removing archive \"$archive\"."
 msgstr "Löschen des Archivs »$archive«."
 
-#: ../lib/files.sh:360
+#: ../lib/files.sh:356
 #, sh-format
 msgid "The given file does not exist: $file_to_create"
 msgstr "Angegebene Datei existiert nicht: $file_to_create"
 
-#: ../lib/files.sh:365
+#: ../lib/files.sh:361
 msgid "No file given."
 msgstr "Keine Datei angegeben."
 
-#: ../lib/files.sh:370 ../lib/files.sh:372 ../lib/files.sh:386
+#: ../lib/files.sh:366 ../lib/files.sh:368 ../lib/files.sh:382
 msgid "Unable to get date from file."
 msgstr "Kann Datum der Datei nicht ermitteln."
 
-#: ../lib/files.sh:376
+#: ../lib/files.sh:372
 msgid "Unable to find the pattern of the file."
 msgstr "Kann das Dateimuster nicht finden."
 
-#: ../lib/files.sh:392
+#: ../lib/files.sh:388
 #, sh-format
 msgid "Unable to find the md5 hash of file \"$file\" in file \"$md5file\"."
 msgstr ""
 "Kann die Md5-Summe der Datei »$file« nicht in der Datei »$md5file« finden."
 
-#: ../lib/files.sh:398
+#: ../lib/files.sh:394
 #, sh-format
 msgid "$file is a duplicate of $file_to_create (using symlink)."
 msgstr "$file ist ein Duplikat von $file_to_create (verwende Symlink)."
@@ -527,11 +532,11 @@ msgstr "totoototo"
 #: ../lib/upload-methods.sh:70
 #, sh-format
 msgid ""
-"Error reported by backup-manager-upload for method \"scp\", check "
-"\"$logfile\"."
+"Error reported by backup-manager-upload for method \"scp\", check \"$logfile"
+"\"."
 msgstr ""
-"Fehler berichtet von backup-manager-upload für Methode »scp«, überprüfen "
-"Sie »$logfile«."
+"Fehler berichtet von backup-manager-upload für Methode »scp«, überprüfen Sie "
+"»$logfile«."
 
 #: ../lib/upload-methods.sh:78
 msgid "Using the upload method \"ssh-gpg\"."
@@ -542,8 +547,8 @@ msgid ""
 "No gpg recipient given. Argument is mandatory if upload method ssh-gpg is "
 "used."
 msgstr ""
-"Kein gpg-Empfänger angegeben. Argument ist obligatorisch, falls die "
-"Upload-Methode ssh-gpg verwendet wird."
+"Kein gpg-Empfänger angegeben. Argument ist obligatorisch, falls die Upload-"
+"Methode ssh-gpg verwendet wird."
 
 #: ../lib/upload-methods.sh:107
 #, sh-format
@@ -551,8 +556,8 @@ msgid ""
 "Error reported by backup-manager-upload for method \"ssh-gpg\", check "
 "\"$logfile\"."
 msgstr ""
-"Fehler berichtet von backup-manager-upload für Methode »ssh-gpg«, "
-"überprüfen Sie »$logfile«."
+"Fehler berichtet von backup-manager-upload für Methode »ssh-gpg«, überprüfen "
+"Sie »$logfile«."
 
 #: ../lib/upload-methods.sh:114
 msgid "Using the upload method \"ftp\"."
@@ -565,11 +570,11 @@ msgstr "Kein gültiges Ziel gefunden, FTP-Upload ist nicht möglich."
 #: ../lib/upload-methods.sh:141
 #, sh-format
 msgid ""
-"Error reported by backup-manager-upload for method \"ftp\", check "
-"\"$logfile\"."
+"Error reported by backup-manager-upload for method \"ftp\", check \"$logfile"
+"\"."
 msgstr ""
-"Fehler berichtet von backup-manager-upload für Methode »ftp«, überprüfen "
-"Sie »$logfile«."
+"Fehler berichtet von backup-manager-upload für Methode »ftp«, überprüfen Sie "
+"»$logfile«."
 
 #: ../lib/upload-methods.sh:149
 msgid "Using the upload method \"S3\"."
@@ -578,11 +583,11 @@ msgstr "Verwende die Upload-Methode »S3«."
 #: ../lib/upload-methods.sh:172
 #, sh-format
 msgid ""
-"Error reported by backup-manager-upload for method \"s3\", check "
-"\"$logfile\"."
+"Error reported by backup-manager-upload for method \"s3\", check \"$logfile"
+"\"."
 msgstr ""
-"Fehler berichtet von backup-manager-upload für Methode »s3«, überprüfen "
-"Sie »$logfile«."
+"Fehler berichtet von backup-manager-upload für Methode »s3«, überprüfen Sie "
+"»$logfile«."
 
 #: ../lib/upload-methods.sh:178
 #, sh-format
@@ -595,28 +600,27 @@ msgstr ""
 "Ein Schlüssel wird benötigt, um rsync auszuführen (setzen Sie "
 "BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
 
-#: ../lib/upload-methods.sh:199 ../lib/upload-methods.sh:205
+#: ../lib/upload-methods.sh:200
 #, sh-format
 msgid "Upload of $directory with rsync failed; check $logfile."
 msgstr ""
-"Hochladen von $directory mit rsync fehlgeschlagen; überprüfen Sie "
-"$logfile."
+"Hochladen von $directory mit rsync fehlgeschlagen; überprüfen Sie $logfile."
 
-#: ../lib/upload-methods.sh:225
+#: ../lib/upload-methods.sh:219
 msgid "No valid destination found, RSYNC upload not possible."
 msgstr "Kein gültiges Ziel gefunden, RSYNC-Upload ist nicht möglich."
 
-#: ../lib/upload-methods.sh:244
+#: ../lib/upload-methods.sh:238
 msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
 msgstr ""
 "Keine Hosts für die rsync-Methode angegeben, setzen Sie "
 "BM_UPLOAD_RSYNC_HOSTS."
 
-#: ../lib/upload-methods.sh:251
+#: ../lib/upload-methods.sh:245
 msgid "Using the upload method \"rsync\"."
 msgstr "Verwende die Upload-Methode »rsync«."
 
-#: ../lib/upload-methods.sh:258
+#: ../lib/upload-methods.sh:252
 msgid "Using the upload method \"rsync-snapshots\"."
 msgstr "Verwende die Upload-Methode »rsync-snapshots«."
 
@@ -628,8 +632,8 @@ msgstr "Gerät »/dev/$device« ist auf »$m« eingehängt, es wird ausgehängt.
 #: ../lib/burning-methods.sh:52
 #, sh-format
 msgid ""
-"MD5 checkup is only performed on CD media. Please set the "
-"BM_BURNING_DEVICE in $conffile"
+"MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE "
+"in $conffile"
 msgstr ""
 "MD5-Überprüfung wird nur auf CD-Medien durchgeführt. Bitte setzen Sie "
 "BM_BURNING_DEVICE in $conffile"
@@ -666,7 +670,8 @@ msgstr "$str fehlgeschlagen (MD5-Summe stimmt nicht überein)."
 
 # FIXME: "controls" does not seem right, maybe "checks" would be better.
 #: ../lib/burning-methods.sh:122
-msgid "Errors encountered during MD5 controls."
+#, fuzzy
+msgid "Errors encountered during MD5 checks."
 msgstr "Fehler während der MD5-Überprüfung aufgetreten."
 
 #: ../lib/burning-methods.sh:126
@@ -704,11 +709,11 @@ msgstr "Brennen der Archive von $BM__BURNING_DATE."
 #: ../lib/burning-methods.sh:198
 #, sh-format
 msgid ""
-"Cannot burn archives of the $BM__BURNING_DATE, too big: ${size}M, must "
-"fit in $BM_BURNING_MAXSIZE"
+"Cannot burn archives of the $BM__BURNING_DATE, too big: ${size}M, must fit "
+"in $BM_BURNING_MAXSIZE"
 msgstr ""
-"Kann Archive des Tages $BM__BURNING_DATE nicht brennen, zu groß: ${size}"
-"M, maximale Größe laut Konfiguration $BM_BURNING_MAXSIZE"
+"Kann Archive des Tages $BM__BURNING_DATE nicht brennen, zu groß: ${size}M, "
+"maximale Größe laut Konfiguration $BM_BURNING_MAXSIZE"
 
 #: ../lib/burning-methods.sh:220
 msgid "Burning the whole archives."
@@ -737,10 +742,9 @@ msgstr "DVD+R(W)-Brennen erfordert $growisofs, Abbruch."
 
 # FIXME: better use medium instead of media?
 #: ../lib/burning-methods.sh:271
-#, sh-format
-msgid "Exporting archives to the DVD+R(W) media in $BM_BURNING_DEVICE."
-msgstr ""
-"Exportieren der Archive auf das DVD+R(W)-Medium in $BM_BURNING_DEVICE."
+#, fuzzy, sh-format
+msgid "Exporting archives to the DVD+R(W) medium in $BM_BURNING_DEVICE."
+msgstr "Exportieren der Archive auf das DVD+R(W)-Medium in $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:273 ../lib/burning-methods.sh:290
 #: ../lib/burning-methods.sh:300 ../lib/burning-methods.sh:305
@@ -761,22 +765,21 @@ msgstr "DVD-R(W)-Brennen erfordert $dvdrwformat, Abbruch."
 
 # FIXME: better use medium instead of media
 #: ../lib/burning-methods.sh:284
-#, sh-format
-msgid "Blanking the DVD-R(W) media in $BM_BURNING_DEVICE"
+#, fuzzy, sh-format
+msgid "Blanking the DVD-R(W) medium in $BM_BURNING_DEVICE"
 msgstr "Löschen des DVD-R(W)-Mediums in $BM_BURNING_DEVICE"
 
 # FIXME: better use medium instead of media
 #: ../lib/burning-methods.sh:286
-#, sh-format
-msgid "Unable to blank the DVD-R(W) media (check $logfile)."
+#, fuzzy, sh-format
+msgid "Unable to blank the DVD-R(W) medium (check $logfile)."
 msgstr "Kann das DVD-R(W)-Medium nicht löschen (überprüfen Sie $logfile)."
 
 # FIXME: better use medium instead of media?
 #: ../lib/burning-methods.sh:288
-#, sh-format
-msgid "Exporting archives to the DVD-R(W) media in $BM_BURNING_DEVICE."
-msgstr ""
-"Exportieren der Archive auf das DVD-R(W)-Medium in $BM_BURNING_DEVICE."
+#, fuzzy, sh-format
+msgid "Exporting archives to the DVD-R(W) medium in $BM_BURNING_DEVICE."
+msgstr "Exportieren der Archive auf das DVD-R(W)-Medium in $BM_BURNING_DEVICE."
 
 # FIXME: CDROMs cannot be burnt, only CD-R(W)s.
 #: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
@@ -810,25 +813,33 @@ msgstr ""
 #: ../lib/burning-methods.sh:373
 #, sh-format
 msgid "Not burning $file because it does not fit in the medium."
-msgstr ""
-"Datei $file wird nicht gebrannt, weil sie nicht auf das Medium passt."
+msgstr "Datei $file wird nicht gebrannt, weil sie nicht auf das Medium passt."
 
 # FIXME: remove the space before the colon?
 #: ../lib/burning-methods.sh:414
-#, sh-format
-msgid "No such index file : $index_file"
+#, fuzzy, sh-format
+msgid "No such index file: \"$index_file\"."
 msgstr "Die Indexdatei $index_file existiert nicht"
 
 # FIXME: the singular is "medium", the plural "media".
 # Also, this does not translate well into German (and maybe other languages).
 # Maybe split this into two messages, one for the singular and one for the
 # plural case?
-#: ../lib/burning-methods.sh:454
-#, sh-format
-msgid "The burning process will need $number_of_indexes media(s)."
+#: ../lib/burning-methods.sh:455
+#, fuzzy
+msgid "The burning process will need one medium."
 msgstr "Der Brennvorgang benötigt $number_of_indexes Medium/Medien."
 
-#: ../lib/burning-methods.sh:465
+# FIXME: the singular is "medium", the plural "media".
+# Also, this does not translate well into German (and maybe other languages).
+# Maybe split this into two messages, one for the singular and one for the
+# plural case?
+#: ../lib/burning-methods.sh:457
+#, fuzzy, sh-format
+msgid "The burning process will need $number_of_indexes media."
+msgstr "Der Brennvorgang benötigt $number_of_indexes Medium/Medien."
+
+#: ../lib/burning-methods.sh:469
 #, sh-format
 msgid "Burning content of $index"
 msgstr "Brennen des Inhalts von $index"
@@ -849,3 +860,8 @@ msgstr "Kann pre-command nicht ausführen"
 msgid "Unable to exec post-command."
 msgstr "Kann post-command nicht ausführen."
 
+# FIXME: this does not translate well into German (and maybe other languages).
+# Maybe split this into two messages, one for the singular and one for the
+# plural case?
+#~ msgid "During the tarballs generation, $nb_err error(s) occurred."
+#~ msgstr "$nb_err Fehler beim Erzeugen der Tarbälle aufgetreten."

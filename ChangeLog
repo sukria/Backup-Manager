@@ -1,4 +1,10 @@
 2006-09-04  Alexis Sukrieh  <sukria@backup-manager.org>
+	
+	[ Carlos Galisteo ]
+
+	* All messages translated in po/es.po.
+
+2006-09-04  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* lib/backup-methods.sh
 	  + Fixed an if-elif-else structure

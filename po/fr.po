@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.7.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-03 12:30+0200\n"
+"POT-Creation-Date: 2006-09-04 08:46+0200\n"
 "PO-Revision-Date: 2006-08-28 10:59+0100\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "Language-Team: Debian l10n French Team <debian-l10n-french@lists.debian."
@@ -601,10 +601,10 @@ msgid "Device \"/dev/$device\" is mounted on \"$m\", unmounting it."
 msgstr "Le périphérique « /dev/$device » est monté sur « $m », démontage."
 
 #: ../lib/burning-methods.sh:52
-#, sh-format
+#, fuzzy, sh-format
 msgid ""
-"MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE "
-"in $conffile"
+"MD5 checkup is only performed on disks. Please set the BM_BURNING_DEVICE in "
+"$conffile"
 msgstr ""
 "Les contrôles des sommes MD5 ne sont effectués que sur les media CD/DVD. "
 "Veuillez définir BM_BURNING_DEVICE dans « $conffile »."
@@ -712,7 +712,7 @@ msgstr "La gravure de DVD+R(W) nécessite $growisofs ; annulation."
 
 #: ../lib/burning-methods.sh:271
 #, fuzzy, sh-format
-msgid "Exporting archives to the DVD+R(W) medium in $BM_BURNING_DEVICE."
+msgid "Exporting archives to the DVD+R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Export des archives vers le media DVD+R(W) sur $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:273 ../lib/burning-methods.sh:290
@@ -734,17 +734,17 @@ msgstr "La gravure de DVD-R(W) nécessite $dvdrwformat ; annulation."
 
 #: ../lib/burning-methods.sh:284
 #, fuzzy, sh-format
-msgid "Blanking the DVD-R(W) medium in $BM_BURNING_DEVICE"
+msgid "Blanking the DVD-R(W) disc in $BM_BURNING_DEVICE"
 msgstr "Effacement du medium DVD-R(W) sur $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:286
 #, fuzzy, sh-format
-msgid "Unable to blank the DVD-R(W) medium (check $logfile)."
+msgid "Unable to blank the DVD-R(W) disc (check $logfile)."
 msgstr "Impossible d'effacer le medium DVD-RW (voir « $logfile »)."
 
 #: ../lib/burning-methods.sh:288
 #, fuzzy, sh-format
-msgid "Exporting archives to the DVD-R(W) medium in $BM_BURNING_DEVICE."
+msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Export des archives vers le medium DVD-R(W) sur $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
@@ -776,8 +776,8 @@ msgstr ""
 "dans $conffile"
 
 #: ../lib/burning-methods.sh:373
-#, sh-format
-msgid "Not burning $file because it does not fit in the medium."
+#, fuzzy, sh-format
+msgid "Not burning $file because it does not fit in the disk."
 msgstr ""
 "Annulation de la gravure de « $file » car ce fichier est trop gros pour le "
 "medium."
@@ -789,12 +789,12 @@ msgstr "Impossible de trouver le fichier d'index : $index_file"
 
 #: ../lib/burning-methods.sh:455
 #, fuzzy
-msgid "The burning process will need one medium."
+msgid "The burning process will need one disk."
 msgstr "La phase de gravure nécessitera $number_of_indexes media."
 
 #: ../lib/burning-methods.sh:457
 #, fuzzy, sh-format
-msgid "The burning process will need $number_of_indexes media."
+msgid "The burning process will need $number_of_indexes disks."
 msgstr "La phase de gravure nécessitera $number_of_indexes media."
 
 #: ../lib/burning-methods.sh:469

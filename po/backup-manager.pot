@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-03 12:30+0200\n"
+"POT-Creation-Date: 2006-09-04 08:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -573,8 +573,8 @@ msgstr ""
 #: ../lib/burning-methods.sh:52
 #, sh-format
 msgid ""
-"MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE "
-"in $conffile"
+"MD5 checkup is only performed on disks. Please set the BM_BURNING_DEVICE in "
+"$conffile"
 msgstr ""
 
 #: ../lib/burning-methods.sh:58
@@ -674,7 +674,7 @@ msgstr ""
 
 #: ../lib/burning-methods.sh:271
 #, sh-format
-msgid "Exporting archives to the DVD+R(W) medium in $BM_BURNING_DEVICE."
+msgid "Exporting archives to the DVD+R(W) disc in $BM_BURNING_DEVICE."
 msgstr ""
 
 #: ../lib/burning-methods.sh:273 ../lib/burning-methods.sh:290
@@ -696,17 +696,17 @@ msgstr ""
 
 #: ../lib/burning-methods.sh:284
 #, sh-format
-msgid "Blanking the DVD-R(W) medium in $BM_BURNING_DEVICE"
+msgid "Blanking the DVD-R(W) disc in $BM_BURNING_DEVICE"
 msgstr ""
 
 #: ../lib/burning-methods.sh:286
 #, sh-format
-msgid "Unable to blank the DVD-R(W) medium (check $logfile)."
+msgid "Unable to blank the DVD-R(W) disc (check $logfile)."
 msgstr ""
 
 #: ../lib/burning-methods.sh:288
 #, sh-format
-msgid "Exporting archives to the DVD-R(W) medium in $BM_BURNING_DEVICE."
+msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr ""
 
 #: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
@@ -737,7 +737,7 @@ msgstr ""
 
 #: ../lib/burning-methods.sh:373
 #, sh-format
-msgid "Not burning $file because it does not fit in the medium."
+msgid "Not burning $file because it does not fit in the disk."
 msgstr ""
 
 #: ../lib/burning-methods.sh:414
@@ -746,12 +746,12 @@ msgid "No such index file: \"$index_file\"."
 msgstr ""
 
 #: ../lib/burning-methods.sh:455
-msgid "The burning process will need one medium."
+msgid "The burning process will need one disk."
 msgstr ""
 
 #: ../lib/burning-methods.sh:457
 #, sh-format
-msgid "The burning process will need $number_of_indexes media."
+msgid "The burning process will need $number_of_indexes disks."
 msgstr ""
 
 #: ../lib/burning-methods.sh:469

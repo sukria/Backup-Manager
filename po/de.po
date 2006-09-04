@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.7.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-03 12:30+0200\n"
+"POT-Creation-Date: 2006-09-04 08:46+0200\n"
 "PO-Revision-Date: 2006-08-28 21:17+0200\n"
 "Last-Translator: Sven Joachim <sven_joachim@web.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
@@ -630,10 +630,10 @@ msgid "Device \"/dev/$device\" is mounted on \"$m\", unmounting it."
 msgstr "Gerät »/dev/$device« ist auf »$m« eingehängt, es wird ausgehängt."
 
 #: ../lib/burning-methods.sh:52
-#, sh-format
+#, fuzzy, sh-format
 msgid ""
-"MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE "
-"in $conffile"
+"MD5 checkup is only performed on disks. Please set the BM_BURNING_DEVICE in "
+"$conffile"
 msgstr ""
 "MD5-Überprüfung wird nur auf CD-Medien durchgeführt. Bitte setzen Sie "
 "BM_BURNING_DEVICE in $conffile"
@@ -743,7 +743,7 @@ msgstr "DVD+R(W)-Brennen erfordert $growisofs, Abbruch."
 # FIXME: better use medium instead of media?
 #: ../lib/burning-methods.sh:271
 #, fuzzy, sh-format
-msgid "Exporting archives to the DVD+R(W) medium in $BM_BURNING_DEVICE."
+msgid "Exporting archives to the DVD+R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exportieren der Archive auf das DVD+R(W)-Medium in $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:273 ../lib/burning-methods.sh:290
@@ -766,19 +766,19 @@ msgstr "DVD-R(W)-Brennen erfordert $dvdrwformat, Abbruch."
 # FIXME: better use medium instead of media
 #: ../lib/burning-methods.sh:284
 #, fuzzy, sh-format
-msgid "Blanking the DVD-R(W) medium in $BM_BURNING_DEVICE"
+msgid "Blanking the DVD-R(W) disc in $BM_BURNING_DEVICE"
 msgstr "Löschen des DVD-R(W)-Mediums in $BM_BURNING_DEVICE"
 
 # FIXME: better use medium instead of media
 #: ../lib/burning-methods.sh:286
 #, fuzzy, sh-format
-msgid "Unable to blank the DVD-R(W) medium (check $logfile)."
+msgid "Unable to blank the DVD-R(W) disc (check $logfile)."
 msgstr "Kann das DVD-R(W)-Medium nicht löschen (überprüfen Sie $logfile)."
 
 # FIXME: better use medium instead of media?
 #: ../lib/burning-methods.sh:288
 #, fuzzy, sh-format
-msgid "Exporting archives to the DVD-R(W) medium in $BM_BURNING_DEVICE."
+msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exportieren der Archive auf das DVD-R(W)-Medium in $BM_BURNING_DEVICE."
 
 # FIXME: CDROMs cannot be burnt, only CD-R(W)s.
@@ -811,8 +811,8 @@ msgstr ""
 "BM_BURNING_METHOD in $conffile"
 
 #: ../lib/burning-methods.sh:373
-#, sh-format
-msgid "Not burning $file because it does not fit in the medium."
+#, fuzzy, sh-format
+msgid "Not burning $file because it does not fit in the disk."
 msgstr "Datei $file wird nicht gebrannt, weil sie nicht auf das Medium passt."
 
 # FIXME: remove the space before the colon?
@@ -827,7 +827,7 @@ msgstr "Die Indexdatei $index_file existiert nicht"
 # plural case?
 #: ../lib/burning-methods.sh:455
 #, fuzzy
-msgid "The burning process will need one medium."
+msgid "The burning process will need one disk."
 msgstr "Der Brennvorgang benötigt $number_of_indexes Medium/Medien."
 
 # FIXME: the singular is "medium", the plural "media".
@@ -836,7 +836,7 @@ msgstr "Der Brennvorgang benötigt $number_of_indexes Medium/Medien."
 # plural case?
 #: ../lib/burning-methods.sh:457
 #, fuzzy, sh-format
-msgid "The burning process will need $number_of_indexes media."
+msgid "The burning process will need $number_of_indexes disks."
 msgstr "Der Brennvorgang benötigt $number_of_indexes Medium/Medien."
 
 #: ../lib/burning-methods.sh:469

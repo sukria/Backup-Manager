@@ -49,7 +49,7 @@ check_cdrom_md5_sums()
     has_error=0
 
     if [ -z $BM_BURNING_DEVICE ]; then
-        error "MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE in \$conffile"
+        error "MD5 checkup is only performed on disks. Please set the BM_BURNING_DEVICE in \$conffile"
     fi
 
     # first create the mount point
@@ -127,7 +127,7 @@ check_cdrom_md5_sums()
     rmdir $mount_point || error "Unable to remove the mount point \$mount_point"
 }
 
-# this will try to burn the generated archives to the media
+# this will try to burn the generated archives to the disc
 # choosed in the configuration.
 # Obviously, we will use mkisofs for generating the iso and 
 # cdrecord for burning CD, growisofs for the DVD.
@@ -135,8 +135,8 @@ check_cdrom_md5_sums()
 # in this way, we prevent the use of preicous disk place.
 #
 # Two cases are possible:
-# - non-interactive mode: will try to burn data on a signle media
-# - interactive mode : will ask for next media if needed.
+# - non-interactive mode: will try to burn data on a signle disc
+# - interactive mode : will ask for next disc if needed.
 burn_files()
 {
     if [ "$BM_BURNING_METHOD" = "none" ] || 
@@ -207,7 +207,7 @@ function burn_files_non_interactive()
 }
 
 # This will be used only in interactive mode, then we can burn 
-# the whole repository safely: user will change media when needed (hopefully).
+# the whole repository safely: user will change disc when needed (hopefully).
 # (anyway, we rely on this assertion, this should be documented).
 function burn_files_interactive()
 {
@@ -227,7 +227,7 @@ function burn_files_interactive()
 }
 
 # This will burn $what_to_burn on a single session 
-# It must fit in a media!
+# It must fit in a medium
 function burn_session()
 {
     what_to_burn="$1"
@@ -268,7 +268,7 @@ function burn_session()
                 error "DVD+R(W) burning requires \$growisofs, aborting."
             fi
             
-            info "Exporting archives to the DVD+R(W) medium in \$BM_BURNING_DEVICE."
+            info "Exporting archives to the DVD+R(W) disc in \$BM_BURNING_DEVICE."
             $growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
@@ -281,11 +281,11 @@ function burn_session()
                 error "DVD-R(W) burning requires \$dvdrwformat, aborting."
             fi
             
-            info "Blanking the DVD-R(W) medium in \$BM_BURNING_DEVICE"
+            info "Blanking the DVD-R(W) disc in \$BM_BURNING_DEVICE"
             $dvdrwformat -blank $BM_BURNING_DEVICE > $logfile 2>&1 || 
-                error "Unable to blank the DVD-R(W) medium (check \$logfile)."
+                error "Unable to blank the DVD-R(W) disc (check \$logfile)."
             
-            info "Exporting archives to the DVD-R(W) medium in \$BM_BURNING_DEVICE."
+            info "Exporting archives to the DVD-R(W) disc in \$BM_BURNING_DEVICE."
             $growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
@@ -370,7 +370,7 @@ function __build_indexes_from_target()
 		size_of_file=$(size_of_path "$file")
 
 		if [ $size_of_file -gt $BM_BURNING_MAXSIZE ] ; then
-			warning "Not burning \$file because it does not fit in the medium."
+			warning "Not burning \$file because it does not fit in the disk."
 			continue
 		fi
 
@@ -401,7 +401,7 @@ function __build_indexes_from_target()
 
 function __insert_new_medium()
 {
-    bm_pause "$(translate "Please insert a new medium in \$BM_BURNING_DEVICE")"
+    bm_pause "$(translate "Please insert a new disk in \$BM_BURNING_DEVICE")"
 }
 
 function __burn_session_from_file()
@@ -452,9 +452,9 @@ function burn_multiples_media()
 
 	# Display the number of medias required by the burning systemp.
     if [ $number_of_indexes -eq 1 ]; then
-    	info "The burning process will need one medium."
+    	info "The burning process will need one disk."
     else 
-    	info "The burning process will need \$number_of_indexes media."
+    	info "The burning process will need \$number_of_indexes disks."
     fi        
 
     # Now that all indexes are built, list them so we can find

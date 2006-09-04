@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-03 12:30+0200\n"
+"POT-Creation-Date: 2006-09-04 08:46+0200\n"
 "PO-Revision-Date: 2006-08-27 18:35+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -598,10 +598,10 @@ msgid "Device \"/dev/$device\" is mounted on \"$m\", unmounting it."
 msgstr "Zařízení \"/dev/$device\" je připojeno na \"$m\", odpojuji."
 
 #: ../lib/burning-methods.sh:52
-#, sh-format
+#, fuzzy, sh-format
 msgid ""
-"MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE "
-"in $conffile"
+"MD5 checkup is only performed on disks. Please set the BM_BURNING_DEVICE in "
+"$conffile"
 msgstr ""
 "MD5 součet se počítá pouze na CD médiu. V $conffile prosím nastavte klíč "
 "BM_BURNING_DEVICE"
@@ -708,7 +708,7 @@ msgstr "Vypalování DVD+R(W) vyžaduje $growisofs, končím."
 
 #: ../lib/burning-methods.sh:271
 #, fuzzy, sh-format
-msgid "Exporting archives to the DVD+R(W) medium in $BM_BURNING_DEVICE."
+msgid "Exporting archives to the DVD+R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exportuji archivy na DVD+R(W) médium v $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:273 ../lib/burning-methods.sh:290
@@ -730,17 +730,17 @@ msgstr "Vypalování DVD-R(W) vyžaduje $dvdrwformat, končím."
 
 #: ../lib/burning-methods.sh:284
 #, fuzzy, sh-format
-msgid "Blanking the DVD-R(W) medium in $BM_BURNING_DEVICE"
+msgid "Blanking the DVD-R(W) disc in $BM_BURNING_DEVICE"
 msgstr "Mažu DVD-R(W) médium v $BM_BURNING_DEVICE"
 
 #: ../lib/burning-methods.sh:286
 #, fuzzy, sh-format
-msgid "Unable to blank the DVD-R(W) medium (check $logfile)."
+msgid "Unable to blank the DVD-R(W) disc (check $logfile)."
 msgstr "Nemohu smazat DVD-R(W) médium (zkontrolujte $logfile)."
 
 #: ../lib/burning-methods.sh:288
 #, fuzzy, sh-format
-msgid "Exporting archives to the DVD-R(W) medium in $BM_BURNING_DEVICE."
+msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exportuji archivy na DVD-R(W) médium v $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
@@ -772,8 +772,8 @@ msgstr ""
 "BM_BURNING_METHOD v souboru $conffile"
 
 #: ../lib/burning-methods.sh:373
-#, sh-format
-msgid "Not burning $file because it does not fit in the medium."
+#, fuzzy, sh-format
+msgid "Not burning $file because it does not fit in the disk."
 msgstr "Nevypaluji soubor $file, protože se nevejde na médium."
 
 #: ../lib/burning-methods.sh:414
@@ -783,12 +783,12 @@ msgstr "Tento indexový soubor neexistuje: $index_file"
 
 #: ../lib/burning-methods.sh:455
 #, fuzzy
-msgid "The burning process will need one medium."
+msgid "The burning process will need one disk."
 msgstr "Počet médií nutných pro vypálení: $number_of_indexes."
 
 #: ../lib/burning-methods.sh:457
 #, fuzzy, sh-format
-msgid "The burning process will need $number_of_indexes media."
+msgid "The burning process will need $number_of_indexes disks."
 msgstr "Počet médií nutných pro vypálení: $number_of_indexes."
 
 #: ../lib/burning-methods.sh:469

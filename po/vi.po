@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-03 12:30+0200\n"
+"POT-Creation-Date: 2006-09-04 08:46+0200\n"
 "PO-Revision-Date: 2006-08-28 21:57+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -617,10 +617,10 @@ msgid "Device \"/dev/$device\" is mounted on \"$m\", unmounting it."
 msgstr "Thiết bị « /dev/$device » được lắp vào « $m » nên đang tháo lắp nó."
 
 #: ../lib/burning-methods.sh:52
-#, sh-format
+#, fuzzy, sh-format
 msgid ""
-"MD5 checkup is only performed on CD media. Please set the BM_BURNING_DEVICE "
-"in $conffile"
+"MD5 checkup is only performed on disks. Please set the BM_BURNING_DEVICE in "
+"$conffile"
 msgstr ""
 "Việc kiểm tra kiểu MD5 được thực hiện chỉ trên vật chứa đĩa CD. Hãy đặt giá "
 "trị thiết bị ghi « BM_BURNING_DEVICE » trong tập tin cấu hình « $conffile »."
@@ -733,7 +733,7 @@ msgstr "Việc ghi vào đĩa DVD+R(W) cần thiết « $growisofs » nên hủy
 
 #: ../lib/burning-methods.sh:271
 #, fuzzy, sh-format
-msgid "Exporting archives to the DVD+R(W) medium in $BM_BURNING_DEVICE."
+msgid "Exporting archives to the DVD+R(W) disc in $BM_BURNING_DEVICE."
 msgstr ""
 "Đang xuất khẩu các kho vào vật chứa DVD+R(W) trong thiết bị ghi "
 "$BM_BURNING_DEVICE."
@@ -757,19 +757,19 @@ msgstr "Việc ghi vào đĩa DVD-R(W) cần thiết « $dvdrwformat » nên h�
 
 #: ../lib/burning-methods.sh:284
 #, fuzzy, sh-format
-msgid "Blanking the DVD-R(W) medium in $BM_BURNING_DEVICE"
+msgid "Blanking the DVD-R(W) disc in $BM_BURNING_DEVICE"
 msgstr "Đang xóa trắng đĩa DVD-R(W) trong thiết bị ghi $BM_BURNING_DEVICE"
 
 #: ../lib/burning-methods.sh:286
 #, fuzzy, sh-format
-msgid "Unable to blank the DVD-R(W) medium (check $logfile)."
+msgid "Unable to blank the DVD-R(W) disc (check $logfile)."
 msgstr ""
 "Không thể xoá trắng đĩa DVD-R(W), hãy kiểm tra lại tập tin bản ghi « "
 "$logfile »."
 
 #: ../lib/burning-methods.sh:288
 #, fuzzy, sh-format
-msgid "Exporting archives to the DVD-R(W) medium in $BM_BURNING_DEVICE."
+msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr ""
 "Đang xuất khẩu các kho vào đĩa DVD-R(W) trong thiết bị ghi "
 "$BM_BURNING_DEVICE."
@@ -803,8 +803,8 @@ msgstr ""
 "BM_BURNING_METHOD » trong tập tin cấu hình « $conffile »"
 
 #: ../lib/burning-methods.sh:373
-#, sh-format
-msgid "Not burning $file because it does not fit in the medium."
+#, fuzzy, sh-format
+msgid "Not burning $file because it does not fit in the disk."
 msgstr ""
 "Không đang ghi tập tin « $file » vì không đủ chỗ còn lại trong vật chứa."
 
@@ -815,12 +815,12 @@ msgstr "Không có tập tin chỉ mục như vậy: $index_file"
 
 #: ../lib/burning-methods.sh:455
 #, fuzzy
-msgid "The burning process will need one medium."
+msgid "The burning process will need one disk."
 msgstr "Tiến trình ghi sẽ cần thiết $number_of_indexes vật chứa."
 
 #: ../lib/burning-methods.sh:457
 #, fuzzy, sh-format
-msgid "The burning process will need $number_of_indexes media."
+msgid "The burning process will need $number_of_indexes disks."
 msgstr "Tiến trình ghi sẽ cần thiết $number_of_indexes vật chứa."
 
 #: ../lib/burning-methods.sh:469

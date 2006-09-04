@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.7.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 09:13+0200\n"
+"POT-Creation-Date: 2006-09-04 09:18+0200\n"
 "PO-Revision-Date: 2006-08-28 21:17+0200\n"
 "Last-Translator: Sven Joachim <sven_joachim@web.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
@@ -519,16 +519,11 @@ msgstr "$file ist ein Duplikat von $file_to_create (verwende Symlink)."
 msgid "Using the upload method \"ssh\"."
 msgstr "Verwende die Upload-Methode »ssh«."
 
-#: ../lib/upload-methods.sh:47 ../lib/upload-methods.sh:87
+#: ../lib/upload-methods.sh:47 ../lib/upload-methods.sh:85
 msgid "No valid destination found, SSH upload not possible."
 msgstr "Kein gültiges Ziel gefunden, SSH-Upload ist nicht möglich."
 
-# Does this have to be translatable?
-#: ../lib/upload-methods.sh:56
-msgid "totoototo"
-msgstr "totoototo"
-
-#: ../lib/upload-methods.sh:70
+#: ../lib/upload-methods.sh:68
 #, sh-format
 msgid ""
 "Error reported by backup-manager-upload for method \"scp\", check \"$logfile"
@@ -537,11 +532,11 @@ msgstr ""
 "Fehler berichtet von backup-manager-upload für Methode »scp«, überprüfen Sie "
 "»$logfile«."
 
-#: ../lib/upload-methods.sh:78
+#: ../lib/upload-methods.sh:76
 msgid "Using the upload method \"ssh-gpg\"."
 msgstr "Verwende die Upload-Methode »ssh-gpg«."
 
-#: ../lib/upload-methods.sh:90
+#: ../lib/upload-methods.sh:88
 msgid ""
 "No gpg recipient given. Argument is mandatory if upload method ssh-gpg is "
 "used."
@@ -549,7 +544,7 @@ msgstr ""
 "Kein gpg-Empfänger angegeben. Argument ist obligatorisch, falls die Upload-"
 "Methode ssh-gpg verwendet wird."
 
-#: ../lib/upload-methods.sh:107
+#: ../lib/upload-methods.sh:105
 #, sh-format
 msgid ""
 "Error reported by backup-manager-upload for method \"ssh-gpg\", check "
@@ -558,15 +553,15 @@ msgstr ""
 "Fehler berichtet von backup-manager-upload für Methode »ssh-gpg«, überprüfen "
 "Sie »$logfile«."
 
-#: ../lib/upload-methods.sh:114
+#: ../lib/upload-methods.sh:112
 msgid "Using the upload method \"ftp\"."
 msgstr "Verwende die Upload-Methode »ftp«."
 
-#: ../lib/upload-methods.sh:124
+#: ../lib/upload-methods.sh:122
 msgid "No valid destination found, FTP upload not possible."
 msgstr "Kein gültiges Ziel gefunden, FTP-Upload ist nicht möglich."
 
-#: ../lib/upload-methods.sh:141
+#: ../lib/upload-methods.sh:139
 #, sh-format
 msgid ""
 "Error reported by backup-manager-upload for method \"ftp\", check \"$logfile"
@@ -575,11 +570,11 @@ msgstr ""
 "Fehler berichtet von backup-manager-upload für Methode »ftp«, überprüfen Sie "
 "»$logfile«."
 
-#: ../lib/upload-methods.sh:149
+#: ../lib/upload-methods.sh:147
 msgid "Using the upload method \"S3\"."
 msgstr "Verwende die Upload-Methode »S3«."
 
-#: ../lib/upload-methods.sh:172
+#: ../lib/upload-methods.sh:170
 #, sh-format
 msgid ""
 "Error reported by backup-manager-upload for method \"s3\", check \"$logfile"
@@ -588,38 +583,38 @@ msgstr ""
 "Fehler berichtet von backup-manager-upload für Methode »s3«, überprüfen Sie "
 "»$logfile«."
 
-#: ../lib/upload-methods.sh:178
+#: ../lib/upload-methods.sh:176
 #, sh-format
 msgid "Uploading $directory to ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
 msgstr "Hochladen von $directory auf ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
 
-#: ../lib/upload-methods.sh:189
+#: ../lib/upload-methods.sh:187
 msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
 msgstr ""
 "Ein Schlüssel wird benötigt, um rsync auszuführen (setzen Sie "
 "BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
 
-#: ../lib/upload-methods.sh:200
+#: ../lib/upload-methods.sh:198
 #, sh-format
 msgid "Upload of $directory with rsync failed; check $logfile."
 msgstr ""
 "Hochladen von $directory mit rsync fehlgeschlagen; überprüfen Sie $logfile."
 
-#: ../lib/upload-methods.sh:219
+#: ../lib/upload-methods.sh:217
 msgid "No valid destination found, RSYNC upload not possible."
 msgstr "Kein gültiges Ziel gefunden, RSYNC-Upload ist nicht möglich."
 
-#: ../lib/upload-methods.sh:238
+#: ../lib/upload-methods.sh:236
 msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
 msgstr ""
 "Keine Hosts für die rsync-Methode angegeben, setzen Sie "
 "BM_UPLOAD_RSYNC_HOSTS."
 
-#: ../lib/upload-methods.sh:245
+#: ../lib/upload-methods.sh:243
 msgid "Using the upload method \"rsync\"."
 msgstr "Verwende die Upload-Methode »rsync«."
 
-#: ../lib/upload-methods.sh:252
+#: ../lib/upload-methods.sh:250
 msgid "Using the upload method \"rsync-snapshots\"."
 msgstr "Verwende die Upload-Methode »rsync-snapshots«."
 
@@ -858,6 +853,10 @@ msgstr "Kann pre-command nicht ausführen"
 #: ../backup-manager:243
 msgid "Unable to exec post-command."
 msgstr "Kann post-command nicht ausführen."
+
+# Does this have to be translatable?
+#~ msgid "totoototo"
+#~ msgstr "totoototo"
 
 # FIXME: this does not translate well into German (and maybe other languages).
 # Maybe split this into two messages, one for the singular and one for the

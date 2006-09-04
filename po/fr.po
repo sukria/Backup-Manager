@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.7.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 09:13+0200\n"
+"POT-Creation-Date: 2006-09-04 09:18+0200\n"
 "PO-Revision-Date: 2006-09-04 09:11+0100\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "Language-Team: Debian l10n French Team <debian-l10n-french@lists.debian."
@@ -495,26 +495,22 @@ msgstr ""
 msgid "Using the upload method \"ssh\"."
 msgstr "Utilisation de la méthode de téléchargement « ssh »."
 
-#: ../lib/upload-methods.sh:47 ../lib/upload-methods.sh:87
+#: ../lib/upload-methods.sh:47 ../lib/upload-methods.sh:85
 msgid "No valid destination found, SSH upload not possible."
 msgstr "Aucune destination valide, téléchargement SSH impossible."
 
-#: ../lib/upload-methods.sh:56
-msgid "totoototo"
-msgstr ""
-
-#: ../lib/upload-methods.sh:70
+#: ../lib/upload-methods.sh:68
 #, sh-format
 msgid ""
 "Error reported by backup-manager-upload for method \"scp\", check \"$logfile"
 "\"."
 msgstr ""
 
-#: ../lib/upload-methods.sh:78
+#: ../lib/upload-methods.sh:76
 msgid "Using the upload method \"ssh-gpg\"."
 msgstr "Utilisation de la méthode de téléchargement « ssh-gpg »."
 
-#: ../lib/upload-methods.sh:90
+#: ../lib/upload-methods.sh:88
 msgid ""
 "No gpg recipient given. Argument is mandatory if upload method ssh-gpg is "
 "used."
@@ -522,7 +518,7 @@ msgstr ""
 "Aucune identité GPG fournie. Cet argument est obligatoire pour utiliser la "
 "méthode « ssh-gpg »."
 
-#: ../lib/upload-methods.sh:107
+#: ../lib/upload-methods.sh:105
 #, sh-format
 msgid ""
 "Error reported by backup-manager-upload for method \"ssh-gpg\", check "
@@ -531,15 +527,15 @@ msgstr ""
 "Erreur rapportée par backup-manager-upload pour la méthode « ssh-gpg », voir "
 "« $logfile »."
 
-#: ../lib/upload-methods.sh:114
+#: ../lib/upload-methods.sh:112
 msgid "Using the upload method \"ftp\"."
 msgstr "Utilisation de la méthode de téléchargement « ftp »."
 
-#: ../lib/upload-methods.sh:124
+#: ../lib/upload-methods.sh:122
 msgid "No valid destination found, FTP upload not possible."
 msgstr "Aucune destination valide, téléchargement FTP impossible."
 
-#: ../lib/upload-methods.sh:141
+#: ../lib/upload-methods.sh:139
 #, sh-format
 msgid ""
 "Error reported by backup-manager-upload for method \"ftp\", check \"$logfile"
@@ -548,11 +544,11 @@ msgstr ""
 "Erreur rapportée par backup-manager-upload pour la méthode « ftp », voir "
 "« $logfile »."
 
-#: ../lib/upload-methods.sh:149
+#: ../lib/upload-methods.sh:147
 msgid "Using the upload method \"S3\"."
 msgstr "Utilisation de la méthode de téléchargement « S3 »."
 
-#: ../lib/upload-methods.sh:172
+#: ../lib/upload-methods.sh:170
 #, sh-format
 msgid ""
 "Error reported by backup-manager-upload for method \"s3\", check \"$logfile"
@@ -561,37 +557,37 @@ msgstr ""
 "Erreur rapportée par backup-manager-upload pour la méthode « s3 », voir "
 "« $logfile »."
 
-#: ../lib/upload-methods.sh:178
+#: ../lib/upload-methods.sh:176
 #, sh-format
 msgid "Uploading $directory to ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
 msgstr ""
 "Téléchargement de $directory vers ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
 
-#: ../lib/upload-methods.sh:189
+#: ../lib/upload-methods.sh:187
 msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
 msgstr ""
 "Besoin d'une clef pour utiliser rsync (définir BM_UPLOAD_SSH_USER, "
 "BM_UPLOAD_SSH_KEY)."
 
-#: ../lib/upload-methods.sh:200
+#: ../lib/upload-methods.sh:198
 #, sh-format
 msgid "Upload of $directory with rsync failed; check $logfile."
 msgstr "Échec du téléchargement de $directory avec rsync ; voir $logfile"
 
-#: ../lib/upload-methods.sh:219
+#: ../lib/upload-methods.sh:217
 msgid "No valid destination found, RSYNC upload not possible."
 msgstr "Aucune destination valide, téléchargement RSYNC impossible."
 
-#: ../lib/upload-methods.sh:238
+#: ../lib/upload-methods.sh:236
 msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
 msgstr ""
 "Aucun hôte fourni à la méthode rsync, veuillez définir BM_UPLOAD_RSYNC_HOSTS."
 
-#: ../lib/upload-methods.sh:245
+#: ../lib/upload-methods.sh:243
 msgid "Using the upload method \"rsync\"."
 msgstr "Utilisation de la méthode de téléchargement « rsync »."
 
-#: ../lib/upload-methods.sh:252
+#: ../lib/upload-methods.sh:250
 msgid "Using the upload method \"rsync-snapshots\"."
 msgstr "Utilisation de la méthode de téléchargement « rsync-snapshots »."
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 09:13+0200\n"
+"POT-Creation-Date: 2006-09-04 09:18+0200\n"
 "PO-Revision-Date: 2006-08-27 18:35+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -491,15 +491,11 @@ msgstr "$file je kopií $file_to_create (používám symbolický odkaz)."
 msgid "Using the upload method \"ssh\"."
 msgstr "Používám nahrávací metodu \"ssh\"."
 
-#: ../lib/upload-methods.sh:47 ../lib/upload-methods.sh:87
+#: ../lib/upload-methods.sh:47 ../lib/upload-methods.sh:85
 msgid "No valid destination found, SSH upload not possible."
 msgstr "Nebyl nalezen platný cíl, nahrání přes SSH není možné."
 
-#: ../lib/upload-methods.sh:56
-msgid "totoototo"
-msgstr "tutůtutu"
-
-#: ../lib/upload-methods.sh:70
+#: ../lib/upload-methods.sh:68
 #, sh-format
 msgid ""
 "Error reported by backup-manager-upload for method \"scp\", check \"$logfile"
@@ -508,11 +504,11 @@ msgstr ""
 "Metoda \"scp\" programu backup-manager-upload vrátila chybu, zkontrolujte "
 "\"$logfile\"."
 
-#: ../lib/upload-methods.sh:78
+#: ../lib/upload-methods.sh:76
 msgid "Using the upload method \"ssh-gpg\"."
 msgstr "Používám nahrávací metodu \"ssh-gpg\"."
 
-#: ../lib/upload-methods.sh:90
+#: ../lib/upload-methods.sh:88
 msgid ""
 "No gpg recipient given. Argument is mandatory if upload method ssh-gpg is "
 "used."
@@ -520,7 +516,7 @@ msgstr ""
 "Nebyl zadán žádný gpg příjemce. Při použití metody ssh-gpg je argument "
 "povinný."
 
-#: ../lib/upload-methods.sh:107
+#: ../lib/upload-methods.sh:105
 #, sh-format
 msgid ""
 "Error reported by backup-manager-upload for method \"ssh-gpg\", check "
@@ -529,15 +525,15 @@ msgstr ""
 "Metoda \"ssh-gpg\" programu backup-manager-upload vrátila chybu, "
 "zkontrolujte \"$logfile\"."
 
-#: ../lib/upload-methods.sh:114
+#: ../lib/upload-methods.sh:112
 msgid "Using the upload method \"ftp\"."
 msgstr "Používám nahrávací metodu \"ftp\"."
 
-#: ../lib/upload-methods.sh:124
+#: ../lib/upload-methods.sh:122
 msgid "No valid destination found, FTP upload not possible."
 msgstr "Nebyl nalezen platný cíl, nahrání přes FTP není možné."
 
-#: ../lib/upload-methods.sh:141
+#: ../lib/upload-methods.sh:139
 #, sh-format
 msgid ""
 "Error reported by backup-manager-upload for method \"ftp\", check \"$logfile"
@@ -546,11 +542,11 @@ msgstr ""
 "Metoda \"ftp\" programu backup-manager-upload vrátila chybu, zkontrolujte "
 "\"$logfile\"."
 
-#: ../lib/upload-methods.sh:149
+#: ../lib/upload-methods.sh:147
 msgid "Using the upload method \"S3\"."
 msgstr "Používám nahrávací metodu \"S3\"."
 
-#: ../lib/upload-methods.sh:172
+#: ../lib/upload-methods.sh:170
 #, sh-format
 msgid ""
 "Error reported by backup-manager-upload for method \"s3\", check \"$logfile"
@@ -559,35 +555,35 @@ msgstr ""
 "Metoda \"s3\" programu backup-manager-upload vrátila chybu, zkontrolujte "
 "\"$logfile\"."
 
-#: ../lib/upload-methods.sh:178
+#: ../lib/upload-methods.sh:176
 #, sh-format
 msgid "Uploading $directory to ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
 msgstr "Nahrávám $directory na ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
 
-#: ../lib/upload-methods.sh:189
+#: ../lib/upload-methods.sh:187
 msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
 msgstr ""
 "Použití rsync vyžaduje klíč (nastavte BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
 
-#: ../lib/upload-methods.sh:200
+#: ../lib/upload-methods.sh:198
 #, sh-format
 msgid "Upload of $directory with rsync failed; check $logfile."
 msgstr "Nahrání $directory pomocí rsync selhalo; zkontrolujte $logfile."
 
-#: ../lib/upload-methods.sh:219
+#: ../lib/upload-methods.sh:217
 msgid "No valid destination found, RSYNC upload not possible."
 msgstr "Nebyl nalezen platný cíl, nahrání přes RSYNC není možné."
 
-#: ../lib/upload-methods.sh:238
+#: ../lib/upload-methods.sh:236
 msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
 msgstr ""
 "Metodě rsync nebyl předán žádný počítač, nastavte BM_UPLOAD_RSYNC_HOSTS."
 
-#: ../lib/upload-methods.sh:245
+#: ../lib/upload-methods.sh:243
 msgid "Using the upload method \"rsync\"."
 msgstr "Používám nahrávací metodu \"rsync\"."
 
-#: ../lib/upload-methods.sh:252
+#: ../lib/upload-methods.sh:250
 msgid "Using the upload method \"rsync-snapshots\"."
 msgstr "Používám nahrávací metodu \"rsync-snapshots\"."
 
@@ -810,6 +806,9 @@ msgstr "Nemohu spustit úvodní příkaz"
 #: ../backup-manager:243
 msgid "Unable to exec post-command."
 msgstr "Nemohu spustit závěrečný příkaz."
+
+#~ msgid "totoototo"
+#~ msgstr "tutůtutu"
 
 #~ msgid "During the tarballs generation, $nb_err error(s) occurred."
 #~ msgstr "Během vytváření tar archivů se vyskytly chyby (celkem $nb_err)."

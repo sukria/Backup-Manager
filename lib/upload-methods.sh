@@ -53,8 +53,6 @@ bm_upload_ssh()
         k_switch="-k=$BM_UPLOAD_SSH_KEY"
     fi
 
-    info "totoototo"
-
     ssh_purge_switch=""
     if [ "$BM_UPLOAD_SSH_PURGE" = "true" ]; then
         ssh_purge_switch="--ssh-purge"

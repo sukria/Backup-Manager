@@ -1,5 +1,10 @@
 2006-09-04  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* lib/backup-methods.sh
+	  + Fixed an if-elif-else structure
+
+2006-09-04  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* All translations done in po/fr.po
 
 2006-09-02  Alexis Sukrieh  <sukria@backup-manager.org>

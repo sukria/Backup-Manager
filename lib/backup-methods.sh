@@ -645,8 +645,8 @@ function backup_method_tarball()
     # Handle errors
 	if [ $nb_err -eq 1 ]; then
 		error "1 error occurred during the tarball generation."
-	else if [ $nb_err -gt 1 ]; then
-		error "\$nb_err errors occurred during the tarball generation."
+	elif [ $nb_err -gt 1 ]; then
+        error "\$nb_err errors occurred during the tarball generation."
     fi
 }
 

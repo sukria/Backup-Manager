@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BM ITALIAN VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 08:46+0200\n"
+"POT-Creation-Date: 2006-09-04 09:13+0200\n"
 "PO-Revision-Date: 2005-12-15 23:27+0100\n"
 "Last-Translator: Matteo Frare Barutti <xenon@ngi.it>\n"
 "Language-Team: ITALIAN <xenon@ngi.it>\n"
@@ -115,9 +115,7 @@ msgid "The archive type \"$BM_TARBALL_FILETYPE\" is not supported."
 msgstr "Il filetype $BM_TARBALL_FILETYPE non è supportato."
 
 #: ../lib/backup-methods.sh:474
-#, sh-format
-msgid ""
-"The configuration variable \"$BM_ENCRYPTION_RECIPIENT\" must be defined."
+msgid "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
 msgstr ""
 
 #: ../lib/backup-methods.sh:480

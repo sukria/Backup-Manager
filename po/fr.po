@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: backup-manager 0.7.3\n"
+"Project-Id-Version: backup-manager 0.7.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 08:46+0200\n"
-"PO-Revision-Date: 2006-08-28 10:59+0100\n"
+"POT-Creation-Date: 2006-09-04 09:13+0200\n"
+"PO-Revision-Date: 2006-09-04 09:11+0100\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "Language-Team: Debian l10n French Team <debian-l10n-french@lists.debian."
 "org>\n"
@@ -93,17 +93,17 @@ msgstr "Le type d'archive « tar.bz2 » dépend de l'outil « $bzip »."
 #: ../lib/backup-methods.sh:403
 #, sh-format
 msgid "The archive type \"tar.lz\" depends on the tool \"$lzma\"."
-msgstr ""
+msgstr "Le type d'archive « tar.lz » dépend de l'outil « $lzma »."
 
 #: ../lib/backup-methods.sh:410
 #, sh-format
 msgid "The archive type \"zip\" depends on the tool \"$zip\"."
-msgstr ""
+msgstr "Le type d'archive « zip » dépend de l'outil « $zip »."
 
 #: ../lib/backup-methods.sh:416
 #, sh-format
 msgid "The archive type \"dar\" depends on the tool \"$dar\"."
-msgstr ""
+msgstr "Le type d'archive « dar » dépend de l'outil « $dar »."
 
 #: ../lib/backup-methods.sh:422 ../lib/backup-methods.sh:499
 #: ../lib/backup-methods.sh:535
@@ -112,10 +112,10 @@ msgid "The archive type \"$BM_TARBALL_FILETYPE\" is not supported."
 msgstr "Le type d'archive « $BM_TARBALL_FILETYPE » n'est pas géré."
 
 #: ../lib/backup-methods.sh:474
-#, sh-format
-msgid ""
-"The configuration variable \"$BM_ENCRYPTION_RECIPIENT\" must be defined."
+#, fuzzy
+msgid "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
 msgstr ""
+"La variable de configuration « $BM_ENCRYPTION_RECIPIENT » doit être définie."
 
 #: ../lib/backup-methods.sh:480
 #, sh-format

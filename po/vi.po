@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 08:46+0200\n"
+"POT-Creation-Date: 2006-09-04 09:13+0200\n"
 "PO-Revision-Date: 2006-08-28 21:57+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -116,9 +116,8 @@ msgid "The archive type \"$BM_TARBALL_FILETYPE\" is not supported."
 msgstr "Không hỗ trợ kiểu kho nén « $BM_TARBALL_FILETYPE »."
 
 #: ../lib/backup-methods.sh:474
-#, sh-format
-msgid ""
-"The configuration variable \"$BM_ENCRYPTION_RECIPIENT\" must be defined."
+#, fuzzy
+msgid "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
 msgstr "Phải xác định biến cấu hình « $BM_ENCRYPTION_RECIPIENT »."
 
 #: ../lib/backup-methods.sh:480

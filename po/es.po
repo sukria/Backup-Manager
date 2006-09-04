@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 08:46+0200\n"
+"POT-Creation-Date: 2006-09-04 09:13+0200\n"
 "PO-Revision-Date: 2005-12-14 13:07+0100\n"
 "Last-Translator: Carlos Galisteo de Cabo <cgalisteo@k-rolus.net>\n"
 "Language-Team: \n"
@@ -137,9 +137,8 @@ msgid "The archive type \"$BM_TARBALL_FILETYPE\" is not supported."
 msgstr "El tipo de fichero $BM_TARBALL_FILETYPE no está soportado."
 
 #: ../lib/backup-methods.sh:474
-#, sh-format
-msgid ""
-"The configuration variable \"$BM_ENCRYPTION_RECIPIENT\" must be defined."
+#, fuzzy
+msgid "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
 msgstr ""
 "La variable de configuración \"$BM_ENCRYPTION_RECIPIENT\" debe estar "
 "definida."

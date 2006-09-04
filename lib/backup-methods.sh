@@ -471,7 +471,7 @@ function build_encrypted_archive
     logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
 
     if [ -z "$BM_ENCRYPTION_RECIPIENT" ]; then
-        error "The configuration variable \"\$BM_ENCRYPTION_RECIPIENT\" must be defined."
+        error "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
     fi
 
     if [ "$BM_TARBALL_FILETYPE" = "tar.lz" ] || 

@@ -1,4 +1,10 @@
-2006-09-05  Alexis Sukrieh,,,  <sukria@backup-manager.org>
+2006-09-05  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	[ Clytie Sidall ]
+
+	* All messages translated in po/vi.po.
+
+2006-09-05  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* po/LINGUAS
 	  + Added all supported languages in LINGUAS (thanks to Clytie Sidall).

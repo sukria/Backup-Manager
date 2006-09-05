@@ -779,9 +779,9 @@ msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exportando los ficheros al DVD-R(W) que está en $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:295
-#, fuzzy, sh-format
+#, sh-format
 msgid "CD-R(W) burning requires $cdrecord, aborting."
-msgstr "Se requiere $cdrecord para la grabación en CDROM, abortando."
+msgstr "Se requiere $cdrecord para la grabación de CD-R(W), abortando."
 
 #: ../lib/burning-methods.sh:298
 #, sh-format
@@ -850,6 +850,3 @@ msgstr "No se pudo ejecutar la orden previa."
 #: ../backup-manager:243
 msgid "Unable to exec post-command."
 msgstr "No se pudo ejecutar la orden posterior."
-
-#~ msgid "Not in interactive mode, cannot follow."
-#~ msgstr "No se puede continuar, no está en modo interactivo."

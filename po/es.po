@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 09:18+0200\n"
+"POT-Creation-Date: 2006-09-05 09:32+0200\n"
 "PO-Revision-Date: 2005-12-14 13:07+0100\n"
 "Last-Translator: Carlos Galisteo de Cabo <cgalisteo@k-rolus.net>\n"
 "Language-Team: \n"
@@ -97,7 +97,9 @@ msgstr "No se pudo encontrar $file_to_create"
 
 #: ../lib/backup-methods.sh:254
 msgid "No frequency given, set BM_TARBALLINC_MASTERDATETYPE."
-msgstr "No se ha indicado la frecuencia, establézcala en BM_TARBALLINC_MASTERDATETYPE"
+msgstr ""
+"No se ha indicado la frecuencia, establézcala en "
+"BM_TARBALLINC_MASTERDATETYPE"
 
 #: ../lib/backup-methods.sh:265
 #, sh-format
@@ -312,8 +314,8 @@ msgstr "La orden posterior al proceso devolvió: \"$RET\" (éxito)."
 msgid ""
 "The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
 msgstr ""
-"La clave de configuración BM_TARBALL_FILETYPE está establecida como \"zip\" pero "
-"el programa zip no está instalado."
+"La clave de configuración BM_TARBALL_FILETYPE está establecida como \"zip"
+"\" pero el programa zip no está instalado."
 
 #: ../lib/actions.sh:166
 msgid ""
@@ -416,15 +418,10 @@ msgstr "Deshabilitar el proceso de borrado."
 #: ../lib/dialog.sh:60
 msgid "Warning, process interrupted, archives may be corrupted."
 msgstr ""
-"Aviso, el proceso se ha interrumpido. Los archivos pueden estar "
-" corruptos."
+"Aviso, el proceso se ha interrumpido. Los archivos pueden estar  corruptos."
 
-#: ../lib/dialog.sh:74
+#: ../lib/dialog.sh:74 ../lib/dialog.sh:93
 msgid "Not in interactive mode, cannot continue."
-msgstr "No se puede continuar, no está en modo interactivo."
-
-#: ../lib/dialog.sh:93
-msgid "Not in interactive mode, cannot follow."
 msgstr "No se puede continuar, no está en modo interactivo."
 
 #: ../lib/logger.sh:134
@@ -600,8 +597,8 @@ msgstr "Subiendo $directory a ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
 #: ../lib/upload-methods.sh:187
 msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
 msgstr ""
-"Necesita una clave para utilizar rsync (configure BM_UPLOAD_SSH_USER, "
-" BM_UPLOAD_SSH_KEY)"
+"Necesita una clave para utilizar rsync (configure BM_UPLOAD_SSH_USER,  "
+"BM_UPLOAD_SSH_KEY)"
 
 #: ../lib/upload-methods.sh:198
 #, sh-format
@@ -716,8 +713,8 @@ msgid ""
 "Cannot burn archives of the $BM__BURNING_DATE, too big: ${size}M, must fit "
 "in $BM_BURNING_MAXSIZE"
 msgstr ""
-"No se pueden grabar los ficheros de $BM__BURNING_DATE, son demasiado grandes: ${size}"
-"M, deben ocupar un máximo de $BM_BURNING_MAXSIZE"
+"No se pueden grabar los ficheros de $BM__BURNING_DATE, son demasiado "
+"grandes: ${size}M, deben ocupar un máximo de $BM_BURNING_MAXSIZE"
 
 #: ../lib/burning-methods.sh:220
 msgid "Burning the whole archives."
@@ -746,7 +743,8 @@ msgstr "Se requiere $growisofs para la grabación en DVD+R(W), abortando."
 #: ../lib/burning-methods.sh:271
 #, sh-format
 msgid "Exporting archives to the DVD+R(W) disc in $BM_BURNING_DEVICE."
-msgstr "Exportando los ficheros al disco DVD+R(W) que está en $BM_BURNING_DEVICE."
+msgstr ""
+"Exportando los ficheros al disco DVD+R(W) que está en $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:273 ../lib/burning-methods.sh:290
 #: ../lib/burning-methods.sh:300 ../lib/burning-methods.sh:305
@@ -780,9 +778,9 @@ msgstr "No se pudo borrar el disco DVD-R(W) (consulte $logfile)."
 msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exportando los ficheros al DVD-R(W) que está en $BM_BURNING_DEVICE."
 
-#: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
-#, sh-format
-msgid "CDROM burning requires $cdrecord, aborting."
+#: ../lib/burning-methods.sh:295
+#, fuzzy, sh-format
+msgid "CD-R(W) burning requires $cdrecord, aborting."
 msgstr "Se requiere $cdrecord para la grabación en CDROM, abortando."
 
 #: ../lib/burning-methods.sh:298
@@ -794,6 +792,11 @@ msgstr "Borrando el CDRW en $BM_BURNING_DEVICE."
 #, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
 msgstr "Grabando los datos a $BM_BURNING_DEVICE."
+
+#: ../lib/burning-methods.sh:310
+#, sh-format
+msgid "CDROM burning requires $cdrecord, aborting."
+msgstr "Se requiere $cdrecord para la grabación en CDROM, abortando."
 
 #: ../lib/burning-methods.sh:320
 msgid "Nothing to burn."
@@ -848,3 +851,5 @@ msgstr "No se pudo ejecutar la orden previa."
 msgid "Unable to exec post-command."
 msgstr "No se pudo ejecutar la orden posterior."
 
+#~ msgid "Not in interactive mode, cannot follow."
+#~ msgstr "No se puede continuar, no está en modo interactivo."

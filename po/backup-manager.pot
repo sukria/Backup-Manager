@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 09:18+0200\n"
+"POT-Creation-Date: 2006-09-05 09:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -374,12 +374,8 @@ msgstr ""
 msgid "Warning, process interrupted, archives may be corrupted."
 msgstr ""
 
-#: ../lib/dialog.sh:74
+#: ../lib/dialog.sh:74 ../lib/dialog.sh:93
 msgid "Not in interactive mode, cannot continue."
-msgstr ""
-
-#: ../lib/dialog.sh:93
-msgid "Not in interactive mode, cannot follow."
 msgstr ""
 
 #: ../lib/logger.sh:134
@@ -703,9 +699,9 @@ msgstr ""
 msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr ""
 
-#: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
+#: ../lib/burning-methods.sh:295
 #, sh-format
-msgid "CDROM burning requires $cdrecord, aborting."
+msgid "CD-R(W) burning requires $cdrecord, aborting."
 msgstr ""
 
 #: ../lib/burning-methods.sh:298
@@ -716,6 +712,11 @@ msgstr ""
 #: ../lib/burning-methods.sh:302 ../lib/burning-methods.sh:313
 #, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
+msgstr ""
+
+#: ../lib/burning-methods.sh:310
+#, sh-format
+msgid "CDROM burning requires $cdrecord, aborting."
 msgstr ""
 
 #: ../lib/burning-methods.sh:320

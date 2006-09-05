@@ -90,7 +90,7 @@ function bm_pause()
     message="$1"
 
     if ! tty -s ; then
-        error "Not in interactive mode, cannot follow."
+        error "Not in interactive mode, cannot continue."
     fi
 
     echo -n "$message "

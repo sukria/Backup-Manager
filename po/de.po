@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.7.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 09:18+0200\n"
-"PO-Revision-Date: 2006-08-28 21:17+0200\n"
+"POT-Creation-Date: 2006-09-05 09:32+0200\n"
+"PO-Revision-Date: 2006-09-05 07:58+0200\n"
 "Last-Translator: Sven Joachim <sven_joachim@web.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -82,11 +82,10 @@ msgstr "Keine Häufigkeit angegeben, setzen Sie $BM_TARBALLINC_MASTERDATETYPE."
 msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr "Unbekannte Häufigkeit: $BM_TARBALLINC_MASTERDATETYPE"
 
-# FIXME: remove the space before the colon?
 #: ../lib/backup-methods.sh:289
-#, fuzzy, sh-format
+#, sh-format
 msgid "Building master backup for target: \"$dir_name\"."
-msgstr "Erstellen des Master-Backups für das Ziel $dir_name"
+msgstr "Erstellen des Master-Backups für das Ziel »$dir_name«."
 
 #: ../lib/backup-methods.sh:396
 #, sh-format
@@ -115,7 +114,6 @@ msgid "The archive type \"$BM_TARBALL_FILETYPE\" is not supported."
 msgstr "Der Archivtyp »$BM_TARBALL_FILETYPE« wird nicht unterstützt."
 
 #: ../lib/backup-methods.sh:474
-#, fuzzy
 msgid "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
 msgstr ""
 "Die Konfigurationsvariable »$BM_ENCRYPTION_RECIPIENT« muss definiert sein."
@@ -128,10 +126,8 @@ msgstr ""
 "Die Verschlüsselung ist mit »$BM_TARBALL_FILETYPE«-Archiven noch nicht "
 "möglich. "
 
-# FIXME: better say "program" instead of "binary"? Would be more consistent
-# with the other messages.
 #: ../lib/backup-methods.sh:512
-#, fuzzy, sh-format
+#, sh-format
 msgid "The program \"$gpg\" is needed."
 msgstr "Das Programm »$gpg« wird benötigt."
 
@@ -153,12 +149,12 @@ msgstr "Verwende die Methode »$method«."
 
 #: ../lib/backup-methods.sh:647
 msgid "1 error occurred during the tarball generation."
-msgstr ""
+msgstr "Beim Erzeugen der Tarbälle ist ein Fehler aufgetreten."
 
 #: ../lib/backup-methods.sh:649
 #, sh-format
 msgid "$nb_err errors occurred during the tarball generation."
-msgstr ""
+msgstr "Beim Erzeugen der Tarbälle sind $nb_err Fehler aufgetreten."
 
 #: ../lib/backup-methods.sh:658
 #, sh-format
@@ -319,11 +315,9 @@ msgstr ""
 msgid "The repository $BM_REPOSITORY_ROOT does not exist, creating it."
 msgstr "Das Depot $BM_REPOSITORY_ROOT existiert nicht, wird angelegt."
 
-# FIXME: maybe better use "Internal error"?
 #: ../lib/md5sum.sh:29
-#, fuzzy
 msgid "Internal error: bad usage of function get_md5sum_from_file()"
-msgstr "Systemfehler: falscher Aufruf der Funktion get_md5sum_from_file()"
+msgstr "Interner Fehler: falscher Aufruf der Funktion get_md5sum_from_file()"
 
 #: ../lib/md5sum.sh:33
 #, sh-format
@@ -399,30 +393,19 @@ msgstr "Den Brennvorgang deaktivieren."
 msgid "Disable the purge process."
 msgstr "Löschen alter Archive deaktivieren."
 
-# FIXME: spelling error: interupted -> interrupted
 #: ../lib/dialog.sh:60
-#, fuzzy
 msgid "Warning, process interrupted, archives may be corrupted."
 msgstr "Warnung, Prozess wurde unterbrochen. Archive könnten defekt sein."
 
-# FIXME: maybe better use "continue" instead of "follow"?
-#: ../lib/dialog.sh:74
-#, fuzzy
+#: ../lib/dialog.sh:74 ../lib/dialog.sh:93
 msgid "Not in interactive mode, cannot continue."
-msgstr "Nicht in interaktivem Modus, kann nicht fortsetzen."
-
-# FIXME: maybe better use "continue" instead of "follow"?
-#: ../lib/dialog.sh:93
-msgid "Not in interactive mode, cannot follow."
 msgstr "Nicht in interaktivem Modus, kann nicht fortsetzen."
 
 #: ../lib/logger.sh:134
 msgid "Releasing lock"
 msgstr "Freigabe der Sperre"
 
-# FIXME: maybe better use "Internal error"?
 #: ../lib/archives.sh:31
-#, fuzzy
 msgid "Internal error: wrong call to bm_merge_incremental_backups()."
 msgstr "Systemfehler: falscher Aufruf von bm_merge_incremental_backups()."
 
@@ -458,15 +441,13 @@ msgstr "fehlgeschlagen (überprüfen Sie die Dateirechte)."
 msgid "$file is not a regular file."
 msgstr "$file ist keine reguläre Datei."
 
-# FIXME: better use "obsolete" or "unwanted" instead of "deprecated"?
 #: ../lib/files.sh:280
-#, fuzzy, sh-format
+#, sh-format
 msgid "Removing obsolete master backup: \"$file\"."
 msgstr "Löschen des veralteten Master-Backups: »$file«."
 
-# FIXME: better use "obsolete" or "unwanted" instead of "deprecated"?
 #: ../lib/files.sh:288
-#, fuzzy, sh-format
+#, sh-format
 msgid "Removing obsolete master backup (isolated): \"$file\"."
 msgstr "Löschen des veralteten Master-Backups (isoliert): »$file«."
 
@@ -475,10 +456,7 @@ msgstr "Löschen des veralteten Master-Backups (isoliert): »$file«."
 msgid "Removing archive \"$file\"."
 msgstr "Löschen des Archivs »$file«."
 
-# FIXME: "was not found", "has not been found", or just "not found"
-# would be better Englisch.
 #: ../lib/files.sh:315
-#, fuzzy
 msgid "Directory given was not found."
 msgstr "Angegebenes Verzeichnis wurde nicht gefunden."
 
@@ -624,12 +602,12 @@ msgid "Device \"/dev/$device\" is mounted on \"$m\", unmounting it."
 msgstr "Gerät »/dev/$device« ist auf »$m« eingehängt, es wird ausgehängt."
 
 #: ../lib/burning-methods.sh:52
-#, fuzzy, sh-format
+#, sh-format
 msgid ""
 "MD5 checkup is only performed on disks. Please set the BM_BURNING_DEVICE in "
 "$conffile"
 msgstr ""
-"MD5-Überprüfung wird nur auf CD-Medien durchgeführt. Bitte setzen Sie "
+"MD5-Überprüfung wird nur auf optischen Medien durchgeführt. Bitte setzen Sie "
 "BM_BURNING_DEVICE in $conffile"
 
 #: ../lib/burning-methods.sh:58
@@ -645,7 +623,7 @@ msgstr "Einhängen von $BM_BURNING_DEVICE auf $mount_point."
 #: ../lib/burning-methods.sh:89
 #, sh-format
 msgid "Checking MD5 sum for $base_file:"
-msgstr "Überprüfen der MD5-Summe für $base_file: "
+msgstr "Überprüfen der MD5-Summe für $base_file:"
 
 #: ../lib/burning-methods.sh:108
 #, sh-format
@@ -662,9 +640,7 @@ msgstr "$str fehlgeschlagen (Lesefehler)."
 msgid "$str failed (MD5 hash mismatch)."
 msgstr "$str fehlgeschlagen (MD5-Summe stimmt nicht überein)."
 
-# FIXME: "controls" does not seem right, maybe "checks" would be better.
 #: ../lib/burning-methods.sh:122
-#, fuzzy
 msgid "Errors encountered during MD5 checks."
 msgstr "Fehler während der MD5-Überprüfung aufgetreten."
 
@@ -734,9 +710,8 @@ msgstr "Erzwinge dev=${BM_BURNING_DEVFORCED} für cdrecord-Befehle."
 msgid "DVD+R(W) burning requires $growisofs, aborting."
 msgstr "DVD+R(W)-Brennen erfordert $growisofs, Abbruch."
 
-# FIXME: better use medium instead of media?
 #: ../lib/burning-methods.sh:271
-#, fuzzy, sh-format
+#, sh-format
 msgid "Exporting archives to the DVD+R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exportieren der Archive auf das DVD+R(W)-Medium in $BM_BURNING_DEVICE."
 
@@ -757,28 +732,24 @@ msgstr "DVD-R(W)-Brennen erfordert $growisofs, Abbruch."
 msgid "DVD-R(W) burning requires $dvdrwformat, aborting."
 msgstr "DVD-R(W)-Brennen erfordert $dvdrwformat, Abbruch."
 
-# FIXME: better use medium instead of media
 #: ../lib/burning-methods.sh:284
-#, fuzzy, sh-format
+#, sh-format
 msgid "Blanking the DVD-R(W) disc in $BM_BURNING_DEVICE"
 msgstr "Löschen des DVD-R(W)-Mediums in $BM_BURNING_DEVICE"
 
-# FIXME: better use medium instead of media
 #: ../lib/burning-methods.sh:286
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to blank the DVD-R(W) disc (check $logfile)."
 msgstr "Kann das DVD-R(W)-Medium nicht löschen (überprüfen Sie $logfile)."
 
-# FIXME: better use medium instead of media?
 #: ../lib/burning-methods.sh:288
-#, fuzzy, sh-format
+#, sh-format
 msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exportieren der Archive auf das DVD-R(W)-Medium in $BM_BURNING_DEVICE."
 
-# FIXME: CDROMs cannot be burnt, only CD-R(W)s.
-#: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
-#, sh-format
-msgid "CDROM burning requires $cdrecord, aborting."
+#: ../lib/burning-methods.sh:295
+#, fuzzy, sh-format
+msgid "CD-R(W) burning requires $cdrecord, aborting."
 msgstr "CD-Brennen erfordert $cdrecord, Abbruch."
 
 #: ../lib/burning-methods.sh:298
@@ -790,6 +761,11 @@ msgstr "Löschen der CDRW in $BM_BURNING_DEVICE."
 #, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
 msgstr "Brennen der Daten auf $BM_BURNING_DEVICE."
+
+#: ../lib/burning-methods.sh:310
+#, sh-format
+msgid "CDROM burning requires $cdrecord, aborting."
+msgstr "CD-Brennen erfordert $cdrecord, Abbruch."
 
 #: ../lib/burning-methods.sh:320
 msgid "Nothing to burn."
@@ -805,33 +781,23 @@ msgstr ""
 "BM_BURNING_METHOD in $conffile"
 
 #: ../lib/burning-methods.sh:373
-#, fuzzy, sh-format
+#, sh-format
 msgid "Not burning $file because it does not fit in the disk."
 msgstr "Datei $file wird nicht gebrannt, weil sie nicht auf das Medium passt."
 
-# FIXME: remove the space before the colon?
 #: ../lib/burning-methods.sh:414
-#, fuzzy, sh-format
+#, sh-format
 msgid "No such index file: \"$index_file\"."
-msgstr "Die Indexdatei $index_file existiert nicht"
+msgstr "Die Indexdatei »$index_file« existiert nicht."
 
-# FIXME: the singular is "medium", the plural "media".
-# Also, this does not translate well into German (and maybe other languages).
-# Maybe split this into two messages, one for the singular and one for the
-# plural case?
 #: ../lib/burning-methods.sh:455
-#, fuzzy
 msgid "The burning process will need one disk."
-msgstr "Der Brennvorgang benötigt $number_of_indexes Medium/Medien."
+msgstr "Der Brennvorgang benötigt ein Medium."
 
-# FIXME: the singular is "medium", the plural "media".
-# Also, this does not translate well into German (and maybe other languages).
-# Maybe split this into two messages, one for the singular and one for the
-# plural case?
 #: ../lib/burning-methods.sh:457
-#, fuzzy, sh-format
+#, sh-format
 msgid "The burning process will need $number_of_indexes disks."
-msgstr "Der Brennvorgang benötigt $number_of_indexes Medium/Medien."
+msgstr "Der Brennvorgang benötigt $number_of_indexes Medien."
 
 #: ../lib/burning-methods.sh:469
 #, sh-format
@@ -854,12 +820,5 @@ msgstr "Kann pre-command nicht ausführen"
 msgid "Unable to exec post-command."
 msgstr "Kann post-command nicht ausführen."
 
-# Does this have to be translatable?
-#~ msgid "totoototo"
-#~ msgstr "totoototo"
-
-# FIXME: this does not translate well into German (and maybe other languages).
-# Maybe split this into two messages, one for the singular and one for the
-# plural case?
-#~ msgid "During the tarballs generation, $nb_err error(s) occurred."
-#~ msgstr "$nb_err Fehler beim Erzeugen der Tarbälle aufgetreten."
+#~ msgid "Not in interactive mode, cannot follow."
+#~ msgstr "Nicht in interaktivem Modus, kann nicht fortsetzen."

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.7.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 09:18+0200\n"
+"POT-Creation-Date: 2006-09-05 09:32+0200\n"
 "PO-Revision-Date: 2006-09-04 09:27+0100\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "Language-Team: Debian l10n French Team <debian-l10n-french@lists.debian."
@@ -388,12 +388,8 @@ msgid "Warning, process interrupted, archives may be corrupted."
 msgstr ""
 "Attention, interruption utilisateur. Les archives risquent d'être corrompues."
 
-#: ../lib/dialog.sh:74
+#: ../lib/dialog.sh:74 ../lib/dialog.sh:93
 msgid "Not in interactive mode, cannot continue."
-msgstr "Pas en mode interactif, impossible de continuer."
-
-#: ../lib/dialog.sh:93
-msgid "Not in interactive mode, cannot follow."
 msgstr "Pas en mode interactif, impossible de continuer."
 
 #: ../lib/logger.sh:134
@@ -745,9 +741,9 @@ msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr ""
 "Export des archives vers le disque DVD-R(W) sur « $BM_BURNING_DEVICE »."
 
-#: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
-#, sh-format
-msgid "CDROM burning requires $cdrecord, aborting."
+#: ../lib/burning-methods.sh:295
+#, fuzzy, sh-format
+msgid "CD-R(W) burning requires $cdrecord, aborting."
 msgstr "La gravure de CDROM nécessite $cdrecord ; annulation."
 
 #: ../lib/burning-methods.sh:298
@@ -759,6 +755,11 @@ msgstr "Effacement du CD-RW sur $BM_BURNING_DEVICE."
 #, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
 msgstr "Gravure des données sur $BM_BURNING_DEVICE."
+
+#: ../lib/burning-methods.sh:310
+#, sh-format
+msgid "CDROM burning requires $cdrecord, aborting."
+msgstr "La gravure de CDROM nécessite $cdrecord ; annulation."
 
 #: ../lib/burning-methods.sh:320
 msgid "Nothing to burn."
@@ -814,6 +815,9 @@ msgstr "Impossible d'exécuter la précommande."
 #: ../backup-manager:243
 msgid "Unable to exec post-command."
 msgstr "Impossible d'exécuter la post-commande."
+
+#~ msgid "Not in interactive mode, cannot follow."
+#~ msgstr "Pas en mode interactif, impossible de continuer."
 
 #~ msgid "During the tarballs generation, $nb_err error(s) occurred."
 #~ msgstr ""

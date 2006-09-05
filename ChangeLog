@@ -1,5 +1,20 @@
 2006-09-05  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	[ Sven Joachim ]
+
+	* Fixes bad messages in 
+	  + lib/burning-methods.sh
+	  + lib/dialog.sh:
+	* All messages translated in de.po
+
+	[ Alexis Sukrieh ]
+
+	* Gettext files update
+	  + po/backup-manager.pot, po/cs.po, po/de.po, po/es.po, po/fr.po,
+	  po/it.po, po/vi.po.
+
+2006-09-05  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	[ Clytie Sidall ]
 
 	* All messages translated in po/vi.po.

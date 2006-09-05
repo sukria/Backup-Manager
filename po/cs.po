@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 09:18+0200\n"
+"POT-Creation-Date: 2006-09-05 09:32+0200\n"
 "PO-Revision-Date: 2006-08-27 18:35+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -387,13 +387,9 @@ msgstr "Zakáže promazání starých archivů."
 msgid "Warning, process interrupted, archives may be corrupted."
 msgstr "Varování, proces přerušen, archivy mohou být porušeny."
 
-#: ../lib/dialog.sh:74
+#: ../lib/dialog.sh:74 ../lib/dialog.sh:93
 #, fuzzy
 msgid "Not in interactive mode, cannot continue."
-msgstr "Nejsem v interaktivním režimu, nemohu následovat."
-
-#: ../lib/dialog.sh:93
-msgid "Not in interactive mode, cannot follow."
 msgstr "Nejsem v interaktivním režimu, nemohu následovat."
 
 #: ../lib/logger.sh:134
@@ -738,9 +734,9 @@ msgstr "Nemohu smazat DVD-R(W) médium (zkontrolujte $logfile)."
 msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exportuji archivy na DVD-R(W) médium v $BM_BURNING_DEVICE."
 
-#: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
-#, sh-format
-msgid "CDROM burning requires $cdrecord, aborting."
+#: ../lib/burning-methods.sh:295
+#, fuzzy, sh-format
+msgid "CD-R(W) burning requires $cdrecord, aborting."
 msgstr "Vypalování CD vyžaduje $cdrecord, končím."
 
 #: ../lib/burning-methods.sh:298
@@ -752,6 +748,11 @@ msgstr "Mažu CDRW v $BM_BURNING_DEVICE."
 #, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
 msgstr "Vypaluji data na $BM_BURNING_DEVICE."
+
+#: ../lib/burning-methods.sh:310
+#, sh-format
+msgid "CDROM burning requires $cdrecord, aborting."
+msgstr "Vypalování CD vyžaduje $cdrecord, končím."
 
 #: ../lib/burning-methods.sh:320
 msgid "Nothing to burn."
@@ -806,6 +807,9 @@ msgstr "Nemohu spustit úvodní příkaz"
 #: ../backup-manager:243
 msgid "Unable to exec post-command."
 msgstr "Nemohu spustit závěrečný příkaz."
+
+#~ msgid "Not in interactive mode, cannot follow."
+#~ msgstr "Nejsem v interaktivním režimu, nemohu následovat."
 
 #~ msgid "totoototo"
 #~ msgstr "tutůtutu"

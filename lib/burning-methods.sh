@@ -292,7 +292,7 @@ function burn_session()
         
         "CDRW")
             if [ ! -x $cdrecord ]; then
-                error "CDROM burning requires \$cdrecord, aborting."
+                error "CD-R(W) burning requires \$cdrecord, aborting."
             fi
                         
             info "Blanking the CDRW in \$BM_BURNING_DEVICE."

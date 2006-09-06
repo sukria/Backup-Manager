@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-09-05 09:32+0200\n"
-"PO-Revision-Date: 2006-08-27 18:35+0200\n"
+"PO-Revision-Date: 2006-09-05 22:14+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -81,9 +81,9 @@ msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr "Neznámá frekvence: $BM_TARBALLINC_MASTERDATETYPE"
 
 #: ../lib/backup-methods.sh:289
-#, fuzzy, sh-format
+#, sh-format
 msgid "Building master backup for target: \"$dir_name\"."
-msgstr "Vytvářím hlavní zálohu pro cíl: $dir_name"
+msgstr "Vytvářím hlavní zálohu pro cíl: \"$dir_name\"."
 
 #: ../lib/backup-methods.sh:396
 #, sh-format
@@ -112,7 +112,6 @@ msgid "The archive type \"$BM_TARBALL_FILETYPE\" is not supported."
 msgstr "Typ archivu \"$BM_TARBALL_FILETYPE\" není podporován."
 
 #: ../lib/backup-methods.sh:474
-#, fuzzy
 msgid "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
 msgstr ""
 "Konfigurační proměnná \"$BM_ENCRYPTION_RECIPIENT\" musí být definována."
@@ -124,9 +123,9 @@ msgid ""
 msgstr "Šifrování archivů \"$BM_TARBALL_FILETYPE\" zatím není možné."
 
 #: ../lib/backup-methods.sh:512
-#, fuzzy, sh-format
+#, sh-format
 msgid "The program \"$gpg\" is needed."
-msgstr "Je vyžadována binárka \"$gpg\"."
+msgstr "Je vyžadován program \"$gpg\"."
 
 #: ../lib/backup-methods.sh:519 ../lib/backup-methods.sh:551
 #, sh-format
@@ -146,12 +145,12 @@ msgstr "Používám metodu \"$method\"."
 
 #: ../lib/backup-methods.sh:647
 msgid "1 error occurred during the tarball generation."
-msgstr ""
+msgstr "Během vytváření tar archivu se objevila 1 chyba."
 
 #: ../lib/backup-methods.sh:649
 #, sh-format
 msgid "$nb_err errors occurred during the tarball generation."
-msgstr ""
+msgstr "Během vytváření tar archivu se objevily chyby (celkem $nb_err)."
 
 #: ../lib/backup-methods.sh:658
 #, sh-format
@@ -304,9 +303,8 @@ msgid "The repository $BM_REPOSITORY_ROOT does not exist, creating it."
 msgstr "Úložiště $BM_REPOSITORY_ROOT neexistuje, vytvářím je."
 
 #: ../lib/md5sum.sh:29
-#, fuzzy
 msgid "Internal error: bad usage of function get_md5sum_from_file()"
-msgstr "Systémová chyba: chybné použití funkce get_md5sum_from_file()"
+msgstr "Vnitřní chyba: chybné použití funkce get_md5sum_from_file()"
 
 #: ../lib/md5sum.sh:33
 #, sh-format
@@ -383,14 +381,12 @@ msgid "Disable the purge process."
 msgstr "Zakáže promazání starých archivů."
 
 #: ../lib/dialog.sh:60
-#, fuzzy
 msgid "Warning, process interrupted, archives may be corrupted."
 msgstr "Varování, proces přerušen, archivy mohou být porušeny."
 
 #: ../lib/dialog.sh:74 ../lib/dialog.sh:93
-#, fuzzy
 msgid "Not in interactive mode, cannot continue."
-msgstr "Nejsem v interaktivním režimu, nemohu následovat."
+msgstr "Nejsem v interaktivním režimu, nemohu pokračovat."
 
 #: ../lib/logger.sh:134
 msgid "Releasing lock"
@@ -398,7 +394,7 @@ msgstr "Uvolňuji zámek"
 
 #: ../lib/archives.sh:31
 msgid "Internal error: wrong call to bm_merge_incremental_backups()."
-msgstr ""
+msgstr "Vnitřní chyba: chybné volání bm_merge_incremental_backups()."
 
 #: ../lib/files.sh:73 ../lib/files.sh:86
 msgid "No path given."
@@ -432,12 +428,12 @@ msgid "$file is not a regular file."
 msgstr "$file není běžný soubor."
 
 #: ../lib/files.sh:280
-#, fuzzy, sh-format
+#, sh-format
 msgid "Removing obsolete master backup: \"$file\"."
 msgstr "Odstraňuji zastaralou hlavní zálohu: \"$file\"."
 
 #: ../lib/files.sh:288
-#, fuzzy, sh-format
+#, sh-format
 msgid "Removing obsolete master backup (isolated): \"$file\"."
 msgstr "Odstraňuji zastaralou hlavní zálohu (izolovaná): \"$file\"."
 
@@ -447,7 +443,6 @@ msgid "Removing archive \"$file\"."
 msgstr "Odstraňuji archiv \"$file\"."
 
 #: ../lib/files.sh:315
-#, fuzzy
 msgid "Directory given was not found."
 msgstr "Zadaný adresář nebyl nalezen."
 
@@ -589,12 +584,12 @@ msgid "Device \"/dev/$device\" is mounted on \"$m\", unmounting it."
 msgstr "Zařízení \"/dev/$device\" je připojeno na \"$m\", odpojuji."
 
 #: ../lib/burning-methods.sh:52
-#, fuzzy, sh-format
+#, sh-format
 msgid ""
 "MD5 checkup is only performed on disks. Please set the BM_BURNING_DEVICE in "
 "$conffile"
 msgstr ""
-"MD5 součet se počítá pouze na CD médiu. V $conffile prosím nastavte klíč "
+"MD5 součet se počítá pouze na médiích. V $conffile prosím nastavte klíč "
 "BM_BURNING_DEVICE"
 
 #: ../lib/burning-methods.sh:58
@@ -628,7 +623,6 @@ msgid "$str failed (MD5 hash mismatch)."
 msgstr "$str selhalo (MD5 nesouhlasí)."
 
 #: ../lib/burning-methods.sh:122
-#, fuzzy
 msgid "Errors encountered during MD5 checks."
 msgstr "Během MD5 kontrol byly zaznamenány chyby."
 
@@ -698,7 +692,7 @@ msgid "DVD+R(W) burning requires $growisofs, aborting."
 msgstr "Vypalování DVD+R(W) vyžaduje $growisofs, končím."
 
 #: ../lib/burning-methods.sh:271
-#, fuzzy, sh-format
+#, sh-format
 msgid "Exporting archives to the DVD+R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exportuji archivy na DVD+R(W) médium v $BM_BURNING_DEVICE."
 
@@ -720,24 +714,24 @@ msgid "DVD-R(W) burning requires $dvdrwformat, aborting."
 msgstr "Vypalování DVD-R(W) vyžaduje $dvdrwformat, končím."
 
 #: ../lib/burning-methods.sh:284
-#, fuzzy, sh-format
+#, sh-format
 msgid "Blanking the DVD-R(W) disc in $BM_BURNING_DEVICE"
 msgstr "Mažu DVD-R(W) médium v $BM_BURNING_DEVICE"
 
 #: ../lib/burning-methods.sh:286
-#, fuzzy, sh-format
+#, sh-format
 msgid "Unable to blank the DVD-R(W) disc (check $logfile)."
 msgstr "Nemohu smazat DVD-R(W) médium (zkontrolujte $logfile)."
 
 #: ../lib/burning-methods.sh:288
-#, fuzzy, sh-format
+#, sh-format
 msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exportuji archivy na DVD-R(W) médium v $BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:295
-#, fuzzy, sh-format
+#, sh-format
 msgid "CD-R(W) burning requires $cdrecord, aborting."
-msgstr "Vypalování CD vyžaduje $cdrecord, končím."
+msgstr "Vypalování CD-R(W) vyžaduje $cdrecord, končím."
 
 #: ../lib/burning-methods.sh:298
 #, sh-format
@@ -768,22 +762,21 @@ msgstr ""
 "BM_BURNING_METHOD v souboru $conffile"
 
 #: ../lib/burning-methods.sh:373
-#, fuzzy, sh-format
+#, sh-format
 msgid "Not burning $file because it does not fit in the disk."
 msgstr "Nevypaluji soubor $file, protože se nevejde na médium."
 
 #: ../lib/burning-methods.sh:414
-#, fuzzy, sh-format
+#, sh-format
 msgid "No such index file: \"$index_file\"."
-msgstr "Tento indexový soubor neexistuje: $index_file"
+msgstr "Tento indexový soubor neexistuje: \"$index_file\"."
 
 #: ../lib/burning-methods.sh:455
-#, fuzzy
 msgid "The burning process will need one disk."
-msgstr "Počet médií nutných pro vypálení: $number_of_indexes."
+msgstr "Počet médií nutných pro vypálení: 1."
 
 #: ../lib/burning-methods.sh:457
-#, fuzzy, sh-format
+#, sh-format
 msgid "The burning process will need $number_of_indexes disks."
 msgstr "Počet médií nutných pro vypálení: $number_of_indexes."
 

@@ -1,3 +1,19 @@
+2006-09-06  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	[ Miroslav Kure ]
+
+	* All messages transalted in po/cs.po.
+
+	[ Matteo Frare Barutti ]
+
+	* All messages translated in po/it.po.
+
+	[ Alexis Sukrieh ]
+
+	* Added nl in po/LINGUAS
+	* Applied review from Stephane Blondon in po/fr.po.
+
+
 2006-09-05  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	[ Sven Joachim ]

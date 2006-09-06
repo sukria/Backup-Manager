@@ -1,11 +1,10 @@
 # Messages français pour backup-manager
 # Copyleft © 2004 Alexis Sukrieh..
 # This file is distributed under the same license as the backup-manager package.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.7.5\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: backup-manager-i18n@backup-manager.org\n"
 "POT-Creation-Date: 2006-09-05 09:32+0200\n"
 "PO-Revision-Date: 2006-09-04 09:27+0100\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
@@ -38,7 +37,7 @@ msgstr "Impossible de changer les droits d'accès de « $file_to_create »."
 #: ../lib/backup-methods.sh:76
 #, sh-format
 msgid "Unable to create \"$target\", check $logfile"
-msgstr "Impossible de créer « $target », voir $logfile pour les détails."
+msgstr "Impossible de créer « $target », lisez $logfile pour les détails."
 
 #: ../lib/backup-methods.sh:89
 #, sh-format
@@ -49,7 +48,7 @@ msgstr "Fichier $file_to_create existe déjà ; ignoré."
 #: ../lib/backup-methods.sh:130
 #, sh-format
 msgid "Unable to exec $command; check $logfile"
-msgstr "Impossible d'exécuter $command ; voir $logfile"
+msgstr "Impossible d'exécuter $command ; lisez $logfile"
 
 #: ../lib/backup-methods.sh:108
 #, sh-format
@@ -147,7 +146,7 @@ msgstr "Utilisation de la méthode « $method »."
 
 #: ../lib/backup-methods.sh:647
 msgid "1 error occurred during the tarball generation."
-msgstr "1 erreur a eu lieu pendant la génération des archives."
+msgstr "Une erreur a eu lieu pendant la génération des archives."
 
 #: ../lib/backup-methods.sh:649
 #, sh-format
@@ -204,13 +203,13 @@ msgstr ""
 #, sh-format
 msgid "Deprecated boolean, $key is set to \"yes\", setting \"true\" instead."
 msgstr ""
-"Booléen obsolète, $key vaut « yes », utilisation de « true » à la place."
+"Booléen obsolète : $key vaut actuellement « yes », utilisez « true » à la place."
 
 #: ../lib/sanitize.sh:97
 #, sh-format
 msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
 msgstr ""
-"Booléen obsolète, $key vaut « no », utilisation de « false » à la place."
+"Booléen obsolète : $key vaut actuellement « no », utilisez « false » à la place."
 
 #: ../lib/sanitize.sh:243
 #, sh-format
@@ -228,7 +227,7 @@ msgstr "Aucune méthode d'archivage utilisée."
 #: ../lib/actions.sh:45
 #, sh-format
 msgid "No such backup method: $BM_ARCHIVE_METHOD"
-msgstr "Aucune méthode de ce type : $BM_ARCHIVE_METHOD"
+msgstr "Aucune méthode de sauvegarde du type : $BM_ARCHIVE_METHOD"
 
 #: ../lib/actions.sh:54
 #, sh-format
@@ -430,7 +429,7 @@ msgstr "échec (vérifiez les permissions du fichier)."
 #: ../lib/files.sh:254
 #, sh-format
 msgid "$file is not a regular file."
-msgstr "$file n'est pas un fichier régulier."
+msgstr "$file n'est pas un fichier ordinaire."
 
 #: ../lib/files.sh:280
 #, sh-format
@@ -673,8 +672,8 @@ msgid ""
 "Cannot burn archives of the $BM__BURNING_DATE, too big: ${size}M, must fit "
 "in $BM_BURNING_MAXSIZE"
 msgstr ""
-"Impossible de graver les archives du $BM__BURNING_DATE, trop encombrant : "
-"${size} Mo, devrait être inférieur à ${BM_BURNING_MAXSIZE} Mo."
+"Impossible de graver les archives du $BM__BURNING_DATE, car trop encombrant "
+"(${size} Mo). L'archive doit être inférieure à ${BM_BURNING_MAXSIZE} Mo."
 
 #: ../lib/burning-methods.sh:220
 msgid "Burning the whole archives."
@@ -742,9 +741,8 @@ msgstr ""
 "Export des archives vers le disque DVD-R(W) sur « $BM_BURNING_DEVICE »."
 
 #: ../lib/burning-methods.sh:295
-#, fuzzy, sh-format
 msgid "CD-R(W) burning requires $cdrecord, aborting."
-msgstr "La gravure de CDROM nécessite $cdrecord ; annulation."
+msgstr "La gravure de CD-R(W) nécessite $cdrecord ; annulation."
 
 #: ../lib/burning-methods.sh:298
 #, sh-format

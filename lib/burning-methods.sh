@@ -307,7 +307,7 @@ function burn_session()
         
         "CDR")
             if [ ! -x $cdrecord ]; then
-                error "CDROM burning requires \$cdrecord, aborting."
+                error "CD-R(W) burning requires \$cdrecord, aborting."
             fi
 
             info "Burning data to \$BM_BURNING_DEVICE."

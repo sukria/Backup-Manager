@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BM ITALIAN VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-05 09:32+0200\n"
+"POT-Creation-Date: 2006-09-08 15:08+0200\n"
 "PO-Revision-Date: 2006-09-05 12:19+0100\n"
 "Last-Translator: Matteo Frare Barutti <xenon@ngi.it>\n"
 "Language-Team: ITALIAN <xenon@ngi.it>\n"
@@ -746,7 +746,7 @@ msgstr "Impossibile formattare il disco DVD-R(W) (controllare $logfile)."
 msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Esporto gli archivi sul DVD-R(W) in $BM_BURNING_DEVICE."
 
-#: ../lib/burning-methods.sh:295
+#: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
 #, sh-format
 msgid "CD-R(W) burning requires $cdrecord, aborting."
 msgstr ""
@@ -761,11 +761,6 @@ msgstr "Cancello il CDRW in $BM_BURNING_DEVICE."
 #, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
 msgstr "Masterizzo i dati su $BM_BURNING_DEVICE."
-
-#: ../lib/burning-methods.sh:310
-#, sh-format
-msgid "CDROM burning requires $cdrecord, aborting."
-msgstr "La masterizzazione su CDROM richiede $cdrecord, annullo l'operazione."
 
 #: ../lib/burning-methods.sh:320
 msgid "Nothing to burn."
@@ -819,6 +814,10 @@ msgstr "Impossibile eseguire il pre-command"
 #: ../backup-manager:243
 msgid "Unable to exec post-command."
 msgstr "Impossibile eseguire il post-command"
+
+#~ msgid "CDROM burning requires $cdrecord, aborting."
+#~ msgstr ""
+#~ "La masterizzazione su CDROM richiede $cdrecord, annullo l'operazione."
 
 #~ msgid "Not in interactive mode, cannot follow."
 #~ msgstr "Non si è in modalità interattiva, impossibile proseguire."

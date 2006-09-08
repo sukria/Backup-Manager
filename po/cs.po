@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-05 09:32+0200\n"
+"POT-Creation-Date: 2006-09-08 15:08+0200\n"
 "PO-Revision-Date: 2006-09-05 22:14+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -728,7 +728,7 @@ msgstr "Nemohu smazat DVD-R(W) médium (zkontrolujte $logfile)."
 msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exportuji archivy na DVD-R(W) médium v $BM_BURNING_DEVICE."
 
-#: ../lib/burning-methods.sh:295
+#: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
 #, sh-format
 msgid "CD-R(W) burning requires $cdrecord, aborting."
 msgstr "Vypalování CD-R(W) vyžaduje $cdrecord, končím."
@@ -742,11 +742,6 @@ msgstr "Mažu CDRW v $BM_BURNING_DEVICE."
 #, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
 msgstr "Vypaluji data na $BM_BURNING_DEVICE."
-
-#: ../lib/burning-methods.sh:310
-#, sh-format
-msgid "CDROM burning requires $cdrecord, aborting."
-msgstr "Vypalování CD vyžaduje $cdrecord, končím."
 
 #: ../lib/burning-methods.sh:320
 msgid "Nothing to burn."
@@ -800,6 +795,9 @@ msgstr "Nemohu spustit úvodní příkaz"
 #: ../backup-manager:243
 msgid "Unable to exec post-command."
 msgstr "Nemohu spustit závěrečný příkaz."
+
+#~ msgid "CDROM burning requires $cdrecord, aborting."
+#~ msgstr "Vypalování CD vyžaduje $cdrecord, končím."
 
 #~ msgid "Not in interactive mode, cannot follow."
 #~ msgstr "Nejsem v interaktivním režimu, nemohu následovat."

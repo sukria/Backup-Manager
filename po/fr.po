@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.7.5\n"
-"Report-Msgid-Bugs-To: backup-manager-i18n@backup-manager.org\n"
-"POT-Creation-Date: 2006-09-05 09:32+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-09-08 15:08+0200\n"
 "PO-Revision-Date: 2006-09-04 09:27+0100\n"
 "Last-Translator: Alexis Sukrieh <sukria@sukria.net>\n"
 "Language-Team: Debian l10n French Team <debian-l10n-french@lists.debian."
@@ -203,13 +203,15 @@ msgstr ""
 #, sh-format
 msgid "Deprecated boolean, $key is set to \"yes\", setting \"true\" instead."
 msgstr ""
-"Booléen obsolète : $key vaut actuellement « yes », utilisez « true » à la place."
+"Booléen obsolète : $key vaut actuellement « yes », utilisez « true » à la "
+"place."
 
 #: ../lib/sanitize.sh:97
 #, sh-format
 msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
 msgstr ""
-"Booléen obsolète : $key vaut actuellement « no », utilisez « false » à la place."
+"Booléen obsolète : $key vaut actuellement « no », utilisez « false » à la "
+"place."
 
 #: ../lib/sanitize.sh:243
 #, sh-format
@@ -672,8 +674,9 @@ msgid ""
 "Cannot burn archives of the $BM__BURNING_DATE, too big: ${size}M, must fit "
 "in $BM_BURNING_MAXSIZE"
 msgstr ""
-"Impossible de graver les archives du $BM__BURNING_DATE, car trop encombrant "
-"(${size} Mo). L'archive doit être inférieure à ${BM_BURNING_MAXSIZE} Mo."
+"Impossible de graver les archives du $BM__BURNING_DATE, car trop "
+"encombrant (${size} Mo). L'archive doit être inférieure à "
+"${BM_BURNING_MAXSIZE} Mo."
 
 #: ../lib/burning-methods.sh:220
 msgid "Burning the whole archives."
@@ -740,7 +743,8 @@ msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr ""
 "Export des archives vers le disque DVD-R(W) sur « $BM_BURNING_DEVICE »."
 
-#: ../lib/burning-methods.sh:295
+#: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
+#, sh-format
 msgid "CD-R(W) burning requires $cdrecord, aborting."
 msgstr "La gravure de CD-R(W) nécessite $cdrecord ; annulation."
 
@@ -753,11 +757,6 @@ msgstr "Effacement du CD-RW sur $BM_BURNING_DEVICE."
 #, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
 msgstr "Gravure des données sur $BM_BURNING_DEVICE."
-
-#: ../lib/burning-methods.sh:310
-#, sh-format
-msgid "CDROM burning requires $cdrecord, aborting."
-msgstr "La gravure de CDROM nécessite $cdrecord ; annulation."
 
 #: ../lib/burning-methods.sh:320
 msgid "Nothing to burn."
@@ -813,6 +812,9 @@ msgstr "Impossible d'exécuter la précommande."
 #: ../backup-manager:243
 msgid "Unable to exec post-command."
 msgstr "Impossible d'exécuter la post-commande."
+
+#~ msgid "CDROM burning requires $cdrecord, aborting."
+#~ msgstr "La gravure de CDROM nécessite $cdrecord ; annulation."
 
 #~ msgid "Not in interactive mode, cannot follow."
 #~ msgstr "Pas en mode interactif, impossible de continuer."

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.7.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-05 09:32+0200\n"
+"POT-Creation-Date: 2006-09-08 15:08+0200\n"
 "PO-Revision-Date: 2006-09-05 07:58+0200\n"
 "Last-Translator: Sven Joachim <sven_joachim@web.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
@@ -747,7 +747,7 @@ msgstr "Kann das DVD-R(W)-Medium nicht löschen (überprüfen Sie $logfile)."
 msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exportieren der Archive auf das DVD-R(W)-Medium in $BM_BURNING_DEVICE."
 
-#: ../lib/burning-methods.sh:295
+#: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
 #, fuzzy, sh-format
 msgid "CD-R(W) burning requires $cdrecord, aborting."
 msgstr "CD-Brennen erfordert $cdrecord, Abbruch."
@@ -761,11 +761,6 @@ msgstr "Löschen der CDRW in $BM_BURNING_DEVICE."
 #, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
 msgstr "Brennen der Daten auf $BM_BURNING_DEVICE."
-
-#: ../lib/burning-methods.sh:310
-#, sh-format
-msgid "CDROM burning requires $cdrecord, aborting."
-msgstr "CD-Brennen erfordert $cdrecord, Abbruch."
 
 #: ../lib/burning-methods.sh:320
 msgid "Nothing to burn."
@@ -819,6 +814,9 @@ msgstr "Kann pre-command nicht ausführen"
 #: ../backup-manager:243
 msgid "Unable to exec post-command."
 msgstr "Kann post-command nicht ausführen."
+
+#~ msgid "CDROM burning requires $cdrecord, aborting."
+#~ msgstr "CD-Brennen erfordert $cdrecord, Abbruch."
 
 #~ msgid "Not in interactive mode, cannot follow."
 #~ msgstr "Nicht in interaktivem Modus, kann nicht fortsetzen."

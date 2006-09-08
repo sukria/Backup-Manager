@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-05 09:32+0200\n"
+"POT-Creation-Date: 2006-09-08 15:08+0200\n"
 "PO-Revision-Date: 2006-09-05 16:30+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -758,7 +758,7 @@ msgstr ""
 "Đang xuất khẩu các kho vào đĩa DVD-R(W) trong thiết bị ghi "
 "$BM_BURNING_DEVICE."
 
-#: ../lib/burning-methods.sh:295
+#: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
 #, fuzzy, sh-format
 msgid "CD-R(W) burning requires $cdrecord, aborting."
 msgstr "Việc ghi vào đĩa CD-ROM cần thiết « $cdrecord » nên hủy bỏ."
@@ -772,11 +772,6 @@ msgstr "Đang xóa trắng đĩa CD-RW trong thiết bị ghi $BM_BURNING_DEVICE
 #, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
 msgstr "Đang ghi dữ liệu vào $BM_BURNING_DEVICE."
-
-#: ../lib/burning-methods.sh:310
-#, sh-format
-msgid "CDROM burning requires $cdrecord, aborting."
-msgstr "Việc ghi vào đĩa CD-ROM cần thiết « $cdrecord » nên hủy bỏ."
 
 #: ../lib/burning-methods.sh:320
 msgid "Nothing to burn."
@@ -830,6 +825,9 @@ msgstr "Không thể thực hiện tiền lệnh"
 #: ../backup-manager:243
 msgid "Unable to exec post-command."
 msgstr "Không thể thực hiện hậu lệnh."
+
+#~ msgid "CDROM burning requires $cdrecord, aborting."
+#~ msgstr "Việc ghi vào đĩa CD-ROM cần thiết « $cdrecord » nên hủy bỏ."
 
 #~ msgid "Not in interactive mode, cannot follow."
 #~ msgstr "Không phải trong chế độ tương tác nên không thể đi theo."

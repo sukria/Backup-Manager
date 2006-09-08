@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-06 09:31+0200\n"
+"POT-Creation-Date: 2006-09-08 15:08+0200\n"
 "PO-Revision-Date: 2006-09-06 10:12+0100\n"
 "Last-Translator: Bjorn Wetzels <Bjorn.Wetzels@planet.nl>\n"
 "Language-Team: DUTCH\n"
@@ -45,8 +45,7 @@ msgstr "Kan doel \"$target\" niet maken, controleer $logfile"
 msgid "File $file_to_create already exists, skipping."
 msgstr "Bestand $file_to_create bestaat reeds, overslaan."
 
-#: ../lib/backup-methods.sh:100
-#: ../lib/backup-methods.sh:116
+#: ../lib/backup-methods.sh:100 ../lib/backup-methods.sh:116
 #: ../lib/backup-methods.sh:130
 #, sh-format
 msgid "Unable to exec $command; check $logfile"
@@ -106,8 +105,7 @@ msgstr "Het archieftype \"zip\" is afhankelijk van de tool \"$zip\"."
 msgid "The archive type \"dar\" depends on the tool \"$dar\"."
 msgstr "Het archieftype \"dar\" is afhankelijjk van de tool \"$dar\"."
 
-#: ../lib/backup-methods.sh:422
-#: ../lib/backup-methods.sh:499
+#: ../lib/backup-methods.sh:422 ../lib/backup-methods.sh:499
 #: ../lib/backup-methods.sh:535
 #, sh-format
 msgid "The archive type \"$BM_TARBALL_FILETYPE\" is not supported."
@@ -115,11 +113,13 @@ msgstr "Het bestandstype $BM_TARBALL_FILETYPE wordt niet ondersteund."
 
 #: ../lib/backup-methods.sh:474
 msgid "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
-msgstr "De configuratiesleutel \"BM_ENCRYPTION_RECIPIENT\" moet worden gedefinieerd."
+msgstr ""
+"De configuratiesleutel \"BM_ENCRYPTION_RECIPIENT\" moet worden gedefinieerd."
 
 #: ../lib/backup-methods.sh:480
 #, sh-format
-msgid "The encryption is not yet possible with \"$BM_TARBALL_FILETYPE\" archives."
+msgid ""
+"The encryption is not yet possible with \"$BM_TARBALL_FILETYPE\" archives."
 msgstr "Encryptie is nog niet mogelijk voor\"$BM_TARBALL_FILETYPE\" archieven"
 
 #: ../lib/backup-methods.sh:512
@@ -127,8 +127,7 @@ msgstr "Encryptie is nog niet mogelijk voor\"$BM_TARBALL_FILETYPE\" archieven"
 msgid "The program \"$gpg\" is needed."
 msgstr "Het programma \"$gpg\" is benodigd."
 
-#: ../lib/backup-methods.sh:519
-#: ../lib/backup-methods.sh:551
+#: ../lib/backup-methods.sh:519 ../lib/backup-methods.sh:551
 #, sh-format
 msgid "File $file_to_check already exists, skipping."
 msgstr "Bestand $file_to_check bestaat reeds, overslaan."
@@ -138,10 +137,8 @@ msgstr "Bestand $file_to_check bestaat reeds, overslaan."
 msgid "Target \"$t\" does not exist, skipping."
 msgstr "Doel: \"$t\" bestaat niet, overslaan."
 
-#: ../lib/backup-methods.sh:627
-#: ../lib/backup-methods.sh:656
-#: ../lib/backup-methods.sh:685
-#: ../lib/backup-methods.sh:707
+#: ../lib/backup-methods.sh:627 ../lib/backup-methods.sh:656
+#: ../lib/backup-methods.sh:685 ../lib/backup-methods.sh:707
 #, sh-format
 msgid "Using method \"$method\"."
 msgstr "Gebruik Methode\"$method\"."
@@ -186,13 +183,19 @@ msgstr "De configuratiesleutel $key is niet gezet, gebruik \"$default\"."
 
 #: ../lib/sanitize.sh:39
 #, sh-format
-msgid "The configuration key \"$deprecated_key\" is deprecated, you should rename it \"$new_key\". Using \"$deprecated_value\"."
-msgstr "De configuratiesleutel  \"$deprecated_key\" is verouderd, hernoemdeze naar \"$new_key\". Gebruik nu \"$deprecated_value\""
+msgid ""
+"The configuration key \"$deprecated_key\" is deprecated, you should rename "
+"it \"$new_key\". Using \"$deprecated_value\"."
+msgstr ""
+"De configuratiesleutel  \"$deprecated_key\" is verouderd, hernoemdeze naar "
+"\"$new_key\". Gebruik nu \"$deprecated_value\""
 
 #: ../lib/sanitize.sh:74
 #, sh-format
 msgid "The configuration key $key is not set but $keymandatory is enabled."
-msgstr "De configuratiesleutel $key is niet ingesteld, maar $keymandatory is wel aangezet."
+msgstr ""
+"De configuratiesleutel $key is niet ingesteld, maar $keymandatory is wel "
+"aangezet."
 
 #: ../lib/sanitize.sh:92
 #, sh-format
@@ -206,8 +209,12 @@ msgstr "Verouderde boolean, $key is ingesteld op \"no\", Gebruik nu \"false"
 
 #: ../lib/sanitize.sh:243
 #, sh-format
-msgid "When validating the configuration file $conffile, $nb_warnings warnings were found."
-msgstr "Tijdens het valideren van het configuratiebestand $conffile zijn $nb_warnings waarchuwing(en)  gevonden"
+msgid ""
+"When validating the configuration file $conffile, $nb_warnings warnings were "
+"found."
+msgstr ""
+"Tijdens het valideren van het configuratiebestand $conffile zijn "
+"$nb_warnings waarchuwing(en)  gevonden"
 
 #: ../lib/actions.sh:42
 msgid "No backup method used."
@@ -271,16 +278,26 @@ msgid "Post-command returned: \"$RET\" (success)."
 msgstr "Post-commando retourneerde: \"$RET\" (success)."
 
 #: ../lib/actions.sh:161
-msgid "The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
-msgstr "De BM_TARBALL_FILETYPE configuratiesleutel is ingesteld op  \"zip\" maar zip is niet geinstalleerd."
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
+msgstr ""
+"De BM_TARBALL_FILETYPE configuratiesleutel is ingesteld op  \"zip\" maar zip "
+"is niet geinstalleerd."
 
 #: ../lib/actions.sh:166
-msgid "The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
-msgstr "De BM_TARBALL_FILETYPE configuratiesleutel is ingesteld op  \"bzip2\" maar bzip2 is niet geinstalleerd."
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
+"installed."
+msgstr ""
+"De BM_TARBALL_FILETYPE configuratiesleutel is ingesteld op  \"bzip2\" maar "
+"bzip2 is niet geinstalleerd."
 
 #: ../lib/actions.sh:171
-msgid "The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
-msgstr "De BM_TARBALL_FILETYPE configuratiesleutel is ingesteld op  \"dar\" maar dar is niet geinstalleerd."
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
+msgstr ""
+"De BM_TARBALL_FILETYPE configuratiesleutel is ingesteld op  \"dar\" maar dar "
+"is niet geinstalleerd."
 
 #: ../lib/actions.sh:181
 #, sh-format
@@ -369,8 +386,7 @@ msgstr "Schakel het verwijder proces uit."
 msgid "Warning, process interrupted, archives may be corrupted."
 msgstr "Waarschuwing, proces onderbroken, Archieven kunnen corrupt zijn."
 
-#: ../lib/dialog.sh:74
-#: ../lib/dialog.sh:93
+#: ../lib/dialog.sh:74 ../lib/dialog.sh:93
 msgid "Not in interactive mode, cannot continue."
 msgstr "Niet in interactive modus, kan niet verder gaan."
 
@@ -382,8 +398,7 @@ msgstr "Vergrendeling vrijgeven"
 msgid "Internal error: wrong call to bm_merge_incremental_backups()."
 msgstr "Interne fout: verkeerde call naar bm_merge_incremental_backups()."
 
-#: ../lib/files.sh:73
-#: ../lib/files.sh:86
+#: ../lib/files.sh:73 ../lib/files.sh:86
 msgid "No path given."
 msgstr "Geen Pad opgegeven"
 
@@ -394,11 +409,13 @@ msgstr "Verwijderen vergrendeling voor oude PID, $pid loopt niet."
 
 #: ../lib/files.sh:162
 #, sh-format
-msgid "A backup-manager process ($pid) is already running with the conffile $conffile"
-msgstr "Een backup-manager proces ($pid) loopt al met de configuratiefile $conffile"
+msgid ""
+"A backup-manager process ($pid) is already running with the conffile "
+"$conffile"
+msgstr ""
+"Een backup-manager proces ($pid) loopt al met de configuratiefile $conffile"
 
-#: ../lib/files.sh:166
-#: ../lib/files.sh:172
+#: ../lib/files.sh:166 ../lib/files.sh:172
 #, sh-format
 msgid "Getting lock for backup-manager $pid with $conffile"
 msgstr "Vergrendelen van proces: backup-manager $pid met $conffile"
@@ -445,9 +462,7 @@ msgstr "Het opgegeven bestand bestaat niet: $file_to_create"
 msgid "No file given."
 msgstr "Geen bestand opgegeven"
 
-#: ../lib/files.sh:366
-#: ../lib/files.sh:368
-#: ../lib/files.sh:382
+#: ../lib/files.sh:366 ../lib/files.sh:368 ../lib/files.sh:382
 msgid "Unable to get date from file."
 msgstr "Niet mogelijk om datum van bestand op te halen"
 
@@ -469,28 +484,39 @@ msgstr "$file is een duplicaat van $file_to_create (door symlink)"
 msgid "Using the upload method \"ssh\"."
 msgstr "Gebruik Upload Methode \"ssh\"."
 
-#: ../lib/upload-methods.sh:47
-#: ../lib/upload-methods.sh:85
+#: ../lib/upload-methods.sh:47 ../lib/upload-methods.sh:85
 msgid "No valid destination found, SSH upload not possible."
 msgstr "Geen geldige doellokatie opgegeven, SSH upload niet mogelijk."
 
 #: ../lib/upload-methods.sh:68
 #, sh-format
-msgid "Error reported by backup-manager-upload for method \"scp\", check \"$logfile\"."
-msgstr "Fouten gemeld door backup-manager-upload voor methode \"scp\", controleer \"$logfile\"."
+msgid ""
+"Error reported by backup-manager-upload for method \"scp\", check \"$logfile"
+"\"."
+msgstr ""
+"Fouten gemeld door backup-manager-upload voor methode \"scp\", controleer "
+"\"$logfile\"."
 
 #: ../lib/upload-methods.sh:76
 msgid "Using the upload method \"ssh-gpg\"."
 msgstr "Gebruik Upload Methode \"ssh-gpg\"."
 
 #: ../lib/upload-methods.sh:88
-msgid "No gpg recipient given. Argument is mandatory if upload method ssh-gpg is used."
-msgstr "Geen gpg ontvanger opgegeven. Argument is verplicht wanneer ssh-gpg als upload methode is aangegeven."
+msgid ""
+"No gpg recipient given. Argument is mandatory if upload method ssh-gpg is "
+"used."
+msgstr ""
+"Geen gpg ontvanger opgegeven. Argument is verplicht wanneer ssh-gpg als "
+"upload methode is aangegeven."
 
 #: ../lib/upload-methods.sh:105
 #, sh-format
-msgid "Error reported by backup-manager-upload for method \"ssh-gpg\", check \"$logfile\"."
-msgstr "Fouten gemeld door backup-manager-upload voor methode \"ssh-gpg\", controleer \"$logfile\"."
+msgid ""
+"Error reported by backup-manager-upload for method \"ssh-gpg\", check "
+"\"$logfile\"."
+msgstr ""
+"Fouten gemeld door backup-manager-upload voor methode \"ssh-gpg\", "
+"controleer \"$logfile\"."
 
 #: ../lib/upload-methods.sh:112
 msgid "Using the upload method \"ftp\"."
@@ -502,8 +528,12 @@ msgstr "Geen geldig doel opgegeven, FTP upload niet mogelijk."
 
 #: ../lib/upload-methods.sh:139
 #, sh-format
-msgid "Error reported by backup-manager-upload for method \"ftp\", check \"$logfile\"."
-msgstr "Fouten gemeld door backup-manager-upload voor methode \"ftp\", controleer \"$logfile\"."
+msgid ""
+"Error reported by backup-manager-upload for method \"ftp\", check \"$logfile"
+"\"."
+msgstr ""
+"Fouten gemeld door backup-manager-upload voor methode \"ftp\", controleer "
+"\"$logfile\"."
 
 #: ../lib/upload-methods.sh:147
 msgid "Using the upload method \"S3\"."
@@ -511,8 +541,12 @@ msgstr "Gebruik Upload Methode \"S3\"."
 
 #: ../lib/upload-methods.sh:170
 #, sh-format
-msgid "Error reported by backup-manager-upload for method \"s3\", check \"$logfile\"."
-msgstr "Fouten gemeld door backup-manager-upload voor methode \"s3\", controleer \"$logfile\"."
+msgid ""
+"Error reported by backup-manager-upload for method \"s3\", check \"$logfile"
+"\"."
+msgstr ""
+"Fouten gemeld door backup-manager-upload voor methode \"s3\", controleer "
+"\"$logfile\"."
 
 #: ../lib/upload-methods.sh:176
 #, sh-format
@@ -521,7 +555,8 @@ msgstr "Uploaden $directory naar ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
 
 #: ../lib/upload-methods.sh:187
 msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
-msgstr "Sleutel nodig voor rsync (stel in: BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)"
+msgstr ""
+"Sleutel nodig voor rsync (stel in: BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)"
 
 #: ../lib/upload-methods.sh:198
 #, sh-format
@@ -534,7 +569,8 @@ msgstr "Geen geldig doel opgegeven, RSYNC upload niet mogelijk."
 
 #: ../lib/upload-methods.sh:236
 msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
-msgstr "Geen Hosts opgegeven voor rsync methode, stel in: BM_UPLOAD_RSYNC_HOSTS."
+msgstr ""
+"Geen Hosts opgegeven voor rsync methode, stel in: BM_UPLOAD_RSYNC_HOSTS."
 
 #: ../lib/upload-methods.sh:243
 msgid "Using the upload method \"rsync\"."
@@ -551,8 +587,12 @@ msgstr "Apparaat \"/dev/$device\" is gekoppeld op \"$m\", ontkoppelen."
 
 #: ../lib/burning-methods.sh:52
 #, sh-format
-msgid "MD5 checkup is only performed on disks. Please set the BM_BURNING_DEVICE in $conffile"
-msgstr "MD5 Controle wordt alleen uitgevoerd op schijven. Stel BM_BURNING_DEVICE in $conffile in."
+msgid ""
+"MD5 checkup is only performed on disks. Please set the BM_BURNING_DEVICE in "
+"$conffile"
+msgstr ""
+"MD5 Controle wordt alleen uitgevoerd op schijven. Stel BM_BURNING_DEVICE in "
+"$conffile in."
 
 #: ../lib/burning-methods.sh:58
 #, sh-format
@@ -609,19 +649,25 @@ msgstr "aantal bestanden om te branden: $nb_file."
 
 #: ../lib/burning-methods.sh:166
 #, sh-format
-msgid "Nothing to burn for the $BM__BURNING_DATE, try the '--burn <date>' switch."
-msgstr "Niets te branden voor $BM__BURNING_DATE, probeer de '--burn <date>' schakeloptie."
+msgid ""
+"Nothing to burn for the $BM__BURNING_DATE, try the '--burn <date>' switch."
+msgstr ""
+"Niets te branden voor $BM__BURNING_DATE, probeer de '--burn <date>' "
+"schakeloptie."
 
-#: ../lib/burning-methods.sh:193
-#: ../lib/burning-methods.sh:216
+#: ../lib/burning-methods.sh:193 ../lib/burning-methods.sh:216
 #, sh-format
 msgid "Burning archives of $BM__BURNING_DATE."
 msgstr "Branden archieven naar $BM__BURNING_DATE."
 
 #: ../lib/burning-methods.sh:198
 #, sh-format
-msgid "Cannot burn archives of the $BM__BURNING_DATE, too big: ${size}M, must fit in $BM_BURNING_MAXSIZE"
-msgstr "Kan archieven van  $BM__BURNING_DATE niet branden, te groot. ${size}M, moet passen in $BM_BURNING_MAXSIZE"
+msgid ""
+"Cannot burn archives of the $BM__BURNING_DATE, too big: ${size}M, must fit "
+"in $BM_BURNING_MAXSIZE"
+msgstr ""
+"Kan archieven van  $BM__BURNING_DATE niet branden, te groot. ${size}M, moet "
+"passen in $BM_BURNING_MAXSIZE"
 
 #: ../lib/burning-methods.sh:220
 msgid "Burning the whole archives."
@@ -630,7 +676,8 @@ msgstr "Branden complete archieven"
 #: ../lib/burning-methods.sh:225
 #, sh-format
 msgid "Trying to burn $BM_REPOSITORY_ROOT ($size MB) in interactive mode."
-msgstr "Proberen van branden $BM_REPOSITORY_ROOT ($size MB) in interactive mode."
+msgstr ""
+"Proberen van branden $BM_REPOSITORY_ROOT ($size MB) in interactive mode."
 
 #: ../lib/burning-methods.sh:255
 #, sh-format
@@ -652,10 +699,8 @@ msgstr "DVD+R(W) branden benodigt $growisofs, afbreken."
 msgid "Exporting archives to the DVD+R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exporteren archieven naar DVD media in $BM_BURNING_DEVICE."
 
-#: ../lib/burning-methods.sh:273
-#: ../lib/burning-methods.sh:290
-#: ../lib/burning-methods.sh:300
-#: ../lib/burning-methods.sh:305
+#: ../lib/burning-methods.sh:273 ../lib/burning-methods.sh:290
+#: ../lib/burning-methods.sh:300 ../lib/burning-methods.sh:305
 #: ../lib/burning-methods.sh:316
 #, sh-format
 msgid "failed, check $logfile"
@@ -686,7 +731,7 @@ msgstr "kan CD niet leegmaken, controleer $logfile"
 msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exporteren archieven naar DVD media in $BM_BURNING_DEVICE."
 
-#: ../lib/burning-methods.sh:295
+#: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
 #, sh-format
 msgid "CD-R(W) burning requires $cdrecord, aborting."
 msgstr "CDR(W) Branden vereist $cdrecord, afbreken."
@@ -696,16 +741,10 @@ msgstr "CDR(W) Branden vereist $cdrecord, afbreken."
 msgid "Blanking the CDRW in $BM_BURNING_DEVICE."
 msgstr "Leegmaken van de CDRW in $BM_BURNING_DEVICE."
 
-#: ../lib/burning-methods.sh:302
-#: ../lib/burning-methods.sh:313
+#: ../lib/burning-methods.sh:302 ../lib/burning-methods.sh:313
 #, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
 msgstr "Branden van data naar $BM_BURNING_DEVICE."
-
-#: ../lib/burning-methods.sh:310
-#, sh-format
-msgid "CDROM burning requires $cdrecord, aborting."
-msgstr "CDROM Branden vereist $cdrecord, afbreken."
 
 #: ../lib/burning-methods.sh:320
 msgid "Nothing to burn."
@@ -713,8 +752,12 @@ msgstr "Geen data om te branden."
 
 #: ../lib/burning-methods.sh:324
 #, sh-format
-msgid "The requested burning method is not supported, check BM_BURNING_METHOD in $conffile"
-msgstr "De opgegeven brandmethode wordt niet ondersteund, controleerBM_BURNING_METHOD in $conffile"
+msgid ""
+"The requested burning method is not supported, check BM_BURNING_METHOD in "
+"$conffile"
+msgstr ""
+"De opgegeven brandmethode wordt niet ondersteund, "
+"controleerBM_BURNING_METHOD in $conffile"
 
 #: ../lib/burning-methods.sh:373
 #, sh-format
@@ -756,41 +799,58 @@ msgstr "Pre-commando uitvoeren niet mogelijk"
 msgid "Unable to exec post-command."
 msgstr "Post-commando uitvoeren niet mogelijk"
 
+#~ msgid "CDROM burning requires $cdrecord, aborting."
+#~ msgstr "CDROM Branden vereist $cdrecord, afbreken."
+
 #~ msgid "$command ended, but $file_to_create not found; check $logfile"
 #~ msgstr ""
 #~ "$command beeindigd, maar $file_to_create niet gevonden; controleer "
 #~ "$logfile"
+
 #~ msgid "Error while using $gzip."
 #~ msgstr "Fout tijdens uitvoeren $gzip."
+
 #~ msgid "Error while using $bzip."
 #~ msgstr "Fout tijdens uitvoeren $bzip."
+
 #~ msgid "Using method \"$BM_ARCHIVE_METHOD\""
 #~ msgstr "Gebruik methode: \"$BM_ARCHIVE_METHOD\""
+
 #~ msgid "During the tarballs generation, $nb_err error(s) occurred."
 #~ msgstr "er (is) zijn $nb_err fout(en) geconstateerd."
+
 #~ msgid "The BM_TARBALL_DIRECTORIES conf key is not set in $conffile"
 #~ msgstr ""
 #~ "De BM_TARBALL_DIRECTORIES configuratiesleutel is niet ingevuld in "
 #~ "$conffile"
+
 #~ msgid "Unable to mount $BM_BURNING_DEVICE on $mount_point."
 #~ msgstr "niet mogelijk om $BM_BURNING_DEVICE te koppelen op $mount_point."
+
 #~ msgid ""
 #~ "$BM_BURNING_DEVICE is mounted, unmounting before the burning session."
 #~ msgstr "$BM_BURNING_DEVICE is gekoppeld, ontkoppeling voor de brandsessie."
+
 #~ msgid "Unable to unmount the device $BM_BURNING_DEVICE"
 #~ msgstr "Niet mogelijk om apparaat $BM_BURNING_DEVICE te ontkoppelen"
+
 #~ msgid "unable to unmount $mount_point"
 #~ msgstr "niet mogelijk om $mount_point te ontkoppelen"
+
 #~ msgid "unable to remove $mount_point"
 #~ msgstr "Niet mogelijk om $mount_point te verwijderen"
+
 #~ msgid "Entering directory $file."
 #~ msgstr "Openen map $file."
+
 #~ msgid "No such file $file_to_create"
 #~ msgstr "Bestand $file_to_create bestaat niet"
+
 #~ msgid "Unable to call backup-manager-upload."
 #~ msgstr "Niet mogelijk om backup-manager-upload aan te roepen."
+
 #~ msgid "unable to call backup-manager-upload"
 #~ msgstr "Niet mogelijk om backup-manager-upload aan te roepen"
+
 #~ msgid "backup-manager must be run as root."
 #~ msgstr "backup-manager moet als Root gedraaid worden."
-

@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager 0.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-05 09:32+0200\n"
+"POT-Creation-Date: 2006-09-08 15:08+0200\n"
 "PO-Revision-Date: 2005-12-14 13:07+0100\n"
 "Last-Translator: Carlos Galisteo de Cabo <cgalisteo@k-rolus.net>\n"
 "Language-Team: \n"
@@ -778,7 +778,7 @@ msgstr "No se pudo borrar el disco DVD-R(W) (consulte $logfile)."
 msgid "Exporting archives to the DVD-R(W) disc in $BM_BURNING_DEVICE."
 msgstr "Exportando los ficheros al DVD-R(W) que está en $BM_BURNING_DEVICE."
 
-#: ../lib/burning-methods.sh:295
+#: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
 #, sh-format
 msgid "CD-R(W) burning requires $cdrecord, aborting."
 msgstr "Se requiere $cdrecord para la grabación de CD-R(W), abortando."
@@ -792,11 +792,6 @@ msgstr "Borrando el CDRW en $BM_BURNING_DEVICE."
 #, sh-format
 msgid "Burning data to $BM_BURNING_DEVICE."
 msgstr "Grabando los datos a $BM_BURNING_DEVICE."
-
-#: ../lib/burning-methods.sh:310
-#, sh-format
-msgid "CDROM burning requires $cdrecord, aborting."
-msgstr "Se requiere $cdrecord para la grabación en CDROM, abortando."
 
 #: ../lib/burning-methods.sh:320
 msgid "Nothing to burn."
@@ -850,3 +845,6 @@ msgstr "No se pudo ejecutar la orden previa."
 #: ../backup-manager:243
 msgid "Unable to exec post-command."
 msgstr "No se pudo ejecutar la orden posterior."
+
+#~ msgid "CDROM burning requires $cdrecord, aborting."
+#~ msgstr "Se requiere $cdrecord para la grabación en CDROM, abortando."

@@ -643,6 +643,12 @@ sub send_files_with_ftp($$$$$)
                 error "Unable to connect to host: $host";
                 return FALSE;
             }
+
+            unless (ftptls_login($ftp, $user, $passwd, $repository)) {
+                verbose_error "unable to login and cwd on ${host}:${repository} in FTP TLS mode.";
+                return FALSE;
+            }
+            verbose "Logged on $host, in $repository (FTP TLS mode)";
         }
 
         # The unencrypted FTP transfers
@@ -652,39 +658,51 @@ sub send_files_with_ftp($$$$$)
                 error "Unable to connect to host: $host";
                 return FALSE;
             }
+
+            unless (ftp_login($ftp, $user, $passwd, $repository)) {
+                verbose_error "unable to login and cwd on ${host}:${repository} in FTP mode.";
+                return FALSE;
+            }
+            verbose "Logged on $host, in $repository (FTP binary mode)";
         }
 			
-        # Now that we're connected, put the files
-        if ($ftp->login($user, $passwd) and
-            $ftp->binary() and
-            $ftp->cwd($repository)) {
-            verbose "Logged on $host, in $repository (binary mode)";
-            
-            if ($g_ftpclean) {
-                unless (ftp_clean_directory($ftp)) {
-                    verbose_error "Unable to clean the FTP directory.";
-                }
+        # Now that we're connected and logged in, purge the repo if needed
+        if ($g_ftpclean) {
+            unless (ftp_clean_directory($ftp)) {
+                verbose_error "Unable to clean the FTP directory.";
             }
+        }
 
-            # Put all the files over the connexion
-            foreach my $file (@{$ra_files}) {
-                chomp $file;
-                if ($BM_UPLOAD_FTP_SECURE) {
-                    ftptls_put_file ($ftp, $file);
-                }
-                else {
-                    ftp_put_file ($ftp, $file);
-                }
+        # Put all the files over the connexion
+        foreach my $file (@{$ra_files}) {
+            chomp $file;
+            if ($BM_UPLOAD_FTP_SECURE) {
+                ftptls_put_file ($ftp, $file);
             }
-            verbose "All transfers done, loging out from $host\n";
-            $ftp->quit;
+            else {
+                ftp_put_file ($ftp, $file);
+            }
         }
-        else {
-            verbose_error "unable to login and cwd on ${host}:${repository} in secured mode";
-            return FALSE;
-        }
+        verbose "All transfers done, loging out from $host\n";
+        $ftp->quit;
 	}	
     return TRUE;
+}
+
+sub ftp_login ($$$$)
+{
+    my ($ftp, $user, $passwd, $repository) = @_;
+    return ($ftp->login($user, $passwd) and
+            $ftp->binary() and
+            $ftp->cwd($repository));
+}
+
+sub ftptls_login ($$$$)
+{
+    my ($ftp, $user, $passwd, $repository) = @_;
+    return ($ftp->user($user) and
+            $ftp->pass($passwd) and
+            $ftp->cwd($repository));
 }
 
 

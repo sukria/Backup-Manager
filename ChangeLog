@@ -1,5 +1,11 @@
 2006-09-08  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* backup-manager-upload:
+	  + Fixed a bug with the FTP TLS code, use the correct API instead of the
+	  one of Net::FTP.
+
+2006-09-08  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	[ Alexis Sukrieh & Michael Guerin ]
 
 	* Support for FTP over TLS transfers.

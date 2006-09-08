@@ -1,3 +1,16 @@
+2006-09-08  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	[ Alexis Sukrieh & Michael Guerin ]
+
+	* Support for FTP over TLS transfers.
+	* New configuration key, `BM_UPLOAD_FTP_SECURE' in
+	  backup-manager.conf.tpl for enabling the FTP over TLS transfer.
+
+	[ Alexis Sukrieh ]
+	
+	* Rewrite of the FTP part of the code in backup-manager-upload.
+	* Documentation about BM_UPLOAD_FTP_SECURE configuration variable.
+
 2006-09-06  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	[ Bjorn Wetzels ]

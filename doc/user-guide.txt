@@ -4,7 +4,7 @@
 
                               Alexis Sukrieh
 
-                            1.5 - 21 Jun, 2006
+                            1.6 - 08 Sept, 2006
 
 
 -------------------------------------------------------------------------------
@@ -1003,7 +1003,19 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
      can safely use this method for uploading files to a host where you
      just have an FTP account.
 
-2.3.5.2. `BM_UPLOAD_FTP_PASSIVE'
+2.3.5.2. `BM_UPLOAD_FTP_SECURE'
+-------------------------------
+
+     _Type: boolean, default: false._
+
+     If this variable is set to true, all FTP transfers will be done over
+     SSL.
+
+     Example:
+
+          export BM_UPLOAD_FTP_SECURE="true"
+
+2.3.5.3. `BM_UPLOAD_FTP_PASSIVE'
 --------------------------------
 
      _Type: boolean, default: true._
@@ -1015,7 +1027,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_FTP_PASSIVE="true"
 
-2.3.5.3. `BM_UPLOAD_FTP_TTL'
+2.3.5.4. `BM_UPLOAD_FTP_TTL'
 ----------------------------
 
      _Type: integer, default: $BM_ARCHIVE_TTL_
@@ -1033,7 +1045,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
           export BM_UPLOAD_FTP_TTL="5"
           export BM_POST_BACKUP_COMMAND="backup-manager --purge"
 
-2.3.5.4. `BM_UPLOAD_FTP_USER'
+2.3.5.5. `BM_UPLOAD_FTP_USER'
 -----------------------------
 
      _Type: string._
@@ -1044,7 +1056,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_FTP_USER="bmngr"
 
-2.3.5.5. `BM_UPLOAD_FTP_PASSWORD'
+2.3.5.6. `BM_UPLOAD_FTP_PASSWORD'
 ---------------------------------
 
      _Type: string._
@@ -1055,7 +1067,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_FTP_USER="secret"
 
-2.3.5.6. `BM_UPLOAD_FTP_HOSTS'
+2.3.5.7. `BM_UPLOAD_FTP_HOSTS'
 ------------------------------
 
      _Type: space-separated list_
@@ -1067,7 +1079,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_FTP_HOSTS="mirror4.lan.mysite.net"
 
-2.3.5.7. `BM_UPLOAD_FTP_DESTINATION'
+2.3.5.8. `BM_UPLOAD_FTP_DESTINATION'
 ------------------------------------
 
      _Type: string_
@@ -1079,7 +1091,7 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 
           export BM_UPLOAD_FTP_DESTINATION="/var/archives/ftp-uploads"
 
-2.3.5.8. `BM_UPLOAD_FTP_PURGE'
+2.3.5.9. `BM_UPLOAD_FTP_PURGE'
 ------------------------------
 
      _Type: boolean, default: `true'_
@@ -1703,5 +1715,5 @@ Entering directory /var/archives/lost+found.
      Alexis Sukrieh
 
 
-     1.5 - 21 Jun, 2006
+     1.6 - 08 Sept, 2006
 

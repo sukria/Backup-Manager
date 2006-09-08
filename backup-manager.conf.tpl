@@ -327,6 +327,11 @@ export BM_UPLOAD_SSHGPG_RECIPIENT=""
 # The FTP method
 #############################################################
 
+# Use FTP secured transfers (FTP over TLS)
+# User, password and data will be uploaded encrypted with SSL.
+# Passive mode will be automaticaly activated
+export BM_UPLOAD_FTP_SECURE="false"
+
 # Do you want to use FTP passive mode?
 # This is mandatory for NATed/firewalled environments 
 export BM_UPLOAD_FTP_PASSIVE="true"
@@ -350,6 +355,7 @@ export BM_UPLOAD_FTP_TTL=""
 
 # destination for FTP uploads (overrides BM_UPLOAD_DESTINATION)
 export BM_UPLOAD_FTP_DESTINATION=""
+
 
 ##############################################################
 # The S3 method

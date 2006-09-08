@@ -1065,6 +1065,18 @@ FTP method.
 One of the main pros of this method is that it can perform purging independently. You can safely use this method
 for uploading files to a host where you just have an FTP account.
 
+<sect2 id="BM_UPLOAD_FTP_SECURE"><tt>BM_UPLOAD_FTP_SECURE</tt>
+<p>
+<em>Type: boolean, default: false.</em>
+<p>
+If this variable is set to true, all FTP transfers will be done over SSL.
+<p>
+Example:
+<example>
+export BM_UPLOAD_FTP_SECURE="true"
+</example>
+
+
 <sect2 id="BM_UPLOAD_FTP_PASSIVE"><tt>BM_UPLOAD_FTP_PASSIVE</tt>
 <p>
 <em>Type: boolean, default: true.</em>

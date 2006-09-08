@@ -278,7 +278,7 @@ sub get_files_list_from_date($)
     # enabled, the repository might not be readable by us...
     unless (-r $g_root_dir) {
         verbose_error "The repository $g_root_dir is not readable by user \"$ENV{USER}\".";
-        if ($ENV{BM_REPOSITORY_SECURE} eq "yes") {
+        if ($ENV{BM_REPOSITORY_SECURE} eq "true") {
             verbose_error "The secure mode is enabled (BM_REPOSITORY_SECURE),";
             verbose_error "the upload user ($g_user) must be in the group \"BM_REPOSITORY_GROUP\".";
         }
@@ -505,7 +505,14 @@ sub ftp_clean_directory($)
 
     # First, create the list of existing archives
     my ($fh, $filename) = tempfile();
-    my $ra_files = $ftp->ls();
+    my $BM_UPLOAD_FTP_SECURE = $ENV{"BM_UPLOAD_FTP_SECURE"};
+    my $ra_files;
+    if ($BM_UPLOAD_FTP_SECURE eq "true") {
+		$ra_files = $ftp->list();
+    }
+    else {
+		$ra_files = $ftp->ls();
+    }
     foreach my $file (@$ra_files) {
         print $fh "$file\n";
     }
@@ -525,28 +532,11 @@ sub ftp_clean_directory($)
     return 1;
 }
 
-# How to upload files with ftp.
-# We'll use the Net::FTP module here.
-sub send_files_with_ftp($$$$$)
+sub ftp_connect_to_host ($)
 {
-	# trying to get Net::FTP.
-	eval "use Net::FTP";
-	if ($@) {
-		error "Net::FTP is not available, cannot use ftp transfer mode";
-		return FALSE;
-	}
-	
-	# getting args
-	my ($user, $passwd, $ra_hosts, $repository, $ra_files) = @_;
-	unless (defined $user and 
-		defined $passwd and
-		defined $ra_hosts and
-		defined $ra_files and
-		defined $repository) {
-		error "required args needed";
-		return FALSE;
-	}
-	
+    my ($host) = @_;
+    my $ftp;
+
     # get the passive mode from the configuration
     # default is set to true.
     my $BM_UPLOAD_FTP_PASSIVE = $ENV{"BM_UPLOAD_FTP_PASSIVE"};
@@ -561,66 +551,154 @@ sub send_files_with_ftp($$$$$)
     }
     else {
         verbose_error "Unsupported value for BM_UPLOAD_FTP_PASSIVE : $BM_UPLOAD_FTP_PASSIVE";
+        return undef;
+    }
+
+    # trying to get Net::FTP.
+    eval "use Net::FTP";
+    if ($@) {
+        error "Net::FTP is not available, cannot use ftp transfer mode";
+        return undef;
+    }
+    eval {
+        $ftp = new Net::FTP (
+                $host, 
+                Debug => 0,
+                Passive => $BM_UPLOAD_FTP_PASSIVE);
+    };
+    if ($@) {
+        verbose_error "Unable to use the Net::FTP Perl module : $@";
+        return undef;
+    }
+    return $ftp;
+}
+
+sub ftptls_connect_to_host ($)
+{
+    my ($host) = @_;
+    my $ftp;
+
+    eval "use Net::Lite::FTP";
+    if ($@) {
+        error "Net::Lite::FTP is not available, cannot use ftp secured transfer mode";
+        return undef;
+    }
+    eval {
+        $ftp = Net::Lite::FTP->new ();
+        $ftp->open ($host, "21");
+    };
+    if ($@) {
+        verbose_error "Unable to use the Net::Lite::FTP Perl module : $@";
+        return undef;
+    }
+    return $ftp;
+}
+
+
+# How to upload files with ftp.
+# We'll use the Net::FTP or the Net::Lite::FTP (for secured mode) module here.
+# Net::Lite::FTP can be found here :
+# http://search.cpan.org/~eyck/Net-Lite-FTP-0.45/lib/Net/Lite/FTP.pm
+sub send_files_with_ftp($$$$$)
+{
+	
+	
+	# getting args
+	my ($user, $passwd, $ra_hosts, $repository, $ra_files) = @_;
+	unless (defined $user and 
+		defined $passwd and
+		defined $ra_hosts and
+		defined $ra_files and
+		defined $repository) {
+		error "required args needed";
+		return FALSE;
+	}
+	
+    # get the secure mode from the configuration
+    # default is set to false.
+    my $BM_UPLOAD_FTP_SECURE = $ENV{"BM_UPLOAD_FTP_SECURE"};
+    unless (defined $BM_UPLOAD_FTP_SECURE) {
+        $BM_UPLOAD_FTP_SECURE = "false";
+    }
+    if ($BM_UPLOAD_FTP_SECURE eq "true") {
+        $BM_UPLOAD_FTP_SECURE="1";
+    }
+    elsif ($BM_UPLOAD_FTP_SECURE eq "false") {
+        $BM_UPLOAD_FTP_SECURE="0";
+    }
+    else {
+        verbose_error "Unsupported value for BM_UPLOAD_FTP_SECURE : $BM_UPLOAD_FTP_SECURE";
         return FALSE;
     }   
     
 	# loop on each hosts given and connect to them.
 	foreach my $host (@{$ra_hosts}) {
-		my $ftp;
-        eval {
-            $ftp = new Net::FTP (
-                    $host, 
-                    Debug => 0,
-                    Passive => $BM_UPLOAD_FTP_PASSIVE);
-		};
-        if ($@) {
-            verbose_error "Unable to use the Net::FTP Perl module : $@";
+
+        my $ftp;
+        
+        # The FTP over TLS transfer mode
+        if ($BM_UPLOAD_FTP_SECURE) {
+    		$ftp = ftptls_connect_to_host ($host);
+            unless (defined $ftp) {
+                error "Unable to connect to host: $host";
+                return FALSE;
+            }
+        }
+
+        # The unencrypted FTP transfers
+        else {
+    		$ftp = ftp_connect_to_host ($host);
+            unless (defined $ftp) {
+                error "Unable to connect to host: $host";
+                return FALSE;
+            }
+        }
+			
+        # Now that we're connected, put the files
+        if ($ftp->login($user, $passwd) and
+            $ftp->binary() and
+            $ftp->cwd($repository)) {
+            verbose "Logged on $host, in $repository (binary mode)";
+            
+            if ($g_ftpclean) {
+                unless (ftp_clean_directory($ftp)) {
+                    verbose_error "Unable to clean the FTP directory.";
+                }
+            }
+
+            # Put all the files over the connexion
+            foreach my $file (@{$ra_files}) {
+                chomp $file;
+                if ($BM_UPLOAD_FTP_SECURE) {
+                    ftptls_put_file ($ftp, $file);
+                }
+                else {
+                    ftp_put_file ($ftp, $file);
+                }
+            }
+            verbose "All transfers done, loging out from $host\n";
+            $ftp->quit;
+        }
+        else {
+            verbose_error "unable to login and cwd on ${host}:${repository} in secured mode";
             return FALSE;
         }
-        
-        if (defined $ftp) {
-			verbose "Connected to $host";
-			
-			if ($ftp->login($user, $passwd) and
-			    $ftp->binary() and
-			    $ftp->cwd($repository)) {
-				verbose "Logged on $host, in $repository (binary mode)";
-
-                if ($g_ftpclean) {
-                    unless (ftp_clean_directory($ftp)) {
-                        verbose_error "Unable to clean the FTP directory.";
-                    }
-                }
-			    
-				foreach my $file (@{$ra_files}) {
-					chomp $file;
-					if (-f $file and $ftp->put($file)) {
-						verbose "File $file uploaded successfully.";
-					}
-					elsif (-f $file) {
-						verbose_error "File $file cannot be uploaded, remote host $host said : ".$ftp->message;
-                        return FALSE;
-					}
-					else {
-						verbose_error "File $file cannot be uploaded, it does not exist locally.";
-                        return FALSE;
-					}
-				}
-				verbose "Log out $host\n";
-				$ftp->quit;
-			}
-			else {
-				verbose_error "unable to login and cwd on ${host}:${repository} in binary mode";
-                return FALSE;
-			}
-		}
-		else {
-			verbose_error "unable to connect to $host : $@\n";
-            return FALSE;
-		}
 	}	
-    
     return TRUE;
+}
+
+
+sub ftp_put_file ($$)
+{
+    my ($ftp, $file) = @_;
+    $ftp->put ($file);
+}
+
+sub ftptls_put_file ($$)
+{
+    my ($ftp, $file) = @_;
+    my $basename = basename ($file);
+    $ftp->put ($basename, $file);
 }
 
 # }}}

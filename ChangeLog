@@ -1,3 +1,8 @@
+2006-09-09  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* lib/backup-methods.sh
+	  + Uses 'svnadmin -q' for disabling useless verbosity.
+
 2006-09-08  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* backup-manager-upload:

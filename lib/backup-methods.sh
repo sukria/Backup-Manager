@@ -694,7 +694,7 @@ function backup_method_svn()
         else
             archive_name=$(get_dir_name $repository "long")
             file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$archive_name.$TODAY.svn"
-            command="$svnadmin dump $repository"
+            command="$svnadmin -q dump $repository"
             compress="$BM_SVN_COMPRESSWITH"
             __create_file_with_meta_command
         fi

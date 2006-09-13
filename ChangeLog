@@ -1,3 +1,9 @@
+2006-09-13  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* lib/backup-methods.sh:
+	  + Don't ignore BM_TARBALL_OVER_SSH, if it's set to true, actually do the
+	  remote stuff we are expected to (closes: #123).
+
 2006-09-09  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* lib/backup-methods.sh

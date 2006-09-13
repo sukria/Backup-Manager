@@ -535,10 +535,10 @@ function __build_remote_archive()
             error "The archive type \"\$BM_TARBALL_FILETYPE\" is not supported."
         
         remote_command="ssh -i ${BM_UPLOAD_SSH_KEY} -o BatchMode=yes ${BM_UPLOAD_SSH_USER}@${host} $command"
-
         file_to_check="$file_to_create"
+
         if [ ! -e $file_to_check ] || [ $force = true ]; then
-            
+             
             logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
             $remote_command > "$file_to_create" 2>$logfile
             if [ $? -gt 0 ]; then
@@ -554,8 +554,15 @@ function __build_remote_archive()
     done
 }
 
+function __make_remote_tarball_token
+{
+    t="$1"
+    dir_name=$(get_dir_name "$t" $BM_TARBALL_NAMEFORMAT)
+    master=".master"
+    __build_remote_archive "$t" "$dir_name"
+}
 
-function __make_tarball_token
+function __make_local_tarball_token
 {
     t="$1"
 
@@ -585,16 +592,11 @@ function __make_tarball_token
             ;;
             esac
         fi
-
-        if [ "$BM_TARBALL_OVER_SSH" != "true" ]; then
-            __build_local_archive "$t" "$dir_name"       
-        else
-            __build_remote_archive "$t" "$dir_name"
-        fi
+        __build_local_archive "$t" "$dir_name"       
     fi
 }
 
-function __make_tarball_archives()
+function __make_remote_tarball_archives()
 {
     nb_err=0
     for target in "${BM_TARBALL_TARGETS[@]}"
@@ -602,18 +604,29 @@ function __make_tarball_archives()
         if [ -z "$target" ]; then
             continue
         fi
+        __make_remote_tarball_token "$target"
+    done
+}
 
+function __make_local_tarball_archives()
+{
+    nb_err=0
+    for target in "${BM_TARBALL_TARGETS[@]}"
+    do
+        if [ -z "$target" ]; then
+            continue
+        fi
         target_expanded="$(eval 'echo $target')"
         
         # if the target exists, handle it as a single token
         if [ -r "$target_expanded" ]; then
-            __make_tarball_token "$target_expanded"
+            __make_local_tarball_token "$target_expanded"
 
         # else try to expand the target in several tokens
         else
             for t in $target_expanded
             do
-                __make_tarball_token "$t"
+                __make_local_tarball_token "$t"
             done
         fi            
     done
@@ -640,7 +653,11 @@ function backup_method_tarball()
     ;;
     esac
 
-    __make_tarball_archives
+    if [ "$BM_TARBALL_OVER_SSH" != "true" ]; then
+        __make_local_tarball_archives
+    else
+        __make_remote_tarball_archives
+    fi
 	
     # Handle errors
 	if [ $nb_err -eq 1 ]; then

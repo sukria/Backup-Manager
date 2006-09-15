@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: backup-manager 0.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-09-08 15:08+0200\n"
-"PO-Revision-Date: 2006-09-05 16:30+0930\n"
+"PO-Revision-Date: 2006-09-15 15:47+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -759,9 +759,9 @@ msgstr ""
 "$BM_BURNING_DEVICE."
 
 #: ../lib/burning-methods.sh:295 ../lib/burning-methods.sh:310
-#, fuzzy, sh-format
+#, sh-format
 msgid "CD-R(W) burning requires $cdrecord, aborting."
-msgstr "Việc ghi vào đĩa CD-ROM cần thiết « $cdrecord » nên hủy bỏ."
+msgstr "Việc ghi vào đĩa CD-R(W) cần thiết « $cdrecord » nên hủy bỏ."
 
 #: ../lib/burning-methods.sh:298
 #, sh-format
@@ -825,15 +825,3 @@ msgstr "Không thể thực hiện tiền lệnh"
 #: ../backup-manager:243
 msgid "Unable to exec post-command."
 msgstr "Không thể thực hiện hậu lệnh."
-
-#~ msgid "CDROM burning requires $cdrecord, aborting."
-#~ msgstr "Việc ghi vào đĩa CD-ROM cần thiết « $cdrecord » nên hủy bỏ."
-
-#~ msgid "Not in interactive mode, cannot follow."
-#~ msgstr "Không phải trong chế độ tương tác nên không thể đi theo."
-
-#~ msgid "totoototo"
-#~ msgstr "totoototo"
-
-#~ msgid "During the tarballs generation, $nb_err error(s) occurred."
-#~ msgstr "Gặp $nb_err lỗi trong khi tạo ra kho nén tar."

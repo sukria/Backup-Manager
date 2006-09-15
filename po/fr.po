@@ -812,13 +812,3 @@ msgstr "Impossible d'exécuter la précommande."
 #: ../backup-manager:243
 msgid "Unable to exec post-command."
 msgstr "Impossible d'exécuter la post-commande."
-
-#~ msgid "CDROM burning requires $cdrecord, aborting."
-#~ msgstr "La gravure de CDROM nécessite $cdrecord ; annulation."
-
-#~ msgid "Not in interactive mode, cannot follow."
-#~ msgstr "Pas en mode interactif, impossible de continuer."
-
-#~ msgid "During the tarballs generation, $nb_err error(s) occurred."
-#~ msgstr ""
-#~ "Lors de la génération des archives, $nb_err erreur(s) se sont produite(s)."

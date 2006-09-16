@@ -6,8 +6,8 @@ set -e
 source testlib.sh
 # When the test is ready, set this to false for nice outputs.
 # if you want to see what happens, use those flags
- verbose="true"
- warnings="true"
+# verbose="true"
+# warnings="true"
 
 # The conffile part of the test, see confs/* for details.
 source confs/base.conf
@@ -24,9 +24,9 @@ upload_files
 
 
 # same test without SSH keys
-export BM_UPLOAD_SSH_HOST="192.168.0.20"
-export BM_UPLOAD_SSH_USER="sukria"
-export BM_UPLOAD_SSH_KEY="/home/sukria/.ssh/id_dsa_open"
+export BM_UPLOAD_SSH_HOST="localhost"
+export BM_UPLOAD_SSH_USER=""
+export BM_UPLOAD_SSH_KEY=""
 
 make_archives
 upload_files

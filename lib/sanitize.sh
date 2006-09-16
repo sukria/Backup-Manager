@@ -168,6 +168,7 @@ if [ "$BM_TARBALL_OVER_SSH" = "true" ]; then
     if [ -z "$BM_UPLOAD_SSH_USER" ]; then
         confkey_error "BM_UPLOAD_SSH_USER" "BM_TARBALL_OVER_SSH"
     fi
+    confkey_require "BM_UPLOAD_SSH_PORT" "22"
 fi
 
 # Converting anything in BM_TARBALL_DIRECTORIES in the array BM_TARBALL_TARGETS[].
@@ -189,6 +190,10 @@ if [ "$BM_UPLOAD_METHOD" = "rsync" ]; then
 	confkey_require "BM_UPLOAD_RSYNC_DUMPSYMLINKS" "false"
 	confkey_handle_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
 	confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
+fi
+
+if [ "$BM_UPLOAD_METHOD" = "ssh" ]; then
+    confkey_require "BM_UPLOAD_SSH_PORT" "22"
 fi
 
 if [ "$BM_ARCHIVE_METHOD" = "mysql" ]; then

@@ -534,7 +534,7 @@ function __build_remote_archive()
         command=$(__get_backup_tarball_remote_command) || 
             error "The archive type \"\$BM_TARBALL_FILETYPE\" is not supported."
         
-        remote_command="ssh -i ${BM_UPLOAD_SSH_KEY} -o BatchMode=yes ${BM_UPLOAD_SSH_USER}@${host} $command"
+        remote_command="ssh -p ${BM_UPLOAD_SSH_PORT} -i ${BM_UPLOAD_SSH_KEY} -o BatchMode=yes ${BM_UPLOAD_SSH_USER}@${host} $command"
         file_to_check="$file_to_create"
 
         if [ ! -e $file_to_check ] || [ $force = true ]; then

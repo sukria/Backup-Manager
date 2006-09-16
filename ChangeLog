@@ -1,3 +1,11 @@
+2006-09-16  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* lib/backup-methods.sh:
+	  + Added `-p ${BM_UPLOAD_SSH_PORT}' when building tarball over SSH so the
+	  user can use a different port than 22 (thanks to Henning Bitsch).
+	* lib/sanitize.sh:
+	  + Some sanitize statement to make sure BM_UPLOAD_SSH_PORT is defined.
+
 2006-09-15  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* Translation updates, all messages translated in all languages.

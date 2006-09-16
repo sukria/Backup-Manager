@@ -1,5 +1,14 @@
 2006-09-16  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* AUTHORS:
+	  + Bits updated in the AUTHORS file.
+	* NEWS:
+	  + Release notes for 0.7.5
+	* backup-manager:
+	  + Release, version, and so on.
+
+2006-09-16  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* lib/backup-methods.sh:
 	  + Added `-p ${BM_UPLOAD_SSH_PORT}' when building tarball over SSH so the
 	  user can use a different port than 22 (thanks to Henning Bitsch).

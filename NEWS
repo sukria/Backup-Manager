@@ -1,3 +1,24 @@
+0.7.5
+    - New features
+        - Support for lzma archives.
+        - Support for encryption of local archives with GPG.
+        - Support for FTP over SSL transfers (FTP upload method).
+        - Possible to burn non-Joliet disc image.
+        - Possible to choose if the purging should be recursive or not.
+
+    - Bug Fixes
+        - Fix for the md5 checking phase (was broken).
+        - Possible to burn DVD+R(W) within CRON environment.
+        - $BM_LOGGER_FACILITY is not ignored anymore.
+        - RSYNC uploads work smoothly again.
+        - Fix for the purging phase, no more annoying error messages.
+
+    - Changes
+        - SCP uploads are not performed with the $BM_UPLOAD_SSH_USER identity.
+        - backup-manager can be run by an unprivileged user.
+        - Paths of external programs are autodetected (no more static paths).
+        - The purging phase is not recursive by default.
+
 0.7.4
     - New feature(s)
         - Possible to purge remote archives through SSH (new configuration 

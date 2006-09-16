@@ -23,6 +23,9 @@
 
         Support for optional recursive purge
         - Thomas Parmelan <tom+backup-manager@ankh.fr.eu.org>
+
+        Support for FTP over TLS/SSL transfers
+        - Michael.Guerin <mickkael@free.fr>
     
 * Documentation
 
@@ -32,15 +35,22 @@
 
 * Translations:
 
-    German
-        - Sven Joachim <sven_joachim@web.de>
-    Spanish
-        - Niv Sardi-Altivanik <xaiki@cxhome.ath.cx>
-        - César Gómez Martín <cesar.gomez@gmail.com>
+    German: 
+        Sven Joachim <sven_joachim@web.de>
+    
+    Spanish: 
+        Niv Sardi-Altivanik <xaiki@cxhome.ath.cx>
+        César Gómez Martín <cesar.gomez@gmail.com>
+    
     Italian: 
-        - Matteo Frare Barutti <xenon@ngi.it>
-    French
-        - Alexis Sukrieh <sukria@backup-manager.org>
-    Vietnamese
-        - Clytie Siddall <clytie@riverland.net.au>
+        Matteo Frare Barutti <xenon@ngi.it>
+    
+    French:
+        Alexis Sukrieh <sukria@backup-manager.org>
+    
+    Vietnamese:
+        Clytie Siddall <clytie@riverland.net.au>
+    
+    Dutch:
+        Bjorn Wetzels <Bjorn.Wetzels@planet.nl>
 

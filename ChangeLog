@@ -1,3 +1,16 @@
+2006-10-06  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* Makefile:
+	  + Added SVN properties to track some metadata.
+	  + Uses Perl to find out where to install the perl modules
+	    ($Config{sitelib}) thanks to Thomas Parmelan.
+	  + Build backup-manager-purge.8 manpage as well as
+	    backup-manager-upload.8.
+	  + New default target `build' so that everything that needs to be built
+	    is built when you issue `make'.
+	* backup-manager:
+	  + Back to the unreleased mode, version is 0.7.5+REV
+
 2006-09-16  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* AUTHORS:

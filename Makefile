@@ -1,7 +1,38 @@
+# Copyright © 2005-2006 The Backup Manager Authors
+# See the AUTHORS file for details.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+# Makefile for Backup Manager written by Alexis Sukrieh, 
+# smart ideas for finding out perl libraries' destination come 
+# from Thomas Parmelan.
+
+# $Revision$
+# $Date$
+# $Author$
+
+
+# Overwrite that variable if you need to prefix the destination 
+# (needed for vendors).
 DESTDIR?=
 
-# For the backup-manager package
-PERL5DIR=$(DESTDIR)/usr/share/perl5
+# Overwrite that variable with the Perl vendorlib Config value if 
+# you package Backup Manager
+PERL5DIR?="$(DESTDIR)$(shell perl -MConfig -e 'print "$$Config{sitelib}"')"
+
+# Some static paths, specific to backup-manager
 LIBDIR=$(DESTDIR)/usr/share/backup-manager
 CONTRIB=$(LIBDIR)/contrib
 SHAREDIR=$(DESTDIR)/usr/share/backup-manager
@@ -27,9 +58,13 @@ DOCHTMLFILES	= doc/user-guide.html/*.html
 DOCPDF		= doc/user-guide.pdf
 DOCTXT		= doc/user-guide.txt
 
+
+# Main build rule
+build: manpages docs
+
 # The backup-manager package
-install: install_lib install_bin install_contrib install_man install_po
-install_binary: install_lib install_bin 
+install: build install_lib install_bin install_contrib install_man install_po
+install_binary: build install_lib install_bin 
 
 install_contrib:
 	@echo -e "*** Contrib files ***\n"
@@ -73,14 +108,24 @@ install_bin:
 
 # Building manpages
 man/backup-manager-upload.8:
-	@echo -e "\n*** generating manpages ***\n"
 	PERL5LIB=. pod2man --center="backup-manager-upload" backup-manager-upload > man/backup-manager-upload.8
+
+man/backup-manager-purge.8:
+	PERL5LIB=. pod2man --center="backup-manager-purge" backup-manager-purge > man/backup-manager-purge.8
 	
+# build the manpages
+manpages: manpages-stamp	
+manpages-stamp: man/backup-manager-upload.8 man/backup-manager-purge.8
+	touch manpages-stamp
+
 # Installing the man pages.
-install_man: man/backup-manager-upload.8
+install_man: manpages-stamp
 	@echo -e "\n*** Installing man pages ***\n"
 	install -d /usr/share/man/man8/
 	install --owner=root --group=root --mode=0644 man/*.8 /usr/share/man/man8/
+
+testperldir:
+	@echo "PERL5DIR: $(PERL5DIR)"
 
 docs:
 	make -C doc all
@@ -89,6 +134,7 @@ clean:
 	rm -f build-stamp
 	rm -rf debian/backup-manager
 	rm -f man/backup-manager-upload.8
+	tm -f man/*.8
 	$(MAKE) -C po clean
 	$(MAKE) -C doc clean
 

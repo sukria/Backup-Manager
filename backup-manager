@@ -25,7 +25,7 @@
 
 set -e
 
-RELEASE="true"
+RELEASE="false"
 REVISION='$Revision$'
 VERSION="0.7.5"
 

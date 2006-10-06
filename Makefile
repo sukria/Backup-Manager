@@ -51,13 +51,12 @@ SHFILES=\
 	lib/md5sum.sh 
 
 # For the backup-manager-doc package
-DOCDIR		= $(DESTDIR)/usr/share/doc/backup-manager
-DOCHTMLDIR 	= $(DOCDIR)/user-guide.html
-DOCPDF		= doc/user-guide.pdf
-DOCHTMLFILES	= doc/user-guide.html/*.html
-DOCPDF		= doc/user-guide.pdf
-DOCTXT		= doc/user-guide.txt
-
+DOCDIR		 = $(DESTDIR)/usr/share/doc/backup-manager
+DOCHTMLDIR	 = $(DOCDIR)/user-guide.html
+DOCPDF		 = doc/user-guide.pdf
+DOCHTMLFILES = doc/user-guide.html/*.html
+DOCPDF		 = doc/user-guide.pdf
+DOCTXT		 = doc/user-guide.txt
 
 # Main build rule
 build: manpages docs
@@ -134,7 +133,7 @@ clean:
 	rm -f build-stamp
 	rm -rf debian/backup-manager
 	rm -f man/backup-manager-upload.8
-	tm -f man/*.8
+	rm -f man/*.8
 	$(MAKE) -C po clean
 	$(MAKE) -C doc clean
 

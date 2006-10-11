@@ -24,6 +24,7 @@ function commit_archive()
 	file_to_create="$1"
     size=$(size_of_path $file_to_create)
     str=$(echo_translated "\$file_to_create: ok (\${size}M,")
+    debug "commit_archive ($file_to_create)"
 
     base=$(basename $file_to_create)
     md5hash=$(get_md5sum $file_to_create)
@@ -58,6 +59,8 @@ function commit_archive()
 function commit_archives()
 {    
 	file_to_create="$1"
+    debug "commit_archives ($file_to_create)"
+
     if [ "$BM_TARBALL_FILETYPE" = "dar" ]; then
         for dar_file in $file_to_create.*.dar
         do
@@ -72,6 +75,7 @@ function handle_tarball_error()
 {
 	target="$1"
 	logfile="$2"
+    debug "handle_tarball_error ($target, $logfile)"
 
 	warning "Unable to create \"\$target\", check \$logfile"
 	nb_err=$(($nb_err + 1))
@@ -82,6 +86,7 @@ function __exec_meta_command()
     command="$1"
     file_to_create="$2"
     compress="$3"
+    debug "__exec_meta_command ($command, $file_to_create, $compress)"
 
     if [ -f $file_to_create ] && [ $force != true ] 
     
@@ -94,8 +99,12 @@ function __exec_meta_command()
         case "$compress" in
         "gzip"|"gz")
             if [ -x $gzip ]; then
-                # we cannot pipe the command to gzip here, or $? will _always_ be 0... 
+                
+                if [ "$verbosedebug" == "true" ]; then
+                    tail -f $logfile &
+                fi
                 $command 2>$logfile > $file_to_create
+
                 if [ $? -gt 0 ]; then
                     warning "Unable to exec \$command; check \$logfile"
                     rm -f $file_to_create
@@ -110,6 +119,9 @@ function __exec_meta_command()
         ;;
         "bzip"|"bzip2")
             if [ -x $bzip ]; then
+                if [ "$verbosedebug" == "true" ]; then
+                    tail -f $logfile &
+                fi
                 # we cannot pipe the command to gzip here, or $? will _always_ be 0... 
                 $command 2>$logfile > $file_to_create
                 if [ $? -gt 0 ]; then
@@ -125,6 +137,9 @@ function __exec_meta_command()
             fi
         ;;
         ""|"uncompressed"|"none")
+            if [ "$verbosedebug" == "true" ]; then
+                tail -f $logfile &
+            fi
             $command 1> $file_to_create 2>$logfile
             if [ $? -gt 0 ]; then
                 warning "Unable to exec \$command; check \$logfile"
@@ -148,6 +163,8 @@ function __exec_meta_command()
 
 function __create_file_with_meta_command()
 {
+    debug "__create_file_with_meta_command ()"
+
     __exec_meta_command "$command" "$file_to_create" "$compress"
     file_to_create="$BM_RET"
     if [ -n "$BM_RET" ]; then
@@ -162,6 +179,7 @@ function __get_flags_relative_blacklist()
 {
     switch="$1"
     target="$2"
+    debug "__get_flags_relative_blacklist ($switch, $target)"
 
     target=${target%/}
     blacklist=""
@@ -194,18 +212,24 @@ function __get_flags_relative_blacklist()
 function __get_flags_dar_blacklist()
 {
     target="$1"
+    debug "__get_flags_dar_blacklist ($target)"
+
     __get_flags_relative_blacklist "-P" "$target"
 }
 
 function __get_flags_tar_blacklist()
 {
     target="$1"
+    debug "__get_flags_tar_blacklist ($target)"
+
     __get_flags_relative_blacklist "--exclude=" "$target"
 }
 
 
 function __get_flags_zip_dump_symlinks()
 {
+    debug "__get_flags_zip_dump_symlinks"
+
     export ZIP="" 
     export ZIPOPT="" 
 	y="-y"
@@ -217,6 +241,8 @@ function __get_flags_zip_dump_symlinks()
 
 function __get_flags_tar_dump_symlinks()
 {
+    debug "__get_flags_tar_dump_symlinks"
+
 	h=""
 	if [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
 		h="-h "
@@ -227,6 +253,8 @@ function __get_flags_tar_dump_symlinks()
 function __get_file_to_create()
 {
     target="$1"
+    debug "__get_file_to_create ($target)"
+
     dir_name=$(get_dir_name "$target" $BM_TARBALL_NAMEFORMAT)
     file_to_create="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$TODAY${master}.$BM_TARBALL_FILETYPE"
     
@@ -241,6 +269,7 @@ function __get_file_to_create_remote()
 {
     target="$1"
     host="$2"
+    debug "__get_file_to_create_remote ($target, $host)"
     
     dir_name=$(get_dir_name "$target" $BM_TARBALL_NAMEFORMAT)
     file_to_create="$BM_REPOSITORY_ROOT/${host}${dir_name}.$TODAY${master}.$BM_TARBALL_FILETYPE"
@@ -250,6 +279,8 @@ function __get_file_to_create_remote()
 
 function __get_master_day()
 {
+    debug "__get_master_day ()"
+
     if [ -z "$BM_TARBALLINC_MASTERDATETYPE" ]; then
         error "No frequency given, set BM_TARBALLINC_MASTERDATETYPE."
     fi
@@ -269,6 +300,8 @@ function __get_master_day()
 
 function __init_masterdatevalue()
 {
+    debug "__init_masterdatevalue ()"
+
     if [ -z "$BM_TARBALLINC_MASTERDATEVALUE" ]; then
         BM_TARBALLINC_MASTERDATEVALUE="1"
     fi
@@ -277,6 +310,8 @@ function __init_masterdatevalue()
 function __get_flags_tar_incremental()
 {
     dir_name="$1"
+    debug "__get_flags_tar_incremental ($dir_name)"
+
     incremental_list="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.incremental-list.txt"
     
     incremental=""
@@ -299,11 +334,12 @@ function __get_flags_tar_incremental()
 function __get_flags_dar_incremental()
 {
     dir_name="$1"
+    debug "__get_flags_dar_incremental ($dir_name)"
+
     incremental=""
     
     __get_master_day
     __init_masterdatevalue
-    
 
     # looking for the youngest last DAR backup available 
     for pastdays in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30
@@ -345,6 +381,8 @@ function __get_flags_dar_incremental()
 
 function __get_flags_dar_maxsize()
 {
+    debug "__get_flags_dar_maxsize ()"
+
     if [ -n "$BM_TARBALL_SLICESIZE" ]; then
         maxsize="--alter=SI -s $BM_TARBALL_SLICESIZE"
     fi
@@ -353,6 +391,8 @@ function __get_flags_dar_maxsize()
 
 function __get_flags_dar_overwrite()
 {
+    debug "__get_flags_dar_overwrite"
+    
 	if [ $force = true ] ; then
 		overwrite="-w"
 	fi
@@ -364,6 +404,8 @@ function __get_flags_dar_overwrite()
 # in the current shape...
 function __get_backup_tarball_remote_command()
 {
+    debug "__get_backup_tarball_remote_command ()"
+
     oldgzip="$GZIP"
     export GZIP="-n"
     case $BM_TARBALL_FILETYPE in
@@ -390,6 +432,8 @@ function __get_backup_tarball_remote_command()
 
 function __get_backup_tarball_command()
 {
+    debug "__get_backup_tarball_command ()"
+
     case $BM_TARBALL_FILETYPE in
         tar) 
             __get_flags_tar_blacklist "$target"
@@ -436,13 +480,20 @@ function __get_backup_tarball_command()
 
 function build_clear_archive
 {
+    debug "build_clear_archive ()"
+    
     logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+    debug "logfile: $logfile"
 
     # A couple of archive types have a special command line
     case "$BM_TARBALL_FILETYPE" in 
 
         # lzma archives should be piped manually
         "tar.lz")
+            if [ "$verbosedebug" == "true" ]; then
+                tail -f $logfile &
+            fi
+            debug "exec: $tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile"
             $tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile
             if [ $? -gt 0 ]; then
                 handle_tarball_error "$file_to_create" "$logfile"
@@ -454,6 +505,11 @@ function build_clear_archive
         
         # dar has a special commandline, that cannot fit the common tar way
         "dar")
+            if [ "$verbosedebug" == "true" ]; then
+                tail -f $logfile &
+            fi
+            debug "$command $target> $logfile 2>&1"
+
             if ! `$command "$target"> $logfile 2>&1`; then
                 handle_tarball_error "$file_to_create" "$logfile"
             else
@@ -464,6 +520,11 @@ function build_clear_archive
 
         # the common commandline
         *)
+            if [ "$verbosedebug" == "true" ]; then
+                tail -f $logfile &
+            fi
+            debug "$command $file_to_create \"$target\"> $logfile 2>&1"
+
             if ! `$command $file_to_create "$target"> $logfile 2>&1`; then
                 handle_tarball_error "$file_to_create" "$logfile"
             else
@@ -476,7 +537,9 @@ function build_clear_archive
 
 function build_encrypted_archive
 {
+    debug "build_encrypted_archive"
     logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+    debug "logfile: $logfile"
 
     if [ -z "$BM_ENCRYPTION_RECIPIENT" ]; then
         error "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
@@ -489,6 +552,10 @@ function build_encrypted_archive
     fi
 
     file_to_create="$file_to_create.gpg"
+    if [ "$verbosedebug" == "true" ]; then
+        tail -f $logfile &
+    fi
+
     if ! `$command - "$target" 2>>$logfile | $gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create 2>> $logfile`; then
         handle_tarball_error "$file_to_create" "$logfile"
     else
@@ -501,6 +568,7 @@ function __build_local_archive()
 {
     target="$1"
     dir_name="$2"
+    debug "__build_local_archive ($target, $dir_name)"
     
     file_to_create=$(__get_file_to_create "$target")
     command="$(__get_backup_tarball_command)" || 
@@ -514,7 +582,7 @@ function __build_local_archive()
     fi
 
     # let's exec the command
-    if [ ! -e $file_to_check ] || [ $force = true ]; then
+    if [ ! -e "$file_to_check" ] || [ "$force" = "true" ]; then
         if [ "$BM_ENCRYPTION_METHOD" = "gpg" ]; then
             if [ ! -x $gpg ]; then
                 error "The program \"\$gpg\" is needed."
@@ -533,6 +601,7 @@ function __build_remote_archive()
 {
     target="$1"
     dir_name="$2"
+    debug "__build_remote_archive ($target, $dir_name)"
     
     for host in $BM_UPLOAD_SSH_HOSTS
     do
@@ -548,6 +617,11 @@ function __build_remote_archive()
         if [ ! -e $file_to_check ] || [ $force = true ]; then
              
             logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+
+            if [ "$verbosedebug" == "true" ]; then
+                tail -f $logfile &
+            fi
+            debug "$remote_command > $file_to_create 2>$logfile"
             $remote_command > "$file_to_create" 2>$logfile
             if [ $? -gt 0 ]; then
                 handle_tarball_error "$file_to_create" "$logfile"
@@ -565,6 +639,8 @@ function __build_remote_archive()
 function __make_remote_tarball_token
 {
     t="$1"
+    debug "__make_remote_tarball_token ($t)"
+
     dir_name=$(get_dir_name "$t" $BM_TARBALL_NAMEFORMAT)
     master=".master"
     __build_remote_archive "$t" "$dir_name"
@@ -573,6 +649,7 @@ function __make_remote_tarball_token
 function __make_local_tarball_token
 {
     t="$1"
+    debug "__make_local_tarball_token ($t)"
 
     if [ ! -e "$t" ] || [ ! -r "$t" ]; then
         # first be sure the target exists
@@ -606,6 +683,8 @@ function __make_local_tarball_token
 
 function __make_remote_tarball_archives()
 {
+    debug "__make_remote_tarball_archives"
+
     nb_err=0
     for target in "${BM_TARBALL_TARGETS[@]}"
     do
@@ -618,6 +697,8 @@ function __make_remote_tarball_archives()
 
 function __make_local_tarball_archives()
 {
+    debug "__make_local_tarball_archives"
+
     nb_err=0
     for target in "${BM_TARBALL_TARGETS[@]}"
     do
@@ -645,6 +726,8 @@ function __make_local_tarball_archives()
 function backup_method_tarball()
 {
     method="$1"
+    debug "backup_method_tarball ($method)"
+
 	info "Using method \"\$method\"."
 	
     # build the command line
@@ -678,6 +761,8 @@ function backup_method_tarball()
 function backup_method_mysql()
 {
     method="$1"
+    debug "backup_method_mysql ($method)"
+
 	info "Using method \"\$method\"."
 	if [ ! -x $mysqldump ]; then
 		error "The \"mysql\" method is chosen, but \$mysqldump is not found."
@@ -707,6 +792,8 @@ function backup_method_mysql()
 function backup_method_svn()
 {
     method="$1"
+    debug "backup_method_svn ($method)"
+
     info "Using method \"\$method\"."
     if [ ! -x $svnadmin ]; then
         error "The \"svn\" method is chosen, but \$svnadmin is not found."
@@ -729,6 +816,8 @@ function backup_method_svn()
 function backup_method_pipe()
 {
     method="$1"
+    debug "backup_method_pipe ($method)"
+
     info "Using method \"\$method\"."
     index=0
 

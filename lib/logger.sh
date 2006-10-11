@@ -1,4 +1,4 @@
-# Copyright (C) 2005 The Backup Manager Authors
+# Copyright © 2005-2006 Alexis Sukrieh
 #
 # See the AUTHORS file for details.
 #
@@ -11,10 +11,10 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-#
+
 # This is the logger library
 # It can print stuff on STDIN, STDERR and send messages
-# to syslog
+# to syslog.
 
 function check_logger()
 {
@@ -36,7 +36,7 @@ function check_logger()
 #      syslog "info" "message to log"
 #
 #########################################
-syslog()
+function syslog()
 {
 	if [ "$BM_LOGGER" = "true" ]; then	
 		level="$1"
@@ -51,8 +51,7 @@ syslog()
 # $@ should be the same args as for a echo stanza.
 # 
 # $bm_log_level should be "info", "warning" or "error".
-#
-log() 
+function log() 
 {
 	# set the default log level if none given
 	if [ -z "$bm_log_level" ]; then
@@ -62,7 +61,7 @@ log()
 	# choose the good switch to read if needed
 	case "$bm_log_level" in
 		"debug")
-			bm_log_level=$debug
+			bm_log_switch=$verbosedebug
 		;;
 		"info")
 			bm_log_switch=$verbose
@@ -90,7 +89,11 @@ log()
 		# output the message to STDOUT
 		message=$(echo_translated "$@")
 		if [ "$bm_log_switch" == "true" ]; then
-			echo "${message}"
+			if [ "$bm_log_level" == "debug" ]; then
+                echo "${message}" >&2
+            else
+                echo "${message}"
+            fi
 		fi
 		# log the message to syslog
 		syslog $bm_log_level "${log_buffer}${message}"
@@ -99,26 +102,33 @@ log()
 	fi
 }
 
-info()
+function info()
 {
 	bm_log_level="info"
 	log "$@"
 }
 
-error()
+function error()
 {
 	bm_log_level="error"
 	log "$@"
 	_exit 1
 }
 
-debug()
+# That function is deprecated, soon we'll remove it.
+function __debug()
 {
-	bm_log_level="debug"
-	log "$@"
+    message="$1"
+    echo "DEPRECATED DEBUG: $message" >&2
 }
 
-warning()
+function debug()
+{
+	bm_log_level="debug"
+	log "DEBUG: $@"
+}
+
+function warning()
 {
 	bm_log_level="warning"
 	log "$@"
@@ -128,7 +138,7 @@ warning()
 # that's the way backup-manager should exit.
 # need to remove the lock before, clean the mountpoint and 
 # remove the logfile
-_exit()
+function _exit()
 {
     exec_post_command || error "Unable to exec post-command."
     umask $BM_UMASK >/dev/null

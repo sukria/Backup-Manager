@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2005 The Backup Manager Authors
+# Copyright © 2005-2006 Alexis Sukrieh
 # See the AUTHORS file for details.
 #
 # This program is free software; you can redistribute it and/or
@@ -74,8 +74,10 @@ source $libdir/backup-methods.sh
 source $libdir/upload-methods.sh
 source $libdir/burning-methods.sh
 source $libdir/actions.sh
+debug "Libraries loaded successfuly from \"$libdir\"."
 
 # Initialize defautls values of arguments
+verbosedebug="false"
 verbose="false"
 version="false"
 warnings="true"
@@ -98,6 +100,8 @@ if [ "$RELEASE" = "false" ]; then
     VERSION="${VERSION}r${rev}"
 fi
 
+debug "Version : $VERSION, release : $RELEASE"
+
 # set useful global variables and initial
 # checks
 bm_init_today
@@ -106,6 +110,7 @@ bm_init_today
 trap stop_me SIGINT SIGTERM SIGKILL
 
 # Parse the command line 
+debug "Processing the command line"
 while [ $# -ge 1 ]; do
 	case $1 in
 		-h|--help)
@@ -144,6 +149,10 @@ while [ $# -ge 1 ]; do
         --no-upload)
             noupload="true"
         ;;
+        -d|--debug) 
+            verbosedebug="true"
+            verbose="true"
+        ;;
         -v|--verbose) 
             verbose="true"
         ;;
@@ -176,20 +185,22 @@ while [ $# -ge 1 ]; do
 	esac
 	shift
 done
-
-
-source $conffile
 info "Backup Manager $VERSION - Copyright (c) 2004-2006 Alexis Sukrieh"
 
-# Sanitize will try to find deprecated vartiables,
-source $libdir/sanitize.sh
-# so the -u flag should not be enabled before.
-# There are too much problems for enabling -u now.
-# Most of them with the pipe method...
-# set -u
+debug "Loading configuration file : \"$conffile\"."
+source $conffile
 
+# Sanitize will try to find deprecated vartiables,
+debug "Sanitizing the configuration file."
+source $libdir/sanitize.sh
+
+debug "Initializing environment"
 bm_init_env 
+
+debug "Checking if logger is available"
 check_logger
+
+debug "Getting lock"
 get_lock
 check_filetypes
 
@@ -199,26 +210,31 @@ check_filetypes
 BM_UMASK=$(umask)
 umask 0077
 
+debug "Running pre-command"
 exec_pre_command || error "Unable to exec the pre-command"
 
 create_directories
 
 if [ "$upload" == "true" ]; then
+    debug "Running the upload methods"
 	upload_files
 	_exit 0
 fi
 
 if [ "$burn" == "true" ]; then
+    debug "Running the burning methods"
 	burn_files
 	_exit 0
 fi
 
 if [ "$md5check" == "true" ]; then
+    debug "Runing the MD5 checks"
 	check_cdrom_md5_sums
 	_exit 0
 fi
 
 if [ "$purge" == "true" ]; then
+    debug "Purging the repository"
 	clean_repositories
 	_exit 0
 fi
@@ -227,23 +243,30 @@ fi
 # are given.
 
 if [ "$nopurge" != "true" ]; then
+    debug "Purging the repository"
 	clean_repositories
 fi
 
+debug "Building archives"
 make_archives
 
 if [ "$noupload" != "true" ]; then
+    debug "Running the upload methods"
 	upload_files
 fi
 
 if [ "$noburn" != "true" ]; then
+    debug "Running the burning methods"
 	burn_files
 fi
 
+debug "Running post-command"
 exec_post_command || error "Unable to exec post-command."
 
+debug "Releasing lock"
 release_lock
 
+debug "Exiting"
 umask $BM_UMASK >/dev/null
 exit 0
 

@@ -1,5 +1,11 @@
 2006-10-11  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* lib/sanitize.sh:
+	  + Make sure the $key we test is defined.
+	  (closes: #110)
+
+2006-10-11  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* lib/backup-methods.sh:
 	  + look for previous DAR archives in the last 30 ones possible.
 	  (closes: #127).

@@ -304,28 +304,36 @@ function __get_flags_dar_incremental()
     __get_master_day
     __init_masterdatevalue
     
-    yesterday=$(date +'%Y%m%d' --date '1 days ago')
-    
-    yesterday_dar="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.dar"
-    yesterday_dar_first_slice="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.1.dar"
-    
-    yesterday_dar_master="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.master.dar"
-    yesterday_dar_master_first_slice="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.master.1.dar"
+
+    # looking for the youngest last DAR backup available 
+    for pastdays in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30
+    do
+        lastday=$(date +'%Y%m%d' --date "$pastdays days ago")
+        lastday_dar="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday.dar"
+        lastday_dar_first_slice="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday.1.dar"
+        lastday_dar_master="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday.master.dar"
+        lastday_dar_master_first_slice="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday.master.1.dar"
+
+        if [ -e $lastday_dar ] || [ -e $lastday_dar_first_slice ] ; then
+            # we have found a previous dar backup, this one will be used as a reference
+            # if needed.
+            break
+        fi
+    done        
     
     # If we aren't the "full backup" day, we take the previous backup as 
     # a reference for the incremental stuff.
     # We have to find the previous backup for that...
     if [ "$master_day" != "$BM_TARBALLINC_MASTERDATEVALUE" ] ; then
         
-        # Either we have a master backup made yesterday...
-    	if [ -e $yesterday_dar_master ] || 
-           [ -e $yesterday_dar_master_first_slice ] ; then
-            incremental="--ref $BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday.master"
+        # Either we have a master backup made lastday...
+    	if [ -e $lastday_dar_master ] || 
+           [ -e $lastday_dar_master_first_slice ] ; then
+            incremental="--ref $BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday.master"
     
-        # ... Or we have an incremental backup made yesterday
-        elif [ -e $yesterday_dar ] || 
-             [ -e $yesterday_dar_first_slice ] ; then
-            incremental="--ref $BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$yesterday"
+        # ... Or we have an incremental backup made lastday
+        elif [ -e $lastday_dar ] || [ -e $lastday_dar_first_slice ] ; then
+            incremental="--ref $BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday"
         fi
         
         # if we use some --ref then, it's not a master but an incremental backup.

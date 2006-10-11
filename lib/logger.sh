@@ -130,6 +130,7 @@ warning()
 # remove the logfile
 _exit()
 {
+    exec_post_command || error "Unable to exec post-command."
     umask $BM_UMASK >/dev/null
 	info "Releasing lock"
 	release_lock

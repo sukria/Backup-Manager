@@ -1,5 +1,11 @@
 2006-10-11  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* lib/logger.sh:
+	  + Exec the post-command when exiting.
+	  (closes: #118)
+
+2006-10-11  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* lib/sanitize.sh:
 	  + Make sure the $key we test is defined.
 	  (closes: #110)

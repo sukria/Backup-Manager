@@ -97,8 +97,11 @@ function bm_pause()
     read pause
 }
 
-function __debug()
+function tail_logfile
 {
-    message="$1"
-    echo "DEBUG: $message" >&2
+    logfile="$1"
+    if [ "$verbosedebug" == "true" ]; then
+        debug "Outping content of $logfile to stderr"
+        tail -f $logfile &
+    fi
 }

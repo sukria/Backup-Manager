@@ -1,5 +1,15 @@
 2006-10-11  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* doc/Makefile:
+	  + Don't build the doc files if they are up-to-date.
+	* lib/backup-methods.sh:
+	  + lots of debug stuff, use tail_logfile() for outputing temp logfiles to
+	  stderr if the switch --debug is enabled.
+	* lib/dialog.sh:
+	  + function tail_logfile().
+
+2006-10-11  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* lib/logger.sh:
 	  + Exec the post-command when exiting.
 	  (closes: #118)

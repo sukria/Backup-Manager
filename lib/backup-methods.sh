@@ -99,10 +99,9 @@ function __exec_meta_command()
         case "$compress" in
         "gzip"|"gz")
             if [ -x $gzip ]; then
-                
-                if [ "$verbosedebug" == "true" ]; then
-                    tail -f $logfile &
-                fi
+               
+                debug "$command 2>$logfile > $file_to_create"
+                tail_logfile "$logfile"
                 $command 2>$logfile > $file_to_create
 
                 if [ $? -gt 0 ]; then
@@ -119,11 +118,12 @@ function __exec_meta_command()
         ;;
         "bzip"|"bzip2")
             if [ -x $bzip ]; then
-                if [ "$verbosedebug" == "true" ]; then
-                    tail -f $logfile &
-                fi
+                
                 # we cannot pipe the command to gzip here, or $? will _always_ be 0... 
+                debug "$command 2>$logfile > $file_to_create"
+                tail_logfile "$logfile"
                 $command 2>$logfile > $file_to_create
+                
                 if [ $? -gt 0 ]; then
                     warning "Unable to exec \$command; check \$logfile"
                     rm -f $file_to_create
@@ -140,7 +140,11 @@ function __exec_meta_command()
             if [ "$verbosedebug" == "true" ]; then
                 tail -f $logfile &
             fi
+
+            debug "$command 1> $file_to_create 2>$logfile"
+            tail_logfile "$logfile"
             $command 1> $file_to_create 2>$logfile
+            
             if [ $? -gt 0 ]; then
                 warning "Unable to exec \$command; check \$logfile"
                 rm -f $file_to_create
@@ -493,8 +497,11 @@ function build_clear_archive
             if [ "$verbosedebug" == "true" ]; then
                 tail -f $logfile &
             fi
-            debug "exec: $tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile"
+            
+            debug "$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile"
+            tail_logfile "$logfile"
             $tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile
+
             if [ $? -gt 0 ]; then
                 handle_tarball_error "$file_to_create" "$logfile"
             else
@@ -505,10 +512,9 @@ function build_clear_archive
         
         # dar has a special commandline, that cannot fit the common tar way
         "dar")
-            if [ "$verbosedebug" == "true" ]; then
-                tail -f $logfile &
-            fi
+            
             debug "$command $target> $logfile 2>&1"
+            tail_logfile "$logfile"
 
             if ! `$command "$target"> $logfile 2>&1`; then
                 handle_tarball_error "$file_to_create" "$logfile"
@@ -520,10 +526,8 @@ function build_clear_archive
 
         # the common commandline
         *)
-            if [ "$verbosedebug" == "true" ]; then
-                tail -f $logfile &
-            fi
             debug "$command $file_to_create \"$target\"> $logfile 2>&1"
+            tail_logfile "$logfile"
 
             if ! `$command $file_to_create "$target"> $logfile 2>&1`; then
                 handle_tarball_error "$file_to_create" "$logfile"
@@ -552,9 +556,9 @@ function build_encrypted_archive
     fi
 
     file_to_create="$file_to_create.gpg"
-    if [ "$verbosedebug" == "true" ]; then
-        tail -f $logfile &
-    fi
+    
+    debug "$command - \"$target\" 2>>$logfile | $gpg -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create 2>> $logfile"
+    tail_logfile "$logfile"
 
     if ! `$command - "$target" 2>>$logfile | $gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create 2>> $logfile`; then
         handle_tarball_error "$file_to_create" "$logfile"
@@ -618,11 +622,10 @@ function __build_remote_archive()
              
             logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
 
-            if [ "$verbosedebug" == "true" ]; then
-                tail -f $logfile &
-            fi
             debug "$remote_command > $file_to_create 2>$logfile"
+            tail_logfile "$logfile"
             $remote_command > "$file_to_create" 2>$logfile
+
             if [ $? -gt 0 ]; then
                 handle_tarball_error "$file_to_create" "$logfile"
             else

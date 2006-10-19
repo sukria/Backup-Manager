@@ -10,11 +10,16 @@ install: all
 	install $(BASE).html $(DEST)
 	install $(BASE).txt $(DEST)
 
-pdf:
+pdf: user-guide.pdf
+user-guide.pdf:
 	debiandoc2pdf $(SOURCE)
-txt:
+
+txt: user-guide.txt
+user-guide.txt:
 	debiandoc2text $(SOURCE)
-html:
+
+html: user-guide.html
+user-guide.html:
 	debiandoc2html $(SOURCE)
 
 clean:

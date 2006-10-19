@@ -1,4 +1,4 @@
-# Copyright (C) 2005-2006 The Backup Manager Authors
+# Copyright © 2005-2006 Alexis Sukrieh
 #
 # See the AUTHORS file for details.
 #
@@ -16,16 +16,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# * * *
+
 #
-# Burning related functions. Every burning method is implemented there.
+# CD/DVD discs burning features
 #
-# * * *
 
 
 function bm_safe_unmount
 {
     device="$1"
+    debug "bm_safe_unmount($device)"
+
     realdevice=$(ls -l $device | awk '{print $10}')
     if [ -n "$realdevice" ]; then
         device="$realdevice"
@@ -44,10 +45,11 @@ function bm_safe_unmount
 # This will get all the md5 sums of the day,
 # mount the BM_BURNING_DEVICE on /tmp/device and check 
 # that the files are correct with md5 tests.
-check_cdrom_md5_sums()
+function check_cdrom_md5_sums()
 {
-    has_error=0
+    debug "check_cdrom_md5_sums()"
 
+    has_error=0
     if [ -z $BM_BURNING_DEVICE ]; then
         error "MD5 checkup is only performed on disks. Please set the BM_BURNING_DEVICE in \$conffile"
     fi
@@ -137,8 +139,10 @@ check_cdrom_md5_sums()
 # Two cases are possible:
 # - non-interactive mode: will try to burn data on a signle disc
 # - interactive mode : will ask for next disc if needed.
-burn_files()
+function burn_files()
 {
+    debug "burn_files()"
+
     if [ "$BM_BURNING_METHOD" = "none" ] || 
        [ -z "$BM_BURNING_METHOD" ]; then
         info "No burning method used."
@@ -148,8 +152,10 @@ burn_files()
     # Choose which mode to use (interactive or not)
     # according to the standard input
     if tty -s ; then 
+        debug "tty detected, using the interactive mode"
         burn_files_interactive
     else
+        debug "no tty detected, non-interactive mode"
         burn_files_non_interactive
     fi
 }
@@ -157,6 +163,8 @@ burn_files()
 function find_what_to_burn()
 {
     source="$1"
+    debug "find_what_to_burn($source)"
+    
     what_to_burn=""
 
     nb_file=$(ls -l $source 2>/dev/null | wc -l)
@@ -177,6 +185,8 @@ function find_what_to_burn()
 # This has to do something without any interactive input.
 function burn_files_non_interactive()
 {
+    debug "burn_files_non_interactive()"
+
     # find what to burn according to the size...
     what_to_burn=""
     size=$(size_of_path "$BM_REPOSITORY_ROOT")
@@ -211,6 +221,8 @@ function burn_files_non_interactive()
 # (anyway, we rely on this assertion, this should be documented).
 function burn_files_interactive()
 {
+    debug "burn_files_interactive()"
+
     purge_indexes
  	if [ ! -z "${BM__BURNING_DATE}" ] ; then
 		info "Burning archives of \$BM__BURNING_DATE."
@@ -233,6 +245,7 @@ function burn_session()
     what_to_burn="$1"
     session_number="$2"
     number_of_indexes="$3"
+    debug "burn_session($what_to_burn, $session_number, $number_of_indexes)"
 
     # Since version 0.7.5 disc-image can be non-joliet.
     # This is handled by $BM_BURNING_ISO_FLAGS, let's default that 
@@ -269,6 +282,8 @@ function burn_session()
             fi
             
             info "Exporting archives to the DVD+R(W) disc in \$BM_BURNING_DEVICE."
+            debug "$growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V \"${title}\" ${what_to_burn} >> ${logfile}"
+            tail_logfile $logfile
             $growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
@@ -282,10 +297,13 @@ function burn_session()
             fi
             
             info "Blanking the DVD-R(W) disc in \$BM_BURNING_DEVICE"
+            debug "$dvdrwformat -blank $BM_BURNING_DEVICE > $logfile"
+            tail_logfile $logfile
             $dvdrwformat -blank $BM_BURNING_DEVICE > $logfile 2>&1 || 
                 error "Unable to blank the DVD-R(W) disc (check \$logfile)."
             
             info "Exporting archives to the DVD-R(W) disc in \$BM_BURNING_DEVICE."
+            debug "$growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V \"${title}\" ${what_to_burn} >> ${logfile}"
             $growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
@@ -296,10 +314,13 @@ function burn_session()
             fi
                         
             info "Blanking the CDRW in \$BM_BURNING_DEVICE."
+            debug "${cdrecord} -tao $devforced blank=fast > ${logfile}"
+            tail_logfile $logfile
             ${cdrecord} -tao $devforced blank=fast > ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
             
             info "Burning data to \$BM_BURNING_DEVICE."
+            debug "${mkisofs} -V \"${title}\" -q ${BM_BURNING_ISO_FLAGS} ${what_to_burn} | ${cdrecord} -tao $devforced - > ${logfile}"
             ${mkisofs} -V "${title}" -q ${BM_BURNING_ISO_FLAGS} ${what_to_burn} | \
             ${cdrecord} -tao $devforced - > ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
@@ -311,6 +332,8 @@ function burn_session()
             fi
 
             info "Burning data to \$BM_BURNING_DEVICE."
+            debug "${mkisofs} -V \"${title}\" -q ${BM_BURNING_ISO_FLAGS} ${what_to_burn} | ${cdrecord} -tao $devforced - > ${logfile}"
+            tail_logfile $logfile
             ${mkisofs} -V "${title}" -q ${BM_BURNING_ISO_FLAGS} ${what_to_burn} | \
             ${cdrecord} -tao $devforced - > ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
@@ -336,12 +359,15 @@ function burn_session()
 
 function purge_indexes()
 {
+    debug "purge_indexes()"
+
     index_prefix=$(get_index_prefix)
 	rm -f ${index_prefix}*
 }
 
 function get_index_prefix()
 {
+    debug "get_index_prefix()"
 	index_prefix="$BM_REPOSITORY_ROOT/index-${BM__BURNING_DATE}"
     echo "$index_prefix"
 }
@@ -352,6 +378,7 @@ function get_index_prefix()
 function __build_indexes_from_target()
 {
 	target="$1"
+    debug "__build_indexes_from_target ($target)"
 
     indexes=""
 	medium_index=""
@@ -401,6 +428,7 @@ function __build_indexes_from_target()
 
 function __insert_new_medium()
 {
+    debug "__insert_new_medium()"
     bm_pause "$(translate "Please insert a new disk in \$BM_BURNING_DEVICE")"
 }
 
@@ -409,6 +437,7 @@ function __burn_session_from_file()
     index_file="$1"
     session_number="$2"
     number_of_indexes="$3"
+    debug "__burn_session_from_file ($index_file, $session_number, $number_of_indexes)"
 
     if [ ! -e "$index_file" ]; then
         error "No such index file: \"\$index_file\"."
@@ -422,13 +451,13 @@ function __burn_session_from_file()
     done
     
     what_to_burn="$what_to_burn_session"
-    
     burn_session "$what_to_burn_session" "$session_number" "$number_of_indexes"
-
 }
 
 function __append_index_paths_in_indexes()
 {
+    debug "__append_index_paths_in_indexes()"
+
     prefix=$(get_index_prefix)
     for index_file in $prefix*
     do    
@@ -442,6 +471,7 @@ function __append_index_paths_in_indexes()
 function burn_multiples_media()
 {
     target="$1"
+    debug "burn_multiples_media ($target)"
     
     # first purge existing indexs
     purge_indexes
@@ -473,5 +503,4 @@ function burn_multiples_media()
 
 	# Remove all the index files.
 	rm -f $indexes
-
 }

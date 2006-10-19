@@ -1,3 +1,18 @@
+2006-10-19  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* doc/Makefile:
+	  + Don't build the doc files if they are up-to-date.
+	* lib/actions.sh:
+	  + Copyright statement
+	  + more debug messages
+	  + tail -f logfiles 
+	* lib/burning-methods.sh:
+	  + Copyright statement
+	  + more debug messages
+	  + tail -f logfiles 
+	* po/backup-manager.pot, po/*.po:
+	  + Updates
+
 2006-10-11  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* doc/Makefile:

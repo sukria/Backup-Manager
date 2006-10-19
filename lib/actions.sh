@@ -1,4 +1,4 @@
-# Copyright (C) 2005 The Backup Manager Authors
+# Copyright © 2005-2006 Alexis Sukrieh
 #
 # See the AUTHORS file for details.
 #
@@ -16,13 +16,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# * * *
-# Every kind of actions that are not covered by -methods.sh libraries.
-# * * * 
+#
+# Main wrapper
+#
 
 # Loop on the backup methods
-make_archives()
+function make_archives()
 {
+    debug "make_archives()"
+
     for method in $BM_ARCHIVE_METHOD
     do      
         case $method in
@@ -59,8 +61,10 @@ done
 }
 
 # Loop on the upload methods
-upload_files ()
+function upload_files ()
 {
+    debug "upload_files()"
+
     for method in $BM_UPLOAD_METHOD
     do            
         case $method in
@@ -94,8 +98,10 @@ upload_files ()
 
 # This will parse all the files contained in BM_REPOSITORY_ROOT
 # and will clean them up. Using clean_directory() and clean_file().
-clean_repositories()
+function clean_repositories()
 {
+    debug "clean_repositories"
+
     info "Cleaning \$BM_REPOSITORY_ROOT"
     clean_directory $BM_REPOSITORY_ROOT
 }
@@ -104,8 +110,10 @@ clean_repositories()
 # This will run the pre-command given.
 # If this command prints on STDOUT "false", 
 # backup-manager will stop here.
-exec_pre_command()
+function exec_pre_command()
 {
+    debug "exec_pre_command()"
+
     if [ ! -z "$BM_PRE_BACKUP_COMMAND" ]; then
         info "Running pre-command: \$BM_PRE_BACKUP_COMMAND."
         RET=`$BM_PRE_BACKUP_COMMAND` || RET="false" 
@@ -123,8 +131,10 @@ exec_pre_command()
 
 }
 
-exec_post_command()
+function exec_post_command()
 {
+    debug "exec_post_command()"
+
     if [ ! -z "$BM_POST_BACKUP_COMMAND" ]; then
         info "Running post-command: \$BM_POST_BACKUP_COMMAND"
         RET=`$BM_POST_BACKUP_COMMAND` || RET="false"
@@ -143,18 +153,22 @@ exec_post_command()
 
 function bm_init_env ()
 {
+    debug "bm_init_env()"
     export TOOMUCH_TIME_AGO=`date +%d --date "$BM_ARCHIVE_TTL days ago"`
     check_logger
 }
 
 function bm_init_today()
 {
+    debug "bm_init_today()"
     export TODAY=`date +%Y%m%d`                  
 }
 
 # be sure that zip is supported.
-check_filetypes()
+function check_filetypes()
 {
+    debug "check_filetypes()"
+
 	case "$BM_TARBALL_FILETYPE" in
 		"zip")
 			if [ ! -x $zip ]; then
@@ -176,6 +190,8 @@ check_filetypes()
 
 function create_directories()
 {
+    debug "create_directories()"
+
 	if [ ! -d $BM_REPOSITORY_ROOT ]
 	then
 		info "The repository \$BM_REPOSITORY_ROOT does not exist, creating it."
@@ -189,6 +205,5 @@ function create_directories()
 		chmod $BM_REPOSITORY_CHMOD $BM_REPOSITORY_ROOT
 	fi
 }
-
 
 

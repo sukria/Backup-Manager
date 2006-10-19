@@ -34,7 +34,7 @@ libdir="/usr/share/backup-manager"
 vardir="/var/lib/backup-manager"
 bmu="/usr/bin/backup-manager-upload"
 
-# external programs (cannot be sure where the are)
+# external programs (cannot be sure where they are)
 zip=$(which zip) || true
 bzip=$(which bzip2) || true
 gzip=$(which gzip) || true

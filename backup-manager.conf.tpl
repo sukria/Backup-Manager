@@ -162,7 +162,7 @@ export BM_TARBALLINC_MASTERDATETYPE="weekly"
 # when master tarballs should be made
 export BM_TARBALLINC_MASTERDATEVALUE="1"
 
-# Examples: you want to make maser tarballs every friday:
+# Examples: you want to make master tarballs every friday:
 # BM_TARBALLINC_MASTERDATETYPE="weekly"
 # BM_TARBALLINC_MASTERDATEVALUE="5"
 #

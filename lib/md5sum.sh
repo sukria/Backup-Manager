@@ -1,4 +1,4 @@
-# Copyright (C) 2005 The Backup Manager Authors
+# Copyright © 2005-2006 Alexis Sukrieh
 #
 # See the AUTHORS file for details.
 #
@@ -19,10 +19,11 @@
 
 # This will get a filename a will search its 
 # md5hash in the file given as second arg.
-get_md5sum_from_file()
+function get_md5sum_from_file()
 {
 	filename="$1"
 	md5file="$2"
+    debug "get_md5sum_from_file ($filename, $md5file)"
 
     if [ -z "$filename" ] || 
        [ -z "$md5file" ]; then
@@ -40,9 +41,11 @@ get_md5sum_from_file()
 }
 
 # Just return the md5 hash of a file
-get_md5sum()
+function get_md5sum()
 {
 	file="$1"
+    debug "get_md5sum ($file)"
+
 	if [ -f $file ]; then
 		md5=`$md5sum $file 2>/dev/null` || md5=""
 		if [ -z "$md5" ]; then
@@ -63,9 +66,11 @@ get_md5sum()
 # the given archive path in order to get the 
 # MD5 hash from the BM_REPOSITORY_ROOT.
 # 
-save_md5_sum()
+function save_md5_sum()
 {
 	archive="$1"
+    debug "save_md5_sum ($archive)"
+
 	archive=$(basename $archive)
 	archive="$BM_REPOSITORY_ROOT/$archive"
 	md5file="$2"
@@ -76,6 +81,5 @@ save_md5_sum()
 	else
 		warning "Archive given does not exist in the repository: \$archive"
 	fi
-
 }
 

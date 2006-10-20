@@ -585,6 +585,10 @@ function __build_local_archive()
         file_to_check="$file_to_create"
     fi
 
+    if [ "$BM_ENCRYPTION_METHOD" = "gpg" ]; then
+        file_to_check="$file_to_check.gpg"
+    fi
+
     # let's exec the command
     if [ ! -e "$file_to_check" ] || [ "$force" = "true" ]; then
         if [ "$BM_ENCRYPTION_METHOD" = "gpg" ]; then

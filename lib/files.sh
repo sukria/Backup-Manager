@@ -1,4 +1,4 @@
-# Copyright (C) 2005 The Backup Manager Authors
+# Copyright © 2005-2006 Alexis Sukrieh
 #
 # See the AUTHORS file for details.
 #
@@ -11,12 +11,8 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-#
-#
-# The backup-manager's files.sh library.
-#
+
 # All functions dedicated to manage the files.
-#
 
 #unmount_tmp_dir()
 #{
@@ -31,10 +27,11 @@
 
 # this will send the appropriate name of archive to 
 # make according to what the user choose in the conf.
-get_dir_name()
+function get_dir_name()
 {
     base="$1"
     format="$2"
+    debug "get_dir_name ($base, $format)"
 
     if [ "$format" = "long" ]
     then
@@ -66,9 +63,11 @@ get_dir_name()
 # This will take a path and return the size in mega bytes
 # used on the disk.
 # Thanks to Michel Grentzinger <mic.grentz@online.fr>
-size_of_path()
+function size_of_path()
 {
     path="$1"
+    debug "size_of_path ($path)"
+
     if [ -z "$path" ]; then
         error "No path given."
     fi
@@ -79,9 +78,11 @@ size_of_path()
 }
 
 # Thanks to Michel Grentzinger <mic.grentz@online.fr>
-size_left_of_path()
+function size_left_of_path()
 {
     path="$1"
+    debug "size_left_of_path ($path)"
+
     if [ -z "$path" ]; then
         error "No path given."
     fi
@@ -93,9 +94,11 @@ size_left_of_path()
 }
 
 # Will return the prefix contained in the file name
-get_prefix_from_file()
+function get_prefix_from_file()
 {
     filename="$1"
+    debug "get_prefix_from_file ($filename)"
+
     filename=$(basename $filename)
     prefix=$(echo $filename | sed -e 's/^\([^-]\+\)-.*$/\1/')
     echo $prefix
@@ -103,15 +106,19 @@ get_prefix_from_file()
 
 
 # Will return the date contained in the file name
-get_date_from_file()
+function get_date_from_file()
 {
+    debug "get_date_from_file ($1)"
     get_date_from_archive "$1"
 }
 
 # This function is here to free each lock previously enabled.
 # We have to keep in mind that lock must be done for each conffile.
 # It is not global anymore, and that's the tricky thing.
-release_lock() {
+function release_lock() 
+{
+    debug "release_lock()"
+
     if [ -e $lockfile ]; then
         # We have to remove the line which contains 
         # the conffile.
@@ -135,7 +142,10 @@ release_lock() {
 # backup-manager won't run.
 # Be aware that a there will be one lock for each conffile used.
 # If the PID written in the lockfile is not alive, release.
-get_lock() {
+function get_lock() 
+{
+    debug "get_lock()"
+
     if [ -e $lockfile ]; then
         
         # look if a lock exists for that conffile (eg, we must find 
@@ -182,6 +192,8 @@ get_lock() {
 function get_date_from_archive()
 {
     file="$1"
+    debug "get_date_from_archive ($file)"
+
     date=$(echo $file | sed -e 's/.*\(20[0-9][0-9][0-9][0-9][0-3][0-9]\).*/\1/')
     echo "$date"
 }   
@@ -192,6 +204,8 @@ function get_date_from_archive()
 function get_name_from_archive()
 {
     archive="$1"
+    debug "get_name_from_archive ($archive)"
+
     archive=$(basename "$archive")
 
     # drop the first token before a dash (the prefix)
@@ -207,6 +221,8 @@ function get_name_from_archive()
 function get_master_from_archive()
 {
     archive="$1"
+    debug "get_master_from_archive ($archive)"
+
     archive=$(basename "$archive")
     
     master=$(echo "$archive" | sed -e 's/.*\.\(master\)\..*/\1/')
@@ -229,6 +245,8 @@ function get_newer_master()
     prefix="$1"
     name="$2"
     date="$3"
+    debug "get_newer_master ($prefix, $name, $date)"
+    
     master=""
     
     for this_master in $BM_REPOSITORY_ROOT/$prefix-$name.*.master.*
@@ -237,7 +255,7 @@ function get_newer_master()
         
         # is this master newer than the one we are testing?
         if [ "$this_date" -gt "$date" ]; then
-#            __debug "found this newer master : $this_master"
+            debug "found this newer master : $this_master"
             master="$this_master"
         fi
     done
@@ -249,6 +267,7 @@ function clean_file()
 {
     file="$1"
     purge_date="$2"
+    debug "clean_file ($file, $purge_date)"
 
     if [ ! -f "$file" ]; then
         error "\$file is not a regular file."
@@ -258,8 +277,7 @@ function clean_file()
     date=$(get_date_from_archive "$file")
     name=$(get_name_from_archive "$file")
     master=$(get_master_from_archive "$file")
-    
-#    __debug "parsing $file ($prefix, $date, $name, $master)"
+    debug "parsing $file ($prefix, $date, $name, $master)"
                 
     # we assume that if we find that, we have an archive
     if [ -n "$date" ] && [ "$date" != "$(basename $file)" ] &&
@@ -306,9 +324,11 @@ function clean_file()
 # the file's date to the date_to_remove.
 # If the file's date is older than the date_to_remove
 # we drop the file.
-clean_directory()
+function clean_directory()
 {
     directory="$1"
+    debug "clean_directory ($directory)"
+
     purge_date=$(date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago")
 
     if [ ! -d $directory ]; then
@@ -316,9 +336,9 @@ clean_directory()
     fi
 
     if [ "$BM_REPOSITORY_RECURSIVEPURGE" = "true" ]; then
-	maxdepth=""
+        maxdepth=""
     else
-	maxdepth="-maxdepth 1"
+        maxdepth="-maxdepth 1"
     fi
 
     # First list all the files to process
@@ -341,9 +361,11 @@ clean_directory()
 # It will look at every archives of the same source
 # and will replace duplicates (same size) by symlinks.
 # CONDITION: BM_ARCHIVE_PURGEDUPS = true
-purge_duplicate_archives()
+function purge_duplicate_archives()
 {
     file_to_create="$1"
+    debug "purge_duplicate_archives ($file_to_create)"
+
     md5hash=$(get_md5sum $file_to_create)
 
     # Only purge if BM_ARCHIVE_PURGEDUPS = true

@@ -1,4 +1,4 @@
-# Copyright © 2005-2006 The Backup Manager Authors
+# Copyright © 2005-2006 Alexis Sukrieh
 #
 # See the AUTHORS file for details.
 #

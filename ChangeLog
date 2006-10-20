@@ -1,3 +1,14 @@
+2006-10-20  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* Copyright headers and debugging messages
+	  - lib/backup-methods.sh
+	  - lib/dialog.sh
+	  - lib/files.sh
+	  - lib/md5sum.sh
+	  - lib/sanitize.sh
+	* If the GPG encryption feature is used, make sur we check if $archive.gpg
+	exists instead of $archive when building archives.
+
 2006-10-19  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* doc/Makefile:

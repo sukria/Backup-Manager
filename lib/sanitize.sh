@@ -1,4 +1,4 @@
-# Copyright (C) 2005 The Backup Manager Authors
+# Copyright © 2005-2006 Alexis Sukrieh
 #
 # See the AUTHORS file for details.
 #
@@ -21,19 +21,22 @@ nb_warnings=0
 
 # For minimizing translations and counting warnings, we globalize the warnings messages
 # Please, developers, use this for handling those warnings :)
-confkey_warning()
+function confkey_warning()
 {
 	key="$1"
 	default="$2"
+    debug "confkey_warning ($key, $default)"
+
 	nb_warnings=$(($nb_warnings + 1))
 	warning "The configuration key \$key is not set, using \"\$default\"."	
 }
 
-confkey_warning_deprecated()
+function confkey_warning_deprecated()
 {
 	deprecated_key="$1"
 	deprecated_value="$2"
 	new_key="$3"
+    debug "confkey_warning_deprecated ($deprecated_key, $deprecated_value, $new_key)"
 
 	nb_warnings=$(($nb_warnings + 1))
 	warning "The configuration key \"\$deprecated_key\" is deprecated, you should rename it \"\$new_key\". Using \"\$deprecated_value\"."
@@ -41,10 +44,12 @@ confkey_warning_deprecated()
 
 # Look if the deprecated key exists, if so, warning and use it as 
 # a default value for the new key.
-confkey_handle_deprecated()
+function confkey_handle_deprecated()
 {
 	deprecated_key="$1"
 	new_key="$2"
+    debug "confkey_handle_deprecated ($deprecated_key, $new_key)"
+
 	eval "deprecated_value=\"\$$deprecated_key\"" || deprecated_value=""
 
 	if [ -n "$deprecated_value" ]; then 
@@ -54,10 +59,12 @@ confkey_handle_deprecated()
 	fi
 }
 
-confkey_require()
+function confkey_require()
 {
 	key="$1"
 	default="$2"
+    debug "confkey_require ($key, $default)"
+
 	eval "value=\"\$$key\""
 
 	if [ -z "$value" ]; then
@@ -71,36 +78,36 @@ confkey_error()
 {
 	key="$1"
 	keymandatory="$2"
+    debug "confkey_error ($key, $keymandatory)"
+
 	error "The configuration key \$key is not set but \$keymandatory is enabled."
 }
 
-# In version older than 0.6, it was possible to 
-# set booleans to "yes" or "no", that's not more
-# valid.
-# In order to keep old conffiles working, we automagically
-# override yes/no values to true/false, but we trigger 
-# a warning.
-replace_deprecated_booleans()
+# In version older than 0.6, it was possible to set booleans to "yes" or "no",
+# that's not valid anymore. In order to be backward compatible, we override yes/no
+# values to true/false, but we trigger a warning.
+function replace_deprecated_booleans()
 {
-        for line in $(env)
-        do
-            key=$(echo "$line" | awk -F '=' '{print $1}')
-            value=$(echo "$line" | awk -F '=' '{print $2}')
-            if [ -n "$key" ]; then
-                if [ $(expr match "$key" BM_) -gt 0 ]; then
-                    if [ "$value" = "yes" ]; then
-                        warning "Deprecated boolean, \$key is set to \"yes\", setting \"true\" instead."
-    	                nb_warnings=$(($nb_warnings + 1))
-                        eval "export $key=\"true\""
-                    fi
-                    if [ "$value" = "no" ]; then
-                        warning "Deprecated boolean, \$key is set to \"no\", setting \"false\" instead."
-    	                nb_warnings=$(($nb_warnings + 1))
-                        eval "export $key=\"false\""
-                    fi
+    debug "replace_deprecated_booleans()"
+    for line in $(env)
+    do
+        key=$(echo "$line" | awk -F '=' '{print $1}')
+        value=$(echo "$line" | awk -F '=' '{print $2}')
+        if [ -n "$key" ]; then
+            if [ $(expr match "$key" BM_) -gt 0 ]; then
+                if [ "$value" = "yes" ]; then
+                    warning "Deprecated boolean, \$key is set to \"yes\", setting \"true\" instead."
+                    nb_warnings=$(($nb_warnings + 1))
+                    eval "export $key=\"true\""
+                fi
+                if [ "$value" = "no" ]; then
+                    warning "Deprecated boolean, \$key is set to \"no\", setting \"false\" instead."
+                    nb_warnings=$(($nb_warnings + 1))
+                    eval "export $key=\"false\""
                 fi
             fi
-        done    
+        fi
+    done    
 }
 
 ##############################################################
@@ -110,7 +117,6 @@ replace_deprecated_booleans()
 
 # First of all replace yes/no booleans with true/false ones.
 replace_deprecated_booleans
-
 confkey_handle_deprecated "BM_ARCHIVES_REPOSITORY" "BM_REPOSITORY_ROOT"
 confkey_require "BM_REPOSITORY_ROOT" "/var/archives" 
 
@@ -220,10 +226,6 @@ if [ -n "$BM_BURNING_METHOD" ] &&
 	confkey_require "BM_BURNING_MAXSIZE" "650"
 	confkey_require "BM_BURNING_CHKMD5" "true"
 fi
-
-# The SSH stuff
-
-# The FTP stuff
 
 if [ -n "$BM_UPLOAD_MODE" ]; then
 	confkey_handle_deprecated "BM_UPLOAD_MODE" "BM_UPLOAD_METHOD"

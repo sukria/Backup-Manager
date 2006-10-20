@@ -1,5 +1,12 @@
 2006-10-20  Alexis Sukrieh  <sukria@backup-manager.org>
 
+	* Makefile:
+	  + Don't build the docs by default anymore, the debiandoc tools may not
+	  be there.
+	  (close #134)
+
+2006-10-20  Alexis Sukrieh  <sukria@backup-manager.org>
+
 	* Copyright headers and debugging messages
 	  - lib/backup-methods.sh
 	  - lib/dialog.sh

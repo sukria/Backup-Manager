@@ -58,8 +58,9 @@ DOCHTMLFILES = doc/user-guide.html/*.html
 DOCPDF		 = doc/user-guide.pdf
 DOCTXT		 = doc/user-guide.txt
 
-# Main build rule
-build: manpages docs
+# Main build rule (we don't buid the docs as we don't know if debiandocs can be
+# there) so the docs target has to be called manually by vendors.
+build: manpages 
 
 # The backup-manager package
 install: build install_lib install_bin install_contrib install_man install_po

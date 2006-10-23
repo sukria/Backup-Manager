@@ -107,7 +107,7 @@ debug "Version : $VERSION, release : $RELEASE"
 bm_init_today
 
 # Catch signals for a nice exit.
-trap stop_me SIGINT SIGTERM SIGKILL
+trap clean_exit SIGINT SIGTERM SIGKILL
 
 # Parse the command line 
 debug "Processing the command line"

@@ -26,6 +26,11 @@ function commit_archive()
     str=$(echo_translated "\$file_to_create: ok (\${size}M,")
     debug "commit_archive ($file_to_create)"
 
+    # The archive is ok, we can drop the "pending" stuff
+    rm -f "${bm_pending_incremental_list}.orig"
+    bm_pending_incremental_list=""
+    bm_pending_archive=""
+
     base=$(basename $file_to_create)
     md5hash=$(get_md5sum $file_to_create)
     if [ "$verbose" = "true" ]; then
@@ -54,6 +59,36 @@ function commit_archive()
         chmod $BM_ARCHIVE_CHMOD $file_to_create ||
             warning "Unable to change file permissions of \"\$file_to_create\"."
     fi
+}
+
+# this is the callback wich is run when backup-manager
+# is stopped with a signal like SIGTERM or SIGKILL
+# We have to take care of the incomplete builds, in order to leave a repository with 
+# only trustable archives and friends.
+function clean_exit()
+{
+	echo ""
+	warning "Warning, process interrupted."
+    if [ -n "$bm_pending_archive" ] && [ -e "$bm_pending_archive" ]; then
+        
+        # remove the archive that is being built (it's incomplete)
+        warning "Removing archive \"\$bm_pending_archive\" (build interrupted)."
+        rm -f $bm_pending_archive
+    
+        # if we're building incremental stuff, restore the original incremental list file
+        if [ -n "$bm_pending_incremental_list" ]; then
+            if [ -e "${bm_pending_incremental_list}.orig" ]; then
+                warning "Restoring incremental-building details list: \"\$bm_pending_incremental_list\"."
+                rm -f $bm_pending_incremental_list
+                mv "${bm_pending_incremental_list}.orig" $bm_pending_incremental_list
+            else
+                warning "Removing incremental-building details list: \"$bm_pending_incremental_list\"."
+                rm -f $bm_pending_incremental_list
+            fi
+        fi            
+    fi
+	release_lock
+    exit 70
 }
 
 function commit_archives()
@@ -316,8 +351,12 @@ function __get_flags_tar_incremental()
     dir_name="$1"
     debug "__get_flags_tar_incremental ($dir_name)"
 
-    incremental_list="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.incremental-list.txt"
-    
+    incremental_list="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.incremental.bin"
+    bm_pending_incremental_list="$incremental_list"
+    if [ -e "${incremental_list}" ]; then
+        cp $incremental_list "${incremental_list}.orig"
+    fi
+
     incremental=""
     __get_master_day
     __init_masterdatevalue
@@ -512,7 +551,6 @@ function build_clear_archive
         
         # dar has a special commandline, that cannot fit the common tar way
         "dar")
-            
             debug "$command $target> $logfile 2>&1"
             tail_logfile "$logfile"
 
@@ -588,6 +626,8 @@ function __build_local_archive()
     if [ "$BM_ENCRYPTION_METHOD" = "gpg" ]; then
         file_to_check="$file_to_check.gpg"
     fi
+
+    bm_pending_archive="${file_to_check}"
 
     # let's exec the command
     if [ ! -e "$file_to_check" ] || [ "$force" = "true" ]; then

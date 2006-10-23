@@ -50,18 +50,6 @@ usage()
 	_exit 0
 }
 
-# this is the callback wich is run when backup-manager
-# is stopped with a signal like SIGTERM or SIGKILL
-# see the trap stuff ;)
-# So the only thing to do is to release the lock before.
-stop_me()
-{
-	echo ""
-	error "Warning, process interrupted, archives may be corrupted."
-	release_lock
-}
-
-
 # Prompt the user with a question, set $BM_RET to "true" if the user agreed,
 # to "false" if not.
 # PLEASE use translate() for giving a question to that function!

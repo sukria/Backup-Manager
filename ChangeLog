@@ -1,3 +1,8 @@
+2006-12-11  Alexis Sukrieh  <sukria@backup-manager.org>
+	* lib/files.sh
+	  + change a call to mktemp so it's compliant with old versions (mktemp
+	  <path>).
+
 2006-10-23  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* backup-manager:

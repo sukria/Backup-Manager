@@ -164,6 +164,13 @@ confkey_handle_deprecated "BM_NAME_FORMAT" "BM_TARBALL_NAMEFORMAT"
 confkey_handle_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
 confkey_handle_deprecated "BM_DUMP_SYMLINKS" "BM_TARBALL_DUMPSYMLINKS"
 
+# encryption stuff goes here
+if [ "$BM_ENCRYPTION_METHOD" = "gpg" ]; then
+    if [ -z "$BM_ENCRYPTION_RECIPIENT" ]; then
+        confkey_error "BM_ENCRYPTION_RECIPIENT" "BM_ENCRYPTION_METHOD"
+    fi
+fi
+
 # The TARBALL_OVER_SSH thing
 if [ "$BM_TARBALL_OVER_SSH" = "true" ]; then
     if [ -z "$BM_UPLOAD_SSH_HOSTS" ]; then

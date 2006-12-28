@@ -27,6 +27,7 @@ function commit_archive()
     debug "commit_archive ($file_to_create)"
 
     # The archive is ok, we can drop the "pending" stuff
+    debug "rm -f ${bm_pending_incremental_list}.orig"
     rm -f "${bm_pending_incremental_list}.orig"
     bm_pending_incremental_list=""
     bm_pending_archive=""
@@ -132,43 +133,38 @@ function __exec_meta_command()
         logfile=$(mktemp /tmp/bm-command.XXXXXX)
 
         case "$compress" in
-        "gzip"|"gz")
-            if [ -x $gzip ]; then
-               
+        "gzip"|"gz"|"bzip"|"bzip2")
+            if [ "$compress" = "gzip" ] || 
+               [ "$compress" = "gz" ]; then
+               compress=$gzip
+               ext="gz"
+            fi
+            if [ "$compress" = "bzip2" ] || 
+               [ "$compress" = "bzip" ]; then
+               compress=$bzip
+               ext="bz2"
+            fi
+
+            if [ -x $compress ]; then
                 debug "$command 2>$logfile > $file_to_create"
                 tail_logfile "$logfile"
-                $command 2>$logfile > $file_to_create
+                if [ "$BM_ENCRYPTION_METHOD" = "gpg" ]; then
+                    $command | $compress -f -q -9 | $gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.$ext.gpg 2> $logfile
+                    debug "$command | $compress -f -q -9 | $gpg -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create.$ext.gpg 2> $logfile"
+                    file_to_create="$file_to_create.$ext.gpg"
+                else
+                    $command | $compress -f -q -9 > $file_to_create.$ext 2> $logfile
+                    file_to_create="$file_to_create.$ext"
+                fi
 
                 if [ $? -gt 0 ]; then
                     warning "Unable to exec \$command; check \$logfile"
                     rm -f $file_to_create
                 else
                     rm -f $logfile
-                    $gzip -f -q -9 "$file_to_create"
-                    file_to_create="$file_to_create.gz"
                 fi
             else
-                error "Compressor \$compress requires \$gzip."
-            fi
-        ;;
-        "bzip"|"bzip2")
-            if [ -x $bzip ]; then
-                
-                # we cannot pipe the command to gzip here, or $? will _always_ be 0... 
-                debug "$command 2>$logfile > $file_to_create"
-                tail_logfile "$logfile"
-                $command 2>$logfile > $file_to_create
-                
-                if [ $? -gt 0 ]; then
-                    warning "Unable to exec \$command; check \$logfile"
-                    rm -f $file_to_create
-                else
-                    rm -f $logfile
-                    $bzip -f -q -9 "$file_to_create"
-                    file_to_create="$file_to_create.bz2"
-                fi
-            else
-                error "Compressor \$compress requires \$bzip."
+                error "Compressor \$compress is needed."
             fi
         ;;
         ""|"uncompressed"|"none")
@@ -178,7 +174,12 @@ function __exec_meta_command()
 
             debug "$command 1> $file_to_create 2>$logfile"
             tail_logfile "$logfile"
-            $command 1> $file_to_create 2>$logfile
+            if [ "$BM_ENCRYPTION_METHOD" = "gpg" ]; then
+                $command | $gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.gpg 2> $logfile
+                file_to_create="$file_to_create.gpg"
+            else
+                $command 1> $file_to_create 2>$logfile
+            fi
             
             if [ $? -gt 0 ]; then
                 warning "Unable to exec \$command; check \$logfile"
@@ -354,6 +355,7 @@ function __get_flags_tar_incremental()
     incremental_list="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.incremental.bin"
     bm_pending_incremental_list="$incremental_list"
     if [ -e "${incremental_list}" ]; then
+        debug "cp $incremental_list ${incremental_list}.orig"
         cp $incremental_list "${incremental_list}.orig"
     fi
 
@@ -627,7 +629,6 @@ function __build_local_archive()
         file_to_check="$file_to_check.gpg"
     fi
 
-    bm_pending_archive="${file_to_check}"
 
     # let's exec the command
     if [ ! -e "$file_to_check" ] || [ "$force" = "true" ]; then
@@ -635,12 +636,16 @@ function __build_local_archive()
             if [ ! -x $gpg ]; then
                 error "The program \"\$gpg\" is needed."
             fi
+            bm_pending_archive="${file_to_check}"
             build_encrypted_archive
         else
+            bm_pending_archive="${file_to_check}"
             build_clear_archive
         fi
     else
         warning "File \$file_to_check already exists, skipping."
+        debug "rm -f ${bm_pending_incremental_list}.orig"
+        rm -f "${bm_pending_incremental_list}.orig"
         continue
     fi
 }

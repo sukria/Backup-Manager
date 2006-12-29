@@ -185,6 +185,73 @@ export BM_REPOSITORY_CHMOD="770"
 export BM_ARCHIVE_CHMOD="660"
 </example>
 
+<sect1 id="encryption">Encryption
+<p>
+<em>
+If you cannot trust the place where you store your archives, you can choose to
+encrypt them so you are the only one who can read their content.
+That's a very good idea for archives you plan to upload to some remote place,
+or even for the archives you want to daily export on removable media.
+</em>
+
+<sect2 id="BM_ENCRYPTION_METHOD"><tt>BM_ENCRYPTION_METHOD</tt>
+<p>
+<em>Type: string, default: undefined.</em>
+<p>
+For &bmngr;, encryption is defined in one place in the configuration file.
+If the variable "<tt>BM_ENCRYPTION_METHOD</tt>" is not defined, no encryption occurs
+during the archive build process, if a method is defined there, then any
+archive built are encrypted through a pipeline with that method.
+
+<p>
+Be aware that encryption is supported for the methods "mysql", "pipe",
+"tarball" and "tarball-incremental" but only for those file types: 
+tar, tar.gz, tar.bz2.
+
+<p>
+The only valid method supported for encrypting archives is "gpg".
+
+<p>
+&bmngr; will encrypt your archive through a pipeline in order not to write any
+byte of unencrypted data on the physical media. The encryption will be
+performed with a command line like the following:
+
+<example>
+&lt;command&gt; | gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > archive.gpg
+</example>
+
+<p>
+To decrypt an archive built with GPG encryption, you have to be the owner of
+the private GPG key for which the encryption was made.
+
+Then issue the following:
+<example>
+$ gpg -d &lt;archive.gpg&gt; > archive
+</example>
+
+<p>
+GPG will then prompt you for the private key passphrase and will decrypt the
+content of the archive if the passphrase is valid.
+
+<p>
+Refer to the GPG documentation for more details of encryption.
+
+<sect2 id="BM_ENCRYPTION_RECIPIENT"><tt>BM_ENCRYPTION_RECIPIENT</tt>
+<p>
+<em>Type: string, default: undefined.</em>
+<p>
+As explained in the previous section, that variable should contain the GPG
+recipient for the encryption, eg: your GPG ID.
+
+<p>
+Examples of valid GPG ID:
+
+<example>
+export BM_ENCRYPTION_RECIPIENT="0x1EE5DD34"
+export BM_ENCRYPTION_RECIPIENT="Alexis Sukrieh"
+export BM_ENCRYPTION_RECIPIENT="sukria@sukria.net"
+</example>
+
 <sect1 id="archives">Archives
 
 <p>

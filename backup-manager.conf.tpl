@@ -45,7 +45,7 @@ export BM_REPOSITORY_RECURSIVEPURGE="false"
 
 # Do you want to replace duplicates by symlinks? 
 # (archive-DAY is a duplicate of archive-(DAY - 1) if they 
-# are both the same size).
+# are both the same according to MD5 hashes).
 export BM_ARCHIVE_PURGEDUPS="true"
 
 # Prefix of every archive on that box (default is HOSTNAME)

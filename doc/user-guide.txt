@@ -1134,13 +1134,11 @@ export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
 # in your main conffile -- /etc/backup-manager.conf
 export BM_ARCHIVE_TTL="0"
 export BM_UPLOAD_FTP_TTL="5"
-
-# in an alternate conffile -- /etc/bm-purge.conf
 export BM_POST_BACKUP_COMMAND="/usr/sbin/backup-manager --purge"
 
 # in your cron job:
 /usr/sbin/backup-manager
-/usr/sbin/backup-manager -c /etc/bm-purge.conf --purge
+/usr/sbin/backup-manager --purge
 
 (Don't put the post-command in the main conffile or you'll face an infinite loop.)
 

@@ -682,6 +682,20 @@ Contents
      This method provides a way to archive MySQL databases, the archives
      are made with mysqldump (SQL text files) and can be compressed.
 
+     In versions prior to 0.8, Backup Manager used to pass the MySQL
+     client's password through the command line.  As explained by the MySQL
+     manual, that's a security issue as the password is then readable for a
+     short time in the /proc directory (or using the ps command).
+
+     To close that vulnerability, the MySQL client password is not passed
+     through the command line anymore, it is written in a configuration
+     file located in the home directory of the user running Backup Manager
+     : `~/.my.cnf'.
+
+     If that file doesn't exist at runtime, Backup Manager will create it
+     and will then write the password provided in `BM_MYSQL_ADMINPASS'
+     inside.
+
 2.2.3.2. `BM_MYSQL_DATABASES'
 -----------------------------
 
@@ -724,7 +738,25 @@ Contents
 
           export BM_MYSQL_ADMINLOGIN="root"
 
-2.2.3.5. `BM_MYSQL_HOST'
+2.2.3.5. `BM_MYSQL_ADMINPASS'
+-----------------------------
+
+     _Type: string, default: `undefined'._
+
+     The MySQL client password.
+
+     If you have already made your own ~/.my.cnf configuration file, you
+     don't have to set that variable.
+
+     If you don't know what is the `~/.my.cnf' configuration file, set the
+     password, then Backup Manager will take care of creating the MySQL
+     client configuration file.
+
+     Example:
+
+          export BM_MYSQL_ADMINPASS="MySecretPass"
+
+2.2.3.6. `BM_MYSQL_HOST'
 ------------------------
 
      _Type: string, default: `localhost'._
@@ -735,7 +767,7 @@ Contents
 
           export BM_MYSQL_HOST="localhost"
 
-2.2.3.6. `BM_MYSQL_PORT'
+2.2.3.7. `BM_MYSQL_PORT'
 ------------------------
 
      _Type: string, default: `3306'._
@@ -746,7 +778,7 @@ Contents
 
           export BM_MYSQL_PORT="3306"
 
-2.2.3.7. `BM_MYSQL_FILETYPE'
+2.2.3.8. `BM_MYSQL_FILETYPE'
 ----------------------------
 
      _Type: enum(gzip, bzip2), default: `bzip2'._

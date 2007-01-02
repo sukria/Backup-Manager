@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BM ITALIAN VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-02 12:58+0100\n"
+"POT-Creation-Date: 2006-10-20 16:36+0200\n"
 "PO-Revision-Date: 2006-09-05 12:19+0100\n"
 "Last-Translator: Matteo Frare Barutti <xenon@ngi.it>\n"
 "Language-Team: ITALIAN <xenon@ngi.it>\n"
@@ -22,114 +22,102 @@ msgstr ""
 msgid "$file_to_create: ok (${size}M,"
 msgstr "$file_to_create: ok (${size}M,"
 
-#: ../lib/backup-methods.sh:54
+#: ../lib/backup-methods.sh:48
 #, sh-format
 msgid "Unable to purge duplicates of $file_to_create"
 msgstr "Impossibile rimuovere i duplicati di $file_to_create"
 
-#: ../lib/backup-methods.sh:59
+#: ../lib/backup-methods.sh:53
 #, sh-format
 msgid "Unable to change the owner of \"$file_to_create\"."
 msgstr "Impossibile cambiare il proprietario di \"$file_to_create\"."
 
-#: ../lib/backup-methods.sh:61
+#: ../lib/backup-methods.sh:55
 #, sh-format
 msgid "Unable to change file permissions of \"$file_to_create\"."
 msgstr "Impossibile cambiare i permessi di \"$file_to_create\"."
 
-#: ../lib/backup-methods.sh:72
-#, fuzzy
-msgid "Warning, process interrupted."
-msgstr ""
-"Attenzione, processo interrotto, gli archivi potrebero essere corrotti."
-
-#: ../lib/backup-methods.sh:76
-#, fuzzy, sh-format
-msgid "Removing archive \"$bm_pending_archive\" (build interrupted)."
-msgstr "Rimuovo l'archivio \"$archive\"."
-
-#: ../lib/backup-methods.sh:82
-#, sh-format
-msgid ""
-"Restoring incremental-building details list: \"$bm_pending_incremental_list"
-"\"."
-msgstr ""
-
-#: ../lib/backup-methods.sh:116
+#: ../lib/backup-methods.sh:80
 #, sh-format
 msgid "Unable to create \"$target\", check $logfile"
 msgstr "Impossibile creare \"$target\", controllare $logfile"
 
-#: ../lib/backup-methods.sh:130
+#: ../lib/backup-methods.sh:94
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr "Il file $file_to_create è già esistente, vado avanti."
 
-#: ../lib/backup-methods.sh:161 ../lib/backup-methods.sh:185
+#: ../lib/backup-methods.sh:108 ../lib/backup-methods.sh:128
+#: ../lib/backup-methods.sh:149
 #, sh-format
 msgid "Unable to exec $command; check $logfile"
 msgstr "Impossibile eseguire $command; verificare $logfile"
 
-#: ../lib/backup-methods.sh:167
+#: ../lib/backup-methods.sh:116
 #, fuzzy, sh-format
-msgid "Compressor $compress is needed."
-msgstr "Il compressore $compress richiede $gzip."
+msgid "Compressor $compress requires $gzip."
+msgstr "Il compressore $compress richiede $bzip."
 
-#: ../lib/backup-methods.sh:192
+#: ../lib/backup-methods.sh:136
+#, sh-format
+msgid "Compressor $compress requires $bzip."
+msgstr "Il compressore $compress richiede $bzip."
+
+#: ../lib/backup-methods.sh:156
 #, sh-format
 msgid "No such compressor supported: $compress."
 msgstr "Nessun compressore supportato: $compress."
 
-#: ../lib/backup-methods.sh:198
+#: ../lib/backup-methods.sh:162
 #, sh-format
 msgid "Unable to find $file_to_create"
 msgstr "Impossibile trovare $file_to_create"
 
-#: ../lib/backup-methods.sh:325
+#: ../lib/backup-methods.sh:289
 msgid "No frequency given, set BM_TARBALLINC_MASTERDATETYPE."
 msgstr "Nessuna frequenza impostata: modificare $BM_TARBALLINC_MASTERDATETYPE."
 
-#: ../lib/backup-methods.sh:336
+#: ../lib/backup-methods.sh:300
 #, sh-format
 msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr "Frequenza sconoscita: $BM_TARBALLINC_MASTERDATETYPE"
 
-#: ../lib/backup-methods.sh:369
+#: ../lib/backup-methods.sh:328
 #, sh-format
 msgid "Building master backup for target: \"$dir_name\"."
 msgstr "Creo il master backup per il target: \"$dir_name\"."
 
-#: ../lib/backup-methods.sh:493
+#: ../lib/backup-methods.sh:452
 #, sh-format
 msgid "The archive type \"tar.bz2\" depends on the tool \"$bzip\"."
 msgstr "Il tipo di archivio \"tar.bz2\" dipende dal tool \"$bzip\"."
 
-#: ../lib/backup-methods.sh:500
+#: ../lib/backup-methods.sh:459
 #, sh-format
 msgid "The archive type \"tar.lz\" depends on the tool \"$lzma\"."
 msgstr "Il tipo di archivio \"tar.lz\" dipende dal tool \"$lzma\"."
 
-#: ../lib/backup-methods.sh:507
+#: ../lib/backup-methods.sh:466
 #, sh-format
 msgid "The archive type \"zip\" depends on the tool \"$zip\"."
 msgstr "Il tipo di archivio \"zip\" dipende dal tool \"$zip\"."
 
-#: ../lib/backup-methods.sh:513
+#: ../lib/backup-methods.sh:472
 #, sh-format
 msgid "The archive type \"dar\" depends on the tool \"$dar\"."
 msgstr "Il tipo di archivio \"dar\" dipende dal tool \"$dar\"."
 
-#: ../lib/backup-methods.sh:519 ../lib/backup-methods.sh:619
-#: ../lib/backup-methods.sh:665
+#: ../lib/backup-methods.sh:478 ../lib/backup-methods.sh:579
+#: ../lib/backup-methods.sh:620
 #, sh-format
 msgid "The archive type \"$BM_TARBALL_FILETYPE\" is not supported."
 msgstr "Il tipo di archivio \"$BM_TARBALL_FILETYPE\" non è supportato."
 
-#: ../lib/backup-methods.sh:589
+#: ../lib/backup-methods.sh:549
 msgid "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
 msgstr "Deve essere definita la variabile \"BM_ENCRYPTION_RECIPIENT\"."
 
-#: ../lib/backup-methods.sh:595
+#: ../lib/backup-methods.sh:555
 #, sh-format
 msgid ""
 "The encryption is not yet possible with \"$BM_TARBALL_FILETYPE\" archives."
@@ -137,68 +125,58 @@ msgstr ""
 "La crittografia non è ancora possibile con gli archivi  "
 "\"$BM_TARBALL_FILETYPE\"."
 
-#: ../lib/backup-methods.sh:637
+#: ../lib/backup-methods.sh:596
 #, sh-format
 msgid "The program \"$gpg\" is needed."
 msgstr "E' necessario il programma \"$gpg\"."
 
-#: ../lib/backup-methods.sh:646 ../lib/backup-methods.sh:685
+#: ../lib/backup-methods.sh:603 ../lib/backup-methods.sh:640
 #, sh-format
 msgid "File $file_to_check already exists, skipping."
 msgstr "Il file $file_to_check è già esistente, vado avanti."
 
-#: ../lib/backup-methods.sh:708
+#: ../lib/backup-methods.sh:663
 #, sh-format
 msgid "Target \"$t\" does not exist, skipping."
 msgstr "La destinazione \"$t\" non esiste, vado avanti."
 
-#: ../lib/backup-methods.sh:783 ../lib/backup-methods.sh:818
-#: ../lib/backup-methods.sh:860 ../lib/backup-methods.sh:884
+#: ../lib/backup-methods.sh:738 ../lib/backup-methods.sh:773
+#: ../lib/backup-methods.sh:804 ../lib/backup-methods.sh:828
 #, sh-format
 msgid "Using method \"$method\"."
 msgstr "Utilizzo il metodo \"$method\"."
 
-#: ../lib/backup-methods.sh:807
+#: ../lib/backup-methods.sh:762
 msgid "1 error occurred during the tarball generation."
 msgstr "E' stato riscontrato 1 errore nella creazione del tarball."
 
-#: ../lib/backup-methods.sh:809
+#: ../lib/backup-methods.sh:764
 #, sh-format
 msgid "$nb_err errors occurred during the tarball generation."
 msgstr "Riscontrati $nb_err errori nella generazione del tarball."
 
-#: ../lib/backup-methods.sh:820
+#: ../lib/backup-methods.sh:775
 #, sh-format
 msgid "The \"mysql\" method is chosen, but $mysqldump is not found."
 msgstr "E' stato scelto il metodo \"mysql\" ma $mysqldump non è stato trovato."
 
-#: ../lib/backup-methods.sh:830
-#, sh-format
-msgid "Using existing MySQL client configuration file: $HOME/.my.cnf"
-msgstr ""
-
-#: ../lib/backup-methods.sh:833
-#, sh-format
-msgid "Creating a default MySQL client configuration file: $HOME/.my.cnf"
-msgstr ""
-
-#: ../lib/backup-methods.sh:862
+#: ../lib/backup-methods.sh:806
 #, sh-format
 msgid "The \"svn\" method is chosen, but $svnadmin is not found."
 msgstr "E' stato scelto il metodo \"svn\" ma  $svnadmin non è stato trovato."
 
-#: ../lib/backup-methods.sh:868
+#: ../lib/backup-methods.sh:812
 #, sh-format
 msgid "SVN repository \"$repository\" is not valid; skipping."
 msgstr "Il repository SVN \"$repository\" non è valido, continuo."
 
-#: ../lib/backup-methods.sh:893
+#: ../lib/backup-methods.sh:837
 #, sh-format
 msgid "Not enough args for this archive ($archive), skipping."
 msgstr ""
 "Non sono sufficienti gli args per questo archivio ($archive), proseguo."
 
-#: ../lib/backup-methods.sh:900
+#: ../lib/backup-methods.sh:844
 msgid "Cannot create archive."
 msgstr "Impossibile creare l'archivio."
 
@@ -236,7 +214,7 @@ msgstr ""
 msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
 msgstr "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
 
-#: ../lib/sanitize.sh:258
+#: ../lib/sanitize.sh:251
 #, sh-format
 msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
@@ -244,96 +222,6 @@ msgid ""
 msgstr ""
 "Durante la validazione del file di configurazione $conffile, $nb_warnings "
 "sono stati trovati dei warning."
-
-#: ../lib/md5sum.sh:30
-msgid "Internal error: bad usage of function get_md5sum_from_file()"
-msgstr "Errore interno: utilizzo errato della funzione get_md5sum_from_file()"
-
-#: ../lib/md5sum.sh:34
-#, sh-format
-msgid "No md5file found: $md5file"
-msgstr "Nessun file md5file trovato: $md5file"
-
-#: ../lib/md5sum.sh:82
-#, sh-format
-msgid "Archive given does not exist in the repository: $archive"
-msgstr "L'archivio specificato non esiste nel repository: $archive"
-
-#: ../lib/dialog.sh:27
-msgid "Output:"
-msgstr "Output:"
-
-#: ../lib/dialog.sh:28
-msgid "Print this short help message."
-msgstr "Visualizza questo breve messaggio di aiuto."
-
-#: ../lib/dialog.sh:29
-msgid "Print what happens on STDOUT."
-msgstr "Scrive cosa succede sull' STDOUT."
-
-#: ../lib/dialog.sh:30
-msgid "Disable warnings."
-msgstr "Disabilita i warning."
-
-#: ../lib/dialog.sh:33
-msgid "Single actions:"
-msgstr "Azioni singole:"
-
-#: ../lib/dialog.sh:34
-msgid "Just upload the files of the day."
-msgstr "Upload dei soli files del giorno."
-
-#: ../lib/dialog.sh:35
-msgid "Just burn the files of the day."
-msgstr "Masterizza i soli files del giorno."
-
-#: ../lib/dialog.sh:36
-msgid "Just test the md5 sums."
-msgstr "Fa solo il test degli MD5 sums."
-
-#: ../lib/dialog.sh:37
-msgid "Just purge old archives."
-msgstr "Svuota solamente i vecchi archivi."
-
-#: ../lib/dialog.sh:40
-msgid "Behaviour:"
-msgstr "Comportamento:"
-
-#: ../lib/dialog.sh:41
-msgid "Choose an alternate config file."
-msgstr "Scegliere un file di configurazione alternativo:"
-
-#: ../lib/dialog.sh:42
-msgid "Force overwrite of existing archives."
-msgstr "Forza la sovrascrittura degli archivi esistenti."
-
-#: ../lib/dialog.sh:45
-msgid "Unwanted actions:"
-msgstr "Azioni non volute:"
-
-#: ../lib/dialog.sh:46
-msgid "Disable the upload process."
-msgstr "Disabilita il processo di upload."
-
-#: ../lib/dialog.sh:47
-msgid "Disable the burning process."
-msgstr "Disabilita la masterizzazione."
-
-#: ../lib/dialog.sh:48
-msgid "Disable the purge process."
-msgstr "Disabilita il porcesso di svoutamento"
-
-#: ../lib/dialog.sh:62 ../lib/dialog.sh:81
-msgid "Not in interactive mode, cannot continue."
-msgstr "Non si è in modalità interattiva, impossibile continuare."
-
-#: ../lib/logger.sh:143 ../backup-manager:264
-msgid "Unable to exec post-command."
-msgstr "Impossibile eseguire il post-command"
-
-#: ../lib/logger.sh:145
-msgid "Releasing lock"
-msgstr "Rilascio il Lock"
 
 #: ../lib/actions.sh:44
 msgid "No backup method used."
@@ -423,6 +311,106 @@ msgstr ""
 msgid "The repository $BM_REPOSITORY_ROOT does not exist, creating it."
 msgstr "Il repository $BM_REPOSITORY_ROOT non esiste, lo creo."
 
+#: ../lib/md5sum.sh:30
+msgid "Internal error: bad usage of function get_md5sum_from_file()"
+msgstr "Errore interno: utilizzo errato della funzione get_md5sum_from_file()"
+
+#: ../lib/md5sum.sh:34
+#, sh-format
+msgid "No md5file found: $md5file"
+msgstr "Nessun file md5file trovato: $md5file"
+
+#: ../lib/md5sum.sh:82
+#, sh-format
+msgid "Archive given does not exist in the repository: $archive"
+msgstr "L'archivio specificato non esiste nel repository: $archive"
+
+#: ../lib/dialog.sh:27
+msgid "Output:"
+msgstr "Output:"
+
+#: ../lib/dialog.sh:28
+msgid "Print this short help message."
+msgstr "Visualizza questo breve messaggio di aiuto."
+
+#: ../lib/dialog.sh:29
+msgid "Print what happens on STDOUT."
+msgstr "Scrive cosa succede sull' STDOUT."
+
+#: ../lib/dialog.sh:30
+msgid "Disable warnings."
+msgstr "Disabilita i warning."
+
+#: ../lib/dialog.sh:33
+msgid "Single actions:"
+msgstr "Azioni singole:"
+
+#: ../lib/dialog.sh:34
+msgid "Just upload the files of the day."
+msgstr "Upload dei soli files del giorno."
+
+#: ../lib/dialog.sh:35
+msgid "Just burn the files of the day."
+msgstr "Masterizza i soli files del giorno."
+
+#: ../lib/dialog.sh:36
+msgid "Just test the md5 sums."
+msgstr "Fa solo il test degli MD5 sums."
+
+#: ../lib/dialog.sh:37
+msgid "Just purge old archives."
+msgstr "Svuota solamente i vecchi archivi."
+
+#: ../lib/dialog.sh:40
+msgid "Behaviour:"
+msgstr "Comportamento:"
+
+#: ../lib/dialog.sh:41
+msgid "Choose an alternate config file."
+msgstr "Scegliere un file di configurazione alternativo:"
+
+#: ../lib/dialog.sh:42
+msgid "Force overwrite of existing archives."
+msgstr "Forza la sovrascrittura degli archivi esistenti."
+
+#: ../lib/dialog.sh:45
+msgid "Unwanted actions:"
+msgstr "Azioni non volute:"
+
+#: ../lib/dialog.sh:46
+msgid "Disable the upload process."
+msgstr "Disabilita il processo di upload."
+
+#: ../lib/dialog.sh:47
+msgid "Disable the burning process."
+msgstr "Disabilita la masterizzazione."
+
+#: ../lib/dialog.sh:48
+msgid "Disable the purge process."
+msgstr "Disabilita il porcesso di svoutamento"
+
+#: ../lib/dialog.sh:60
+#, fuzzy
+msgid "Warning, process interrupted, archives may be corrupted."
+msgstr ""
+"Attenzione, processo interrotto, gli archivi potrebero essere corrotti."
+
+#: ../lib/dialog.sh:74 ../lib/dialog.sh:93
+msgid "Not in interactive mode, cannot continue."
+msgstr "Non si è in modalità interattiva, impossibile continuare."
+
+#: ../lib/logger.sh:143 ../backup-manager:264
+msgid "Unable to exec post-command."
+msgstr "Impossibile eseguire il post-command"
+
+#: ../lib/logger.sh:145
+msgid "Releasing lock"
+msgstr "Rilascio il Lock"
+
+#: ../lib/archives.sh:31
+msgid "Internal error: wrong call to bm_merge_incremental_backups()."
+msgstr "Errore interno: chiamata errata per bm_merge_incremental_backups()."
+
 #: ../lib/files.sh:72 ../lib/files.sh:87
 msgid "No path given."
 msgstr "Nessun path specificato."
@@ -506,6 +494,108 @@ msgstr ""
 #, sh-format
 msgid "$file is a duplicate of $file_to_create (using symlink)."
 msgstr "$file è un duplicato di $file_to_create (utilizzo un symlink)."
+
+#: ../lib/upload-methods.sh:38
+msgid "Using the upload method \"ssh\"."
+msgstr "Utilizzo il metodo di upload \"ssh\"."
+
+#: ../lib/upload-methods.sh:47 ../lib/upload-methods.sh:85
+msgid "No valid destination found, SSH upload not possible."
+msgstr "Nessuna destinazione valida, impossibile eseguire l'upload via SSH."
+
+#: ../lib/upload-methods.sh:68
+#, sh-format
+msgid ""
+"Error reported by backup-manager-upload for method \"scp\", check \"$logfile"
+"\"."
+msgstr ""
+"Riscontrato errore da backup-manager-upload per il metodo \"scp\", "
+"controllare \"$logfile\"."
+
+#: ../lib/upload-methods.sh:76
+msgid "Using the upload method \"ssh-gpg\"."
+msgstr "Utilizzo il metodo di upload \"ssh-gpg\"."
+
+#: ../lib/upload-methods.sh:88
+msgid ""
+"No gpg recipient given. Argument is mandatory if upload method ssh-gpg is "
+"used."
+msgstr ""
+"Nessun destinatario gpg specificato. L'argomento è necessario se si utilizza "
+"il metodo di upload ssh-gpg."
+
+#: ../lib/upload-methods.sh:105
+#, sh-format
+msgid ""
+"Error reported by backup-manager-upload for method \"ssh-gpg\", check "
+"\"$logfile\"."
+msgstr ""
+"Riscontrato errore da backup-manager-upload per il metodo \"ssh-gpg\", "
+"controllare \"$logfile\"."
+
+#: ../lib/upload-methods.sh:112
+msgid "Using the upload method \"ftp\"."
+msgstr "Utilizzo il metodo di upload \"ftp\"."
+
+#: ../lib/upload-methods.sh:122
+msgid "No valid destination found, FTP upload not possible."
+msgstr "Nessuna destinazione valida, impossibile eseguire l'upload via FTP."
+
+#: ../lib/upload-methods.sh:139
+#, sh-format
+msgid ""
+"Error reported by backup-manager-upload for method \"ftp\", check \"$logfile"
+"\"."
+msgstr ""
+"Riscontrato errore da backup-manager-upload per il metodo \"ftp\", "
+"controllare \"$logfile\"."
+
+#: ../lib/upload-methods.sh:147
+msgid "Using the upload method \"S3\"."
+msgstr "Utilizzo il metodo di upload \"S3\"."
+
+#: ../lib/upload-methods.sh:170
+#, sh-format
+msgid ""
+"Error reported by backup-manager-upload for method \"s3\", check \"$logfile"
+"\"."
+msgstr ""
+"Riscontrato errore da backup-manager-upload per il metodo \"s3\", "
+"controllare \"$logfile\"."
+
+#: ../lib/upload-methods.sh:176
+#, sh-format
+msgid "Uploading $directory to ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
+msgstr ""
+"Faccio l'upload di $directory su ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
+
+#: ../lib/upload-methods.sh:187
+msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
+msgstr ""
+"E' necessaria una chiave per utilizzare rsync (impostare BM_UPLOAD_SSH_USER, "
+"BM_UPLOAD_SSH_KEY)."
+
+#: ../lib/upload-methods.sh:198
+#, sh-format
+msgid "Upload of $directory with rsync failed; check $logfile."
+msgstr "Upload di $directory tramite rsync fallito; controllare $logfile."
+
+#: ../lib/upload-methods.sh:217
+msgid "No valid destination found, RSYNC upload not possible."
+msgstr "Nessuna destinazione valida, impossibile eseguire l'upload via RSYNC."
+
+#: ../lib/upload-methods.sh:236
+msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
+msgstr ""
+"Nessun host specificato per il metodo rsync, impostare BM_UPLOAD_RSYNC_HOSTS."
+
+#: ../lib/upload-methods.sh:243
+msgid "Using the upload method \"rsync\"."
+msgstr "Utilizzo il metodo di upload \"rsync\"."
+
+#: ../lib/upload-methods.sh:250
+msgid "Using the upload method \"rsync-snapshots\"."
+msgstr "Utilizzo il metodo di upload \"rsync-snapshots\"."
 
 #: ../lib/burning-methods.sh:38
 #, sh-format
@@ -714,108 +804,6 @@ msgstr "La masterizzazione richiede $number_of_indexes dischi."
 msgid "Burning content of $index"
 msgstr "Masterizzo il contenuto di $index"
 
-#: ../lib/upload-methods.sh:38
-msgid "Using the upload method \"ssh\"."
-msgstr "Utilizzo il metodo di upload \"ssh\"."
-
-#: ../lib/upload-methods.sh:47 ../lib/upload-methods.sh:85
-msgid "No valid destination found, SSH upload not possible."
-msgstr "Nessuna destinazione valida, impossibile eseguire l'upload via SSH."
-
-#: ../lib/upload-methods.sh:68
-#, sh-format
-msgid ""
-"Error reported by backup-manager-upload for method \"scp\", check \"$logfile"
-"\"."
-msgstr ""
-"Riscontrato errore da backup-manager-upload per il metodo \"scp\", "
-"controllare \"$logfile\"."
-
-#: ../lib/upload-methods.sh:76
-msgid "Using the upload method \"ssh-gpg\"."
-msgstr "Utilizzo il metodo di upload \"ssh-gpg\"."
-
-#: ../lib/upload-methods.sh:88
-msgid ""
-"No gpg recipient given. Argument is mandatory if upload method ssh-gpg is "
-"used."
-msgstr ""
-"Nessun destinatario gpg specificato. L'argomento è necessario se si utilizza "
-"il metodo di upload ssh-gpg."
-
-#: ../lib/upload-methods.sh:105
-#, sh-format
-msgid ""
-"Error reported by backup-manager-upload for method \"ssh-gpg\", check "
-"\"$logfile\"."
-msgstr ""
-"Riscontrato errore da backup-manager-upload per il metodo \"ssh-gpg\", "
-"controllare \"$logfile\"."
-
-#: ../lib/upload-methods.sh:112
-msgid "Using the upload method \"ftp\"."
-msgstr "Utilizzo il metodo di upload \"ftp\"."
-
-#: ../lib/upload-methods.sh:122
-msgid "No valid destination found, FTP upload not possible."
-msgstr "Nessuna destinazione valida, impossibile eseguire l'upload via FTP."
-
-#: ../lib/upload-methods.sh:139
-#, sh-format
-msgid ""
-"Error reported by backup-manager-upload for method \"ftp\", check \"$logfile"
-"\"."
-msgstr ""
-"Riscontrato errore da backup-manager-upload per il metodo \"ftp\", "
-"controllare \"$logfile\"."
-
-#: ../lib/upload-methods.sh:147
-msgid "Using the upload method \"S3\"."
-msgstr "Utilizzo il metodo di upload \"S3\"."
-
-#: ../lib/upload-methods.sh:170
-#, sh-format
-msgid ""
-"Error reported by backup-manager-upload for method \"s3\", check \"$logfile"
-"\"."
-msgstr ""
-"Riscontrato errore da backup-manager-upload per il metodo \"s3\", "
-"controllare \"$logfile\"."
-
-#: ../lib/upload-methods.sh:176
-#, sh-format
-msgid "Uploading $directory to ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
-msgstr ""
-"Faccio l'upload di $directory su ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
-
-#: ../lib/upload-methods.sh:187
-msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
-msgstr ""
-"E' necessaria una chiave per utilizzare rsync (impostare BM_UPLOAD_SSH_USER, "
-"BM_UPLOAD_SSH_KEY)."
-
-#: ../lib/upload-methods.sh:198
-#, sh-format
-msgid "Upload of $directory with rsync failed; check $logfile."
-msgstr "Upload di $directory tramite rsync fallito; controllare $logfile."
-
-#: ../lib/upload-methods.sh:217
-msgid "No valid destination found, RSYNC upload not possible."
-msgstr "Nessuna destinazione valida, impossibile eseguire l'upload via RSYNC."
-
-#: ../lib/upload-methods.sh:236
-msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
-msgstr ""
-"Nessun host specificato per il metodo rsync, impostare BM_UPLOAD_RSYNC_HOSTS."
-
-#: ../lib/upload-methods.sh:243
-msgid "Using the upload method \"rsync\"."
-msgstr "Utilizzo il metodo di upload \"rsync\"."
-
-#: ../lib/upload-methods.sh:250
-msgid "Using the upload method \"rsync-snapshots\"."
-msgstr "Utilizzo il metodo di upload \"rsync-snapshots\"."
-
 #: ../backup-manager:139
 msgid "The -b option must be followed by a valid date (YYYYMMDD)."
 msgstr "all'opzione -b deve seguire una data valida (AAAAMMGG)."
@@ -828,11 +816,13 @@ msgstr "all'opzione -c deve seguire un nome di file valido"
 msgid "Unable to exec the pre-command"
 msgstr "Impossibile eseguire il pre-command"
 
-#~ msgid "Compressor $compress requires $bzip."
-#~ msgstr "Il compressore $compress richiede $bzip."
+#, fuzzy
+#~ msgid "Removing archive \"$bm_pending_archive\" (build interrupted)."
+#~ msgstr "Rimuovo l'archivio \"$archive\"."
 
-#~ msgid "Internal error: wrong call to bm_merge_incremental_backups()."
-#~ msgstr "Errore interno: chiamata errata per bm_merge_incremental_backups()."
+#, fuzzy
+#~ msgid "Compressor $compress is needed."
+#~ msgstr "Il compressore $compress richiede $gzip."
 
 #~ msgid "CDROM burning requires $cdrecord, aborting."
 #~ msgstr ""

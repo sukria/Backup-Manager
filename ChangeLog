@@ -1,13 +1,16 @@
 2007-01-02	Alexis Sukrieh	<sukria@backup-manager.org>
 
+	* doc/user-guide.sgml, doc/user-guide.txt
+	  + More precise documentation about how to use a zero-TTL for local
+	  purging with a different one for remote ones.
+	  (closes: #144)
+
+2007-01-02	Alexis Sukrieh	<sukria@backup-manager.org>
+
 	* lib/backup-methods.sh
 	  + Fix the security vulnerability about passing MySQL client password
 	  through the commandline. Using ~/.my.cnf instead.
 	  (closes: #146)
-	* doc/user-guide.sgml
-	  + New section about the encryption using GPG.
-	  (closes: #132)
-
 
 2006-12-29	Alexis Sukrieh	<sukria@backup-manager.org>
 

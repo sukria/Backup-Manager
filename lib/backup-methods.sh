@@ -136,24 +136,30 @@ function __exec_meta_command()
         "gzip"|"gz"|"bzip"|"bzip2")
             if [ "$compress" = "gzip" ] || 
                [ "$compress" = "gz" ]; then
-               compress=$gzip
+               compress_bin=$gzip
+                if [ -z "$compress_bin" ]; then
+                    error "gzip is not installed but gzip compression needed."
+                fi
                ext="gz"
             fi
             if [ "$compress" = "bzip2" ] || 
                [ "$compress" = "bzip" ]; then
-               compress=$bzip
+               compress_bin=$bzip
+                if [ -z "$compress_bin" ]; then
+                    error "bzip2 is not installed but bzip2 compression needed."
+                fi
                ext="bz2"
             fi
 
-            if [ -x $compress ]; then
-                debug "$command 2>$logfile > $file_to_create"
+            if [ -n "$compress_bin" ] && [ -x "$compress_bin" ]; then
+                debug "$command > $file_to_create 2> $logfile"
                 tail_logfile "$logfile"
                 if [ "$BM_ENCRYPTION_METHOD" = "gpg" ]; then
-                    $command | $compress -f -q -9 | $gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.$ext.gpg 2> $logfile
-                    debug "$command | $compress -f -q -9 | $gpg -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create.$ext.gpg 2> $logfile"
+                    $command | $compress_bin -f -q -9 | $gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.$ext.gpg 2> $logfile
+                    debug "$command | $compress_bin -f -q -9 | $gpg -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create.$ext.gpg 2> $logfile"
                     file_to_create="$file_to_create.$ext.gpg"
                 else
-                    $command | $compress -f -q -9 > $file_to_create.$ext 2> $logfile
+                    $command | $compress_bin -f -q -9 > $file_to_create.$ext 2> $logfile
                     file_to_create="$file_to_create.$ext"
                 fi
 
@@ -825,7 +831,21 @@ function backup_method_mysql()
         opt="--opt"
     fi
     
-    base_command="$mysqldump $opt -u$BM_MYSQL_ADMINLOGIN -p$BM_MYSQL_ADMINPASS -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT"
+    # if a MySQL Client conffile exists, the password must be inside
+    if [ -f "$HOME/.my.cnf" ]; then
+        info "Using existing MySQL client configuration file: \$HOME/.my.cnf"
+    # we create a default one, just with the password
+    else
+        if [ -z "$BM_MYSQL_ADMINPASS" ]; then
+            error "You have to set BM_MYSQL_ADMINPASS in order to use the mysql method."
+        fi
+        warning "Creating a default MySQL client configuration file: \$HOME/.my.cnf"
+        echo "[client]" > $HOME/.my.cnf 
+        echo "# The following password will be sent to all standard MySQL clients" >> $HOME/.my.cnf 
+        echo "password=\"$BM_MYSQL_ADMINPASS\"" >> $HOME/.my.cnf
+        chmod 600 $HOME/.my.cnf
+    fi
+    base_command="$mysqldump $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT"
     compress="$BM_MYSQL_FILETYPE"	
 
     for database in $BM_MYSQL_DATABASES

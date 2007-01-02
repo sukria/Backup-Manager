@@ -212,7 +212,6 @@ fi
 
 if [ "$BM_ARCHIVE_METHOD" = "mysql" ]; then
 	confkey_require "BM_MYSQL_ADMINLOGIN" "root"
-	confkey_require "BM_MYSQL_ADMINPASS" ""
 	confkey_require "BM_MYSQL_HOST" "localhost"
 	confkey_require "BM_MYSQL_PORT" "3306"
 	confkey_require "BM_MYSQL_FILETYPE" "tar.gz"

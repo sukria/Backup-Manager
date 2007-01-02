@@ -729,6 +729,21 @@ if you choose a monthly frequency.
 This method provides a way to archive MySQL databases, the archives are made with 
 mysqldump (SQL text files) and can be compressed.
 
+<p>
+In versions prior to 0.8, &bmngr; used to pass the MySQL client's password through 
+the command line. As explained by the MySQL manual, that's a security issue as
+the password is then readable for a short time in the /proc directory (or using
+the ps command).
+
+<p>
+To close that vulnerability, the MySQL client password is not passed through
+the command line anymore, it is written in a configuration file located in the
+home directory of the user running &bmngr; : <tt>~/.my.cnf</tt>.
+
+<p>
+If that file doesn't exist at runtime, &bmngr; will create it and will then
+write the password provided in <tt>BM_MYSQL_ADMINPASS</tt> inside. 
+
 <sect2 id="BM_MYSQL_DATABASES"><tt>BM_MYSQL_DATABASES</tt>
 
 <p>
@@ -778,6 +793,29 @@ Example:
 <example>
 export BM_MYSQL_ADMINLOGIN="root"
 </example>
+
+<sect2 id="BM_MYSQL_ADMINPASS"><tt>BM_MYSQL_ADMINPASS</tt>
+
+<p>
+<em>Type: string, default: <tt>undefined</tt>.</em>
+<p>
+The MySQL client password.
+
+<p>
+If you have already made your own ~/.my.cnf configuration file, you don't have
+to set that variable.
+
+<p>
+If you don't know what is the <tt>~/.my.cnf</tt> configuration file, set the password,
+then &bmngr; will take care of creating the MySQL client configuration file.
+
+<p>
+Example:
+
+<example>
+export BM_MYSQL_ADMINPASS="MySecretPass"
+</example>
+
 
 <sect2 id="BM_MYSQL_HOST"><tt>BM_MYSQL_HOST</tt>
 

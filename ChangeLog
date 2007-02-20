@@ -1,3 +1,14 @@
+2007-02-20	Alexis Sukrieh	<sukria@backup-manager.org>
+	* lib/backup-methods.sh
+	  + change every call to external command so that we can read their return
+	  code.
+	  + new function check_error_code() to handle BM's behaviour according to
+	  the external command's return codes.
+	  + If a return code equals 1 and the archive is created, consider it as a
+	  warning instead of an error (closes: #152).	  
+	* Don't stop the main process if errors are triggered by external
+	  commands (closes: #141).
+
 2007-01-02	Alexis Sukrieh	<sukria@backup-manager.org>
 
 	* doc/user-guide.sgml, doc/user-guide.txt

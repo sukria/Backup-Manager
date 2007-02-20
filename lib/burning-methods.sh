@@ -30,7 +30,6 @@ function bm_safe_unmount
     realdevice=$(ls -l $device | awk '{print $10}')
     if [ -n "$realdevice" ]; then
         device="$realdevice"
-        __debug "device : $realdevice"
     fi
 
     for m in `grep $device /etc/mtab 2>/dev/null| awk '{print $2}'`
@@ -394,6 +393,9 @@ function __build_indexes_from_target()
 	# When a medium is full, we create a new one.
 	for file in ${target}
 	do
+        if [ ! -f $file ]; then
+            continue
+        fi
 		size_of_file=$(size_of_path "$file")
 
 		if [ $size_of_file -gt $BM_BURNING_MAXSIZE ] ; then
@@ -411,8 +413,6 @@ function __build_indexes_from_target()
 			number_of_indexes=$(($number_of_indexes +1))
 			index_number=$(($index_number + 1))
 			index_session="$index_prefix-$index_number"
-            #__debug "BM_BURNING_MAXSIZE is reached : new index: $index_session"
-            
 			echo "$file" > $index_session
 			
             medium_index="$file"

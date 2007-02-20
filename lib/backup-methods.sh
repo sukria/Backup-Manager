@@ -155,11 +155,11 @@ function __exec_meta_command()
                 debug "$command > $file_to_create 2> $logfile"
                 tail_logfile "$logfile"
                 if [ "$BM_ENCRYPTION_METHOD" = "gpg" ]; then
-                    $command | $compress_bin -f -q -9 | $gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.$ext.gpg 2> $logfile
+                    $command 2>$logfile | $compress_bin -f -q -9 2>$logfile | $gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.$ext.gpg 2> $logfile
                     debug "$command | $compress_bin -f -q -9 | $gpg -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create.$ext.gpg 2> $logfile"
                     file_to_create="$file_to_create.$ext.gpg"
                 else
-                    $command | $compress_bin -f -q -9 > $file_to_create.$ext 2> $logfile
+                    $command 2> $logfile | $compress_bin -f -q -9 > $file_to_create.$ext 2> $logfile
                     file_to_create="$file_to_create.$ext"
                 fi
 
@@ -481,6 +481,41 @@ function __get_backup_tarball_remote_command()
     
 }
 
+# This function will take care of changing the behaviour of BM
+# regarding the error code given
+# 0 is a success case (remove the logfile and commit the archive).
+# 1 is a warning case (don't remove the logfile but commit the archive).
+# >1 is an error code (don't remove the logile, don't commit the archive).
+function check_error_code()
+{
+    error_code="$1"
+    file_to_create="$2"
+    logfile="$3"
+
+    if [ -z "$error_code" ]; then
+        error_code=0
+    fi
+
+    # looks like a warning, if the file exists, it's a warning,
+    # otherwise it's an error
+    if [ "$error_code" == "1" ]; then
+        if [ -f "$file_to_create" ]; then
+            warning "The archive command returned 1 but the archive has been created; check \"\$logfile\"."
+            commit_archives "$file_to_create"
+        else
+            handle_tarball_error "$file_to_create" "$logfile"
+        fi
+    # an error code greater than 1 occured : fatal error
+    elif [ "$error_code" -gt 0 ]; then
+        handle_tarball_error "$file_to_create" "$logfile"
+
+    # error code of 0, success.
+    else
+        rm -f $logfile
+        commit_archives "$file_to_create"
+    fi
+}
+
 function __get_backup_tarball_command()
 {
     debug "__get_backup_tarball_command ()"
@@ -547,14 +582,8 @@ function build_clear_archive
             
             debug "$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile"
             tail_logfile "$logfile"
-            $tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile
-
-            if [ $? -gt 0 ]; then
-                handle_tarball_error "$file_to_create" "$logfile"
-            else
-                rm -f $logfile
-                commit_archives "$file_to_create"
-            fi
+            $tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile || error_code=$?
+            check_error_code "$error_code" "$file_to_create" "$logfile"
         ;;
         
         # dar has a special commandline, that cannot fit the common tar way
@@ -562,28 +591,20 @@ function build_clear_archive
             debug "$command $target> $logfile 2>&1"
             tail_logfile "$logfile"
 
-            if ! `$command "$target"> $logfile 2>&1`; then
-                handle_tarball_error "$file_to_create" "$logfile"
-            else
-                rm -f $logfile
-                commit_archives "$file_to_create"
-            fi
+            $command "$target"> $logfile 2>&1 || error_code=$?
+            check_error_code "$error_code" "$file_to_create" "$logfile"
         ;;
 
         # the common commandline
         *)
             debug "$command $file_to_create \"$target\"> $logfile 2>&1"
             tail_logfile "$logfile"
-
-            if ! `$command $file_to_create "$target"> $logfile 2>&1`; then
-                handle_tarball_error "$file_to_create" "$logfile"
-            else
-                rm -f $logfile
-                commit_archives "$file_to_create"
-            fi
+            $command $file_to_create "$target"> $logfile 2>&1 || error_code=$?
+            check_error_code "$error_code" "$file_to_create" "$logfile"
         ;;
     esac
 }
+
 
 function build_encrypted_archive
 {
@@ -606,12 +627,8 @@ function build_encrypted_archive
     debug "$command - \"$target\" 2>>$logfile | $gpg -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create 2>> $logfile"
     tail_logfile "$logfile"
 
-    if ! `$command - "$target" 2>>$logfile | $gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create 2>> $logfile`; then
-        handle_tarball_error "$file_to_create" "$logfile"
-    else
-        rm -f $logfile
-        commit_archives "$file_to_create"
-    fi
+    $command - "$target" 2>>$logfile | $gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create 2>> $logfile || error_code=$?
+    check_error_code "$error_code" "$file_to_create" "$logfile"
 }
 
 function __build_local_archive()
@@ -679,14 +696,8 @@ function __build_remote_archive()
 
             debug "$remote_command > $file_to_create 2>$logfile"
             tail_logfile "$logfile"
-            $remote_command > "$file_to_create" 2>$logfile
-
-            if [ $? -gt 0 ]; then
-                handle_tarball_error "$file_to_create" "$logfile"
-            else
-                rm -f $logfile
-                commit_archives "$file_to_create"
-            fi
+            $remote_command > "$file_to_create" 2>$logfile || error_code=$?
+            check_error_code "$error_code" "$file_to_create" "$logfile"
         else
             warning "File \$file_to_check already exists, skipping."
             continue
@@ -809,10 +820,12 @@ function backup_method_tarball()
     fi
 	
     # Handle errors
+    # since version 0.8, BM's follows up its process even if errors were triggered 
+    # during the archive generation.
 	if [ $nb_err -eq 1 ]; then
-		error "1 error occurred during the tarball generation."
+		warning "1 error occurred during the tarball generation."
 	elif [ $nb_err -gt 1 ]; then
-        error "\$nb_err errors occurred during the tarball generation."
+        warning "\$nb_err errors occurred during the tarball generation."
     fi
 }
 

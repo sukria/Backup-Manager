@@ -1,4 +1,20 @@
 #!/usr/bin/perl
+# Copyright © 2005-2007 Alexis Sukrieh
+# See the AUTHORS file for details.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 use strict;
 use warnings;
@@ -32,7 +48,6 @@ outdated by the TTL.
 
 Specify the time to live (in days) for the archives. Any archive that is older
 than I<ttl> days will be outdated.
-
 
 =head1 OPTIONAL ARGS
 
@@ -206,7 +221,7 @@ sub outdate_master_archive($$$$$)
 
 
 # Takes two array refs. Reads from the first one the list of archives 
-# to process, and push in the second one outdated archives.
+# to process, and push in the second one the outdated archives.
 sub outdate_archives($$)
 {
     my ($ra_archives, $ra_outdated) = @_;
@@ -217,12 +232,10 @@ sub outdate_archives($$)
 
     my $purge_date = strftime ('%Y%m%d', 
                                localtime(time() - $g_ttl * 24 * 3600)); 
-
     print_info "Outdating archives made before $purge_date";
     
     my %seen = ();
     foreach my $archive (sort @{$ra_archives}) {
-        
         my $data = $g_rh_archives->{dataByPath}{$archive};
         next unless defined $data;
         next unless defined $data->{date};
@@ -231,9 +244,7 @@ sub outdate_archives($$)
        
         # if the date of the archive is older than $purge_date, we may have to outdate it
         # unless, nothing to do for that archive.
-        if ($data->{date} > $purge_date) {
-            next;
-        }
+        next if ($data->{date} > $purge_date);
 
         # we can outdate a master only if a younger master exists
         if ($data->{master}) {
@@ -246,10 +257,14 @@ sub outdate_archives($$)
             }
         }
 
-        # other archives are pretty easy to handle, ce can outade them 
-        # if the date is older than $purge_date, which is the case at this point 
-        # of the process.
+        # here the archive is deprecated, its date is < to $purge_date
         else {
+            # if BM_ARCHIVE_STRICTPURGE is true, we can only purge 
+            # an archive prefixed with BM_ARCHIVE_PREFIX
+            next if (($ENV{BM_ARCHIVE_STRICTPURGE} eq "true") and 
+                     ($data->{prefix} ne $ENV{BM_ARCHIVE_PREFIX}));
+            
+            # now, we're sure we can outdate the archive
             push @{$ra_outdated}, $archive;
         }
     }

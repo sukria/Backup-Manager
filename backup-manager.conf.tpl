@@ -51,6 +51,9 @@ export BM_ARCHIVE_PURGEDUPS="true"
 # Prefix of every archive on that box (default is HOSTNAME)
 export BM_ARCHIVE_PREFIX="$HOSTNAME"
 
+# Should we purge only archives built with $BM_ARCHIVE_PREFIX
+export BM_ARCHIVE_STRICTPURGE="true"
+
 # The backup method to use.
 # Available methods are:
 # - tarball

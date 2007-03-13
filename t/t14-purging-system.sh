@@ -6,8 +6,8 @@ set -e
 source testlib.sh
 # When the test is ready, set this to false for nice outputs.
 # if you want to see what happens, use those flags
-# verbose="true"
-# warnings="true"
+ verbose="true"
+ warnings="true"
 
 # The conffile part of the test, see confs/* for details.
 source confs/base.conf
@@ -19,6 +19,7 @@ export BM_TARBALL_DIRECTORIES="$PWD"
 export BM_ARCHIVE_TTL="3"
 # Test the purge with BM_REPOSITORY_RECURSIVEPURGE set to false
 export BM_REPOSITORY_RECURSIVEPURGE="false"
+export BM_ARCHIVE_STRICTPURGE="true"
 source $locallib/sanitize.sh
 
 # The test actions

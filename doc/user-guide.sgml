@@ -260,6 +260,32 @@ will always be named like the following: <tt>prefix-name-date.filetype</tt>.  An
 archive is a file that contains data, it can be compressed or not, in a binary
 form or not.</em>
 
+<sect2 id="BM_ARCHIVE_STRICTPURGE"><tt>BM_ARCHIVE_STRICTPURGE</tt>
+
+<p>
+<em>Type: boolean, default: <tt>true</tt>.</em>
+
+<p>
+As explained in the BM_REPOSITORY_ROOT section, every archive built by &bmngr; will
+be purged when their lifetime expires. In versions prior to 0.8, any archive
+were purged.
+<p>
+You can now choose to purge only the archive built in the scope of the
+configuration file, that is: archives prefixed with BM_ARCHIVE_PREFIX.
+
+<p>
+This is useful if you share the same BM_REPOSITORY_ROOT with different instances
+of &bmngr; that have different purging rules (eg: a BM_REPOSITORY_ROOT shared
+over NFS for multiple &bmngr; configuration).
+
+<p>
+Example:
+
+<example>
+export BM_ARCHIVE_STRICTPURGE="true"
+</example>
+
+
 <sect2 id="BM_ARCHIVE_PURGEDUPS"><tt>BM_ARCHIVE_PURGEDUPS</tt>
 
 <p>

@@ -1,4 +1,11 @@
+2007-03-13  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* Support for a new variable that control whether BM should purge archives
+	made by other instance of the one that is running (BM_ARCHIVE_STRICTPURGE)
+	(closes: #153).
+
 2007-02-20	Alexis Sukrieh	<sukria@backup-manager.org>
+
 	* lib/backup-methods.sh
 	  + change every call to external command so that we can read their return
 	  code.

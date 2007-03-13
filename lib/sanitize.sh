@@ -1,4 +1,4 @@
-# Copyright © 2005-2006 Alexis Sukrieh
+# Copyright © 2005-2007 Alexis Sukrieh
 #
 # See the AUTHORS file for details.
 #
@@ -247,6 +247,9 @@ if [ -n "$BM_UPLOAD_MODE" ]; then
     confkey_handle_deprecated "BM_UPLOAD_DIR" "BM_UPLOAD_DESTINATION"
 fi        
 
+if [ -z "$BM_ARCHIVE_STRICTPURGE" ]; then
+    confkey_require "BM_ARCHIVE_STRICTPURGE" "true"
+fi
 
 confkey_require "BM_LOGGER" "true"
 if [ "$BM_LOGGER" = "true" ]; then 

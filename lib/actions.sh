@@ -171,17 +171,17 @@ function check_filetypes()
 
 	case "$BM_TARBALL_FILETYPE" in
 		"zip")
-			if [ ! -x $zip ]; then
+			if [ ! -x "$zip" ]; then
 				error "The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
 			fi
 		;;
 		"tar.bz2" )
-			if [ ! -x $bzip ]; then
+			if [ ! -x "$bzip" ]; then
 				error "The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
 			fi
 		;;
 		"dar" )
-			if [ ! -x $dar ]; then
+			if [ ! -x "$dar" ]; then
 				error "The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
 			fi
 		;;

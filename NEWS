@@ -1,3 +1,30 @@
+0.7.6
+    - Security Fix
+        - Don't pass MySQL password in the commandline, use ~/.my.cnf instead
+          (bug #146).
+
+    - New features
+        - Support for the --debug flag for outputting lots of information (bug
+          #124).
+        - Documentation of the local GPG encryption feature (bug #132).
+
+    - Bug Fixes
+        - No limitation to the number of files located in 
+          $BM_REPOSITORY_ROOT (bug #110).
+        - better handling of dar masters, don't fail if an archive is missing
+          (bug #127).
+        - Fixed a typo in the default configuration file (bug #133).
+        - SQL dumps are encrypted as well if BM_ENCRYPTION_METHOD is set to gpg
+          (bug #135).
+        - Don't fail if a file changed during the archive generation (bug #152).
+        - The purging phase handle only archives that are prefixed with
+          $BM_ARCHIVE_PREFIX (bug #153)
+
+    - Changes
+        - The post-command is now always exectued, event if an error occured
+          before (bug #118).
+        - Don't stop the pipe commands if one of them fails (bug #141).
+
 0.7.5
     - New features
         - Support for lzma archives.

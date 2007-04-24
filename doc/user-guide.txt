@@ -1,5 +1,5 @@
 
-                      Backup Manager 0.7.5 User Guide
+                      Backup Manager 0.7.6 User Guide
                       -------------------------------
 
                               Alexis Sukrieh
@@ -99,7 +99,7 @@ Contents
      Whenever possible, advices and best practices are given.
 
      This manual also describes every configuration variables supported in
-     the version 0.7.5.
+     the version 0.7.6.
 
 
 1.2. Version
@@ -107,7 +107,7 @@ Contents
 
      This document is updated whenever a new release of Backup Manager is
      published.  The current version covers all features and configuration
-     details about version 0.7.5.
+     details about version 0.7.6.
 
      The first version of this document was written with the release 0.6 of
      Backup Manager.
@@ -138,7 +138,7 @@ Contents
      _Backup Manager's behaviour is defined in configuration files.  You
      can run Backup Manager with different configuration files (at the same
      time or not).  This chapter will cover all the configuration keys
-     supported in version 0.7.5 and will explain their meaning._
+     supported in version 0.7.6 and will explain their meaning._
 
 
 2.1. Repository and Archives
@@ -261,7 +261,28 @@ Contents
      `prefix-name-date.filetype'.  An archive is a file that contains data,
      it can be compressed or not, in a binary form or not._
 
-2.1.3.1. `BM_ARCHIVE_PURGEDUPS'
+2.1.3.1. `BM_ARCHIVE_STRICTPURGE'
+---------------------------------
+
+     _Type: boolean, default: `true'._
+
+     As explained in the BM_REPOSITORY_ROOT section, every archive built by
+     Backup Manager will be purged when their lifetime expires.  In
+     versions prior to 0.7.6, any archive were purged.
+
+     You can now choose to purge only the archive built in the scope of the
+     configuration file, that is: archives prefixed with BM_ARCHIVE_PREFIX.
+
+     This is useful if you share the same BM_REPOSITORY_ROOT with different
+     instances of Backup Manager that have different purging rules (eg: a
+     BM_REPOSITORY_ROOT shared over NFS for multiple Backup Manager
+     configuration).
+
+     Example:
+
+          export BM_ARCHIVE_STRICTPURGE="true"
+
+2.1.3.2. `BM_ARCHIVE_PURGEDUPS'
 -------------------------------
 
      _Type: boolean, default: `true'._
@@ -282,7 +303,7 @@ Contents
           host-etc.20051116.tar.gz -> /var/archives/host-etc.20051117.tar.gz
           host-etc.20051117.tar.gz
 
-2.1.3.2. `BM_ARCHIVE_TTL'
+2.1.3.3. `BM_ARCHIVE_TTL'
 -------------------------
 
      _Type: integer, default: `5'._
@@ -309,7 +330,7 @@ Contents
 
           export BM_ARCHIVE_TTL="5"
 
-2.1.3.3. `BM_REPOSITORY_RECURSIVEPURGE'
+2.1.3.4. `BM_REPOSITORY_RECURSIVEPURGE'
 ---------------------------------------
 
      _Type: boolean, default: `false'._
@@ -331,7 +352,7 @@ Contents
 
           export BM_REPOSITORY_RECURSIVEPURGE="false"
 
-2.1.3.4. `BM_ARCHIVE_PREFIX'
+2.1.3.5. `BM_ARCHIVE_PREFIX'
 ----------------------------
 
      _Type: string, default: `$HOSTNAME'._
@@ -356,7 +377,7 @@ Contents
      The core feature of Backup Manager is to make archives, for doing
      this, a _method_ is used.  Each method can require a set of
      configuration keys.  We will describe here every method supported in
-     the version 0.7.5.
+     the version 0.7.6.
 
      The method you choose must be defined in the configuration key
      `BM_ARCHIVE_METHOD'.  You can put here a list of all the different
@@ -682,7 +703,7 @@ Contents
      This method provides a way to archive MySQL databases, the archives
      are made with mysqldump (SQL text files) and can be compressed.
 
-     In versions prior to 0.8, Backup Manager used to pass the MySQL
+     In versions prior to 0.7.6, Backup Manager used to pass the MySQL
      client's password through the command line.  As explained by the MySQL
      manual, that's a security issue as the password is then readable for a
      short time in the /proc directory (or using the ps command).
@@ -888,7 +909,7 @@ Contents
      for achieving this goal : the upload methods._
 
      There are different upload methods, each of them behaves differently
-     and provides particular features.  In Backup Manager 0.7.5 you can use
+     and provides particular features.  In Backup Manager 0.7.6 you can use
      FTP, SSH, RSYNC or Amazon S3 uploads.
 
      In the same manner as for backup methods, you can choose to use as
@@ -1352,14 +1373,14 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
      _Another way of storing your archives to a safe place is to use
      external media._
 
-     In version 0.7.5, only CDs and DVDs are supported as external media,
+     In version 0.7.6, only CDs and DVDs are supported as external media,
      so we will discuss in this section only the `BM_BURNING' features.
      Other exports are expected to come in next versions though.
 
 2.4.1. Burning CDR/DVD media
 ----------------------------
 
-     In the version 0.7.5, Backup Manager supports four different kinds of
+     In the version 0.7.6, Backup Manager supports four different kinds of
      media: CDR, CDRW and DVD+R(W) and DVD-R(W).
 
 2.4.1.1. `BM_BURNING_METHOD'
@@ -1607,7 +1628,7 @@ export BM_POST_BACKUP_COMMAND="/usr/local/bin/backup-cleanup.pl $TODAY"
 3.1.1. Restrictions
 -------------------
 
-     In version 0.7.5, Backup Manager can only be used by `root', as it has
+     In version 0.7.6, Backup Manager can only be used by `root', as it has
      be designed as a systemwide tool.
 
           $ backup-manager
@@ -1807,7 +1828,7 @@ Entering directory /var/archives/lost+found.
 -------------------------------------------------------------------------------
 
 
-     Backup Manager 0.7.5 User Guide
+     Backup Manager 0.7.6 User Guide
 
      Alexis Sukrieh
 

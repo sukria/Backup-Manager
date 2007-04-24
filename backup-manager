@@ -25,9 +25,9 @@
 
 set -e
 
-RELEASE="false"
+RELEASE="true"
 REVISION='$Revision$'
-VERSION="0.7.5"
+VERSION="0.7.6"
 
 # All the paths we provide
 libdir="/usr/share/backup-manager"
@@ -185,7 +185,7 @@ while [ $# -ge 1 ]; do
 	esac
 	shift
 done
-info "Backup Manager $VERSION - Copyright (c) 2004-2006 Alexis Sukrieh"
+info "Backup Manager $VERSION - Copyright (c) 2004-2007 Alexis Sukrieh"
 
 debug "Loading configuration file : \"$conffile\"."
 source $conffile

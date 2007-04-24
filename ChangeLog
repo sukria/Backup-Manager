@@ -1,3 +1,7 @@
+2007-04-24  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* Release: 0.7.6
+
 2007-03-13  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* Support for a new variable that control whether BM should purge archives

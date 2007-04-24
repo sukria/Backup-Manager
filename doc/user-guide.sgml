@@ -267,7 +267,7 @@ form or not.</em>
 
 <p>
 As explained in the BM_REPOSITORY_ROOT section, every archive built by &bmngr; will
-be purged when their lifetime expires. In versions prior to 0.8, any archive
+be purged when their lifetime expires. In versions prior to 0.7.6, any archive
 were purged.
 <p>
 You can now choose to purge only the archive built in the scope of the
@@ -756,7 +756,7 @@ This method provides a way to archive MySQL databases, the archives are made wit
 mysqldump (SQL text files) and can be compressed.
 
 <p>
-In versions prior to 0.8, &bmngr; used to pass the MySQL client's password through 
+In versions prior to 0.7.6, &bmngr; used to pass the MySQL client's password through 
 the command line. As explained by the MySQL manual, that's a security issue as
 the password is then readable for a short time in the /proc directory (or using
 the ps command).

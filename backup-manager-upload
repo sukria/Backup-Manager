@@ -334,7 +334,7 @@ sub ssh_clean_directory
     # look for a port to use
 	my $port_switch="";
 	if ($ENV{BM_UPLOAD_SSH_PORT}) {
-	    $port_switch = "-P ".$ENV{BM_UPLOAD_SSH_PORT};
+	    $port_switch = "-p ".$ENV{BM_UPLOAD_SSH_PORT};
 	}
     
 	# look for keyfile to use
@@ -379,9 +379,11 @@ sub send_file_with_scp($$$$$)
 		defined $location;
 	
 	# look for a port to use
-	my $port_switch="";
+	my $ssh_port_switch="";
+	my $scp_port_switch="";
 	if ($ENV{BM_UPLOAD_SSH_PORT}) {
-	    $port_switch = "-P ".$ENV{BM_UPLOAD_SSH_PORT};
+	    $ssh_port_switch = "-p ".$ENV{BM_UPLOAD_SSH_PORT};
+	    $scp_port_switch = "-P ".$ENV{BM_UPLOAD_SSH_PORT};
 	}
     
 	# look for keyfile to use
@@ -398,11 +400,11 @@ sub send_file_with_scp($$$$$)
 	if ( defined $g_gpg_recipient )	{	    
 	    my $file_base = basename($file);
 	    $cmd = "$gpg --encrypt --recipient $g_gpg_recipient --output - --batch $file | ";
-	    $cmd .= "$ssh -o \"BatchMode yes\" -e none $port_switch $keyfile_switch $user".'@'."$host ";
+	    $cmd .= "$ssh -o \"BatchMode yes\" -e none $ssh_port_switch $keyfile_switch $user".'@'."$host ";
 	    $cmd .= "\"cat - > $location/$file_base.gpg\" >&2";
 	}
 	else {
-	    $cmd = "$scp $port_switch $keyfile_switch -B $file $user".'@'.$host.':'.$location." >&2";
+	    $cmd = "$scp $scp_port_switch $keyfile_switch -B $file $user".'@'.$host.':'.$location." >&2";
 	}
 
 	# we use eval here to avoid crash with bad keys

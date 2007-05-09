@@ -23,7 +23,7 @@ fi
 libgettext="/usr/bin/gettext.sh"
 
 if [ ! -f $libgettext ]; then
-	. $libdir/gettext-dummy.sh
+    . $libdir/gettext-dummy.sh
 else
-	. $libdir/gettext-real.sh
+    . $libdir/gettext-real.sh
 fi

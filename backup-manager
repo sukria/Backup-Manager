@@ -112,37 +112,37 @@ trap clean_exit SIGINT SIGTERM SIGKILL
 # Parse the command line 
 debug "Processing the command line"
 while [ $# -ge 1 ]; do
-	case $1 in
-		-h|--help)
-			usage
-		;;
-		-m|--md5check) 
-			md5check="true"
-		;;
-		-p|--purge)
-			purge="true"
-		;;
-		--no-purge)
-			nopurge="true"
-		;;
-		-b|--burn) 
-			burn="true"
+    case $1 in
+        -h|--help)
+            usage
+        ;;
+        -m|--md5check) 
+            md5check="true"
+        ;;
+        -p|--purge)
+            purge="true"
+        ;;
+        --no-purge)
+            nopurge="true"
+        ;;
+        -b|--burn) 
+            burn="true"
             # parse the second argument as a date if
             # it does not begin with a dash (-).
             if [ -n "$2" ] && 
                [ "${2}" == "${2#-}" ]; then
-				# test if the date is a valid date
-				if [ $(echo "$2" | grep "^[[:digit:]]\{8\}$") ] ; then
-	                export BM__BURNING_DATE="$2"
-				    shift
-				else
-					error "The -b option must be followed by a valid date (YYYYMMDD)."
-				fi
+                # test if the date is a valid date
+                if [ $(echo "$2" | grep "^[[:digit:]]\{8\}$") ] ; then
+                    export BM__BURNING_DATE="$2"
+                    shift
+                else
+                    error "The -b option must be followed by a valid date (YYYYMMDD)."
+                fi
             fi
-		;;
-		--no-burn)
-			noburn="true"
-		;;
+        ;;
+        --no-burn)
+            noburn="true"
+        ;;
         -u|--upload) 
             upload="true"
         ;;
@@ -165,25 +165,25 @@ while [ $# -ge 1 ]; do
         ;;
         -f|--force) 
             force="true"
-		;;
-		-c|--conffile)
-			# in this case, $2 should be the conffile !
-			if [ -f $2 ]; then
-				conffile=$2
-			else
-				error "The -c option must be followed by an existing filename."
-				usage
-			fi
-			# we shift here to avoid processing the file path 
-			shift
-		;;
-		*)  
-			echo "Unknown option $1"
-			usage
-			break
-		;;
-	esac
-	shift
+        ;;
+        -c|--conffile)
+            # in this case, $2 should be the conffile !
+            if [ -f $2 ]; then
+                conffile=$2
+            else
+                error "The -c option must be followed by an existing filename."
+                usage
+            fi
+            # we shift here to avoid processing the file path 
+            shift
+        ;;
+        *)  
+            echo "Unknown option $1"
+            usage
+            break
+        ;;
+    esac
+    shift
 done
 info "Backup Manager $VERSION - Copyright (c) 2004-2007 Alexis Sukrieh"
 
@@ -217,26 +217,26 @@ create_directories
 
 if [ "$upload" == "true" ]; then
     debug "Running the upload methods"
-	upload_files
-	_exit 0
+    upload_files
+    _exit 0
 fi
 
 if [ "$burn" == "true" ]; then
     debug "Running the burning methods"
-	burn_files
-	_exit 0
+    burn_files
+    _exit 0
 fi
 
 if [ "$md5check" == "true" ]; then
     debug "Runing the MD5 checks"
-	check_cdrom_md5_sums
-	_exit 0
+    check_cdrom_md5_sums
+    _exit 0
 fi
 
 if [ "$purge" == "true" ]; then
     debug "Purging the repository"
-	clean_repositories
-	_exit 0
+    clean_repositories
+    _exit 0
 fi
 
 # Default process : doing everything unless --no-flags 
@@ -244,7 +244,7 @@ fi
 
 if [ "$nopurge" != "true" ]; then
     debug "Purging the repository"
-	clean_repositories
+    clean_repositories
 fi
 
 debug "Building archives"
@@ -252,12 +252,12 @@ make_archives
 
 if [ "$noupload" != "true" ]; then
     debug "Running the upload methods"
-	upload_files
+    upload_files
 fi
 
 if [ "$noburn" != "true" ]; then
     debug "Running the burning methods"
-	burn_files
+    burn_files
 fi
 
 debug "Running post-command"

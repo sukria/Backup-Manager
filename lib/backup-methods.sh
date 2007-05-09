@@ -21,7 +21,7 @@
 # informations (size, md5sum) and will add the archive in .md5 file.
 function commit_archive()
 {
-	file_to_create="$1"
+    file_to_create="$1"
     size=$(size_of_path $file_to_create)
     str=$(echo_translated "\$file_to_create: ok (\${size}M,")
     debug "commit_archive ($file_to_create)"
@@ -38,16 +38,16 @@ function commit_archive()
         echo "$str ${md5hash})"
     fi
 
-	md5file="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5"
+    md5file="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5"
 
-	# Check if the md5file contains already the md5sum of the file_to_create.
-	# In this case, the new md5sum overwrites the old one.
-	if grep "$base" $md5file >/dev/null 2>&1 ; then
-		previous_md5sum=$(get_md5sum_from_file $base $md5file)
-		sed -e "/$base/s/$previous_md5sum/$md5hash/" -i $md5file
-	else
-		echo "$md5hash  $base" >> $md5file
-	fi
+    # Check if the md5file contains already the md5sum of the file_to_create.
+    # In this case, the new md5sum overwrites the old one.
+    if grep "$base" $md5file >/dev/null 2>&1 ; then
+        previous_md5sum=$(get_md5sum_from_file $base $md5file)
+        sed -e "/$base/s/$previous_md5sum/$md5hash/" -i $md5file
+    else
+        echo "$md5hash  $base" >> $md5file
+    fi
 
     # Now that the file is created, remove previous duplicates if exists...
     purge_duplicate_archives $file_to_create || 
@@ -68,8 +68,8 @@ function commit_archive()
 # only trustable archives and friends.
 function clean_exit()
 {
-	echo ""
-	warning "Warning, process interrupted."
+    echo ""
+    warning "Warning, process interrupted."
     if [ -n "$bm_pending_archive" ] && [ -e "$bm_pending_archive" ]; then
         
         # remove the archive that is being built (it's incomplete)
@@ -88,13 +88,13 @@ function clean_exit()
             fi
         fi            
     fi
-	release_lock
+    release_lock
     exit 70
 }
 
 function commit_archives()
 {    
-	file_to_create="$1"
+    file_to_create="$1"
     debug "commit_archives ($file_to_create)"
 
     if [ "$BM_TARBALL_FILETYPE" = "dar" ]; then
@@ -109,12 +109,12 @@ function commit_archives()
 
 function handle_tarball_error()
 {
-	target="$1"
-	logfile="$2"
+    target="$1"
+    logfile="$2"
     debug "handle_tarball_error ($target, $logfile)"
 
-	warning "Unable to create \"\$target\", check \$logfile"
-	nb_err=$(($nb_err + 1))
+    warning "Unable to create \"\$target\", check \$logfile"
+    nb_err=$(($nb_err + 1))
 }
 
 function __exec_meta_command()
@@ -229,8 +229,8 @@ function __get_flags_relative_blacklist()
 
     target=${target%/}
     blacklist=""
-	for pattern in $BM_TARBALL_BLACKLIST
-	do
+    for pattern in $BM_TARBALL_BLACKLIST
+    do
         # absolute paths 
         char=$(expr substr $pattern 1 1)
         if [ "$char" = "/" ]; then
@@ -278,10 +278,10 @@ function __get_flags_zip_dump_symlinks()
 
     export ZIP="" 
     export ZIPOPT="" 
-	y="-y"
-	if [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
-		y=""
-	fi
+    y="-y"
+    if [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
+        y=""
+    fi
     echo "$y"
 }
 
@@ -289,10 +289,10 @@ function __get_flags_tar_dump_symlinks()
 {
     debug "__get_flags_tar_dump_symlinks"
 
-	h=""
-	if [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
-		h="-h "
-	fi
+    h=""
+    if [ "$BM_TARBALL_DUMPSYMLINKS" = "true" ]; then
+        h="-h "
+    fi
     echo "$h"
 }
 
@@ -414,7 +414,7 @@ function __get_flags_dar_incremental()
     if [ "$master_day" != "$BM_TARBALLINC_MASTERDATEVALUE" ] ; then
         
         # Either we have a master backup made lastday...
-    	if [ -e $lastday_dar_master ] || 
+        if [ -e $lastday_dar_master ] || 
            [ -e $lastday_dar_master_first_slice ] ; then
             incremental="--ref $BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday.master"
     
@@ -424,8 +424,8 @@ function __get_flags_dar_incremental()
         fi
         
         # if we use some --ref then, it's not a master but an incremental backup.
-	    if [ -n "$incremental" ] ; then
-    	    master=""
+        if [ -n "$incremental" ] ; then
+            master=""
         fi
     fi
 }
@@ -444,11 +444,11 @@ function __get_flags_dar_overwrite()
 {
     debug "__get_flags_dar_overwrite"
     
-	if [ $force = true ] ; then
-		overwrite="-w"
-	fi
-	
-	echo "$overwrite"
+    if [ $force = true ] ; then
+        overwrite="-w"
+    fi
+    
+    echo "$overwrite"
 }
 
 # FIXME : incremental is not possible remotely
@@ -797,8 +797,8 @@ function backup_method_tarball()
     method="$1"
     debug "backup_method_tarball ($method)"
 
-	info "Using method \"\$method\"."
-	
+    info "Using method \"\$method\"."
+    
     # build the command line
     case $BM_TARBALL_FILETYPE in 
     tar|tar.bz2|tar.gz)
@@ -818,13 +818,13 @@ function backup_method_tarball()
     else
         __make_remote_tarball_archives
     fi
-	
+    
     # Handle errors
     # since version 0.8, BM's follows up its process even if errors were triggered 
     # during the archive generation.
-	if [ $nb_err -eq 1 ]; then
-		warning "1 error occurred during the tarball generation."
-	elif [ $nb_err -gt 1 ]; then
+    if [ $nb_err -eq 1 ]; then
+        warning "1 error occurred during the tarball generation."
+    elif [ $nb_err -gt 1 ]; then
         warning "\$nb_err errors occurred during the tarball generation."
     fi
 }
@@ -834,10 +834,10 @@ function backup_method_mysql()
     method="$1"
     debug "backup_method_mysql ($method)"
 
-	info "Using method \"\$method\"."
-	if [ ! -x $mysqldump ]; then
-		error "The \"mysql\" method is chosen, but \$mysqldump is not found."
-	fi
+    info "Using method \"\$method\"."
+    if [ ! -x $mysqldump ]; then
+        error "The \"mysql\" method is chosen, but \$mysqldump is not found."
+    fi
 
     opt=""
     if [ "$BM_MYSQL_SAFEDUMPS" = "true" ]; then
@@ -859,7 +859,7 @@ function backup_method_mysql()
         chmod 600 $HOME/.my.cnf
     fi
     base_command="$mysqldump $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT"
-    compress="$BM_MYSQL_FILETYPE"	
+    compress="$BM_MYSQL_FILETYPE"   
 
     for database in $BM_MYSQL_DATABASES
     do

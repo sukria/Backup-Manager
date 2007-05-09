@@ -150,7 +150,7 @@ bm_upload_s3()
     bm_upload_init "$bm_upload_hosts" 
     
     if [ -z "$BM_UPLOAD_S3_DESTINATION" ]; then
-	    BM_UPLOAD_S3_DESTINATION="$BM_UPLOAD_DESTINATION"
+        BM_UPLOAD_S3_DESTINATION="$BM_UPLOAD_DESTINATION"
     fi        
 
     # flags for the S3 method

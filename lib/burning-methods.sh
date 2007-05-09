@@ -74,10 +74,10 @@ function check_cdrom_md5_sums()
         date_of_file=$(get_date_from_file $file)
         prefix_of_file=$(get_prefix_from_file $file)
 
-	# Doesn't check the md5 sum of the md5sum file...
-	if [ "$base_file" = "${prefix_of_file}-${date_of_file}.md5" ] ; then
-		continue
-	fi
+    # Doesn't check the md5 sum of the md5sum file...
+    if [ "$base_file" = "${prefix_of_file}-${date_of_file}.md5" ] ; then
+        continue
+    fi
 
 
        # Which file should contain the MD5 hashes for that file ?
@@ -198,7 +198,7 @@ function burn_files_non_interactive()
             BM__BURNING_DATE="$TODAY"
         fi
 
-		BM__BURNING_DATE="$TODAY"
+        BM__BURNING_DATE="$TODAY"
         info "Burning archives of \$BM__BURNING_DATE."
         size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")
         
@@ -208,7 +208,7 @@ function burn_files_non_interactive()
         fi
         find_what_to_burn "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*"
     else
-		BM__BURNING_DATE="$TODAY"
+        BM__BURNING_DATE="$TODAY"
         find_what_to_burn "${BM_REPOSITORY_ROOT}/*"
     fi
 
@@ -223,16 +223,16 @@ function burn_files_interactive()
     debug "burn_files_interactive()"
 
     purge_indexes
- 	if [ ! -z "${BM__BURNING_DATE}" ] ; then
-		info "Burning archives of \$BM__BURNING_DATE."
-		find_what_to_burn "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*"
-		size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")
+    if [ ! -z "${BM__BURNING_DATE}" ] ; then
+        info "Burning archives of \$BM__BURNING_DATE."
+        find_what_to_burn "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*"
+        size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")
     else
-		info "Burning the whole archives."
-		BM__BURNING_DATE="$TODAY"
-		find_what_to_burn "${BM_REPOSITORY_ROOT}/*"
-		size=$(size_of_path "${BM_REPOSITORY_ROOT}")
-	fi
+        info "Burning the whole archives."
+        BM__BURNING_DATE="$TODAY"
+        find_what_to_burn "${BM_REPOSITORY_ROOT}/*"
+        size=$(size_of_path "${BM_REPOSITORY_ROOT}")
+    fi
     info "Trying to burn \$BM_REPOSITORY_ROOT (\$size MB) in interactive mode."
     burn_multiples_media "$what_to_burn"
 }
@@ -361,13 +361,13 @@ function purge_indexes()
     debug "purge_indexes()"
 
     index_prefix=$(get_index_prefix)
-	rm -f ${index_prefix}*
+    rm -f ${index_prefix}*
 }
 
 function get_index_prefix()
 {
     debug "get_index_prefix()"
-	index_prefix="$BM_REPOSITORY_ROOT/index-${BM__BURNING_DATE}"
+    index_prefix="$BM_REPOSITORY_ROOT/index-${BM__BURNING_DATE}"
     echo "$index_prefix"
 }
 
@@ -376,54 +376,54 @@ function get_index_prefix()
 # indexes are not included here, should be added by hand after that processing.
 function __build_indexes_from_target()
 {
-	target="$1"
+    target="$1"
     debug "__build_indexes_from_target ($target)"
 
     indexes=""
-	medium_index=""
-	index_number=1
-	number_of_indexes=1
+    medium_index=""
+    index_number=1
+    number_of_indexes=1
     index_prefix=$(get_index_prefix)
-	index_session="$index_prefix-$index_number"
+    index_session="$index_prefix-$index_number"
 
     # Sorting by filetypes
-	target=$(ls -v $target)
+    target=$(ls -v $target)
 
-	# Write the indexes files in order to have one index file by medium.
-	# When a medium is full, we create a new one.
-	for file in ${target}
-	do
+    # Write the indexes files in order to have one index file by medium.
+    # When a medium is full, we create a new one.
+    for file in ${target}
+    do
         if [ ! -f $file ]; then
             continue
         fi
-		size_of_file=$(size_of_path "$file")
+        size_of_file=$(size_of_path "$file")
 
-		if [ $size_of_file -gt $BM_BURNING_MAXSIZE ] ; then
-			warning "Not burning \$file because it does not fit in the disk."
-			continue
-		fi
+        if [ $size_of_file -gt $BM_BURNING_MAXSIZE ] ; then
+            warning "Not burning \$file because it does not fit in the disk."
+            continue
+        fi
 
-		# Addd file to the index file.
-		medium_possible_index="$medium_index $file"
-		size_of_possible_index=$(size_of_path "$medium_possible_index")
+        # Addd file to the index file.
+        medium_possible_index="$medium_index $file"
+        size_of_possible_index=$(size_of_path "$medium_possible_index")
 
-		if [ $size_of_possible_index -gt $BM_BURNING_MAXSIZE ] ; then
-			indexes="$indexes $index_session"
-			
-			number_of_indexes=$(($number_of_indexes +1))
-			index_number=$(($index_number + 1))
-			index_session="$index_prefix-$index_number"
-			echo "$file" > $index_session
-			
+        if [ $size_of_possible_index -gt $BM_BURNING_MAXSIZE ] ; then
+            indexes="$indexes $index_session"
+            
+            number_of_indexes=$(($number_of_indexes +1))
+            index_number=$(($index_number + 1))
+            index_session="$index_prefix-$index_number"
+            echo "$file" > $index_session
+            
             medium_index="$file"
-			medium_possible_index=""
+            medium_possible_index=""
 
-		else
-			echo "$file" >> $index_session
-			medium_index="$medium_possible_index"
-		fi	
-	done
-	indexes="$indexes $index_session"
+        else
+            echo "$file" >> $index_session
+            medium_index="$medium_possible_index"
+        fi  
+    done
+    indexes="$indexes $index_session"
 }
 
 function __insert_new_medium()
@@ -442,7 +442,7 @@ function __burn_session_from_file()
     if [ ! -e "$index_file" ]; then
         error "No such index file: \"\$index_file\"."
     fi
-	
+    
     what_to_burn_session=""
 
     for file in $(cat "$index_file")
@@ -480,11 +480,11 @@ function burn_multiples_media()
     # archives to put on each medium.
     __build_indexes_from_target "$target"
 
-	# Display the number of medias required by the burning systemp.
+    # Display the number of medias required by the burning systemp.
     if [ $number_of_indexes -eq 1 ]; then
-    	info "The burning process will need one disk."
+        info "The burning process will need one disk."
     else 
-    	info "The burning process will need \$number_of_indexes disks."
+        info "The burning process will need \$number_of_indexes disks."
     fi        
 
     # Now that all indexes are built, list them so we can find
@@ -501,6 +501,6 @@ function burn_multiples_media()
         __burn_session_from_file "$index" "$session_number" "$number_of_indexes"
     done
 
-	# Remove all the index files.
-	rm -f $indexes
+    # Remove all the index files.
+    rm -f $indexes
 }

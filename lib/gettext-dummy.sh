@@ -20,18 +20,18 @@
 # substituted with value of $foo...
 translate()
 {
-	out=$(echo "$1" | sed -e 's/\\\$/\$/g')
-	out=$(eval "echo \"$out\"")
-	echo "$out"
+    out=$(echo "$1" | sed -e 's/\\\$/\$/g')
+    out=$(eval "echo \"$out\"")
+    echo "$out"
 }
 
 echo_translated()
 {
-	if [ "$1" = "-n" ]; then
-		message=$(translate "$2")
-		echo -n "$message"
-	else
-		message=$(translate "$1")
-		echo "$message"
-	fi
+    if [ "$1" = "-n" ]; then
+        message=$(translate "$2")
+        echo -n "$message"
+    else
+        message=$(translate "$1")
+        echo "$message"
+    fi
 }

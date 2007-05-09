@@ -87,7 +87,7 @@ function size_left_of_path()
         error "No path given."
     fi
 
-	left=$(df --si --block-size=1000k "$path" | tail -n 1 | awk '{print $4}')
+    left=$(df --si --block-size=1000k "$path" | tail -n 1 | awk '{print $4}')
 
     echo $left
 

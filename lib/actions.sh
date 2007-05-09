@@ -49,7 +49,7 @@ function make_archives()
     esac
 
     # Now make sure the md5 file is okay.
-	md5file="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5"
+    md5file="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5"
     if [ -e $md5file ] && 
        [ "$BM_REPOSITORY_SECURE" = "true" ]; then
         chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $md5file ||
@@ -72,11 +72,11 @@ function upload_files ()
             bm_upload_ftp
         ;;
         ssh|SSH|scp|SCP)
-            bm_upload_ssh	    
+            bm_upload_ssh       
         ;;
-	ssh-gpg|SSH-GPG)
-	    bm_upload_ssh_gpg
-	;;
+    ssh-gpg|SSH-GPG)
+        bm_upload_ssh_gpg
+    ;;
         rsync|RSYNC)
             bm_upload_rsync
         ;;
@@ -169,41 +169,41 @@ function check_filetypes()
 {
     debug "check_filetypes()"
 
-	case "$BM_TARBALL_FILETYPE" in
-		"zip")
-			if [ ! -x "$zip" ]; then
-				error "The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
-			fi
-		;;
-		"tar.bz2" )
-			if [ ! -x "$bzip" ]; then
-				error "The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
-			fi
-		;;
-		"dar" )
-			if [ ! -x "$dar" ]; then
-				error "The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
-			fi
-		;;
-	esac
+    case "$BM_TARBALL_FILETYPE" in
+        "zip")
+            if [ ! -x "$zip" ]; then
+                error "The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
+            fi
+        ;;
+        "tar.bz2" )
+            if [ ! -x "$bzip" ]; then
+                error "The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
+            fi
+        ;;
+        "dar" )
+            if [ ! -x "$dar" ]; then
+                error "The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
+            fi
+        ;;
+    esac
 }
 
 function create_directories()
 {
     debug "create_directories()"
 
-	if [ ! -d $BM_REPOSITORY_ROOT ]
-	then
-		info "The repository \$BM_REPOSITORY_ROOT does not exist, creating it."
-		mkdir $BM_REPOSITORY_ROOT
-	fi
+    if [ ! -d $BM_REPOSITORY_ROOT ]
+    then
+        info "The repository \$BM_REPOSITORY_ROOT does not exist, creating it."
+        mkdir $BM_REPOSITORY_ROOT
+    fi
 
-	# for security reason, the repository should not be world readable
-	# only BM_REPOSITORY_USER:BM_REPOSITORY_GROUP can read/write it. 
-	if [ "$BM_REPOSITORY_SECURE" = "true" ]; then
-		chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $BM_REPOSITORY_ROOT
-		chmod $BM_REPOSITORY_CHMOD $BM_REPOSITORY_ROOT
-	fi
+    # for security reason, the repository should not be world readable
+    # only BM_REPOSITORY_USER:BM_REPOSITORY_GROUP can read/write it. 
+    if [ "$BM_REPOSITORY_SECURE" = "true" ]; then
+        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $BM_REPOSITORY_ROOT
+        chmod $BM_REPOSITORY_CHMOD $BM_REPOSITORY_ROOT
+    fi
 }
 
 

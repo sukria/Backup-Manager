@@ -23,64 +23,64 @@ nb_warnings=0
 # Please, developers, use this for handling those warnings :)
 function confkey_warning()
 {
-	key="$1"
-	default="$2"
+    key="$1"
+    default="$2"
     debug "confkey_warning ($key, $default)"
 
-	nb_warnings=$(($nb_warnings + 1))
-	warning "The configuration key \$key is not set, using \"\$default\"."	
+    nb_warnings=$(($nb_warnings + 1))
+    warning "The configuration key \$key is not set, using \"\$default\"."  
 }
 
 function confkey_warning_deprecated()
 {
-	deprecated_key="$1"
-	deprecated_value="$2"
-	new_key="$3"
+    deprecated_key="$1"
+    deprecated_value="$2"
+    new_key="$3"
     debug "confkey_warning_deprecated ($deprecated_key, $deprecated_value, $new_key)"
 
-	nb_warnings=$(($nb_warnings + 1))
-	warning "The configuration key \"\$deprecated_key\" is deprecated, you should rename it \"\$new_key\". Using \"\$deprecated_value\"."
+    nb_warnings=$(($nb_warnings + 1))
+    warning "The configuration key \"\$deprecated_key\" is deprecated, you should rename it \"\$new_key\". Using \"\$deprecated_value\"."
 }
 
 # Look if the deprecated key exists, if so, warning and use it as 
 # a default value for the new key.
 function confkey_handle_deprecated()
 {
-	deprecated_key="$1"
-	new_key="$2"
+    deprecated_key="$1"
+    new_key="$2"
     debug "confkey_handle_deprecated ($deprecated_key, $new_key)"
 
-	eval "deprecated_value=\"\$$deprecated_key\"" || deprecated_value=""
+    eval "deprecated_value=\"\$$deprecated_key\"" || deprecated_value=""
 
-	if [ -n "$deprecated_value" ]; then 
-		confkey_warning_deprecated "$deprecated_key" "$deprecated_value" "$new_key"
-		eval "$new_key=\"\$deprecated_value\""
-		eval "export $new_key"
-	fi
+    if [ -n "$deprecated_value" ]; then 
+        confkey_warning_deprecated "$deprecated_key" "$deprecated_value" "$new_key"
+        eval "$new_key=\"\$deprecated_value\""
+        eval "export $new_key"
+    fi
 }
 
 function confkey_require()
 {
-	key="$1"
-	default="$2"
+    key="$1"
+    default="$2"
     debug "confkey_require ($key, $default)"
 
-	eval "value=\"\$$key\""
+    eval "value=\"\$$key\""
 
-	if [ -z "$value" ]; then
-		confkey_warning "$key" "$default"
-		eval "$key=\"\$default\""
-		eval "export $key"
-	fi
+    if [ -z "$value" ]; then
+        confkey_warning "$key" "$default"
+        eval "$key=\"\$default\""
+        eval "export $key"
+    fi
 }
 
 confkey_error()
 {
-	key="$1"
-	keymandatory="$2"
+    key="$1"
+    keymandatory="$2"
     debug "confkey_error ($key, $keymandatory)"
 
-	error "The configuration key \$key is not set but \$keymandatory is enabled."
+    error "The configuration key \$key is not set but \$keymandatory is enabled."
 }
 
 # In version older than 0.6, it was possible to set booleans to "yes" or "no",
@@ -125,10 +125,10 @@ export BM_REPOSITORY_ROOT="${BM_REPOSITORY_ROOT%/}"
 
 confkey_require "BM_REPOSITORY_SECURE" "true" 
 if [ "$BM_REPOSITORY_SECURE" = "true" ]; then
-	confkey_handle_deprecated "BM_USER" "BM_REPOSITORY_USER"
-	confkey_require "BM_REPOSITORY_USER" "root"
-	confkey_handle_deprecated "BM_GROUP" "BM_REPOSITORY_GROUP"
-	confkey_require "BM_REPOSITORY_GROUP" "root"
+    confkey_handle_deprecated "BM_USER" "BM_REPOSITORY_USER"
+    confkey_require "BM_REPOSITORY_USER" "root"
+    confkey_handle_deprecated "BM_GROUP" "BM_REPOSITORY_GROUP"
+    confkey_require "BM_REPOSITORY_GROUP" "root"
     confkey_require "BM_REPOSITORY_CHMOD" "770"
     confkey_require "BM_ARCHIVE_CHMOD" "660"
 fi
@@ -154,9 +154,9 @@ fi
 
 if [ "$BM_ARCHIVE_METHOD" = "tarball" ] || 
    [ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ] ; then
-	confkey_require "BM_TARBALL_FILETYPE" "tar.gz"
-	confkey_require "BM_TARBALL_NAMEFORMAT" "long"
-	confkey_require "BM_TARBALL_DUMPSYMLINKS" "false"
+    confkey_require "BM_TARBALL_FILETYPE" "tar.gz"
+    confkey_require "BM_TARBALL_NAMEFORMAT" "long"
+    confkey_require "BM_TARBALL_DUMPSYMLINKS" "false"
 fi
 
 confkey_handle_deprecated "BM_FILETYPE" "BM_TARBALL_FILETYPE"
@@ -201,9 +201,9 @@ if [ -n "$BM_TARBALL_DIRECTORIES" ]; then
 fi
 
 if [ "$BM_UPLOAD_METHOD" = "rsync" ]; then
-	confkey_require "BM_UPLOAD_RSYNC_DUMPSYMLINKS" "false"
-	confkey_handle_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
-	confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
+    confkey_require "BM_UPLOAD_RSYNC_DUMPSYMLINKS" "false"
+    confkey_handle_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
+    confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
 fi
 
 if [ "$BM_UPLOAD_METHOD" = "ssh" ]; then
@@ -211,10 +211,10 @@ if [ "$BM_UPLOAD_METHOD" = "ssh" ]; then
 fi
 
 if [ "$BM_ARCHIVE_METHOD" = "mysql" ]; then
-	confkey_require "BM_MYSQL_ADMINLOGIN" "root"
-	confkey_require "BM_MYSQL_HOST" "localhost"
-	confkey_require "BM_MYSQL_PORT" "3306"
-	confkey_require "BM_MYSQL_FILETYPE" "tar.gz"
+    confkey_require "BM_MYSQL_ADMINLOGIN" "root"
+    confkey_require "BM_MYSQL_HOST" "localhost"
+    confkey_require "BM_MYSQL_PORT" "3306"
+    confkey_require "BM_MYSQL_FILETYPE" "tar.gz"
 fi
 
 # Burning system
@@ -228,21 +228,21 @@ fi
 
 if [ -n "$BM_BURNING_METHOD" ] && 
    [ "$BM_BURNING_METHOD" != "none" ] ; then
-	confkey_require "BM_BURNING_DEVICE" "/dev/cdrom"
-	confkey_require "BM_BURNING_MAXSIZE" "650"
-	confkey_require "BM_BURNING_CHKMD5" "true"
+    confkey_require "BM_BURNING_DEVICE" "/dev/cdrom"
+    confkey_require "BM_BURNING_MAXSIZE" "650"
+    confkey_require "BM_BURNING_CHKMD5" "true"
 fi
 
 if [ -n "$BM_UPLOAD_MODE" ]; then
-	confkey_handle_deprecated "BM_UPLOAD_MODE" "BM_UPLOAD_METHOD"
+    confkey_handle_deprecated "BM_UPLOAD_MODE" "BM_UPLOAD_METHOD"
    
     confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
     confkey_handle_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
 
     confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_FTP_USER"
     confkey_handle_deprecated "BM_UPLOAD_PASSWD" "BM_UPLOAD_FTP_PASSWORD"
-	confkey_handle_deprecated "BM_FTP_PURGE" "BM_UPLOAD_FTP_PURGE"
-	confkey_handle_deprecated "BM_UPLOAD_FTPPURGE" "BM_UPLOAD_FTP_PURGE"
+    confkey_handle_deprecated "BM_FTP_PURGE" "BM_UPLOAD_FTP_PURGE"
+    confkey_handle_deprecated "BM_UPLOAD_FTPPURGE" "BM_UPLOAD_FTP_PURGE"
 
     confkey_handle_deprecated "BM_UPLOAD_DIR" "BM_UPLOAD_DESTINATION"
 fi        
@@ -253,9 +253,9 @@ fi
 
 confkey_require "BM_LOGGER" "true"
 if [ "$BM_LOGGER" = "true" ]; then 
-	confkey_require "BM_LOGGER_FACILITY" "user"
+    confkey_require "BM_LOGGER_FACILITY" "user"
 fi
 
 if [ $nb_warnings -gt 0 ]; then
-	warning "When validating the configuration file \$conffile, \$nb_warnings warnings were found."
+    warning "When validating the configuration file \$conffile, \$nb_warnings warnings were found."
 fi

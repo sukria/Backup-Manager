@@ -541,7 +541,7 @@ function __get_backup_tarball_command()
                 error "The archive type \"tar.lz\" depends on the tool \"\$lzma\"."
             fi
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target | $lzma -si e"
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target | $lzma -z -"
         ;;
         zip) 
             if [ ! -x $zip ]; then
@@ -580,9 +580,9 @@ function build_clear_archive
                 tail -f $logfile &
             fi
             
-            debug "$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile"
+            debug "$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -z - > $file_to_create 2>>$logfile"
             tail_logfile "$logfile"
-            $tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -si e $file_to_create 2>>$logfile || error_code=$?
+            $tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -z - > $file_to_create 2>>$logfile || error_code=$?
             check_error_code "$error_code" "$file_to_create" "$logfile"
         ;;
         

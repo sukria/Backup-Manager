@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
 source testlib.sh
- verbose="true"
- warnings="true"
+# verbose="true"
+# warnings="true"
 
 source confs/base.conf
 

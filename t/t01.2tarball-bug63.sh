@@ -27,7 +27,6 @@ fi
 
 bm_init_env
 bm_init_today
-
 create_directories
 make_archives
 

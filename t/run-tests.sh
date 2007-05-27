@@ -37,7 +37,7 @@ nb_failure=0
 for file in t[0-9][0-9]*.sh
 do
         count
-        echo -n "[t $total] Running test $file: "
+        echo -n "[t $total] Running test $file: "
         
         if /bin/bash $file 2>/dev/null; then
             test_success $file

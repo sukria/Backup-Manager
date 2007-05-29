@@ -1260,11 +1260,11 @@ export BM_UPLOAD_FTP_USER="bmngr"
 <p>
 <em>Type: string.</em>
 <p>
-Put here the <tt>BM_UPLOAD_FTP_USER</tt>'s password to use (in plain text).
+Put here the password to use for authenticating the FTP session,(in plain text).
 <p>
 Example:
 <example>
-export BM_UPLOAD_FTP_USER="secret"
+export BM_UPLOAD_FTP_PASSWORD="secret"
 </example>
 
 <sect2 id="BM_UPLOAD_FTP_HOSTS"><tt>BM_UPLOAD_FTP_HOSTS</tt>

@@ -1,3 +1,10 @@
+2007-05-30  Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* Makefile, doc/Makefile
+	  + Adding $(DESTDIR) where needed.
+	  + Better call to pod2man: --section 8
+	  + Fixes in doc/Makefile 
+
 2007-05-29  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* Fixed a typo in the user-guide (bug #167).

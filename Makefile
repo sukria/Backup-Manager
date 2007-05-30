@@ -74,7 +74,7 @@ install_contrib:
 # The backup-manager-doc package
 install_doc: 
 	@echo -e "\n*** Building the User Guide ***\n"
-	$(MAKE) -C doc
+	$(MAKE) -C doc DESTDIR=$(DESTDIR)
 	install -d $(DOCDIR)
 	install --owner=root --group=root --mode=0644 $(DOCPDF) $(DOCDIR)
 	install --owner=root --group=root --mode=0644 $(DOCTXT) $(DOCDIR)
@@ -108,10 +108,10 @@ install_bin:
 
 # Building manpages
 man/backup-manager-upload.8:
-	PERL5LIB=. pod2man --center="backup-manager-upload" backup-manager-upload > man/backup-manager-upload.8
+	PERL5LIB=. pod2man --section 8 --center="backup-manager-upload" backup-manager-upload > man/backup-manager-upload.8
 
 man/backup-manager-purge.8:
-	PERL5LIB=. pod2man --center="backup-manager-purge" backup-manager-purge > man/backup-manager-purge.8
+	PERL5LIB=. pod2man --section 8 --center="backup-manager-purge" backup-manager-purge > man/backup-manager-purge.8
 	
 # build the manpages
 manpages: manpages-stamp	
@@ -121,8 +121,8 @@ manpages-stamp: man/backup-manager-upload.8 man/backup-manager-purge.8
 # Installing the man pages.
 install_man: manpages-stamp
 	@echo -e "\n*** Installing man pages ***\n"
-	install -d /usr/share/man/man8/
-	install --owner=root --group=root --mode=0644 man/*.8 /usr/share/man/man8/
+	install -d $(DESTDIR)/usr/share/man/man8/
+	install --owner=root --group=root --mode=0644 man/*.8 $(DESTDIR)/usr/share/man/man8/
 
 testperldir:
 	@echo "PERL5DIR: $(PERL5DIR)"
@@ -134,7 +134,7 @@ clean:
 	rm -f build-stamp
 	rm -rf debian/backup-manager
 	rm -f man/backup-manager-upload.8
-	rm -f man/*.8
+	#rm -f man/*.8
 	$(MAKE) -C po clean
 	$(MAKE) -C doc clean
 

@@ -1,14 +1,15 @@
 
 BASE	= user-guide
 SOURCE	= $(BASE).sgml
-DEST    = /usr/share/backup-manager/doc
+DEST    = $(DESTDIR)/usr/share/backup-manager/doc
 
 all: pdf txt html
 install: all
 	install -d $(DEST)
-	install $(BASE).pdf $(DEST)
-	install $(BASE).html $(DEST)
-	install $(BASE).txt $(DEST)
+	install -m 0644 $(BASE).pdf $(DEST)
+	install -d $(DEST)/$(BASE).html
+	cp $(BASE).html/*html $(DEST)/$(BASE).html
+	install -m 0644 $(BASE).txt $(DEST)
 
 pdf: user-guide.pdf
 user-guide.pdf:

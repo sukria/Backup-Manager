@@ -176,7 +176,7 @@ BackupManager::Config::getopt("$0 -m=mode -h=host -u=user [options] date\n
 -m|--mode	: Transfer mode to use : ftp, scp, s3, or ssh-gpg.
 -h|--host	: Remote hosts to connect to (separated by commas).
 -u|--user	: User to use for connection.
--p|--password	: Password of remote host's user (only needed for ftp mode).
+-p|--password	: remote user's password (needed for ftp and s3 uploads).
 -k|--key	: SSH key file to use for opening the scp session (only needed for scp mode).
 -d|--directory	: Directory on the remote host where files will go (default is /var/archives/uploads).
 -b|--bucket     : Amazon S3 storage bucket to use
@@ -906,13 +906,24 @@ unless (defined $g_host and
 }
 
 if ($g_protocol eq 'ftp' and not defined $g_pass) {
-	print $BackupManager::Config::usage, "\n";
-	exit E_INVALID;
+    # try to read the password from the environment
+    if (defined $ENV{BM_UPLOAD_FTP_PASSWORD}) {
+        $g_pass = $ENV{BM_UPLOAD_FTP_PASSWORD};
+    }
+    else {
+    	print $BackupManager::Config::usage, "\n";
+    	exit E_INVALID;
+    }
 }
 
 if ($g_protocol eq 's3' and (not defined $g_bucket or not defined $g_pass)) {
-	print $BackupManager::Config::usage, "\n";
-	exit E_INVALID;
+    if (! defined $g_pass && defined $ENV{BM_UPLOAD_S3_SECRET_KEY}) {
+        $g_pass = $ENV{BM_UPLOAD_S3_SECRET_KEY};
+    }
+    else {
+	    print $BackupManager::Config::usage, "\n";
+	    exit E_INVALID;
+    }
 }
 
 if ($g_protocol eq 'ssh-gpg' and (not defined $g_gpg_recipient)) {        

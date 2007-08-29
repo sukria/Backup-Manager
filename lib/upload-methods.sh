@@ -133,7 +133,6 @@ bm_upload_ftp()
         -m="ftp" \
         -h="$bm_upload_hosts" \
         -u="$BM_UPLOAD_FTP_USER" \
-        -p="$BM_UPLOAD_FTP_PASSWORD" \
         -d="$BM_UPLOAD_FTP_DESTINATION" \
         -r="$BM_REPOSITORY_ROOT" today 2>$logfile|| 
     error "Error reported by backup-manager-upload for method \"ftp\", check \"\$logfile\"."
@@ -164,7 +163,6 @@ bm_upload_s3()
         -m="s3" \
         -h="$bm_upload_hosts" \
         -u="$BM_UPLOAD_S3_ACCESS_KEY" \
-        -p="$BM_UPLOAD_S3_SECRET_KEY" \
         -b="$BM_UPLOAD_S3_DESTINATION" \
         -r="$BM_REPOSITORY_ROOT" today 2>$logfile || 
     error "Error reported by backup-manager-upload for method \"s3\", check \"\$logfile\"."

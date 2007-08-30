@@ -1,3 +1,8 @@
+2007-08-30	Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* lib/files.sh
+	  Process symlinks as well for building the purging list.
+
 2007-05-30  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* Makefile, doc/Makefile

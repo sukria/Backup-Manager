@@ -344,9 +344,16 @@ function clean_directory()
     # First list all the files to process
     # and ask backup-manager-purge what to remove
     list=$(mktemp /tmp/bm-list.XXXXXX)
+    
+    # files
     find -H "$directory" $maxdepth \
          -type f -print \
          | /usr/bin/backup-manager-purge --ttl=$BM_ARCHIVE_TTL > $list
+    
+    # symlinks
+    find -H "$directory" $maxdepth \
+         -type l -print \
+         | /usr/bin/backup-manager-purge --ttl=$BM_ARCHIVE_TTL >> $list
 
     # Then actually remove the files
     for archive in `cat $list`

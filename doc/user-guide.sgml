@@ -727,7 +727,7 @@ should be done.
 
 <p>
 This is the type of frequency you want to use. If you choose <tt>weekly</tt>,
-you'll have to choose a day number between 1 and 7 for the
+you'll have to choose a day number between 0 and 6 for the
 BM_TARBALLINC_MASTERDATEVALUE configuration key, if you choose <tt>monthly</tt>,
 the day number will be between 1 and 31.
 

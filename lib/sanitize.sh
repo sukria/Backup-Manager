@@ -152,6 +152,12 @@ if [ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ] &&
    [ -z "$BM_TARBALLINC_MASTERDATETYPE" ]; then
         confkey_require "BM_TARBALLINC_MASTERDATETYPE" "weekly"
 fi
+if [ -n "$BM_TARBALLINC_MASTERDATEVALUE" ]; then
+    if [ "$BM_TARBALLINC_MASTERDATEVALUE" -gt "6" ]; then
+        warning "BM_TARBALLINC_MASTERDATEVALUE should be greater than 6, falling back to 0"
+        export BM_TARBALLINC_MASTERDATEVALUE="0"
+    fi
+fi
 
 if [ "$BM_ARCHIVE_METHOD" = "tarball" ] || 
    [ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ] ; then

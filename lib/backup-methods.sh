@@ -401,7 +401,7 @@ function __get_flags_dar_incremental()
         lastday_dar_master="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday.master.dar"
         lastday_dar_master_first_slice="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday.master.1.dar"
 
-        if [ -e $lastday_dar ] || [ -e $lastday_dar_first_slice ] ; then
+        if [ -e $lastday_dar ] || [ -e $lastday_dar_first_slice ] || [ -e $lastday_dar_master ]  || [ -e $lastday_dar_master_first_slice ]  ; then
             # we have found a previous dar backup, this one will be used as a reference
             # if needed.
             break

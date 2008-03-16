@@ -373,12 +373,12 @@ function __get_flags_tar_incremental()
     # so we'll generate a new one (and then, a full backup).
     if [ "$master_day" -eq "$BM_TARBALLINC_MASTERDATEVALUE" ];  then
         info "Building master backup for target: \"\$dir_name\"."
-        rm -f $incremental_list
+        rm -f "$incremental_list"
     fi
-    if [ -e $incremental_list ]; then
+    if [ -e "$incremental_list" ]; then
         master=""
     fi
-    incremental="--listed-incremental $incremental_list"
+    incremental="--listed-incremental \"$incremental_list\""
 }
 
 # This will set the appropriate dar options for making incremental backups.
@@ -690,7 +690,7 @@ function __build_remote_archive()
         remote_command="ssh -p ${BM_UPLOAD_SSH_PORT} -i ${BM_UPLOAD_SSH_KEY} -o BatchMode=yes ${BM_UPLOAD_SSH_USER}@${host} $command"
         file_to_check="$file_to_create"
 
-        if [ ! -e $file_to_check ] || [ $force = true ]; then
+        if [ ! -e "$file_to_check" ] || [ $force = true ]; then
              
             logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
 

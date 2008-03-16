@@ -355,12 +355,12 @@ function clean_directory()
     # files
     find $find_opt "$directory" $maxdepth \
          -type f -print \
-         | /usr/bin/backup-manager-purge --ttl=$BM_ARCHIVE_TTL > $list
+         | $bmp --ttl=$BM_ARCHIVE_TTL > $list
     
     # symlinks
     find $find_opt "$directory" $maxdepth \
          -type l -print \
-         | /usr/bin/backup-manager-purge --ttl=$BM_ARCHIVE_TTL >> $list
+         | $bmp --ttl=$BM_ARCHIVE_TTL >> $list
 
     # Then actually remove the files
     for archive in `cat $list`

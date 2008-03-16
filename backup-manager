@@ -33,6 +33,7 @@ VERSION="0.7.6"
 libdir="/usr/share/backup-manager"
 vardir="/var/lib/backup-manager"
 bmu="/usr/bin/backup-manager-upload"
+bmp="/usr/bin/backup-manager-purge"
 
 # external programs (cannot be sure where they are)
 zip=$(which zip) || true

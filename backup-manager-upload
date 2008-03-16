@@ -457,8 +457,6 @@ sub send_files_with_scp($$$$$)
     # loop on each hosts given and connect to them.
 	foreach my $host (@{$ra_hosts}) {
             
-        warn "$host -> $repository";
-
         # make sure the target directory exists remotely
         my $ls_rep_cmd = "$ssh $user\@$host \"ls $repository\" 2>/dev/null || echo notfound";
         my $out = `$ls_rep_cmd`;

@@ -25,6 +25,13 @@
 #   fi
 #}
 
+
+# detect if find supports -H
+find_opt=""
+if find -H /tmp > /dev/null 2>&1 ; then
+    find_opt="-H"
+fi    
+
 # this will send the appropriate name of archive to 
 # make according to what the user choose in the conf.
 function get_dir_name()
@@ -346,12 +353,12 @@ function clean_directory()
     list=$(mktemp /tmp/bm-list.XXXXXX)
     
     # files
-    find -H "$directory" $maxdepth \
+    find $find_opt "$directory" $maxdepth \
          -type f -print \
          | /usr/bin/backup-manager-purge --ttl=$BM_ARCHIVE_TTL > $list
     
     # symlinks
-    find -H "$directory" $maxdepth \
+    find $find_opt "$directory" $maxdepth \
          -type l -print \
          | /usr/bin/backup-manager-purge --ttl=$BM_ARCHIVE_TTL >> $list
 

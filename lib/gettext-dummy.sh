@@ -27,7 +27,7 @@ translate()
 
 echo_translated()
 {
-    if [ "$1" = "-n" ]; then
+    if [[ "$1" = "-n" ]]; then
         message=$(translate "$2")
         echo -n "$message"
     else

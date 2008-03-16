@@ -59,7 +59,7 @@ logger=$(which logger 2> /dev/null) || true
 # else, use /var/run/backup-manager.lock
 systemlockfile="/var/run/backup-manager.lock"
 userlockfile="$HOME/.backup-manager.lock"
-if [ "$UID" != 0 ]; then
+if [[ "$UID" != 0 ]]; then
     lockfile="$userlockfile"
 else
     lockfile="$systemlockfile"
@@ -96,7 +96,7 @@ noburn="false"
 noupload="false"
 
 # Init the version / revision flag
-if [ "$RELEASE" = "false" ]; then    
+if [[ "$RELEASE" = "false" ]]; then    
     rev=$(echo "$REVISION" | sed -e 's/.Revision: \([0-9]*\).*/\1/g')
     VERSION="${VERSION}r${rev}"
 fi
@@ -112,7 +112,7 @@ trap clean_exit SIGINT SIGTERM SIGKILL
 
 # Parse the command line 
 debug "Processing the command line"
-while [ $# -ge 1 ]; do
+while [[ $# -ge 1 ]]; do
     case $1 in
         -h|--help)
             usage
@@ -130,10 +130,10 @@ while [ $# -ge 1 ]; do
             burn="true"
             # parse the second argument as a date if
             # it does not begin with a dash (-).
-            if [ -n "$2" ] && 
-               [ "${2}" == "${2#-}" ]; then
+            if [[ -n "$2" ]] && 
+               [[ "${2}" == "${2#-}" ]]; then
                 # test if the date is a valid date
-                if [ $(echo "$2" | grep "^[[:digit:]]\{8\}$") ] ; then
+                if [[ $(echo "$2" | grep "^[[:digit:]]\{8\}$") ]] ; then
                     export BM__BURNING_DATE="$2"
                     shift
                 else
@@ -169,7 +169,7 @@ while [ $# -ge 1 ]; do
         ;;
         -c|--conffile)
             # in this case, $2 should be the conffile !
-            if [ -f $2 ]; then
+            if [[ -f $2 ]]; then
                 conffile=$2
             else
                 error "The -c option must be followed by an existing filename."
@@ -216,25 +216,25 @@ exec_pre_command || error "Unable to exec the pre-command"
 
 create_directories
 
-if [ "$upload" == "true" ]; then
+if [[ "$upload" == "true" ]]; then
     debug "Running the upload methods"
     upload_files
     _exit 0
 fi
 
-if [ "$burn" == "true" ]; then
+if [[ "$burn" == "true" ]]; then
     debug "Running the burning methods"
     burn_files
     _exit 0
 fi
 
-if [ "$md5check" == "true" ]; then
+if [[ "$md5check" == "true" ]]; then
     debug "Runing the MD5 checks"
     check_cdrom_md5_sums
     _exit 0
 fi
 
-if [ "$purge" == "true" ]; then
+if [[ "$purge" == "true" ]]; then
     debug "Purging the repository"
     clean_repositories
     _exit 0
@@ -243,7 +243,7 @@ fi
 # Default process : doing everything unless --no-flags 
 # are given.
 
-if [ "$nopurge" != "true" ]; then
+if [[ "$nopurge" != "true" ]]; then
     debug "Purging the repository"
     clean_repositories
 fi
@@ -251,12 +251,12 @@ fi
 debug "Building archives"
 make_archives
 
-if [ "$noupload" != "true" ]; then
+if [[ "$noupload" != "true" ]]; then
     debug "Running the upload methods"
     upload_files
 fi
 
-if [ "$noburn" != "true" ]; then
+if [[ "$noburn" != "true" ]]; then
     debug "Running the burning methods"
     burn_files
 fi

@@ -53,7 +53,7 @@ function confkey_handle_deprecated()
 
     eval "deprecated_value=\"\$$deprecated_key\"" || deprecated_value=""
 
-    if [ -n "$deprecated_value" ]; then 
+    if [[ -n "$deprecated_value" ]]; then 
         confkey_warning_deprecated "$deprecated_key" "$deprecated_value" "$new_key"
         eval "$new_key=\"\$deprecated_value\""
         eval "export $new_key"
@@ -68,7 +68,7 @@ function confkey_require()
 
     eval "value=\"\$$key\""
 
-    if [ -z "$value" ]; then
+    if [[ -z "$value" ]]; then
         confkey_warning "$key" "$default"
         eval "$key=\"\$default\""
         eval "export $key"
@@ -94,14 +94,14 @@ function replace_deprecated_booleans()
     do
         key=$(echo "$line" | awk -F '=' '{print $1}')
         value=$(echo "$line" | awk -F '=' '{print $2}')
-        if [ -n "$key" ]; then
-            if [ $(expr match "$key" BM_) -gt 0 ]; then
-                if [ "$value" = "yes" ]; then
+        if [[ -n "$key" ]]; then
+            if [[ $(expr match "$key" BM_) -gt 0 ]]; then
+                if [[ "$value" = "yes" ]]; then
                     warning "Deprecated boolean, \$key is set to \"yes\", setting \"true\" instead."
                     nb_warnings=$(($nb_warnings + 1))
                     eval "export $key=\"true\""
                 fi
-                if [ "$value" = "no" ]; then
+                if [[ "$value" = "no" ]]; then
                     warning "Deprecated boolean, \$key is set to \"no\", setting \"false\" instead."
                     nb_warnings=$(($nb_warnings + 1))
                     eval "export $key=\"false\""
@@ -125,7 +125,7 @@ confkey_require "BM_REPOSITORY_ROOT" "/var/archives"
 export BM_REPOSITORY_ROOT="${BM_REPOSITORY_ROOT%/}"
 
 confkey_require "BM_REPOSITORY_SECURE" "true" 
-if [ "$BM_REPOSITORY_SECURE" = "true" ]; then
+if [[ "$BM_REPOSITORY_SECURE" = "true" ]]; then
     confkey_handle_deprecated "BM_USER" "BM_REPOSITORY_USER"
     confkey_require "BM_REPOSITORY_USER" "root"
     confkey_handle_deprecated "BM_GROUP" "BM_REPOSITORY_GROUP"
@@ -148,19 +148,19 @@ confkey_require "BM_ARCHIVE_PREFIX" "$HOSTNAME"
 confkey_handle_deprecated "BM_BACKUP_METHOD" "BM_ARCHIVE_METHOD"
 confkey_require "BM_ARCHIVE_METHOD" "tarball"
 
-if [ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ] && 
-   [ -z "$BM_TARBALLINC_MASTERDATETYPE" ]; then
+if [[ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ]] && 
+   [[ -z "$BM_TARBALLINC_MASTERDATETYPE" ]]; then
         confkey_require "BM_TARBALLINC_MASTERDATETYPE" "weekly"
 fi
-if [ -n "$BM_TARBALLINC_MASTERDATEVALUE" ]; then
-    if [ "$BM_TARBALLINC_MASTERDATEVALUE" -gt "6" ]; then
+if [[ -n "$BM_TARBALLINC_MASTERDATEVALUE" ]]; then
+    if [[ "$BM_TARBALLINC_MASTERDATEVALUE" -gt "6" ]]; then
         warning "BM_TARBALLINC_MASTERDATEVALUE should not be greater than 6, falling back to 0"
         export BM_TARBALLINC_MASTERDATEVALUE="0"
     fi
 fi
 
-if [ "$BM_ARCHIVE_METHOD" = "tarball" ] || 
-   [ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ] ; then
+if [[ "$BM_ARCHIVE_METHOD" = "tarball" ]] || 
+   [[ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ]] ; then
     confkey_require "BM_TARBALL_FILETYPE" "tar.gz"
     confkey_require "BM_TARBALL_NAMEFORMAT" "long"
     confkey_require "BM_TARBALL_DUMPSYMLINKS" "false"
@@ -172,21 +172,21 @@ confkey_handle_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
 confkey_handle_deprecated "BM_DUMP_SYMLINKS" "BM_TARBALL_DUMPSYMLINKS"
 
 # encryption stuff goes here
-if [ "$BM_ENCRYPTION_METHOD" = "gpg" ]; then
-    if [ -z "$BM_ENCRYPTION_RECIPIENT" ]; then
+if [[ "$BM_ENCRYPTION_METHOD" = "gpg" ]]; then
+    if [[ -z "$BM_ENCRYPTION_RECIPIENT" ]]; then
         confkey_error "BM_ENCRYPTION_RECIPIENT" "BM_ENCRYPTION_METHOD"
     fi
 fi
 
 # The TARBALL_OVER_SSH thing
-if [ "$BM_TARBALL_OVER_SSH" = "true" ]; then
-    if [ -z "$BM_UPLOAD_SSH_HOSTS" ]; then
+if [[ "$BM_TARBALL_OVER_SSH" = "true" ]]; then
+    if [[ -z "$BM_UPLOAD_SSH_HOSTS" ]]; then
         confkey_error "BM_UPLOAD_SSH_HOSTS" "BM_TARBALL_OVER_SSH"
     fi
-    if [ -z "$BM_UPLOAD_SSH_KEY" ]; then
+    if [[ -z "$BM_UPLOAD_SSH_KEY" ]]; then
         confkey_error "BM_UPLOAD_SSH_KEY" "BM_TARBALL_OVER_SSH"
     fi
-    if [ -z "$BM_UPLOAD_SSH_USER" ]; then
+    if [[ -z "$BM_UPLOAD_SSH_USER" ]]; then
         confkey_error "BM_UPLOAD_SSH_USER" "BM_TARBALL_OVER_SSH"
     fi
     confkey_require "BM_UPLOAD_SSH_PORT" "22"
@@ -194,10 +194,10 @@ fi
 
 # Converting anything in BM_TARBALL_DIRECTORIES in the array BM_TARBALL_TARGETS[].
 # see bug #86 for details.
-if [ -n "$BM_DIRECTORIES" ]; then
+if [[ -n "$BM_DIRECTORIES" ]]; then
     BM_TARBALL_DIRECTORIES="$BM_DIRECTORIES"
 fi
-if [ -n "$BM_TARBALL_DIRECTORIES" ]; then
+if [[ -n "$BM_TARBALL_DIRECTORIES" ]]; then
     declare -a BM_TARBALL_TARGETS
     index=0
     for target in $BM_TARBALL_DIRECTORIES
@@ -207,17 +207,17 @@ if [ -n "$BM_TARBALL_DIRECTORIES" ]; then
     done
 fi
 
-if [ "$BM_UPLOAD_METHOD" = "rsync" ]; then
+if [[ "$BM_UPLOAD_METHOD" = "rsync" ]]; then
     confkey_require "BM_UPLOAD_RSYNC_DUMPSYMLINKS" "false"
     confkey_handle_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
     confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
 fi
 
-if [ "$BM_UPLOAD_METHOD" = "ssh" ]; then
+if [[ "$BM_UPLOAD_METHOD" = "ssh" ]]; then
     confkey_require "BM_UPLOAD_SSH_PORT" "22"
 fi
 
-if [ "$BM_ARCHIVE_METHOD" = "mysql" ]; then
+if [[ "$BM_ARCHIVE_METHOD" = "mysql" ]]; then
     confkey_require "BM_MYSQL_ADMINLOGIN" "root"
     confkey_require "BM_MYSQL_HOST" "localhost"
     confkey_require "BM_MYSQL_PORT" "3306"
@@ -225,7 +225,7 @@ if [ "$BM_ARCHIVE_METHOD" = "mysql" ]; then
 fi
 
 # Burning system
-if [ -n "$BM_BURNING" ]; then
+if [[ -n "$BM_BURNING" ]]; then
         case "$BM_BURNING" in 
             ""|"no"|"false"|"none")
                 BM_BURNING_METHOD="none"
@@ -233,14 +233,14 @@ if [ -n "$BM_BURNING" ]; then
         esac
 fi        
 
-if [ -n "$BM_BURNING_METHOD" ] && 
-   [ "$BM_BURNING_METHOD" != "none" ] ; then
+if [[ -n "$BM_BURNING_METHOD" ]] && 
+   [[ "$BM_BURNING_METHOD" != "none" ]] ; then
     confkey_require "BM_BURNING_DEVICE" "/dev/cdrom"
     confkey_require "BM_BURNING_MAXSIZE" "650"
     confkey_require "BM_BURNING_CHKMD5" "true"
 fi
 
-if [ -n "$BM_UPLOAD_MODE" ]; then
+if [[ -n "$BM_UPLOAD_MODE" ]]; then
     confkey_handle_deprecated "BM_UPLOAD_MODE" "BM_UPLOAD_METHOD"
    
     confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
@@ -254,15 +254,15 @@ if [ -n "$BM_UPLOAD_MODE" ]; then
     confkey_handle_deprecated "BM_UPLOAD_DIR" "BM_UPLOAD_DESTINATION"
 fi        
 
-if [ -z "$BM_ARCHIVE_STRICTPURGE" ]; then
+if [[ -z "$BM_ARCHIVE_STRICTPURGE" ]]; then
     confkey_require "BM_ARCHIVE_STRICTPURGE" "true"
 fi
 
 confkey_require "BM_LOGGER" "true"
-if [ "$BM_LOGGER" = "true" ]; then 
+if [[ "$BM_LOGGER" = "true" ]]; then 
     confkey_require "BM_LOGGER_FACILITY" "user"
 fi
 
-if [ $nb_warnings -gt 0 ]; then
+if [[ $nb_warnings -gt 0 ]]; then
     warning "When validating the configuration file \$conffile, \$nb_warnings warnings were found."
 fi

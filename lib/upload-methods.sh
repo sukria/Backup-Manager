@@ -26,7 +26,7 @@ bm_upload_init()
     bm_upload_hosts=$(echo $hosts| sed -e 's/ /,/g')
     
     v_switch=""
-    if [ "$verbose" == "true" ]; then
+    if [[ "$verbose" == "true" ]]; then
         v_switch="-v"
     fi
 
@@ -40,21 +40,21 @@ bm_upload_ssh()
     bm_upload_hosts="$BM_UPLOAD_HOSTS $BM_UPLOAD_SSH_HOSTS"
     bm_upload_init "$bm_upload_hosts"
 
-    if [ -z "$BM_UPLOAD_SSH_DESTINATION" ]; then
+    if [[ -z "$BM_UPLOAD_SSH_DESTINATION" ]]; then
         BM_UPLOAD_SSH_DESTINATION="$BM_UPLOAD_DESTINATION"
     fi        
-    if [ -z "$BM_UPLOAD_SSH_DESTINATION" ]; then
+    if [[ -z "$BM_UPLOAD_SSH_DESTINATION" ]]; then
         error "No valid destination found, SSH upload not possible."
     fi        
     
     # the flags for the SSH method
     k_switch=""
-    if [ ! -z "$BM_UPLOAD_SSH_KEY" ]; then
+    if [[ ! -z "$BM_UPLOAD_SSH_KEY" ]]; then
         k_switch="-k=$BM_UPLOAD_SSH_KEY"
     fi
 
     ssh_purge_switch=""
-    if [ "$BM_UPLOAD_SSH_PURGE" = "true" ]; then
+    if [[ "$BM_UPLOAD_SSH_PURGE" = "true" ]]; then
         ssh_purge_switch="--ssh-purge"
     fi
 
@@ -78,19 +78,19 @@ bm_upload_ssh_gpg()
     bm_upload_hosts="$BM_UPLOAD_HOSTS $BM_UPLOAD_SSH_HOSTS"
     bm_upload_init "$bm_upload_hosts"
 
-    if [ -z "$BM_UPLOAD_SSH_DESTINATION" ]; then
+    if [[ -z "$BM_UPLOAD_SSH_DESTINATION" ]]; then
         BM_UPLOAD_SSH_DESTINATION="$BM_UPLOAD_DESTINATION"
     fi        
-    if [ -z "$BM_UPLOAD_SSH_DESTINATION" ]; then
+    if [[ -z "$BM_UPLOAD_SSH_DESTINATION" ]]; then
         error "No valid destination found, SSH upload not possible."
     fi        
-    if [ -z "$BM_UPLOAD_SSHGPG_RECIPIENT" ]; then
+    if [[ -z "$BM_UPLOAD_SSHGPG_RECIPIENT" ]]; then
         error "No gpg recipient given. Argument is mandatory if upload method ssh-gpg is used."
     fi
 
     # the flags for the SSH method
     k_switch=""
-    if [ ! -z "$BM_UPLOAD_SSH_KEY" ]; then
+    if [[ ! -z "$BM_UPLOAD_SSH_KEY" ]]; then
         k_switch="-k=$BM_UPLOAD_SSH_KEY"
     fi
 
@@ -114,17 +114,17 @@ bm_upload_ftp()
     bm_upload_hosts="$BM_UPLOAD_HOSTS $BM_UPLOAD_FTP_HOSTS"
     bm_upload_init "$bm_upload_hosts" 
     
-    if [ -z "$BM_UPLOAD_FTP_DESTINATION" ]; then
+    if [[ -z "$BM_UPLOAD_FTP_DESTINATION" ]]; then
         BM_UPLOAD_FTP_DESTINATION="$BM_UPLOAD_DESTINATION"
     fi        
 
-    if [ -z "$BM_UPLOAD_FTP_DESTINATION" ]; then
+    if [[ -z "$BM_UPLOAD_FTP_DESTINATION" ]]; then
         error "No valid destination found, FTP upload not possible."
     fi        
 
     # flags for the FTP method
     ftp_purge_switch=""
-    if [ "$BM_UPLOAD_FTP_PURGE" = "true" ]; then
+    if [[ "$BM_UPLOAD_FTP_PURGE" = "true" ]]; then
             ftp_purge_switch="--ftp-purge"
     fi
  
@@ -148,13 +148,13 @@ bm_upload_s3()
     bm_upload_hosts="s3.amazon.com"
     bm_upload_init "$bm_upload_hosts" 
     
-    if [ -z "$BM_UPLOAD_S3_DESTINATION" ]; then
+    if [[ -z "$BM_UPLOAD_S3_DESTINATION" ]]; then
         BM_UPLOAD_S3_DESTINATION="$BM_UPLOAD_DESTINATION"
     fi        
 
     # flags for the S3 method
     s3_purge_switch=""
-    if [ "$BM_UPLOAD_S3_PURGE" = "true" ]; then
+    if [[ "$BM_UPLOAD_S3_PURGE" = "true" ]]; then
         s3_purge_switch="--s3-purge"
     fi
  
@@ -179,9 +179,9 @@ _exec_rsync_command()
     destination_option="$BM_UPLOAD_RSYNC_DESTINATION/${RSYNC_SUBDIR%/}"
     
     # remote hosts use SSH
-    if [ "$host" != "localhost" ]; then
-        if [ -z "$BM_UPLOAD_SSH_USER" ] || 
-           [ -z "$BM_UPLOAD_SSH_KEY" ]; then 
+    if [[ "$host" != "localhost" ]]; then
+        if [[ -z "$BM_UPLOAD_SSH_USER" ]] || 
+           [[ -z "$BM_UPLOAD_SSH_KEY" ]]; then 
             error "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
         fi
         ssh_option="ssh -l ${BM_UPLOAD_SSH_USER} -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}"
@@ -205,26 +205,26 @@ bm_upload_rsync_common()
     bm_upload_hosts="$BM_UPLOAD_HOSTS $BM_UPLOAD_RSYNC_HOSTS"
     bm_upload_init "$bm_upload_hosts"
 
-    if [ -z "$bm_upload_hosts" ]; then
+    if [[ -z "$bm_upload_hosts" ]]; then
         bm_upload_hosts="localhost"
     fi
-    if [ -z "$BM_UPLOAD_RSYNC_DESTINATION" ]; then
+    if [[ -z "$BM_UPLOAD_RSYNC_DESTINATION" ]]; then
         BM_UPLOAD_RSYNC_DESTINATION="$BM_UPLOAD_DESTINATION"
     fi        
-    if [ -z "$BM_UPLOAD_RSYNC_DESTINATION" ]; then
+    if [[ -z "$BM_UPLOAD_RSYNC_DESTINATION" ]]; then
         error "No valid destination found, RSYNC upload not possible."
     fi
     
     rsync_options="-va"
-    if [ ! -z $BM_UPLOAD_RSYNC_DUMPSYMLINKS ]; then
-        if [ "$BM_UPLOAD_RSYNC_DUMPSYMLINKS" = "true" ]; then
+    if [[ ! -z $BM_UPLOAD_RSYNC_DUMPSYMLINKS ]]; then
+        if [[ "$BM_UPLOAD_RSYNC_DUMPSYMLINKS" = "true" ]]; then
             rsync_options="-vaL"
         fi
     fi
 
     for directory in $BM_UPLOAD_RSYNC_DIRECTORIES
     do
-        if [ -n "$bm_upload_hosts" ]; then
+        if [[ -n "$bm_upload_hosts" ]]; then
             servers=`echo $bm_upload_hosts| sed 's/ /,/g'`
             for host in $servers
             do

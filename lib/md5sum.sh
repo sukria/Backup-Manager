@@ -25,12 +25,12 @@ function get_md5sum_from_file()
     md5file="$2"
     debug "get_md5sum_from_file ($filename, $md5file)"
 
-    if [ -z "$filename" ] || 
-       [ -z "$md5file" ]; then
+    if [[ -z "$filename" ]] || 
+       [[ -z "$md5file" ]]; then
         error "Internal error: bad usage of function get_md5sum_from_file()"
     fi
 
-    if [ ! -f $md5file ]; then
+    if [[ ! -f $md5file ]]; then
         error "No md5file found: \$md5file"
     fi
     
@@ -46,9 +46,9 @@ function get_md5sum()
     file="$1"
     debug "get_md5sum ($file)"
 
-    if [ -f $file ]; then
+    if [[ -f $file ]]; then
         md5=`$md5sum $file 2>/dev/null` || md5=""
-        if [ -z "$md5" ]; then
+        if [[ -z "$md5" ]]; then
             echo "undefined"
         else
             md5=$(echo $md5 | awk '{print $1}')
@@ -74,7 +74,7 @@ function save_md5_sum()
     archive=$(basename $archive)
     archive="$BM_REPOSITORY_ROOT/$archive"
     md5file="$2"
-    if [ -f $archive ]; then
+    if [[ -f $archive ]]; then
         hash=$(get_md5sum $archive)
         base=$(basename $archive)
         echo "$hash  $base" >> $md5file

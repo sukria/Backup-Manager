@@ -28,7 +28,7 @@ function bm_safe_unmount
     debug "bm_safe_unmount($device)"
 
     realdevice=$(ls -l $device | awk '{print $10}')
-    if [ -n "$realdevice" ]; then
+    if [[ -n "$realdevice" ]]; then
         device="$realdevice"
     fi
 
@@ -49,13 +49,13 @@ function check_cdrom_md5_sums()
     debug "check_cdrom_md5_sums()"
 
     has_error=0
-    if [ -z $BM_BURNING_DEVICE ]; then
+    if [[ -z $BM_BURNING_DEVICE ]]; then
         error "MD5 checkup is only performed on disks. Please set the BM_BURNING_DEVICE in \$conffile"
     fi
 
     # first create the mount point
     mount_point="$(mktemp -d /tmp/bm-mnt.XXXXXX)"
-    if [ ! -d $mount_point ]; then
+    if [[ ! -d $mount_point ]]; then
         error "The mount point \$mount_point is not there."
     fi
     
@@ -75,13 +75,13 @@ function check_cdrom_md5_sums()
         prefix_of_file=$(get_prefix_from_file $file)
 
     # Doesn't check the md5 sum of the md5sum file...
-    if [ "$base_file" = "${prefix_of_file}-${date_of_file}.md5" ] ; then
+    if [[ "$base_file" = "${prefix_of_file}-${date_of_file}.md5" ]] ; then
         continue
     fi
 
 
        # Which file should contain the MD5 hashes for that file ?
-       if [ "$prefix_of_file" != "index" ]; then
+       if [[ "$prefix_of_file" != "index" ]]; then
            md5_file="$BM_REPOSITORY_ROOT/${prefix_of_file}-${date_of_file}.md5"
        else
            md5_file="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX-${date_of_file}.md5"
@@ -90,7 +90,7 @@ function check_cdrom_md5_sums()
        str=$(echo_translated "Checking MD5 sum for \$base_file:")
 
         # if it does not exist, we create it (that will take much time).
-        if [ ! -f $md5_file ]; then
+        if [[ ! -f $md5_file ]]; then
             save_md5_sum $file $md5_file || continue
         fi
         
@@ -98,7 +98,7 @@ function check_cdrom_md5_sums()
         md5hash_trust=$(get_md5sum_from_file ${base_file} $md5_file)
 
         # If the MD5 hash was not found, generate it and save it now.
-        if [ -z "$md5hash_trust" ]; then
+        if [[ -z "$md5hash_trust" ]]; then
             save_md5_sum $file $md5_file || continue
             md5hash_trust=$(get_md5sum_from_file ${base_file} $md5_file)
         fi
@@ -119,7 +119,7 @@ function check_cdrom_md5_sums()
         esac
     done
 
-    if [ $has_error = 1 ]; then
+    if [[ $has_error = 1 ]]; then
         warning "Errors encountered during MD5 checks."
     fi
 
@@ -142,8 +142,8 @@ function burn_files()
 {
     debug "burn_files()"
 
-    if [ "$BM_BURNING_METHOD" = "none" ] || 
-       [ -z "$BM_BURNING_METHOD" ]; then
+    if [[ "$BM_BURNING_METHOD" = "none" ]] || 
+       [[ -z "$BM_BURNING_METHOD" ]]; then
         info "No burning method used."
         return 0
     fi
@@ -167,7 +167,7 @@ function find_what_to_burn()
     what_to_burn=""
 
     nb_file=$(ls -l $source 2>/dev/null | wc -l)
-    if [ $nb_file -gt 0 ]; then
+    if [[ $nb_file -gt 0 ]]; then
         info "Number of files to burn: \$nb_file."
     else
         error "Nothing to burn for the \$BM__BURNING_DATE, try the '--burn <date>' switch."
@@ -175,7 +175,7 @@ function find_what_to_burn()
     
     for file in $source
     do
-        if [ ! -L $file ]; then
+        if [[ ! -L $file ]]; then
             what_to_burn="$what_to_burn $file"
         fi
     done    
@@ -191,10 +191,10 @@ function burn_files_non_interactive()
     size=$(size_of_path "$BM_REPOSITORY_ROOT")
 
     # We can't burn the whole repository, using only today's archives
-    if [ $size -gt $BM_BURNING_MAXSIZE ] || 
-       [ -n "${BM__BURNING_DATE}" ]; then
+    if [[ $size -gt $BM_BURNING_MAXSIZE ]] || 
+       [[ -n "${BM__BURNING_DATE}" ]]; then
         
-        if [ -z "$BM__BURNING_DATE" ]; then
+        if [[ -z "$BM__BURNING_DATE" ]]; then
             BM__BURNING_DATE="$TODAY"
         fi
 
@@ -203,7 +203,7 @@ function burn_files_non_interactive()
         size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")
         
         # does not fit neither, cannot burn anything.
-        if [ $size -gt $BM_BURNING_MAXSIZE ]; then
+        if [[ $size -gt $BM_BURNING_MAXSIZE ]]; then
             error "Cannot burn archives of the \$BM__BURNING_DATE, too big: \${size}M, must fit in \$BM_BURNING_MAXSIZE"
         fi
         find_what_to_burn "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*"
@@ -223,7 +223,7 @@ function burn_files_interactive()
     debug "burn_files_interactive()"
 
     purge_indexes
-    if [ ! -z "${BM__BURNING_DATE}" ] ; then
+    if [[ ! -z "${BM__BURNING_DATE}" ]] ; then
         info "Burning archives of \$BM__BURNING_DATE."
         find_what_to_burn "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*"
         size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")
@@ -249,11 +249,11 @@ function burn_session()
     # Since version 0.7.5 disc-image can be non-joliet.
     # This is handled by $BM_BURNING_ISO_FLAGS, let's default that 
     # variable for backward compat.
-    if [ -z "$BM_BURNING_ISO_FLAGS" ]; then
+    if [[ -z "$BM_BURNING_ISO_FLAGS" ]]; then
         BM_BURNING_ISO_FLAGS="-R -J"
     fi
 
-    if [ -z "$session_number" ] || [ $session_number = 1 ]; then
+    if [[ -z "$session_number" ]] || [[ $session_number = 1 ]]; then
         title="Backups of ${BM__BURNING_DATE}"
     else
         title="Backups of ${BM__BURNING_DATE} - $session_number/$number_of_indexes"
@@ -268,7 +268,7 @@ function burn_session()
     
     # set the cdrecord command 
     devforced=""
-    if [ -n "$BM_BURNING_DEVFORCED" ]; then
+    if [[ -n "$BM_BURNING_DEVFORCED" ]]; then
         info "Forcing dev=\${BM_BURNING_DEVFORCED} for cdrecord commands."
         devforced="dev=${BM_BURNING_DEVFORCED}"
     fi
@@ -276,7 +276,7 @@ function burn_session()
     # burning the iso with the user choosen method
     case "$BM_BURNING_METHOD" in
         "DVD")
-            if [ ! -x $growisofs ]; then
+            if [[ ! -x $growisofs ]]; then
                 error "DVD+R(W) burning requires \$growisofs, aborting."
             fi
             
@@ -288,10 +288,10 @@ function burn_session()
         ;;
         
         "DVD-RW")
-            if [ ! -x $growisofs ]; then
+            if [[ ! -x $growisofs ]]; then
                 error "DVD-R(W) burning requires \$growisofs, aborting."
             fi
-            if [ ! -x $dvdrwformat ]; then
+            if [[ ! -x $dvdrwformat ]]; then
                 error "DVD-R(W) burning requires \$dvdrwformat, aborting."
             fi
             
@@ -308,7 +308,7 @@ function burn_session()
         ;;
         
         "CDRW")
-            if [ ! -x $cdrecord ]; then
+            if [[ ! -x $cdrecord ]]; then
                 error "CD-R(W) burning requires \$cdrecord, aborting."
             fi
                         
@@ -326,7 +326,7 @@ function burn_session()
         ;;
         
         "CDR")
-            if [ ! -x $cdrecord ]; then
+            if [[ ! -x $cdrecord ]]; then
                 error "CD-R(W) burning requires \$cdrecord, aborting."
             fi
 
@@ -351,7 +351,7 @@ function burn_session()
     rm -f $logfile
 
     # checking the files in the CDR if wanted
-    if [ $BM_BURNING_CHKMD5 = true ]; then
+    if [[ $BM_BURNING_CHKMD5 = true ]]; then
         check_cdrom_md5_sums
     fi
 }
@@ -393,12 +393,12 @@ function __build_indexes_from_target()
     # When a medium is full, we create a new one.
     for file in ${target}
     do
-        if [ ! -f $file ]; then
+        if [[ ! -f $file ]]; then
             continue
         fi
         size_of_file=$(size_of_path "$file")
 
-        if [ $size_of_file -gt $BM_BURNING_MAXSIZE ] ; then
+        if [[ $size_of_file -gt $BM_BURNING_MAXSIZE ]] ; then
             warning "Not burning \$file because it does not fit in the disk."
             continue
         fi
@@ -407,7 +407,7 @@ function __build_indexes_from_target()
         medium_possible_index="$medium_index $file"
         size_of_possible_index=$(size_of_path "$medium_possible_index")
 
-        if [ $size_of_possible_index -gt $BM_BURNING_MAXSIZE ] ; then
+        if [[ $size_of_possible_index -gt $BM_BURNING_MAXSIZE ]] ; then
             indexes="$indexes $index_session"
             
             number_of_indexes=$(($number_of_indexes +1))
@@ -439,7 +439,7 @@ function __burn_session_from_file()
     number_of_indexes="$3"
     debug "__burn_session_from_file ($index_file, $session_number, $number_of_indexes)"
 
-    if [ ! -e "$index_file" ]; then
+    if [[ ! -e "$index_file" ]]; then
         error "No such index file: \"\$index_file\"."
     fi
     
@@ -481,7 +481,7 @@ function burn_multiples_media()
     __build_indexes_from_target "$target"
 
     # Display the number of medias required by the burning systemp.
-    if [ $number_of_indexes -eq 1 ]; then
+    if [[ $number_of_indexes -eq 1 ]]; then
         info "The burning process will need one disk."
     else 
         info "The burning process will need \$number_of_indexes disks."

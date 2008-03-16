@@ -50,8 +50,8 @@ function make_archives()
 
     # Now make sure the md5 file is okay.
     md5file="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5"
-    if [ -e $md5file ] && 
-       [ "$BM_REPOSITORY_SECURE" = "true" ]; then
+    if [[ -e $md5file ]] && 
+       [[ "$BM_REPOSITORY_SECURE" = "true" ]]; then
         chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $md5file ||
             warning "Unable to change the owner of \"\$md5file\"."
         chmod $BM_ARCHIVE_CHMOD $md5file ||
@@ -114,7 +114,7 @@ function exec_pre_command()
 {
     debug "exec_pre_command()"
 
-    if [ ! -z "$BM_PRE_BACKUP_COMMAND" ]; then
+    if [[ ! -z "$BM_PRE_BACKUP_COMMAND" ]]; then
         info "Running pre-command: \$BM_PRE_BACKUP_COMMAND."
         RET=`$BM_PRE_BACKUP_COMMAND` || RET="false" 
         case "$RET" in
@@ -135,7 +135,7 @@ function exec_post_command()
 {
     debug "exec_post_command()"
 
-    if [ ! -z "$BM_POST_BACKUP_COMMAND" ]; then
+    if [[ ! -z "$BM_POST_BACKUP_COMMAND" ]]; then
         info "Running post-command: \$BM_POST_BACKUP_COMMAND"
         RET=`$BM_POST_BACKUP_COMMAND` || RET="false"
         case "$RET" in
@@ -171,17 +171,17 @@ function check_filetypes()
 
     case "$BM_TARBALL_FILETYPE" in
         "zip")
-            if [ ! -x "$zip" ]; then
+            if [[ ! -x "$zip" ]]; then
                 error "The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
             fi
         ;;
         "tar.bz2" )
-            if [ ! -x "$bzip" ]; then
+            if [[ ! -x "$bzip" ]]; then
                 error "The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
             fi
         ;;
         "dar" )
-            if [ ! -x "$dar" ]; then
+            if [[ ! -x "$dar" ]]; then
                 error "The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
             fi
         ;;
@@ -192,7 +192,7 @@ function create_directories()
 {
     debug "create_directories()"
 
-    if [ ! -d $BM_REPOSITORY_ROOT ]
+    if [[ ! -d $BM_REPOSITORY_ROOT ]]
     then
         info "The repository \$BM_REPOSITORY_ROOT does not exist, creating it."
         mkdir $BM_REPOSITORY_ROOT
@@ -200,7 +200,7 @@ function create_directories()
 
     # for security reason, the repository should not be world readable
     # only BM_REPOSITORY_USER:BM_REPOSITORY_GROUP can read/write it. 
-    if [ "$BM_REPOSITORY_SECURE" = "true" ]; then
+    if [[ "$BM_REPOSITORY_SECURE" = "true" ]]; then
         chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $BM_REPOSITORY_ROOT
         chmod $BM_REPOSITORY_CHMOD $BM_REPOSITORY_ROOT
     fi

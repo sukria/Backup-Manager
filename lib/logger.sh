@@ -18,7 +18,7 @@
 
 function check_logger()
 {
-    if [ -x /usr/bin/logger ]; then
+    if [[ -x /usr/bin/logger ]]; then
         logger=/usr/bin/logger
     else
         BM_LOGGER="false"
@@ -38,7 +38,7 @@ function check_logger()
 #########################################
 function syslog()
 {
-    if [ "$BM_LOGGER" = "true" ]; then  
+    if [[ "$BM_LOGGER" = "true" ]]; then  
         level="$1"
         message="$2"
         $logger -t "backup-manager[$$]" -p "${BM_LOGGER_FACILITY}.${level}" -- "$level * $message"  
@@ -54,7 +54,7 @@ function syslog()
 function log() 
 {
     # set the default log level if none given
-    if [ -z "$bm_log_level" ]; then
+    if [[ -z "$bm_log_level" ]]; then
         bm_log_level="info"
     fi
     
@@ -77,10 +77,10 @@ function log()
     
     log_buffer=""
     # if there's the -n switch, we buffer the message 
-    if [ "$1" = "-n" ]; then
+    if [[ "$1" = "-n" ]]; then
         # output the message to STDOUT
         message=$(echo_translated "$@")
-        if [ "$bm_log_switch" = "true" ]; then
+        if [[ "$bm_log_switch" = "true" ]]; then
             echo -n "${message}"
         fi
         BM_LOG_BUFFER="${log_buffer}${message}"
@@ -88,8 +88,8 @@ function log()
     else
         # output the message to STDOUT
         message=$(echo_translated "$@")
-        if [ "$bm_log_switch" == "true" ]; then
-            if [ "$bm_log_level" == "debug" ]; then
+        if [[ "$bm_log_switch" == "true" ]]; then
+            if [[ "$bm_log_level" == "debug" ]]; then
                 echo "${message}" >&2
             else
                 echo "${message}"

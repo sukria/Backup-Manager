@@ -65,7 +65,7 @@ function bm_prompt()
     echo -n "$question "; echo "[y/N] "
     read ret
     
-    if [ "$ret" == "y" ] || [ "$ret" == "Y" ]; then
+    if [[ "$ret" == "y" ]] || [[ "$ret" == "Y" ]]; then
         export BM_RET="true"
     else 
         export BM_RET="false"
@@ -88,7 +88,7 @@ function bm_pause()
 function tail_logfile
 {
     logfile="$1"
-    if [ "$verbosedebug" == "true" ]; then
+    if [[ "$verbosedebug" == "true" ]]; then
         debug "Outping content of $logfile to stderr"
         tail -f $logfile &
     fi

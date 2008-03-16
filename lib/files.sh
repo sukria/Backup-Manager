@@ -16,9 +16,9 @@
 
 #unmount_tmp_dir()
 #{
-#   if [ -n "$mount_point" ] && 
-#      [ -d $mount_point ] &&
-#      [ grep $mount_point /etc/mtab >/dev/null 2>&1 ]; then
+#   if [[ -n "$mount_point" ]] && 
+#      [[ -d $mount_point ]] &&
+#      [[ grep $mount_point /etc/mtab >/dev/null 2>&1 ]]; then
 #       umount "$mount_point" > /dev/null 2>&1 || error "unable to unmount \$mount_point"
 #       sleep 1
 #       rmdir "$mount_point" > /dev/null 2>&1 || error "unable to remove \$mount_point"
@@ -40,7 +40,7 @@ function get_dir_name()
     format="$2"
     debug "get_dir_name ($base, $format)"
 
-    if [ "$format" = "long" ]
+    if [[ "$format" = "long" ]]
     then
         # first remove the trailing slash
         base=${base%/}
@@ -50,7 +50,7 @@ function get_dir_name()
         # every / by a -
         dirname=$(echo "$dirname" | sed 's/\//-/g')
         
-    elif [ "$format" = "short" ]
+    elif [[ "$format" = "short" ]]
     then
         OLDIFS=$IFS
         export IFS="/"
@@ -75,7 +75,7 @@ function size_of_path()
     path="$1"
     debug "size_of_path ($path)"
 
-    if [ -z "$path" ]; then
+    if [[ -z "$path" ]]; then
         error "No path given."
     fi
 
@@ -90,7 +90,7 @@ function size_left_of_path()
     path="$1"
     debug "size_left_of_path ($path)"
 
-    if [ -z "$path" ]; then
+    if [[ -z "$path" ]]; then
         error "No path given."
     fi
 
@@ -126,7 +126,7 @@ function release_lock()
 {
     debug "release_lock()"
 
-    if [ -e $lockfile ]; then
+    if [[ -e $lockfile ]]; then
         # We have to remove the line which contains 
         # the conffile.
         newfile=$(mktemp /tmp/bm-lock.XXXXXX)
@@ -136,7 +136,7 @@ function release_lock()
         for line in $(cat $lockfile)
         do
             thisfile=$(echo $line | awk '{print $2}')
-            if [ ! $conffile = $thisfile ]; then
+            if [[ ! $conffile = $thisfile ]]; then
                 echo "$line" >> $newfile
             fi
         done
@@ -153,7 +153,7 @@ function get_lock()
 {
     debug "get_lock()"
 
-    if [ -e $lockfile ]; then
+    if [[ -e $lockfile ]]; then
         
         # look if a lock exists for that conffile (eg, we must find 
         # the path of the conffile in the lockfile)
@@ -163,9 +163,9 @@ function get_lock()
         pid=`grep " $conffile " $lockfile | awk '{print $1}'`
 
         # be sure that the process is running
-        if [ ! -z $pid ]; then
+        if [[ ! -z $pid ]]; then
             real_pid=$(ps --no-headers --pid $pid |awk '{print $1}')
-            if [ -z $real_pid ]; then
+            if [[ -z $real_pid ]]; then
                 echo_translated "Removing lock for old PID, \$pid is not running."
                 release_lock
                 #unmount_tmp_dir
@@ -173,7 +173,7 @@ function get_lock()
             fi
         fi
 
-        if [ -n "$pid" ]; then
+        if [[ -n "$pid" ]]; then
             # we really must not use error or _exit here ! 
             # this is the special point were release_lock should not be called !
             echo_translated "A backup-manager process (\$pid) is already running with the conffile \$conffile"
@@ -188,7 +188,7 @@ function get_lock()
         pid=$$
         info "Getting lock for backup-manager \$pid with \$conffile"
         echo "$$ $conffile " > $lockfile
-        if [ ! -e $lockfile ]; then
+        if [[ ! -e $lockfile ]]; then
             error "failed (check the file permissions)."
             exit 1
         fi
@@ -233,7 +233,7 @@ function get_master_from_archive()
     archive=$(basename "$archive")
     
     master=$(echo "$archive" | sed -e 's/.*\.\(master\)\..*/\1/')
-    if [ "$master" = "master" ]; then
+    if [[ "$master" = "master" ]]; then
         echo "true"
     else 
         echo "false"
@@ -261,7 +261,7 @@ function get_newer_master()
         this_date=$(get_date_from_archive "$this_master")
         
         # is this master newer than the one we are testing?
-        if [ "$this_date" -gt "$date" ]; then
+        if [[ "$this_date" -gt "$date" ]]; then
             debug "found this newer master : $this_master"
             master="$this_master"
         fi
@@ -276,7 +276,7 @@ function clean_file()
     purge_date="$2"
     debug "clean_file ($file, $purge_date)"
 
-    if [ ! -f "$file" ]; then
+    if [[ ! -f "$file" ]]; then
         error "\$file is not a regular file."
     fi
 
@@ -287,21 +287,21 @@ function clean_file()
     debug "parsing $file ($prefix, $date, $name, $master)"
                 
     # we assume that if we find that, we have an archive
-    if [ -n "$date" ] && [ "$date" != "$(basename $file)" ] &&
-       [ -n "$prefix" ] && [ "$prefix" != "$(basename $file)" ] &&
-       [ -n "$name" ] && [ "$name" != "$(basename $file)" ]; then
+    if [[ -n "$date" ]] && [[ "$date" != "$(basename $file)" ]] &&
+       [[ -n "$prefix" ]] && [[ "$prefix" != "$(basename $file)" ]] &&
+       [[ -n "$name" ]] && [[ "$name" != "$(basename $file)" ]]; then
         
         # look if the archive is obsolete
-        if [ "$date" -lt "$purge_date" ] || 
-           [ "$date" = "$purge_date" ]; then
+        if [[ "$date" -lt "$purge_date" ]] || 
+           [[ "$date" = "$purge_date" ]]; then
            
             # if it's a master, we have to find a newer master around
-            if [ "$master" = "true" ]; then
+            if [[ "$master" = "true" ]]; then
                 master_archive=$(get_newer_master "$prefix" "$name" "$date")
                 
                 # if the master returned is not the same as the one we have, 
                 # the one we have can be deleted, because it's older.
-                if [ "$master_archive" != "$file" ]; then
+                if [[ "$master_archive" != "$file" ]]; then
                     info "Removing obsolete master backup: \"\$file\"."
                     rm -f "$file"
                 
@@ -309,7 +309,7 @@ function clean_file()
                 # incremental archive related.
                 else
                     nb_incrementals=$(ls -l $BM_REPOSITORY_ROOT/$prefix-$name.*.* | wc -l)
-                    if [ "$nb_incrementals" = "1" ]; then
+                    if [[ "$nb_incrementals" = "1" ]]; then
                         info "Removing obsolete master backup (isolated): \"\$file\"."
                         rm -f $file
                     fi
@@ -338,11 +338,11 @@ function clean_directory()
 
     purge_date=$(date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago")
 
-    if [ ! -d $directory ]; then
+    if [[ ! -d $directory ]]; then
         error "Directory given was not found."
     fi
 
-    if [ "$BM_REPOSITORY_RECURSIVEPURGE" = "true" ]; then
+    if [[ "$BM_REPOSITORY_RECURSIVEPURGE" = "true" ]]; then
         maxdepth=""
     else
         maxdepth="-maxdepth 1"
@@ -378,24 +378,24 @@ function purge_duplicate_archives()
     md5hash=$(get_md5sum $file_to_create)
 
     # Only purge if BM_ARCHIVE_PURGEDUPS = true
-    if [ -z "$BM_ARCHIVE_PURGEDUPS" ] ||
-       [ "$BM_ARCHIVE_PURGEDUPS" != "true" ]; then
+    if [[ -z "$BM_ARCHIVE_PURGEDUPS" ]] ||
+       [[ "$BM_ARCHIVE_PURGEDUPS" != "true" ]]; then
         return 0
     fi
 
-    if [ ! -e $file_to_create ]; then
+    if [[ ! -e $file_to_create ]]; then
         error "The given file does not exist: \$file_to_create"
         return 1
     fi    
 
-    if [ -z "$file_to_create" ]; then
+    if [[ -z "$file_to_create" ]]; then
         error "No file given."
     fi
 
     # we'll parse all the files of the same source
     date_of_file=$(get_date_from_file $file_to_create) || 
         error "Unable to get date from file."
-    if [ -z "$date_of_file" ]; then
+    if [[ -z "$date_of_file" ]]; then
         error "Unable to get date from file."
     fi
    
@@ -406,7 +406,7 @@ function purge_duplicate_archives()
     for file in $file_pattern
     do
         # handle only regular files
-        if [ ! -L $file ] && [ "$file" != "$file_to_create" ]; then
+        if [[ ! -L $file ]] && [[ "$file" != "$file_to_create" ]]; then
             
             # get the date of the file we parse
             date_of_file=$(get_date_from_file $file) || 
@@ -415,13 +415,13 @@ function purge_duplicate_archives()
             # get the md5 hash of the file we parse, in its .md5 file
             md5file="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${date_of_file}.md5"
             md5sum_to_check="$(get_md5sum_from_file $file $md5file)"
-            if [ -z "$md5sum_to_check" ]; then
+            if [[ -z "$md5sum_to_check" ]]; then
                 warning "Unable to find the md5 hash of file \"\$file\" in file \"\$md5file\"."
                 continue
             fi
             
             # if the md5 hashes are the same, purge the duplicate 
-            if [ "$md5hash" = "$md5sum_to_check" ]; then
+            if [[ "$md5hash" = "$md5sum_to_check" ]]; then
                 info "\$file is a duplicate of \$file_to_create (using symlink)."
                 rm -f $file
                 ln -s $file_to_create $file

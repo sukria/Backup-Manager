@@ -121,6 +121,9 @@ replace_deprecated_booleans
 confkey_handle_deprecated "BM_ARCHIVES_REPOSITORY" "BM_REPOSITORY_ROOT"
 confkey_require "BM_REPOSITORY_ROOT" "/var/archives" 
 
+# The temp dir used by BM
+confkey_require "BM_TEMP_DIR" "/tmp" 
+
 # let's drop the trailing slash, if any.
 export BM_REPOSITORY_ROOT="${BM_REPOSITORY_ROOT%/}"
 

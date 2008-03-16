@@ -350,7 +350,7 @@ function clean_directory()
 
     # First list all the files to process
     # and ask backup-manager-purge what to remove
-    list=$(mktemp /tmp/bm-list.XXXXXX)
+    list=$(mktemp ${BM_TEMP_DIR}/bm-list.XXXXXX)
     
     # files & symlinks
     find $find_opt "$directory" $maxdepth \

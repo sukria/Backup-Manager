@@ -59,7 +59,7 @@ bm_upload_ssh()
     fi
 
     # Call to backup-manager-upload
-    logfile="$(mktemp /tmp/bmu-log.XXXXXX)"
+    logfile="$(mktemp ${BM_TEMP_DIR}/bmu-log.XXXXXX)"
     $bmu $v_switch $k_switch $ssh_purge_switch -m="scp" \
           -h="$bm_upload_hosts" \
           -u="$BM_UPLOAD_SSH_USER" \
@@ -95,7 +95,7 @@ bm_upload_ssh_gpg()
     fi
 
     # Call to backup-manager-upload
-    logfile="$(mktemp /tmp/bmu-log.XXXXXX)"
+    logfile="$(mktemp ${BM_TEMP_DIR}/bmu-log.XXXXXX)"
     $bmu $v_switch $k_switch -m="ssh-gpg" \
          -h="$bm_upload_hosts" \
          -u="$BM_UPLOAD_SSH_USER" \
@@ -128,7 +128,7 @@ bm_upload_ftp()
             ftp_purge_switch="--ftp-purge"
     fi
  
-    logfile="$(mktemp /tmp/bmu-log.XXXXXX)"
+    logfile="$(mktemp ${BM_TEMP_DIR}/bmu-log.XXXXXX)"
     $bmu $v_switch $ftp_purge_switch \
         -m="ftp" \
         -h="$bm_upload_hosts" \
@@ -158,7 +158,7 @@ bm_upload_s3()
         s3_purge_switch="--s3-purge"
     fi
  
-    logfile="$(mktemp /tmp/bmu-log.XXXXXX)"
+    logfile="$(mktemp ${BM_TEMP_DIR}/bmu-log.XXXXXX)"
     $bmu $v_switch $s3_purge_switch \
         -m="s3" \
         -h="$bm_upload_hosts" \
@@ -172,7 +172,7 @@ bm_upload_s3()
 _exec_rsync_command()
 {
     info "Uploading \$directory to \${host}:\${BM_UPLOAD_RSYNC_DESTINATION}"
-    logfile=$(mktemp /tmp/bm-rsync.XXXXXX)
+    logfile=$(mktemp ${BM_TEMP_DIR}/bm-rsync.XXXXXX)
 
     # default options for local rsync
     ssh_option=""

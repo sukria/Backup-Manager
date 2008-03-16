@@ -54,7 +54,7 @@ function check_cdrom_md5_sums()
     fi
 
     # first create the mount point
-    mount_point="$(mktemp -d /tmp/bm-mnt.XXXXXX)"
+    mount_point="$(mktemp -d ${BM_TEMP_DIR}/bm-mnt.XXXXXX)"
     if [[ ! -d $mount_point ]]; then
         error "The mount point \$mount_point is not there."
     fi
@@ -263,7 +263,7 @@ function burn_session()
     bm_safe_unmount $BM_BURNING_DEVICE
     
     # get a log file in a secure path
-    logfile="$(mktemp /tmp/bm-burning.log.XXXXXX)"
+    logfile="$(mktemp ${BM_TEMP_DIR}/bm-burning.log.XXXXXX)"
     info "Redirecting burning logs into \$logfile"
     
     # set the cdrecord command 

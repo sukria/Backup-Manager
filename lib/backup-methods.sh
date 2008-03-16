@@ -130,7 +130,7 @@ function __exec_meta_command()
         warning "File \$file_to_create already exists, skipping."
         export BM_RET=""
     else
-        logfile=$(mktemp /tmp/bm-command.XXXXXX)
+        logfile=$(mktemp ${BM_TEMP_DIR}/bm-command.XXXXXX)
 
         case "$compress" in
         "gzip"|"gz"|"bzip"|"bzip2")
@@ -568,7 +568,7 @@ function build_clear_archive
 {
     debug "build_clear_archive ()"
     
-    logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+    logfile=$(mktemp ${BM_TEMP_DIR}/bm-tarball.log.XXXXXX)
     debug "logfile: $logfile"
 
     # A couple of archive types have a special command line
@@ -609,7 +609,7 @@ function build_clear_archive
 function build_encrypted_archive
 {
     debug "build_encrypted_archive"
-    logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+    logfile=$(mktemp ${BM_TEMP_DIR}/bm-tarball.log.XXXXXX)
     debug "logfile: $logfile"
 
     if [[ -z "$BM_ENCRYPTION_RECIPIENT" ]]; then
@@ -681,7 +681,7 @@ function __build_remote_archive()
     
     for host in $BM_UPLOAD_SSH_HOSTS
     do
-        logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+        logfile=$(mktemp ${BM_TEMP_DIR}/bm-tarball.log.XXXXXX)
         file_to_create=$(__get_file_to_create_remote "$target" "$host")
         
         command=$(__get_backup_tarball_remote_command) || 
@@ -692,7 +692,7 @@ function __build_remote_archive()
 
         if [[ ! -e "$file_to_check" ]] || [[ $force = true ]]; then
              
-            logfile=$(mktemp /tmp/bm-tarball.log.XXXXXX)
+            logfile=$(mktemp ${BM_TEMP_DIR}/bm-tarball.log.XXXXXX)
 
             debug "$remote_command > $file_to_create 2>$logfile"
             tail_logfile "$logfile"

@@ -15,6 +15,9 @@
 # Where to store the archives
 export BM_REPOSITORY_ROOT="/var/archives"
 
+# Where to place temporary files
+export BM_TEMP_DIR="/tmp"
+
 # For security reasons, the archive repository and the generated 
 # archives will be readable/writable by a given user/group.
 # This is recommended to set this to true.

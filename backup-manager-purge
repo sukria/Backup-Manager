@@ -144,8 +144,14 @@ sub parse_archive ($)
     my ($prefix, $name, $date, $master, $filetype);
     $archive = basename ($archive);
 
+    if ($archive =~ m/^\s*($ENV{BM_ARCHIVE_PREFIX})-(\S+)?\.?(\d{8})\.(master\.)?(\S+)\s*$/) {
+	($prefix, $name, $date, $master, $filetype) = ($1, $2, $3, $4, $5);
+	$master = $master ? 1 : 0;
+	$name = "$prefix-md5" if $filetype eq 'md5' and not $name;
+    }
+
     # The archive pattern
-    if ($archive =~ /^\s*([^-]+)-(\S+)\.(\d{8})\.(\S+)\s*$/) {
+    elsif ($archive =~ /^\s*([^-]+)-(\S+)\.(\d{8})\.(\S+)\s*$/) {
         $prefix = $1;
         $name = $2;
         $date = $3;

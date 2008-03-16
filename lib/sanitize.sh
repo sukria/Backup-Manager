@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright © 2005-2007 Alexis Sukrieh
 #
 # See the AUTHORS file for details.

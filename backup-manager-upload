@@ -408,11 +408,11 @@ sub send_file_with_scp($$$$$)
 	}
 
 	# we use eval here to avoid crash with bad keys
-	my $ret = eval "system('$cmd')";
+	my $ret = eval { system($cmd) };
 	if ($@ or $ret) {
 		error "$scp failed for $file : $@ (command was : $cmd). " if $@;
 		error "$scp failed for $file (command was : $cmd)" if $ret;
-		verbose_error ("Unable to upload \"$file\". ".$@ || $ret);
+		verbose_error ("Unable to upload \"$file\". ".($! || $@ || $ret));
         return 0;
 	}
 	return 1;
@@ -457,6 +457,25 @@ sub send_files_with_scp($$$$$)
     # loop on each hosts given and connect to them.
 	foreach my $host (@{$ra_hosts}) {
             
+        warn "$host -> $repository";
+
+        # make sure the target directory exists remotely
+        my $ls_rep_cmd = "$ssh $user\@$host \"ls $repository\" 2>/dev/null || echo notfound";
+        my $out = `$ls_rep_cmd`;
+        chomp $out;
+
+        # if failed, 
+        if ($out eq 'notfound') {
+            verbose "Creating $repository on $host";
+            my $mkdir_rep_cmd = "$ssh $user\@$host 'mkdir $repository' 2>/dev/null || echo failed";
+            $out = `$mkdir_rep_cmd`;
+            chomp $out;
+            if ($out eq 'failed') {
+                verbose_error "Unable to create $host:$repository";
+                return FALSE;
+            }
+        }
+
         # cleaning the repo
         ssh_clean_directory ($user, $host, $repository) if ($g_sshclean);
 	

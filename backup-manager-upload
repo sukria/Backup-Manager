@@ -745,49 +745,20 @@ sub ftptls_put_file ($$)
 ##############################################################
 # {{{
 
-sub list_bucket($$) 
-{
-    my ($s3, $bucket) = @_;
-    my @keys;
-    my $response;
-
-    # Make sure we have an acceptable timeout value for listing the
-    # bucket contents. S3 can be slow with large bucket key sizes
-
-    #$s3->{ua}->timeout(300);
-    do {
-        my $last;
-        $response = undef;
-        if (defined $keys[-1]) {
-            $last = $keys[-1]->{key};
-            verbose "listing bucket $bucket starting at $last\n";
-            $response = $s3->list_bucket( { bucket => $bucket, marker => $last } );
-        } 
-        else {
-            verbose "listing bucket $bucket starting\n";
-            $response = $s3->list_bucket( { bucket => $bucket } );
-          }
-        push @keys, @{ $response->{keys} };
-    } 
-    until (not $response->{is_truncated} or not defined $response);
-    
-    return @keys;
-}
-
 # Function for purging a directory
 # from S3, the same way as the repository is purged.
 # Every files with a date field too old according to BM_ARCHIVE_TTL
 # will be deleted.
-sub s3_clean_directory($$)
+sub s3_clean_directory($)
 {
-    my ($s3, $bucket) = @_;
+    my ($bucket) = @_;
     my $BM_ARCHIVE_TTL = $ENV{BM_ARCHIVE_TTL};
     return 0 unless defined $BM_ARCHIVE_TTL;
     my $date_to_remove = `date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago"`;
     chomp $date_to_remove;
 
-    my $response = $s3->list_bucket( { bucket => $bucket } );
-    my @keys = list_bucket( $s3, $bucket );   
+    my $response = $bucket->list;
+    my @keys = @{ $response->{keys} };
 
     foreach my $key (@keys) {
 	my $date = undef;
@@ -795,13 +766,12 @@ sub s3_clean_directory($$)
 	    $date = $1;
 	    if ($date and ($date <= $date_to_remove)) {
 		verbose $key->{key} . " has to be deleted, too old ($date <= $date_to_remove).";
-		$s3->delete_key( { bucket => $bucket, key => $key->{key} } );
+                $bucket->delete_key( $key->{key} );
 	    }
 	}
     }
     return 1;
 }
-
 
 # How to upload files to s3.
 # We'll use the Net::Amazon::S3 module here.
@@ -822,6 +792,7 @@ sub send_files_with_s3($$$$$$)
 	
 	# getting args
 	my ($user, $passwd, $bucket, $ra_hosts, $repository, $ra_files) = @_;
+        
 	unless (defined $user and 
 		defined $passwd and
 		defined $bucket and
@@ -835,6 +806,7 @@ sub send_files_with_s3($$$$$$)
 	my $totalbytes;
 	my $starttime = time();
 	my %uploaded;
+        my $backup_bucket;
 	
 	# loop on each hosts given and connect to them.
 	foreach my $host (@{$ra_hosts}) {
@@ -852,16 +824,18 @@ sub send_files_with_s3($$$$$$)
         }
         
 		verbose "Connected to $host";
-		my $response = $s3->buckets;
-		if (not ( grep { $_->{bucket} eq $bucket } @{ $response->{buckets} } ) ) {
-		    # create the bucket
-		    $s3->add_bucket( { bucket => $bucket } );
-		    # double check
-		    $response = $s3->buckets;
-		    verbose_error "Could not create bucket $bucket" if not ( grep { $_->{bucket} eq $bucket } @{ $response->{buckets} } );
-            return FALSE;
-		}
-		s3_clean_directory($s3, $bucket) if ($g_s3clean);
+
+                my $bucket_obj = $s3->bucket($bucket);
+
+                my $response = $bucket_obj->list;
+
+                if (not ( $response->{bucket} ) ) {
+                    verbose "Bucket $bucket does not exist... creating";
+		    $bucket_obj = $s3->add_bucket( { bucket => $bucket } );
+		    verbose_error "Could not create bucket $bucket" if not ( $bucket_obj );
+                }
+
+		s3_clean_directory($bucket_obj) if ($g_s3clean);
 			    
 		foreach my $file (@{$ra_files}) {
 		    chomp $file;
@@ -869,11 +843,9 @@ sub send_files_with_s3($$$$$$)
 		    my $contents = slurp( $file, binmode => ':raw');
 		    verbose "opened $file of length " . length($contents) . " and will name the key $filename";
 		    $totalbytes += length($contents);
-		    $s3->add_key(
-				 {
-				     bucket => $bucket,
-				     key => $filename,
-				     value => $contents,
+		    $bucket_obj->add_key(
+                                $filename, $contents,
+				     {
 				     content_type => "application/binary"
 				     }
 				 );
@@ -881,7 +853,8 @@ sub send_files_with_s3($$$$$$)
 		}
 
 		# get a list of files and confirm uploads
-        my @keys = list_bucket($s3, $bucket);
+                $response = $bucket_obj->list;
+                my @keys = @{ $response->{keys} };
 		foreach my $key ( @keys ) {
 		    if (not defined $uploaded{$key->{key}}) {
                 next;

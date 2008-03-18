@@ -378,7 +378,7 @@ function __get_flags_tar_incremental()
     if [[ -e "$incremental_list" ]]; then
         master=""
     fi
-    incremental="--listed-incremental \"$incremental_list\""
+    incremental="--listed-incremental $incremental_list"
 }
 
 # This will set the appropriate dar options for making incremental backups.
@@ -597,9 +597,9 @@ function build_clear_archive
 
         # the common commandline
         *)
-            debug "$command $file_to_create \"$target\"> $logfile 2>&1"
+            debug "$command $file_to_create \"$target\" > $logfile 2>&1"
             tail_logfile "$logfile"
-            $command $file_to_create "$target"> $logfile 2>&1 || error_code=$?
+            $command $file_to_create "$target" > $logfile 2>&1 || error_code=$?
             check_error_code "$error_code" "$file_to_create" "$logfile"
         ;;
     esac

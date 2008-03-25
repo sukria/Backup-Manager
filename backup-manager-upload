@@ -313,30 +313,16 @@ sub get_hosts_from_str($) {
 ##############################################################
 # {{{
 
-# Purge remote archives over SSH
-# Uses backup-manager-purge
-sub ssh_clean_directory
-{
-    my ($user, $host, $location) = @_;
-	return 0 unless defined $user and
-		defined $host and
-		defined $location;
-	
-    # the remote time to leave could be different as the local one.
-    my $BM_ARCHIVE_TTL = $ENV{BM_ARCHIVE_TTL};
-    if (defined $ENV{BM_UPLOAD_SSH_TTL} and
-        length ($ENV{BM_UPLOAD_SSH_TTL})) {
-        $BM_ARCHIVE_TTL = $ENV{BM_UPLOAD_SSH_TTL};
-    }
-    return 0 unless defined $BM_ARCHIVE_TTL;
-    verbose "Cleaning remote directory through SSH";
-
+# returns all the ssh otpions needed for a valid SSH connection
+sub get_ssh_opts {
     # look for a port to use
-	my $port_switch="";
-	if ($ENV{BM_UPLOAD_SSH_PORT}) {
-	    $port_switch = "-p ".$ENV{BM_UPLOAD_SSH_PORT};
-	}
-    
+	my $ssh_port_switch="";
+	my $scp_port_switch="";
+    if (defined $ENV{BM_UPLOAD_SSH_PORT}) {
+        $ssh_port_switch = "-p ".$ENV{BM_UPLOAD_SSH_PORT};
+        $scp_port_switch = "-P ".$ENV{BM_UPLOAD_SSH_PORT};
+    }
+
 	# look for keyfile to use
 	my $keyfile_switch="";
 	if (defined $g_key_file and (-e $g_key_file)) {
@@ -347,9 +333,33 @@ sub ssh_clean_directory
         exit E_SCP_FAILED;
     }
 
+    return ("$ssh_port_switch $keyfile_switch -o BatchMode=yes", 
+            "$scp_port_switch $keyfile_switch -B");
+}
+
+# Purge remote archives over SSH
+# Uses backup-manager-purge
+sub ssh_clean_directory
+{
+    my ($user, $host, $location) = @_;
+	return 0 unless defined $user and
+		defined $host and
+		defined $location;
+	
+    my $ssh_options = get_ssh_opts();
+
+    # the remote time to leave could be different as the local one.
+    my $BM_ARCHIVE_TTL = $ENV{BM_ARCHIVE_TTL};
+    if (defined $ENV{BM_UPLOAD_SSH_TTL} and
+        length ($ENV{BM_UPLOAD_SSH_TTL})) {
+        $BM_ARCHIVE_TTL = $ENV{BM_UPLOAD_SSH_TTL};
+    }
+    return 0 unless defined $BM_ARCHIVE_TTL;
+    verbose "Cleaning remote directory through SSH";
+
     # First, create the list of existing archives
     my ($fh, $in) =tempfile();
-    my $cmd = "$ssh $port_switch $keyfile_switch -o BatchMode=yes $user".'@'.$host." ls $location/*";
+    my $cmd = "$ssh $ssh_options $user".'@'.$host." ls $location/*";
     my $buffer = `$cmd`;
     print $fh $buffer;
     close $fh;
@@ -361,7 +371,7 @@ sub ssh_clean_directory
     while (<STDOUT_CMD>) {
         chomp();
         verbose "Purging $_";
-        $cmd = "$ssh $port_switch $keyfile_switch -o BatchMode=yes $user".'@'.$host." rm -f $_";
+        $cmd = "$ssh $ssh_options $user".'@'.$host." rm -f $_";
         system ("$cmd");
     }
     close STDOUT_CMD;
@@ -377,34 +387,18 @@ sub send_file_with_scp($$$$$)
 		defined $user and
 		defined $host and
 		defined $location;
-	
-	# look for a port to use
-	my $ssh_port_switch="";
-	my $scp_port_switch="";
-	if ($ENV{BM_UPLOAD_SSH_PORT}) {
-	    $ssh_port_switch = "-p ".$ENV{BM_UPLOAD_SSH_PORT};
-	    $scp_port_switch = "-P ".$ENV{BM_UPLOAD_SSH_PORT};
-	}
-    
-	# look for keyfile to use
-	my $keyfile_switch="";
-	if (defined $g_key_file and (-e $g_key_file)) {
-	    $keyfile_switch = "-i $g_key_file";
-	}
-    elsif (! -e $g_key_file) {
-        verbose_error "Unable to read the SSH identity key : $g_key_file";
-        exit E_SCP_FAILED;
-    }
+
+    my ($ssh_opts, $scp_opts) = get_ssh_opts();
 	
     my $cmd = "";
 	if ( defined $g_gpg_recipient )	{	    
 	    my $file_base = basename($file);
 	    $cmd = "$gpg --encrypt --recipient $g_gpg_recipient --output - --batch $file | ";
-	    $cmd .= "$ssh -o \"BatchMode yes\" -e none $ssh_port_switch $keyfile_switch $user".'@'."$host ";
+	    $cmd .= "$ssh $ssh_opts -e none $user".'@'."$host ";
 	    $cmd .= "\"cat - > $location/$file_base.gpg\" >&2";
 	}
 	else {
-	    $cmd = "$scp $scp_port_switch $keyfile_switch -B $file $user".'@'.$host.':'.$location." >&2";
+	    $cmd = "$scp $scp_opts $file $user".'@'.$host.':'.$location." >&2";
 	}
 
 	# we use eval here to avoid crash with bad keys
@@ -453,19 +447,21 @@ sub send_files_with_scp($$$$$)
             return FALSE;
 	    }
 	}
+    
+    my ($ssh_opts, $scp_opts) = get_ssh_opts();
 
     # loop on each hosts given and connect to them.
 	foreach my $host (@{$ra_hosts}) {
             
         # make sure the target directory exists remotely
-        my $ls_rep_cmd = "$ssh $user\@$host \"ls $repository\" 2>/dev/null || echo notfound";
+        my $ls_rep_cmd = "$ssh $ssh_opts $user\@$host \"ls $repository\" 2>/dev/null || echo notfound";
         my $out = `$ls_rep_cmd`;
         chomp $out;
 
         # if failed, 
         if ($out eq 'notfound') {
             verbose "Creating $repository on $host";
-            my $mkdir_rep_cmd = "$ssh $user\@$host 'mkdir $repository' 2>/dev/null || echo failed";
+            my $mkdir_rep_cmd = "$ssh $ssh_opts $user\@$host 'mkdir -p $repository' 2>/dev/null || echo failed";
             $out = `$mkdir_rep_cmd`;
             chomp $out;
             if ($out eq 'failed') {

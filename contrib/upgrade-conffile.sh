@@ -32,10 +32,10 @@ do
 	
 	echo -n "Apply changes to $file? [y/N] "
 	read ret
-	if [ -z $ret ]; then
+	if [[ -z $ret ]]; then
 		ret="n"
 	fi
-	if [ $ret = y ] || [ $ret = Y ]; then
+	if [[ $ret = y ]] || [[ $ret = Y ]]; then
 		mv $file.tmp $file
 	fi
 	rm -f $file.tmp

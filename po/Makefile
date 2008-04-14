@@ -43,7 +43,7 @@ clean:
 .po.mo: backup-manager.pot
 	@echo "Merging $(PACKAGE).pot and $*.po"
 	@msgmerge $*.po $(PACKAGE).pot -o $*.po.new
-	@if [ "`diff $*.po $*.po.new | grep '[<>]' | wc -l`" -ne 2 ]; then \
+	@if [[ "`diff $*.po $*.po.new | grep '[<>]' | wc -l`" -ne 2 ]]; then \
         mv -f $*.po.new $*.po; \
     else \
         rm -f $*.po.new; \

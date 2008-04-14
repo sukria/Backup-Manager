@@ -1,10 +1,10 @@
 
-                      Backup Manager 0.7.6 User Guide
+                      Backup Manager 0.7.7 User Guide
                       -------------------------------
 
                               Alexis Sukrieh
 
-                            1.6 - 08 Sept, 2006
+                            1.7 - 14 Apr, 2008
 
 
 -------------------------------------------------------------------------------
@@ -64,8 +64,9 @@ Contents
      2.4.      Exports
      2.4.1.         Burning CDR/DVD media
      2.5.      Advanced features
-     2.5.1.         Logging to syslog
-     2.5.2.         Writing external hooks
+     2.5.1.         `BM_TEMP_DIR'
+     2.5.2.         Logging to syslog
+     2.5.3.         Writing external hooks
 
      3.        Using Backup Manager
      3.1.      Command line
@@ -99,7 +100,7 @@ Contents
      Whenever possible, advices and best practices are given.
 
      This manual also describes every configuration variables supported in
-     the version 0.7.6.
+     the version 0.7.7.
 
 
 1.2. Version
@@ -107,7 +108,7 @@ Contents
 
      This document is updated whenever a new release of Backup Manager is
      published.  The current version covers all features and configuration
-     details about version 0.7.6.
+     details about version 0.7.7.
 
      The first version of this document was written with the release 0.6 of
      Backup Manager.
@@ -138,7 +139,7 @@ Contents
      _Backup Manager's behaviour is defined in configuration files.  You
      can run Backup Manager with different configuration files (at the same
      time or not).  This chapter will cover all the configuration keys
-     supported in version 0.7.6 and will explain their meaning._
+     supported in version 0.7.7 and will explain their meaning._
 
 
 2.1. Repository and Archives
@@ -282,7 +283,30 @@ Contents
 
           export BM_ARCHIVE_STRICTPURGE="true"
 
-2.1.3.2. `BM_ARCHIVE_PURGEDUPS'
+2.1.3.2. `BM_ARCHIVE_NICE_LEVEL'
+--------------------------------
+
+     _Type: string, default: `10'._
+
+     Backup Manager does handle several archive methods, which can use a
+     lot of ressources (mostly CPU); although this can be acceptable if
+     Backup Manager is run at night, on a always-running server, it can
+     seriously slow-down a desktop computer.  Indeed, most of the time,
+     desktop users use anacron to run backup-manager when possible, and
+     most of time this is when the desktop is actually used.
+
+     To enhance the desktop-experience when archives are built, you can
+     adjust the niceness used for archive creation with this configuration
+     variable.
+
+     To set a low priority to the archive creation processes, use a high
+     number (max: 19).  See the manpage of nice for details.
+
+     Example:
+
+          export BM_ARCHIVE_PURGEDUPS="19" # recommanded for desktop users.
+
+2.1.3.3. `BM_ARCHIVE_PURGEDUPS'
 -------------------------------
 
      _Type: boolean, default: `true'._
@@ -303,7 +327,7 @@ Contents
           host-etc.20051116.tar.gz -> /var/archives/host-etc.20051117.tar.gz
           host-etc.20051117.tar.gz
 
-2.1.3.3. `BM_ARCHIVE_TTL'
+2.1.3.4. `BM_ARCHIVE_TTL'
 -------------------------
 
      _Type: integer, default: `5'._
@@ -330,7 +354,7 @@ Contents
 
           export BM_ARCHIVE_TTL="5"
 
-2.1.3.4. `BM_REPOSITORY_RECURSIVEPURGE'
+2.1.3.5. `BM_REPOSITORY_RECURSIVEPURGE'
 ---------------------------------------
 
      _Type: boolean, default: `false'._
@@ -352,7 +376,7 @@ Contents
 
           export BM_REPOSITORY_RECURSIVEPURGE="false"
 
-2.1.3.5. `BM_ARCHIVE_PREFIX'
+2.1.3.6. `BM_ARCHIVE_PREFIX'
 ----------------------------
 
      _Type: string, default: `$HOSTNAME'._
@@ -377,7 +401,7 @@ Contents
      The core feature of Backup Manager is to make archives, for doing
      this, a _method_ is used.  Each method can require a set of
      configuration keys.  We will describe here every method supported in
-     the version 0.7.6.
+     the version 0.7.7.
 
      The method you choose must be defined in the configuration key
      `BM_ARCHIVE_METHOD'.  You can put here a list of all the different
@@ -678,7 +702,7 @@ Contents
      _Type: enum(weekly, monthly), default: `weekly'._
 
      This is the type of frequency you want to use.  If you choose
-     `weekly', you'll have to choose a day number between 1 and 7 for the
+     `weekly', you'll have to choose a day number between 0 and 6 for the
      BM_TARBALLINC_MASTERDATEVALUE configuration key, if you choose
      `monthly', the day number will be between 1 and 31.
 
@@ -909,7 +933,7 @@ Contents
      for achieving this goal : the upload methods._
 
      There are different upload methods, each of them behaves differently
-     and provides particular features.  In Backup Manager 0.7.6 you can use
+     and provides particular features.  In Backup Manager 0.7.7 you can use
      FTP, SSH, RSYNC or Amazon S3 uploads.
 
      In the same manner as for backup methods, you can choose to use as
@@ -1179,11 +1203,12 @@ export BM_POST_BACKUP_COMMAND="/usr/sbin/backup-manager --purge"
 
      _Type: string._
 
-     Put here the `BM_UPLOAD_FTP_USER''s password to use (in plain text).
+     Put here the password to use for authenticating the FTP session,(in
+     plain text).
 
      Example:
 
-          export BM_UPLOAD_FTP_USER="secret"
+          export BM_UPLOAD_FTP_PASSWORD="secret"
 
 2.3.5.7. `BM_UPLOAD_FTP_HOSTS'
 ------------------------------
@@ -1373,14 +1398,14 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
      _Another way of storing your archives to a safe place is to use
      external media._
 
-     In version 0.7.6, only CDs and DVDs are supported as external media,
+     In version 0.7.7, only CDs and DVDs are supported as external media,
      so we will discuss in this section only the `BM_BURNING' features.
      Other exports are expected to come in next versions though.
 
 2.4.1. Burning CDR/DVD media
 ----------------------------
 
-     In the version 0.7.6, Backup Manager supports four different kinds of
+     In the version 0.7.7, Backup Manager supports four different kinds of
      media: CDR, CDRW and DVD+R(W) and DVD-R(W).
 
 2.4.1.1. `BM_BURNING_METHOD'
@@ -1528,7 +1553,19 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
      _A couple of advanced features are provided, they will be covered in
      this section._
 
-2.5.1. Logging to syslog
+2.5.1. `BM_TEMP_DIR'
+--------------------
+
+     _Type: string, default: `/tmp/backup-manager'._
+
+     This is the temporary directory where temporary files are created by
+     Backup Manager.
+
+     Example:
+
+          export BM_ARCHIVE_CHMOD="/tmp/backup-manager"
+
+2.5.2. Logging to syslog
 ------------------------
 
      If you want to log Backup Manager actions to syslog, you can enable
@@ -1536,7 +1573,7 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
      `BM_LOGGER'.  You are also able to choose which syslog facility to use
      thanks to the key `BM_LOGGER_FACILITY'.
 
-2.5.1.1. `BM_LOGGER'
+2.5.2.1. `BM_LOGGER'
 --------------------
 
      _Type: boolean, default: `true'._
@@ -1548,7 +1585,7 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
 
           exports BM_LOGGER="true"
 
-2.5.1.2. `BM_LOGGER_FACILITY'
+2.5.2.2. `BM_LOGGER_FACILITY'
 -----------------------------
 
      _Type: string, default: `user'._
@@ -1561,7 +1598,7 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
 
           exports BM_LOGGER_FACILITY="cron"
 
-2.5.2. Writing external hooks
+2.5.3. Writing external hooks
 -----------------------------
 
      You have the availability to write your own hooks if you want to
@@ -1574,7 +1611,7 @@ export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
      provides two different hooks: the _pre-command_ and _post-command_
      hooks.
 
-2.5.2.1. `BM_PRE_BACKUP_COMMAND'
+2.5.3.1. `BM_PRE_BACKUP_COMMAND'
 --------------------------------
 
      _Type: string_
@@ -1592,7 +1629,7 @@ export BM_PRE_BACKUP_COMMAND="mount -t nfs mirror.lan.net:/exports/backups /var/
 
 export BM_PRE_BACKUP_COMMAND="/usr/local/bin/backup-prepare.pl $TODAY"
 
-2.5.2.2. `BM_POST_BACKUP_COMMAND'
+2.5.3.2. `BM_POST_BACKUP_COMMAND'
 ---------------------------------
 
      _Type: string_
@@ -1628,7 +1665,7 @@ export BM_POST_BACKUP_COMMAND="/usr/local/bin/backup-cleanup.pl $TODAY"
 3.1.1. Restrictions
 -------------------
 
-     In version 0.7.6, Backup Manager can only be used by `root', as it has
+     In version 0.7.7, Backup Manager can only be used by `root', as it has
      be designed as a systemwide tool.
 
           $ backup-manager
@@ -1828,10 +1865,10 @@ Entering directory /var/archives/lost+found.
 -------------------------------------------------------------------------------
 
 
-     Backup Manager 0.7.6 User Guide
+     Backup Manager 0.7.7 User Guide
 
      Alexis Sukrieh
 
 
-     1.6 - 08 Sept, 2006
+     1.7 - 14 Apr, 2008
 

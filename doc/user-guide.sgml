@@ -1633,7 +1633,7 @@ exports BM_BURNING_CHKMD5="true"
 <p>
 <em>A couple of advanced features are provided, they will be covered in this section.</em>
 
-<sect2 id="BM_TEMP_DIR"><tt>BM_TEMP_DIR</tt>
+<sect1 id="BM_TEMP_DIR"><tt>BM_TEMP_DIR</tt>
 
 <p>
 <em>Type: string, default: <tt>/tmp/backup-manager</tt>.</em>

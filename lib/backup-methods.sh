@@ -119,7 +119,7 @@ function handle_tarball_error()
 
 function __exec_meta_command()
 {
-    command="$1"
+    command="$nice_bin -n $BM_ARCHIVE_NICE_LEVEL $1"
     file_to_create="$2"
     compress="$3"
     debug "__exec_meta_command ($command, $file_to_create, $compress)"
@@ -477,7 +477,7 @@ function __get_backup_tarball_remote_command()
         ;;
     esac
     export GZIP="$oldgzip"
-    echo "$command"
+    echo "$nice_bin -n $BM_ARCHIVE_NICE_LEVEL $command"
     
 }
 
@@ -561,7 +561,7 @@ function __get_backup_tarball_command()
             return 1
         ;;
     esac
-    echo "$command"
+    echo "$nice_bin -n $BM_ARCHIVE_NICE_LEVEL $command"
 }
 
 function build_clear_archive

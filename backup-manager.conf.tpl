@@ -57,6 +57,11 @@ export BM_ARCHIVE_PREFIX="$HOSTNAME"
 # Should we purge only archives built with $BM_ARCHIVE_PREFIX
 export BM_ARCHIVE_STRICTPURGE="true"
 
+# You may want to nice the commands run for archive-creation
+# (Recommanded for desktop users.)
+# Choose a nice level from -20 (most favorable scheduling) to 19 (least favorable).
+export BM_ARCHIVE_NICE_LEVEL="10"
+
 # The backup method to use.
 # Available methods are:
 # - tarball

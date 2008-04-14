@@ -285,6 +285,32 @@ Example:
 export BM_ARCHIVE_STRICTPURGE="true"
 </example>
 
+<sect2 id="BM_ARCHIVE_NICE_LEVEL"><tt>BM_ARCHIVE_NICE_LEVEL</tt>
+
+<p>
+<em>Type: string, default: <tt>10</tt>.</em>
+
+<p>
+Backup Manager does handle several archive methods, which can use a lot of ressources 
+(mostly CPU); although this can be acceptable if Backup Manager is run at night, on a 
+always-running server, it can seriously slow-down a desktop computer.
+Indeed, most of the time, desktop users use anacron to run backup-manager when possible, 
+and most of time this is when the desktop is actually used.
+
+<p>
+To enhance the desktop-experience when archives are built, 
+you can adjust the niceness used for archive creation with this configuration variable.
+
+<p>
+To set a low priority to the archive creation processes, use a high number (max: 19).
+See the manpage of nice for details.
+
+<p>
+Example:
+
+<example>
+export BM_ARCHIVE_PURGEDUPS="19" # recommanded for desktop users.
+</example>
 
 <sect2 id="BM_ARCHIVE_PURGEDUPS"><tt>BM_ARCHIVE_PURGEDUPS</tt>
 
@@ -1606,6 +1632,22 @@ exports BM_BURNING_CHKMD5="true"
 <sect id="advanced">Advanced features
 <p>
 <em>A couple of advanced features are provided, they will be covered in this section.</em>
+
+<sect2 id="BM_TEMP_DIR"><tt>BM_TEMP_DIR</tt>
+
+<p>
+<em>Type: string, default: <tt>/tmp/backup-manager</tt>.</em>
+
+<p>
+This is the temporary directory where temporary files are created by Backup Manager.
+
+<p>
+Example:
+
+<example>
+export BM_ARCHIVE_CHMOD="/tmp/backup-manager"
+</example>
+
 
 <sect1 id="advanced-logger">Logging to syslog
 

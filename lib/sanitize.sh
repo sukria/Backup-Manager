@@ -123,6 +123,10 @@ confkey_require "BM_REPOSITORY_ROOT" "/var/archives"
 
 # The temp dir used by BM
 confkey_require "BM_TEMP_DIR" "/tmp" 
+# creating the temp path if not found
+if [[ ! -d "$BM_TEMP_DIR" ]]; then
+    mkdir "$BM_TEMP_DIR" || error "Unable to create BM_TEMP_DIR: \"\$BM_TEMP_DIR\"."
+fi
 
 # let's drop the trailing slash, if any.
 export BM_REPOSITORY_ROOT="${BM_REPOSITORY_ROOT%/}"
@@ -150,6 +154,8 @@ confkey_require "BM_ARCHIVE_PREFIX" "$HOSTNAME"
 
 confkey_handle_deprecated "BM_BACKUP_METHOD" "BM_ARCHIVE_METHOD"
 confkey_require "BM_ARCHIVE_METHOD" "tarball"
+
+confkey_require "BM_ARCHIVE_NICE_LEVEL" "10"
 
 if [[ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ]] && 
    [[ -z "$BM_TARBALLINC_MASTERDATETYPE" ]]; then

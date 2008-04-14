@@ -849,9 +849,6 @@ function backup_method_mysql()
         info "Using existing MySQL client configuration file: \$HOME/.my.cnf"
     # we create a default one, just with the password
     else
-        if [[ -z "$BM_MYSQL_ADMINPASS" ]]; then
-            error "You have to set BM_MYSQL_ADMINPASS in order to use the mysql method."
-        fi
         warning "Creating a default MySQL client configuration file: \$HOME/.my.cnf"
         echo "[client]" > $HOME/.my.cnf 
         echo "# The following password will be sent to all standard MySQL clients" >> $HOME/.my.cnf 

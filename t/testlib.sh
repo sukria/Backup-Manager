@@ -38,7 +38,7 @@ logger=$(which logger) || true
 # else, use /var/run/backup-manager.lock
 systemlockfile="/var/run/backup-manager.lock"
 userlockfile="$HOME/.backup-manager.lock"
-if [ "$UID" != 0 ]; then
+if [[ "$UID" != 0 ]]; then
     lockfile="$userlockfile"
 else
     lockfile="$systemlockfile"

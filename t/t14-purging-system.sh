@@ -24,7 +24,7 @@ source $locallib/sanitize.sh
 
 # The test actions
 
-if [ -e $BM_REPOSITORY_ROOT ]; then
+if [[ -e $BM_REPOSITORY_ROOT ]]; then
     rm -rf $BM_REPOSITORY_ROOT/*
 fi    
 
@@ -98,28 +98,28 @@ clean_directory "$BM_REPOSITORY_ROOT"
 
 # test what it did
 error=0
-if [ -e $BM_REPOSITORY_ROOT/ouranos-$date_4_days_ago.md5 ]; then
+if [[ -e $BM_REPOSITORY_ROOT/ouranos-$date_4_days_ago.md5 ]]; then
     info "$BM_REPOSITORY_ROOT/ouranos-$date_4_days_ago.md5 exists"
     error=1
 fi
 
-if [ ! -e $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_4_days_ago.master.tar.bz2 ]; then
+if [[ ! -e $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_4_days_ago.master.tar.bz2 ]]; then
     info "$BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_4_days_ago.master.tar.bz2 has been removed"
     error=2
 fi
 
-if [ ! -e $BM_REPOSITORY_ROOT/passwd ]; then
+if [[ ! -e $BM_REPOSITORY_ROOT/passwd ]]; then
     info "$BM_REPOSITORY_ROOT/passwd has been removed"
     error=3
 fi
-if [ ! -e $BM_REPOSITORY_ROOT/ouranos-01020102-fdisk.incremental-list.txt ] ||
-   [ ! -e $BM_REPOSITORY_ROOT/ouranos01020102-fdisk.incremental-list.txt ]; then
+if [[ ! -e $BM_REPOSITORY_ROOT/ouranos-01020102-fdisk.incremental-list.txt ]] ||
+   [[ ! -e $BM_REPOSITORY_ROOT/ouranos01020102-fdisk.incremental-list.txt ]]; then
     info "files with 8 digits in their prefix removed"
     error=4
 fi
 
 # the archive under a depth greater than 0 should not be purged
-if [ ! -e "$BM_REPOSITORY_ROOT/subdir1/host-path-to-dir.$date_4_days_ago.txt" ]; then
+if [[ ! -e "$BM_REPOSITORY_ROOT/subdir1/host-path-to-dir.$date_4_days_ago.txt" ]]; then
     info "archive $BM_REPOSITORY_ROOT/subdir1/host-path-to-dir.$date_4_days_ago.txt does not exist."
     error=5
 fi    
@@ -133,7 +133,7 @@ create_test_repository_subdirs
 clean_directory "$BM_REPOSITORY_ROOT"
 
 # the archive under a depth greater than 0 should be purged
-if [ -e "$BM_REPOSITORY_ROOT/subdir1/host-path-to-dir.$date_4_days_ago.txt" ]; then
+if [[ -e "$BM_REPOSITORY_ROOT/subdir1/host-path-to-dir.$date_4_days_ago.txt" ]]; then
     info "archive $BM_REPOSITORY_ROOT/subdir1/host-path-to-dir.$date_4_days_ago.txt exists."
     error=5
 fi

@@ -79,16 +79,16 @@ info "Testing content"
 YESTERDAY=$(date +%Y%m%d --date '1 days ago')
 name=$(get_dir_name "$PWD/testdir" long)
 
-if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$YESTERDAY.master.tar.gz" ]; then
+if [[ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$YESTERDAY.master.tar.gz" ]]; then
 
     # Now make sure file2 and dir2 are not saved in last darball
     for file in file1
     do
         grep=`tar tvzf $BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.tar.gz 2>/dev/null | grep $file` || true
 
-        if [ -n "$grep" ]; then
+        if [[ -n "$grep" ]]; then
             warning "$file is saved in last archive, shouldn't."
-            if [ $verbose == true ]; then
+            if [[ $verbose == true ]]; then
                 tar tvzf $BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.tar.gz
             fi
             clean

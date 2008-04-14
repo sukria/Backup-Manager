@@ -28,7 +28,7 @@ mkdir -p test
 mkdir test/dir1
 touch test/file1
 
-if [ -e $BM_ARCHIVE_ROOT ]; then
+if [[ -e $BM_ARCHIVE_ROOT ]]; then
     rm -f $BM_ARCHIVE_ROOT/*
 fi    
 
@@ -40,7 +40,7 @@ make_archives
 YESTERDAY=$(date +%Y%m%d --date '1 days ago')
 
 name=$(get_dir_name "$PWD/test" long)
-if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.1.dar" ]; then
+if [[ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.1.dar" ]]; then
     mv "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.1.dar" "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$YESTERDAY.master.1.dar"
     mkdir test/dir2
     touch test/file2
@@ -50,7 +50,7 @@ if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.1.dar" ]; then
     for file in file1 dir1 
     do
         saved=$(dar -l $BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master | grep $file | awk '{print $1}')
-        if [ "$saved" == "[saved]" ]; then
+        if [[ "$saved" == "[saved]" ]]; then
             warning "$file is saved in last archive, shouldn't."
             rm -rf $PWD/test
             rm -rf repository

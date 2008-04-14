@@ -40,7 +40,7 @@ files[2]="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX-ls-root.$TODAY.txt"
 # BM_PIPE_COMPRESS[3]=""
 
 # clean
-if [ -e $PWD/repository ]; then
+if [[ -e $PWD/repository ]]; then
     rm -rf $PWD/repository
 fi    
 
@@ -51,7 +51,7 @@ make_archives
 # test of success/failure
 for file in $files
 do
-    if [ ! -e $file ]; then
+    if [[ ! -e $file ]]; then
         warning "file $file does not exist"
         rm -rf $BM_ARCHIVE_ROOT
         exit 10

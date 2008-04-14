@@ -24,7 +24,7 @@ function test_success()
 }
 
 # the conffile to test
-if [ -f ./backup-manager.conf ]; then
+if [[ -f ./backup-manager.conf ]]; then
     conffile="./backup-manager.conf"
     source $conffile
     source $libdir/sanitize.sh
@@ -49,7 +49,7 @@ done
 echo "------------------------------------------------------------------------------"
 pct_success=$(($nb_success * 100 / $total))
 echo "Success score: $pct_success% ($nb_success/$total)"
-if [ "$nb_failure" -gt 0 ]; then
+if [[ "$nb_failure" -gt 0 ]]; then
     echo "Failed tests: $nb_failure"
 fi
 

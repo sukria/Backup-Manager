@@ -20,16 +20,16 @@ export BM_TARBALL_DIRECTORIES="$PWD/var/www/"
 export BM_TARBALL_BLACKLIST="$PWD/var/www/xim $PWD/var/www/Upload/ /tmp/ titi"
 source $locallib/sanitize.sh
 
-if [ ! -x $dar ]; then
+if [[ ! -x $dar ]]; then
     info "cannot run test, need $dar"
     exit 1
 fi
 
 # clean
-if [ -e $PWD/var ]; then
+if [[ -e $PWD/var ]]; then
     rm -rf $PWD/var
 fi        
-if [ -e $PWD/repository ]; then
+if [[ -e $PWD/repository ]]; then
     rm -rf $PWD/repository
 fi    
 
@@ -55,7 +55,7 @@ name=$(get_dir_name "$PWD/var/www" "long")
 archive="$BM_ARCHIVE_PREFIX$name.$TODAY.master.1.dar"
 archive_name="$BM_ARCHIVE_PREFIX$name.$TODAY.master"
 
-if [ -e $BM_REPOSITORY_ROOT/$archive ]
+if [[ -e $BM_REPOSITORY_ROOT/$archive ]]
 then
         tempfile=$(mktemp)
         dar -l $BM_REPOSITORY_ROOT/$archive_name > $tempfile
@@ -63,7 +63,7 @@ then
         if grep "xim/file2" $tempfile >/dev/null
         then
            warning "Archive seems to have the blacklisted dirs:"
-           if [ "$warnings" = "true" ]; then
+           if [[ "$warnings" = "true" ]]; then
                 echo "BM_TARBALL_BLACKLIST = $BM_TARBALL_BLACKLIST"
                 cat $tempfile
            fi

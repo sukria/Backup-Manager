@@ -23,13 +23,13 @@ export BM_TARBALLINC_MASTERDATEVALUE="1"
 
 source $locallib/sanitize.sh
 
-if [ ! -x $dar ]; then
+if [[ ! -x $dar ]]; then
     info "cannot run test, need $dar"
     exit 1
 fi
 
 # The test actions
-if [ -e $BM_ARCHIVE_ROOT ]; then
+if [[ -e $BM_ARCHIVE_ROOT ]]; then
     rm -f $BM_ARCHIVE_ROOT/*
 fi    
 
@@ -39,7 +39,7 @@ create_directories
 make_archives
 
 name=$(get_dir_name $PWD long)
-if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.1.dar" ]; then
+if [[ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.1.dar" ]]; then
     rm -rf $BM_ARCHIVE_ROOT
     exit 0
 else

@@ -22,7 +22,7 @@ source $locallib/sanitize.sh
 
 # The test actions
 
-if [ -e $BM_ARCHIVE_ROOT ]; then
+if [[ -e $BM_ARCHIVE_ROOT ]]; then
     rm -f $BM_ARCHIVE_ROOT/*
 fi    
 
@@ -33,7 +33,7 @@ create_directories
 make_archives
 
 name=$(get_dir_name $PWD long)
-if [ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.tar.lz" ]; then
+if [[ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.tar.lz" ]]; then
     rm -rf $BM_ARCHIVE_ROOT
     exit 0
 else

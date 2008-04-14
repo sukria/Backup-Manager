@@ -20,10 +20,10 @@ export BM_TARBALL_BLACKLIST="$PWD/var/www/xim $PWD/var/www/Upload"
 source $locallib/sanitize.sh
 
 # clean
-if [ -e $PWD/var ]; then
+if [[ -e $PWD/var ]]; then
     rm -rf $PWD/var
 fi        
-if [ -e $PWD/repository ]; then
+if [[ -e $PWD/repository ]]; then
     rm -rf $PWD/repository
 fi    
 
@@ -48,7 +48,7 @@ make_archives
 name=$(get_dir_name "$PWD/var/www" "long")
 archive="$BM_ARCHIVE_PREFIX$name.$TODAY.master.tar.gz"
 
-if [ -e $BM_REPOSITORY_ROOT/$archive ]
+if [[ -e $BM_REPOSITORY_ROOT/$archive ]]
 then
         tempfile=$(mktemp)
         tar tvzf $BM_REPOSITORY_ROOT/$archive > $tempfile
@@ -56,7 +56,7 @@ then
         if grep "xim/file2" $tempfile
         then
            warning "Archive seems to have the blacklisted dirs:"
-           if [ "$warnings" = "true" ]; then
+           if [[ "$warnings" = "true" ]]; then
                 cat $tempfile
            fi
            rm -f $tempfile

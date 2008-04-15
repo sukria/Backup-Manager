@@ -40,6 +40,7 @@ SHFILES=\
 	lib/dialog.sh \
 	lib/files.sh \
 	lib/actions.sh \
+	lib/dbus.sh \
 	lib/backup-methods.sh\
 	lib/upload-methods.sh\
 	lib/burning-methods.sh\

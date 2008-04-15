@@ -89,6 +89,8 @@ function clean_exit()
         fi            
     fi
     release_lock
+    bm_dbus_send_progress 100 "Finished"
+    bm_dbus_send_event "shutdown" "70"
     exit 70
 }
 

@@ -11,6 +11,7 @@ source $locallib/backup-methods.sh
 source $locallib/upload-methods.sh
 source $locallib/burning-methods.sh
 source $locallib/actions.sh
+source $locallib/dbus.sh
 
 VERSION="0.7.1+svn"
 
@@ -57,3 +58,6 @@ md5check="false"
 purge="false"
 warnings="false"
 verbose="false"
+
+bm_dbus_init
+

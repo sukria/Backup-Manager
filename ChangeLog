@@ -14,6 +14,22 @@
 
 	* Fixed a typo in the user-guide (bug #167).
 
+2007-05-29  Alexis Sukrieh <sukria@sukria.net>
+
+	* Makefile
+	  Adding the missing lib/dbus.sh line
+
+2007-05-27  Rached Ben Mustapha  <rached@benmur.net>
+
+	* lib/dbus.sh
+	  + New module to signal state of backup-manager to listeners on D-BUS
+	* lib/backup-methods.sh, lib/logger.sh, backup-manager
+	  + Use progress reporting and logging facilities from lib/dbus.sh
+	* t/testlib.sh
+	  + Initialize dbus stuff so we know if it breaks things
+	* doc/README.dbus
+	  + some dbus support docs
+
 2007-05-27  Alexis Sukrieh  <sukria@backup-manager.org>
 	
 	* Fixed all the tests scripts in t/

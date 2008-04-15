@@ -76,6 +76,7 @@ source $libdir/backup-methods.sh
 source $libdir/upload-methods.sh
 source $libdir/burning-methods.sh
 source $libdir/actions.sh
+source $libdir/dbus.sh
 debug "Libraries loaded successfuly from \"$libdir\"."
 
 # Initialize defautls values of arguments
@@ -107,6 +108,10 @@ debug "Version : $VERSION, release : $RELEASE"
 # set useful global variables and initial
 # checks
 bm_init_today
+bm_dbus_init
+
+bm_dbus_send_event "startup" "Version : $VERSION, release : $RELEASE"
+bm_dbus_send_progress 0 "Initializing"
 
 # Catch signals for a nice exit.
 trap clean_exit SIGINT SIGTERM SIGKILL
@@ -246,23 +251,28 @@ fi
 
 if [[ "$nopurge" != "true" ]]; then
     debug "Purging the repository"
+    bm_dbus_send_progress 10 "Cleaning repositories"
     clean_repositories
 fi
 
 debug "Building archives"
+bm_dbus_send_progress 20 "Building archives"
 make_archives
 
 if [[ "$noupload" != "true" ]]; then
     debug "Running the upload methods"
+    bm_dbus_send_progress 60 "Uploading backups"
     upload_files
 fi
 
 if [[ "$noburn" != "true" ]]; then
     debug "Running the burning methods"
+    bm_dbus_send_progress 80 "Burning backups"
     burn_files
 fi
 
 debug "Running post-command"
+bm_dbus_send_progress 90 "Cleaning up"
 exec_post_command || error "Unable to exec post-command."
 
 debug "Releasing lock"
@@ -270,5 +280,8 @@ release_lock
 
 debug "Exiting"
 umask $BM_UMASK >/dev/null
+
+bm_dbus_send_progress 100 "Finished"
+bm_dbus_send_event "shutdown" "0"
 exit 0
 

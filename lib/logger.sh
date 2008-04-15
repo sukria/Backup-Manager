@@ -94,6 +94,7 @@ function log()
             else
                 echo "${message}"
             fi
+            bm_dbus_send_log_message "${bm_log_level}" "${message}"
         fi
         # log the message to syslog
         syslog $bm_log_level "${log_buffer}${message}"
@@ -144,5 +145,7 @@ function _exit()
     umask $BM_UMASK >/dev/null
     info "Releasing lock"
     release_lock
+    bm_dbus_send_progress 100 "Finished"
+    bm_dbus_send_event "shutdown" "$@"
     exit $@
 }

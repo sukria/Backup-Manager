@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-14 19:33+0200\n"
+"POT-Creation-Date: 2008-10-24 17:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,8 +16,86 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../lib/archives.sh:31
-msgid "Internal error: wrong call to bm_merge_incremental_backups()."
+#: ../lib/md5sum.sh:30
+msgid "Internal error: bad usage of function get_md5sum_from_file()"
+msgstr ""
+
+#: ../lib/md5sum.sh:34
+#, sh-format
+msgid "No md5file found: $md5file"
+msgstr ""
+
+#: ../lib/md5sum.sh:82
+#, sh-format
+msgid "Archive given does not exist in the repository: $archive"
+msgstr ""
+
+#: ../lib/dialog.sh:27
+msgid "Output:"
+msgstr ""
+
+#: ../lib/dialog.sh:28
+msgid "Print this short help message."
+msgstr ""
+
+#: ../lib/dialog.sh:29
+msgid "Print what happens on STDOUT."
+msgstr ""
+
+#: ../lib/dialog.sh:30
+msgid "Disable warnings."
+msgstr ""
+
+#: ../lib/dialog.sh:33
+msgid "Single actions:"
+msgstr ""
+
+#: ../lib/dialog.sh:34
+msgid "Just upload the files of the day."
+msgstr ""
+
+#: ../lib/dialog.sh:35
+msgid "Just burn the files of the day."
+msgstr ""
+
+#: ../lib/dialog.sh:36
+msgid "Just test the md5 sums."
+msgstr ""
+
+#: ../lib/dialog.sh:37
+msgid "Just purge old archives."
+msgstr ""
+
+#: ../lib/dialog.sh:40
+msgid "Behaviour:"
+msgstr ""
+
+#: ../lib/dialog.sh:41
+msgid "Choose an alternate config file."
+msgstr ""
+
+#: ../lib/dialog.sh:42
+msgid "Force overwrite of existing archives."
+msgstr ""
+
+#: ../lib/dialog.sh:45
+msgid "Unwanted actions:"
+msgstr ""
+
+#: ../lib/dialog.sh:46
+msgid "Disable the upload process."
+msgstr ""
+
+#: ../lib/dialog.sh:47
+msgid "Disable the burning process."
+msgstr ""
+
+#: ../lib/dialog.sh:48
+msgid "Disable the purge process."
+msgstr ""
+
+#: ../lib/dialog.sh:62 ../lib/dialog.sh:81
+msgid "Not in interactive mode, cannot continue."
 msgstr ""
 
 #: ../lib/upload-methods.sh:38
@@ -108,6 +186,14 @@ msgstr ""
 msgid "Using the upload method \"rsync-snapshots\"."
 msgstr ""
 
+#: ../lib/logger.sh:144 ../backup-manager:276
+msgid "Unable to exec post-command."
+msgstr ""
+
+#: ../lib/logger.sh:146
+msgid "Releasing lock"
+msgstr ""
+
 #: ../lib/backup-methods.sh:26
 #, sh-format
 msgid "$file_to_create: ok (${size}M,"
@@ -118,279 +204,193 @@ msgstr ""
 msgid "Unable to purge duplicates of $file_to_create"
 msgstr ""
 
-#: ../lib/backup-methods.sh:59
+#: ../lib/backup-methods.sh:65
 #, sh-format
-msgid "Unable to change the owner of \"$file_to_create\"."
+msgid "Unable to change the owner of \"$file\"."
 msgstr ""
 
-#: ../lib/backup-methods.sh:61
+#: ../lib/backup-methods.sh:67
 #, sh-format
-msgid "Unable to change file permissions of \"$file_to_create\"."
+msgid "Unable to change file permissions of \"$file\"."
 msgstr ""
 
-#: ../lib/backup-methods.sh:72
+#: ../lib/backup-methods.sh:78
 msgid "Warning, process interrupted."
 msgstr ""
 
-#: ../lib/backup-methods.sh:76
+#: ../lib/backup-methods.sh:82
 #, sh-format
 msgid "Removing archive \"$bm_pending_archive\" (build interrupted)."
 msgstr ""
 
-#: ../lib/backup-methods.sh:82
+#: ../lib/backup-methods.sh:88
 #, sh-format
 msgid ""
 "Restoring incremental-building details list: \"$bm_pending_incremental_list"
 "\"."
 msgstr ""
 
-#: ../lib/backup-methods.sh:116
+#: ../lib/backup-methods.sh:124
 #, sh-format
 msgid "Unable to create \"$target\", check $logfile"
 msgstr ""
 
-#: ../lib/backup-methods.sh:130
+#: ../lib/backup-methods.sh:140
 #, sh-format
 msgid "File $file_to_create already exists, skipping."
 msgstr ""
 
-#: ../lib/backup-methods.sh:141
+#: ../lib/backup-methods.sh:151
 msgid "gzip is not installed but gzip compression needed."
 msgstr ""
 
-#: ../lib/backup-methods.sh:149
+#: ../lib/backup-methods.sh:159
 msgid "bzip2 is not installed but bzip2 compression needed."
 msgstr ""
 
-#: ../lib/backup-methods.sh:167 ../lib/backup-methods.sh:191
+#: ../lib/backup-methods.sh:177 ../lib/backup-methods.sh:201
 #, sh-format
 msgid "Unable to exec $command; check $logfile"
 msgstr ""
 
-#: ../lib/backup-methods.sh:173
+#: ../lib/backup-methods.sh:183
 #, sh-format
 msgid "Compressor $compress is needed."
 msgstr ""
 
-#: ../lib/backup-methods.sh:198
+#: ../lib/backup-methods.sh:208
 #, sh-format
 msgid "No such compressor supported: $compress."
 msgstr ""
 
-#: ../lib/backup-methods.sh:204
+#: ../lib/backup-methods.sh:214
 #, sh-format
 msgid "Unable to find $file_to_create"
 msgstr ""
 
-#: ../lib/backup-methods.sh:331
+#: ../lib/backup-methods.sh:342
 msgid "No frequency given, set BM_TARBALLINC_MASTERDATETYPE."
 msgstr ""
 
-#: ../lib/backup-methods.sh:342
+#: ../lib/backup-methods.sh:353
 #, sh-format
 msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
 msgstr ""
 
-#: ../lib/backup-methods.sh:375
+#: ../lib/backup-methods.sh:386
 #, sh-format
 msgid "Building master backup for target: \"$dir_name\"."
 msgstr ""
 
-#: ../lib/backup-methods.sh:503
+#: ../lib/backup-methods.sh:514
 #, sh-format
 msgid ""
 "The archive command returned 1 but the archive has been created; check "
 "\"$logfile\"."
 msgstr ""
 
-#: ../lib/backup-methods.sh:534
+#: ../lib/backup-methods.sh:545
 #, sh-format
 msgid "The archive type \"tar.bz2\" depends on the tool \"$bzip\"."
 msgstr ""
 
-#: ../lib/backup-methods.sh:541
+#: ../lib/backup-methods.sh:552
 #, sh-format
 msgid "The archive type \"tar.lz\" depends on the tool \"$lzma\"."
 msgstr ""
 
-#: ../lib/backup-methods.sh:548
+#: ../lib/backup-methods.sh:559
 #, sh-format
 msgid "The archive type \"zip\" depends on the tool \"$zip\"."
 msgstr ""
 
-#: ../lib/backup-methods.sh:554
+#: ../lib/backup-methods.sh:565
 #, sh-format
 msgid "The archive type \"dar\" depends on the tool \"$dar\"."
 msgstr ""
 
-#: ../lib/backup-methods.sh:560 ../lib/backup-methods.sh:642
-#: ../lib/backup-methods.sh:688
+#: ../lib/backup-methods.sh:571 ../lib/backup-methods.sh:653
+#: ../lib/backup-methods.sh:699
 #, sh-format
 msgid "The archive type \"$BM_TARBALL_FILETYPE\" is not supported."
 msgstr ""
 
-#: ../lib/backup-methods.sh:616
+#: ../lib/backup-methods.sh:627
 msgid "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
 msgstr ""
 
-#: ../lib/backup-methods.sh:622
+#: ../lib/backup-methods.sh:633
 #, sh-format
 msgid ""
 "The encryption is not yet possible with \"$BM_TARBALL_FILETYPE\" archives."
 msgstr ""
 
-#: ../lib/backup-methods.sh:660
+#: ../lib/backup-methods.sh:671
 #, sh-format
 msgid "The program \"$gpg\" is needed."
 msgstr ""
 
-#: ../lib/backup-methods.sh:669 ../lib/backup-methods.sh:702
+#: ../lib/backup-methods.sh:680 ../lib/backup-methods.sh:713
 #, sh-format
 msgid "File $file_to_check already exists, skipping."
 msgstr ""
 
-#: ../lib/backup-methods.sh:725
+#: ../lib/backup-methods.sh:736
 #, sh-format
 msgid "Target \"$t\" does not exist, skipping."
 msgstr ""
 
-#: ../lib/backup-methods.sh:800 ../lib/backup-methods.sh:837
-#: ../lib/backup-methods.sh:879 ../lib/backup-methods.sh:903
+#: ../lib/backup-methods.sh:811 ../lib/backup-methods.sh:848
+#: ../lib/backup-methods.sh:890 ../lib/backup-methods.sh:914
 #, sh-format
 msgid "Using method \"$method\"."
 msgstr ""
 
-#: ../lib/backup-methods.sh:826
+#: ../lib/backup-methods.sh:837
 msgid "1 error occurred during the tarball generation."
-msgstr ""
-
-#: ../lib/backup-methods.sh:828
-#, sh-format
-msgid "$nb_err errors occurred during the tarball generation."
 msgstr ""
 
 #: ../lib/backup-methods.sh:839
 #, sh-format
+msgid "$nb_err errors occurred during the tarball generation."
+msgstr ""
+
+#: ../lib/backup-methods.sh:850
+#, sh-format
 msgid "The \"mysql\" method is chosen, but $mysqldump is not found."
 msgstr ""
 
-#: ../lib/backup-methods.sh:849
+#: ../lib/backup-methods.sh:860
 #, sh-format
 msgid "Using existing MySQL client configuration file: $HOME/.my.cnf"
 msgstr ""
 
-#: ../lib/backup-methods.sh:852
+#: ../lib/backup-methods.sh:863
 #, sh-format
 msgid "Creating a default MySQL client configuration file: $HOME/.my.cnf"
 msgstr ""
 
-#: ../lib/backup-methods.sh:881
+#: ../lib/backup-methods.sh:892
 #, sh-format
 msgid "The \"svn\" method is chosen, but $svnadmin is not found."
 msgstr ""
 
-#: ../lib/backup-methods.sh:887
+#: ../lib/backup-methods.sh:898
 #, sh-format
 msgid "SVN repository \"$repository\" is not valid; skipping."
 msgstr ""
 
-#: ../lib/backup-methods.sh:912
+#: ../lib/backup-methods.sh:923
 #, sh-format
 msgid "Not enough args for this archive ($archive), skipping."
 msgstr ""
 
-#: ../lib/backup-methods.sh:919
+#: ../lib/backup-methods.sh:930
 msgid "Cannot create archive."
 msgstr ""
 
-#: ../lib/logger.sh:143 ../backup-manager:265
-msgid "Unable to exec post-command."
-msgstr ""
-
-#: ../lib/logger.sh:145
-msgid "Releasing lock"
-msgstr ""
-
-#: ../lib/actions.sh:44
-msgid "No backup method used."
-msgstr ""
-
-#: ../lib/actions.sh:47
-#, sh-format
-msgid "No such backup method: $BM_ARCHIVE_METHOD"
-msgstr ""
-
-#: ../lib/actions.sh:56
-#, sh-format
-msgid "Unable to change the owner of \"$md5file\"."
-msgstr ""
-
-#: ../lib/actions.sh:58
-#, sh-format
-msgid "Unable to change file permissions of \"$md5file\"."
-msgstr ""
-
-#: ../lib/actions.sh:90
-msgid "No upload method used."
-msgstr ""
-
-#: ../lib/actions.sh:93
-#, sh-format
-msgid "The upload method \"$method\" is not supported; skipping."
-msgstr ""
-
-#: ../lib/actions.sh:105
-#, sh-format
-msgid "Cleaning $BM_REPOSITORY_ROOT"
-msgstr ""
-
-#: ../lib/actions.sh:118
-#, sh-format
-msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND."
-msgstr ""
-
-#: ../lib/actions.sh:122
-msgid "Pre-command failed. Stopping the process."
-msgstr ""
-
-#: ../lib/actions.sh:127
-#, sh-format
-msgid "Pre-command returned: \"$RET\" (success)."
-msgstr ""
-
-#: ../lib/actions.sh:139
-#, sh-format
-msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
-msgstr ""
-
-#: ../lib/actions.sh:143
-msgid "Post-command failed."
-msgstr ""
-
-#: ../lib/actions.sh:148
-#, sh-format
-msgid "Post-command returned: \"$RET\" (success)."
-msgstr ""
-
-#: ../lib/actions.sh:175
-msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
-msgstr ""
-
-#: ../lib/actions.sh:180
-msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
-"installed."
-msgstr ""
-
-#: ../lib/actions.sh:185
-msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
-msgstr ""
-
-#: ../lib/actions.sh:197
-#, sh-format
-msgid "The repository $BM_REPOSITORY_ROOT does not exist, creating it."
+#: ../lib/archives.sh:31
+msgid "Internal error: wrong call to bm_merge_incremental_backups()."
 msgstr ""
 
 #: ../lib/files.sh:79 ../lib/files.sh:94
@@ -474,74 +474,6 @@ msgstr ""
 msgid "$file is a duplicate of $file_to_create (using symlink)."
 msgstr ""
 
-#: ../lib/dialog.sh:27
-msgid "Output:"
-msgstr ""
-
-#: ../lib/dialog.sh:28
-msgid "Print this short help message."
-msgstr ""
-
-#: ../lib/dialog.sh:29
-msgid "Print what happens on STDOUT."
-msgstr ""
-
-#: ../lib/dialog.sh:30
-msgid "Disable warnings."
-msgstr ""
-
-#: ../lib/dialog.sh:33
-msgid "Single actions:"
-msgstr ""
-
-#: ../lib/dialog.sh:34
-msgid "Just upload the files of the day."
-msgstr ""
-
-#: ../lib/dialog.sh:35
-msgid "Just burn the files of the day."
-msgstr ""
-
-#: ../lib/dialog.sh:36
-msgid "Just test the md5 sums."
-msgstr ""
-
-#: ../lib/dialog.sh:37
-msgid "Just purge old archives."
-msgstr ""
-
-#: ../lib/dialog.sh:40
-msgid "Behaviour:"
-msgstr ""
-
-#: ../lib/dialog.sh:41
-msgid "Choose an alternate config file."
-msgstr ""
-
-#: ../lib/dialog.sh:42
-msgid "Force overwrite of existing archives."
-msgstr ""
-
-#: ../lib/dialog.sh:45
-msgid "Unwanted actions:"
-msgstr ""
-
-#: ../lib/dialog.sh:46
-msgid "Disable the upload process."
-msgstr ""
-
-#: ../lib/dialog.sh:47
-msgid "Disable the burning process."
-msgstr ""
-
-#: ../lib/dialog.sh:48
-msgid "Disable the purge process."
-msgstr ""
-
-#: ../lib/dialog.sh:62 ../lib/dialog.sh:81
-msgid "Not in interactive mode, cannot continue."
-msgstr ""
-
 #: ../lib/sanitize.sh:32
 #, sh-format
 msgid "The configuration key $key is not set, using \"$default\"."
@@ -569,30 +501,103 @@ msgstr ""
 msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
 msgstr ""
 
-#: ../lib/sanitize.sh:162
+#: ../lib/sanitize.sh:128
+#, sh-format
+msgid "Unable to create BM_TEMP_DIR: \"$BM_TEMP_DIR\"."
+msgstr ""
+
+#: ../lib/sanitize.sh:166
 msgid ""
 "BM_TARBALLINC_MASTERDATEVALUE should not be greater than 6, falling back to 0"
 msgstr ""
 
-#: ../lib/sanitize.sh:272
+#: ../lib/sanitize.sh:276
 #, sh-format
 msgid ""
 "When validating the configuration file $conffile, $nb_warnings warnings were "
 "found."
 msgstr ""
 
-#: ../lib/md5sum.sh:30
-msgid "Internal error: bad usage of function get_md5sum_from_file()"
+#: ../lib/actions.sh:44
+msgid "No backup method used."
 msgstr ""
 
-#: ../lib/md5sum.sh:34
+#: ../lib/actions.sh:47
 #, sh-format
-msgid "No md5file found: $md5file"
+msgid "No such backup method: $BM_ARCHIVE_METHOD"
 msgstr ""
 
-#: ../lib/md5sum.sh:82
+#: ../lib/actions.sh:56
 #, sh-format
-msgid "Archive given does not exist in the repository: $archive"
+msgid "Unable to change the owner of \"$md5file\"."
+msgstr ""
+
+#: ../lib/actions.sh:58
+#, sh-format
+msgid "Unable to change file permissions of \"$md5file\"."
+msgstr ""
+
+#: ../lib/actions.sh:90
+msgid "No upload method used."
+msgstr ""
+
+#: ../lib/actions.sh:93
+#, sh-format
+msgid "The upload method \"$method\" is not supported; skipping."
+msgstr ""
+
+#: ../lib/actions.sh:105
+#, sh-format
+msgid "Cleaning $BM_REPOSITORY_ROOT"
+msgstr ""
+
+#: ../lib/actions.sh:118
+#, sh-format
+msgid "Running pre-command: $BM_PRE_BACKUP_COMMAND."
+msgstr ""
+
+#: ../lib/actions.sh:122
+msgid "Pre-command failed. Stopping the process."
+msgstr ""
+
+#: ../lib/actions.sh:127
+#, sh-format
+msgid "Pre-command returned: \"$RET\" (success)."
+msgstr ""
+
+#: ../lib/actions.sh:139
+#, sh-format
+msgid "Running post-command: $BM_POST_BACKUP_COMMAND"
+msgstr ""
+
+#: ../lib/actions.sh:143
+msgid "Post-command failed."
+msgstr ""
+
+#: ../lib/actions.sh:148
+#, sh-format
+msgid "Post-command returned: \"$RET\" (success)."
+msgstr ""
+
+#: ../lib/actions.sh:175
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
+msgstr ""
+
+#: ../lib/actions.sh:180
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
+"installed."
+msgstr ""
+
+#: ../lib/actions.sh:185
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
+msgstr ""
+
+#: ../lib/actions.sh:197
+#, sh-format
+msgid "The repository $BM_REPOSITORY_ROOT does not exist, creating it."
 msgstr ""
 
 #: ../lib/burning-methods.sh:37
@@ -789,14 +794,14 @@ msgstr ""
 msgid "Burning content of $index"
 msgstr ""
 
-#: ../backup-manager:140
+#: ../backup-manager:146
 msgid "The -b option must be followed by a valid date (YYYYMMDD)."
 msgstr ""
 
-#: ../backup-manager:175
+#: ../backup-manager:181
 msgid "The -c option must be followed by an existing filename."
 msgstr ""
 
-#: ../backup-manager:215
+#: ../backup-manager:221
 msgid "Unable to exec the pre-command"
 msgstr ""

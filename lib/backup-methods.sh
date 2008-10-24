@@ -731,11 +731,25 @@ function __make_local_tarball_token
     t="$1"
     debug "__make_local_tarball_token ($t)"
 
-    if [[ ! -e "$t" ]] || [[ ! -r "$t" ]]; then
-        # first be sure the target exists
+    # look for the target in the blacklist...
+    is_blacklisted="0"
+    for blacklist_pattern in $BM_TARBALL_BLACKLIST; do
+        if [[ "$t" == "$blacklist_pattern" ]]; then
+            is_blacklisted="1"
+        fi
+    done
+
+
+    # ignore the target if it's blacklisted
+    if [[ "$is_blacklisted" == "1" ]]; then
+        info "Target \"\$t\" is found in blacklist, skipping."
+
+    # be sure the target exists
+    elif [[ ! -e "$t" ]] || [[ ! -r "$t" ]]; then
         warning "Target \"\$t\" does not exist, skipping."
         nb_err=$(($nb_err + 1))
     
+    # Everything's OK, do the job
     else
         # we assume we'll build a master backup (full archive).
         # If we make incremental backup, the $master keyword 

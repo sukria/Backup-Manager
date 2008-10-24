@@ -17,6 +17,10 @@
 	  Change permission whenever an archive is made, ether if it's correctly
 	  built or not.
 	  Thansk to Philippe Villiers for the report.
+	* lib/backup-methods.sh (closes bug #178)
+	  Don't try to build empty archives for targets found in
+	  BM_TARBALL_BLACKLIST.
+	  Thanks to Henning Bitsch for the report.
 
 2007-08-30	Alexis Sukrieh  <sukria@backup-manager.org>
 

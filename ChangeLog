@@ -1,3 +1,10 @@
+2008-10-24	Alexis Sukrieh  <sukria@backup-manager.org>
+
+	* backup-manager-upload
+	  correctly report error when FTP upload fails (thanks to   Henning Bitsch
+	  for the report, and Thomas Parmelan for the patch).
+	  (closes: #199)
+
 2007-08-30	Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* lib/files.sh

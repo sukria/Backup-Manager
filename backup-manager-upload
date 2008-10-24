@@ -692,10 +692,16 @@ sub send_files_with_ftp($$$$$)
         foreach my $file (@{$ra_files}) {
             chomp $file;
             if ($BM_UPLOAD_FTP_SECURE) {
-                ftptls_put_file ($ftp, $file);
+                unless (ftptls_put_file ($ftp, $file)) {
+		    verbose_error "Unable to transfer $file";
+		    return FALSE;
+		}
             }
             else {
-                ftp_put_file ($ftp, $file);
+                unless (ftp_put_file ($ftp, $file)) {
+		    verbose_error "Unable to transfer $file: " . $ftp->message;
+		    return FALSE;
+		}
             }
         }
         verbose "All transfers done, loging out from $host\n";
@@ -724,14 +730,14 @@ sub ftptls_login ($$$$)
 sub ftp_put_file ($$)
 {
     my ($ftp, $file) = @_;
-    $ftp->put ($file);
+    return $ftp->put ($file);
 }
 
 sub ftptls_put_file ($$)
 {
     my ($ftp, $file) = @_;
     my $basename = basename ($file);
-    $ftp->put ($basename, $file);
+    return $ftp->put ($basename, $file);
 }
 
 # }}}

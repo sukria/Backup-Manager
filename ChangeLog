@@ -1,9 +1,12 @@
 2008-10-24	Alexis Sukrieh  <sukria@backup-manager.org>
 
-	* backup-manager-upload
-	  correctly report error when FTP upload fails (thanks to   Henning Bitsch
-	  for the report, and Thomas Parmelan for the patch).
-	  (closes: #199)
+	* backup-manager-upload (closes bug #199)
+	  correctly report error when FTP uploads fail 
+	  (thanks to Henning Bitsch for the report and Thomas Parmelan for the
+	  patch)
+	* doc/user-guide.sgml (closes bug #200)
+	  Fixed the example for BM_ARCHIVE_NICELEVEL
+	  (thanks to Rafa G. for the report)
 
 2007-08-30	Alexis Sukrieh  <sukria@backup-manager.org>
 

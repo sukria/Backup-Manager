@@ -309,7 +309,7 @@ See the manpage of nice for details.
 Example:
 
 <example>
-export BM_ARCHIVE_PURGEDUPS="19" # recommanded for desktop users.
+export BM_ARCHIVE_NICE_LEVEL="19" # recommanded for desktop users.
 </example>
 
 <sect2 id="BM_ARCHIVE_PURGEDUPS"><tt>BM_ARCHIVE_PURGEDUPS</tt>

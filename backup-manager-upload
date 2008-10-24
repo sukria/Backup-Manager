@@ -318,7 +318,7 @@ sub get_ssh_opts {
     # look for a port to use
 	my $ssh_port_switch="";
 	my $scp_port_switch="";
-    if (defined $ENV{BM_UPLOAD_SSH_PORT}) {
+    if ($ENV{BM_UPLOAD_SSH_PORT}) {
         $ssh_port_switch = "-p ".$ENV{BM_UPLOAD_SSH_PORT};
         $scp_port_switch = "-P ".$ENV{BM_UPLOAD_SSH_PORT};
     }

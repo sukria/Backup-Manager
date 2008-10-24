@@ -10,6 +10,9 @@
 	* backup-manager-upload (closes bug #196)
 	  Fix in the get_ssh_opts function so we correctly retreive SSH/SCP
 	  switches.
+	* backup-manager-upload (closes bug #195)
+	  Don't set a port switch to ssh/scp commands if BM_UPLOAD_SSH_PORT is not
+	  set. Thanks to Andy Shinn for the report and the diagnostic.
 
 2007-08-30	Alexis Sukrieh  <sukria@backup-manager.org>
 

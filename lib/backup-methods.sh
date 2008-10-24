@@ -53,12 +53,18 @@ function commit_archive()
     purge_duplicate_archives $file_to_create || 
         error "Unable to purge duplicates of \$file_to_create"
 
-    # security fixes if BM_REPOSITORY_SECURE is set to true
+    # ownership
+    chown_archive "$file_to_create"
+}
+
+# security fixes if BM_REPOSITORY_SECURE is set to true
+function chown_archive {
+    file="$1"
     if [[ "$BM_REPOSITORY_SECURE" = "true" ]]; then
-        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $file_to_create || 
-            warning "Unable to change the owner of \"\$file_to_create\"."
-        chmod $BM_ARCHIVE_CHMOD $file_to_create ||
-            warning "Unable to change file permissions of \"\$file_to_create\"."
+        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $file || 
+            warning "Unable to change the owner of \"\$file\"."
+        chmod $BM_ARCHIVE_CHMOD $file ||
+            warning "Unable to change file permissions of \"\$file\"."
     fi
 }
 
@@ -117,6 +123,8 @@ function handle_tarball_error()
 
     warning "Unable to create \"\$target\", check \$logfile"
     nb_err=$(($nb_err + 1))
+
+    chown_archive "$target"
 }
 
 function __exec_meta_command()
@@ -218,6 +226,7 @@ function __create_file_with_meta_command()
     if [[ -n "$BM_RET" ]]; then
         commit_archive "$file_to_create"
     fi
+    chown_archive "$file_to_create"
 }
 
 

@@ -13,6 +13,10 @@
 	* backup-manager-upload (closes bug #195)
 	  Don't set a port switch to ssh/scp commands if BM_UPLOAD_SSH_PORT is not
 	  set. Thanks to Andy Shinn for the report and the diagnostic.
+	* lib/backup-methods.sh (closes #194)
+	  Change permission whenever an archive is made, ether if it's correctly
+	  built or not.
+	  Thansk to Philippe Villiers for the report.
 
 2007-08-30	Alexis Sukrieh  <sukria@backup-manager.org>
 

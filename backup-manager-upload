@@ -333,8 +333,10 @@ sub get_ssh_opts {
         exit E_SCP_FAILED;
     }
 
-    return ("$ssh_port_switch $keyfile_switch -o BatchMode=yes", 
-            "$scp_port_switch $keyfile_switch -B");
+    return {
+        ssh => "$ssh_port_switch $keyfile_switch -o BatchMode=yes", 
+        scp => "$scp_port_switch $keyfile_switch -B"
+    };
 }
 
 # Purge remote archives over SSH
@@ -346,7 +348,7 @@ sub ssh_clean_directory
 		defined $host and
 		defined $location;
 	
-    my $ssh_options = get_ssh_opts();
+    my $ssh_options = get_ssh_opts->{'ssh'};
 
     # the remote time to leave could be different as the local one.
     my $BM_ARCHIVE_TTL = $ENV{BM_ARCHIVE_TTL};
@@ -388,7 +390,8 @@ sub send_file_with_scp($$$$$)
 		defined $host and
 		defined $location;
 
-    my ($ssh_opts, $scp_opts) = get_ssh_opts();
+    my $opts = get_ssh_opts;
+    my ($ssh_opts, $scp_opts) = ($opts->{'ssh'}, $opts->{'scp'});
 	
     my $cmd = "";
 	if ( defined $g_gpg_recipient )	{	    
@@ -448,7 +451,8 @@ sub send_files_with_scp($$$$$)
 	    }
 	}
     
-    my ($ssh_opts, $scp_opts) = get_ssh_opts();
+    my $opts = get_ssh_opts;
+    my ($ssh_opts, $scp_opts) = ($opts->{'ssh'}, $opts->{'scp'});
 
     # loop on each hosts given and connect to them.
 	foreach my $host (@{$ra_hosts}) {

@@ -7,6 +7,9 @@
 	* doc/user-guide.sgml (closes bug #200)
 	  Fixed the example for BM_ARCHIVE_NICELEVEL
 	  (thanks to Rafa G. for the report)
+	* backup-manager-upload (closes bug #196)
+	  Fix in the get_ssh_opts function so we correctly retreive SSH/SCP
+	  switches.
 
 2007-08-30	Alexis Sukrieh  <sukria@backup-manager.org>
 

@@ -857,6 +857,7 @@ function backup_method_tarball()
 function backup_method_mysql()
 {
     method="$1"
+    mysql_conffile="$HOME/.backup-manager_my.cnf"
     debug "backup_method_mysql ($method)"
 
     info "Using method \"\$method\"."
@@ -870,17 +871,17 @@ function backup_method_mysql()
     fi
     
     # if a MySQL Client conffile exists, the password must be inside
-    if [[ -f "$HOME/.my.cnf" ]]; then
-        info "Using existing MySQL client configuration file: \$HOME/.my.cnf"
+    if [[ -f $mysql_conffile ]]; then
+        info "Using existing MySQL client configuration file: \$mysql_conffile"
     # we create a default one, just with the password
     else
-        warning "Creating a default MySQL client configuration file: \$HOME/.my.cnf"
-        echo "[client]" > $HOME/.my.cnf 
-        echo "# The following password will be sent to all standard MySQL clients" >> $HOME/.my.cnf 
-        echo "password=\"$BM_MYSQL_ADMINPASS\"" >> $HOME/.my.cnf
-        chmod 600 $HOME/.my.cnf
+        warning "Creating a default MySQL client configuration file: \$mysql_conffile"
+        echo "[client]" > $mysql_conffile
+        echo "# The following password will be sent to all standard MySQL clients" >> $mysql_conffile
+        echo "password=\"$BM_MYSQL_ADMINPASS\"" >> $mysql_conffile
+        chmod 600 $mysql_conffile
     fi
-    base_command="$mysqldump $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT"
+    base_command="$mysqldump --defaults-extra-file=$mysql_conffile $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT"
     compress="$BM_MYSQL_FILETYPE"   
 
     for database in $BM_MYSQL_DATABASES

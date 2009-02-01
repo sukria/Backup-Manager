@@ -165,8 +165,8 @@ function __exec_meta_command()
                 debug "$command > $file_to_create 2> $logfile"
                 tail_logfile "$logfile"
                 if [[ "$BM_ENCRYPTION_METHOD" = "gpg" ]]; then
-                    $command 2>$logfile | $compress_bin -f -q -9 2>$logfile | $gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.$ext.gpg 2> $logfile
-                    debug "$command | $compress_bin -f -q -9 | $gpg -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create.$ext.gpg 2> $logfile"
+                    $command 2>$logfile | $compress_bin -f -q -9 2>$logfile | $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.$ext.gpg 2> $logfile
+                    debug "$command | $compress_bin -f -q -9 | $gpg $BM__GPG_HOMEDIR -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create.$ext.gpg 2> $logfile"
                     file_to_create="$file_to_create.$ext.gpg"
                 else
                     $command 2> $logfile | $compress_bin -f -q -9 > $file_to_create.$ext 2> $logfile
@@ -191,7 +191,7 @@ function __exec_meta_command()
             debug "$command 1> $file_to_create 2>$logfile"
             tail_logfile "$logfile"
             if [[ "$BM_ENCRYPTION_METHOD" = "gpg" ]]; then
-                $command | $gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.gpg 2> $logfile
+                $command | $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.gpg 2> $logfile
                 file_to_create="$file_to_create.gpg"
             else
                 $command 1> $file_to_create 2>$logfile
@@ -635,10 +635,10 @@ function build_encrypted_archive
 
     file_to_create="$file_to_create.gpg"
     
-    debug "$command - \"$target\" 2>>$logfile | $gpg -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create 2>> $logfile"
+    debug "$command - \"$target\" 2>>$logfile | $gpg $BM__GPG_HOMEDIR -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create 2>> $logfile"
     tail_logfile "$logfile"
 
-    $command - "$target" 2>>$logfile | $gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create 2>> $logfile || error_code=$?
+    $command - "$target" 2>>$logfile | $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create 2>> $logfile || error_code=$?
     check_error_code "$error_code" "$file_to_create" "$logfile"
 }
 
@@ -858,6 +858,7 @@ function backup_method_mysql()
 {
     method="$1"
     mysql_conffile="$HOME/.backup-manager_my.cnf"
+
     debug "backup_method_mysql ($method)"
 
     info "Using method \"\$method\"."
@@ -873,6 +874,7 @@ function backup_method_mysql()
     # if a MySQL Client conffile exists, the password must be inside
     if [[ -f $mysql_conffile ]]; then
         info "Using existing MySQL client configuration file: \$mysql_conffile"
+        BM_SHOULD_PURGE_MYCNF="false"
     # we create a default one, just with the password
     else
         warning "Creating a default MySQL client configuration file: \$mysql_conffile"
@@ -880,6 +882,7 @@ function backup_method_mysql()
         echo "# The following password will be sent to all standard MySQL clients" >> $mysql_conffile
         echo "password=\"$BM_MYSQL_ADMINPASS\"" >> $mysql_conffile
         chmod 600 $mysql_conffile
+        BM_SHOULD_PURGE_MYCNF="true"
     fi
     base_command="$mysqldump --defaults-extra-file=$mysql_conffile $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT"
     compress="$BM_MYSQL_FILETYPE"   
@@ -895,6 +898,12 @@ function backup_method_mysql()
         fi
         __create_file_with_meta_command
     done   
+
+    # purge the my.cnf file, if created by Backup Manager
+    if [[ "$BM_SHOULD_PURGE_MYCNF" == "true" ]]; then
+        info "Removing default MySQL client configuration file: \$mysql_conffile"
+        rm -f $mysql_conffile
+    fi
 }
 
 function backup_method_svn()

@@ -155,6 +155,11 @@ function bm_init_env ()
 {
     debug "bm_init_env()"
     export TOOMUCH_TIME_AGO=`date +%d --date "$BM_ARCHIVE_TTL days ago"`
+    if [[ -n "$HOME" ]]; then
+        export BM__GPG_HOMEDIR="--homedir ${HOME}/.gnupg"
+    else
+        export BM__GPG_HOMEDIR="--homedir /root/.gnupg"
+    fi
     check_logger
 }
 

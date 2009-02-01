@@ -1,7 +1,11 @@
 2009-02-01  Alexis Sukrieh  <sukria@backup-manager.org>
 	* Release 0.7.8
 	* Tempfiles are correctly created/purged in backup-manager-upload
-	  (thanks to Josh Triplett and Thomas Parmelan).
+	  (thanks to Josh Triplett and Thomas Parmelan; closes Debian #461512).
+	* Added a --homedir flag to gnupg commands
+	  (thanks to Jochen Zimmermann; closes Debian #494833).
+	* Removes MySQL configuration file when automatically created.
+	  (Thanks to Mihnea-Costin Grigore; closes Debian #496051) 
 
 
 2008-10-24	Alexis Sukrieh  <sukria@backup-manager.org>

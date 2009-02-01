@@ -306,6 +306,17 @@ sub get_hosts_from_str($) {
 	return $ra_hosts;
 }
 
+sub get_tempfile(;$) {
+    my ($template) = @_;
+    $template ||= 'bmu-XXXXXX';
+    
+    return tempfile( 
+        TEMPLATE => $template,
+        DIR      => $ENV{BM_TEMP_DIR},
+        UNLINK   => 1,
+    );
+}
+
 # }}}
 
 ##############################################################
@@ -360,13 +371,13 @@ sub ssh_clean_directory
     verbose "Cleaning remote directory through SSH";
 
     # First, create the list of existing archives
-    my ($fh, $in) =tempfile();
+    my ($fh, $in) = get_tempfile('ssh-archives-XXXXXX');
     my $cmd = "$ssh $ssh_options $user".'@'.$host." ls $location/*";
     my $buffer = `$cmd`;
     print $fh $buffer;
     close $fh;
 
-    my ($fh_out, $out) =tempfile();
+    my ($fh_out, $out) = get_tempfile('bm-purge-out-ssh-XXXXXX');
     system("/usr/bin/backup-manager-purge --ttl=$BM_ARCHIVE_TTL --files-from=$in > $out");
 
     open (STDOUT_CMD, $out);
@@ -523,7 +534,7 @@ sub ftp_clean_directory($)
     verbose "Cleaning remote directory through FTP";
 
     # First, create the list of existing archives
-    my ($fh, $filename) = tempfile();
+    my ($fh, $filename) = get_tempfile('ftp-archives-XXXXXX');
     my $BM_UPLOAD_FTP_SECURE = $ENV{"BM_UPLOAD_FTP_SECURE"};
     my $ra_files;
     if ($BM_UPLOAD_FTP_SECURE eq "true") {
@@ -538,7 +549,7 @@ sub ftp_clean_directory($)
     close $fh;
     
     # Then delete every file listed as "outaded" by backup-manager-purge
-    my ($fh_out, $out) =tempfile();
+    my ($fh_out, $out) = get_tempfile('bm-purge-out-ftp-XXXXXX');
     system ("/usr/bin/backup-manager-purge --ttl=$BM_ARCHIVE_TTL --files-from=$filename > $out");
     open (STDOUT_CMD, "<$out");
     while (<STDOUT_CMD>) {

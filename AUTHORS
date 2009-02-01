@@ -1,31 +1,18 @@
 
-* Backup Manager 
-    
-    + Developers
-    
-        - Alexis Sukrieh <sukria@backup-manager.org>
-        - Andreas "Jimmy" Gredler <jimmy@backup-manager.org>
-        - Michel Grentzinger <michelg@backup-manager.org>
-    
-    + Contributors
-    
-        Upload method ssh-gpg
-        - Jan Metzger <5cent1@gmx.net>
-    
-        Support for the Amazon S3 Web Service.
-        - Brad Dixon <rbdixon@gmail.com>
-    
-        Symbolic links dumping support for zip archives
-        - Sven Joachim <sven_joachim@web.de>
-    
-        Support for multiple configuration files
-        - Michael Prokop <mikap@grml.org> 
+* Code
 
-        Support for optional recursive purge
+Backup Manager is developed and maintained by Alexis Sukrieh.
+
+Here are the contributors, almost sorted by activity on the project
+        
         - Thomas Parmelan <tom+backup-manager@ankh.fr.eu.org>
-
-        Support for FTP over TLS/SSL transfers
+        - Sven Joachim <sven_joachim@web.de>
+        - Michel Grentzinger <michelg@backup-manager.org>
+        - Jan Metzger <5cent1@gmx.net>
+        - Andreas "Jimmy" Gredler <jimmy@backup-manager.org>
+        - Brad Dixon <rbdixon@gmail.com>
         - Michael.Guerin <mickkael@free.fr>
+        - Michael Prokop <mikap@grml.org> 
     
 * Documentation
 

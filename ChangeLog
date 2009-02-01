@@ -1,3 +1,9 @@
+2009-02-01  Alexis Sukrieh  <sukria@backup-manager.org>
+	* Release 0.7.8
+	* Tempfiles are correctly created/purged in backup-manager-upload
+	  (thanks to Josh Triplett and Thomas Parmelan).
+
+
 2008-10-24	Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* backup-manager-upload (closes bug #199)

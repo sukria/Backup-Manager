@@ -129,7 +129,7 @@ function release_lock()
     if [[ -e $lockfile ]]; then
         # We have to remove the line which contains 
         # the conffile.
-        newfile=$(mktemp /tmp/bm-lock.XXXXXX)
+        newfile=$(mktemp ${BM_TEMP_DIR}/lock.XXXXXX)
         newcontent=""
         OLDIFS=$IFS
         IFS=$'\n'

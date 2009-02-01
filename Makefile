@@ -37,6 +37,7 @@ LIBDIR=$(DESTDIR)/usr/share/backup-manager
 CONTRIB=$(LIBDIR)/contrib
 SHAREDIR=$(DESTDIR)/usr/share/backup-manager
 SHFILES=\
+	lib/externals.sh \
 	lib/dialog.sh \
 	lib/files.sh \
 	lib/actions.sh \

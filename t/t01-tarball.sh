@@ -7,6 +7,7 @@ source testlib.sh
 # When the test is ready, set this to false for nice outputs.
 # if you want to see what happens, use those flags
 # verbose="true"
+# verbosedebug="true"
 # warnings="true"
 
 # The conffile part of the test, see confs/* for details.

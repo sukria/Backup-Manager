@@ -508,24 +508,39 @@ function check_error_code()
         error_code=0
     fi
 
-    # looks like a warning, if the file exists, it's a warning,
-    # otherwise it's an error
-    if [[ "$error_code" == "1" ]]; then
-        if [[ -f "$file_to_create" ]]; then
-            warning "The archive command returned 1 but the archive has been created; check \"\$logfile\"."
-            commit_archives "$file_to_create"
-        else
-            handle_tarball_error "$file_to_create" "$logfile"
-        fi
-    # an error code greater than 1 occured : fatal error
-    elif [[ "$error_code" -gt 0 ]]; then
-        handle_tarball_error "$file_to_create" "$logfile"
-
-    # error code of 0, success.
-    else
-        rm -f $logfile
-        commit_archives "$file_to_create"
-    fi
+    # Error checks can depend on the command/error code returned
+    case "$BM__CURRENT_COMMAND" in 
+        "tar")
+            if [[ "$error_code" == "1" ]]; then
+                warning "Tar reported a file changed during archive creation."
+                commit_archives "$file_to_create"
+            elif [[ "$error_code" -gt 0 ]]; then
+                handle_tarball_error "$file_to_create" "$logfile"
+            else
+                rm -f $logfile
+                commit_archives "$file_to_create"
+            fi
+        ;;
+        "dar")
+            if [[ "$error_code" == "11" ]]; then
+                warning "Dar reported a file changed during archive creation."
+                commit_archives "$file_to_create"
+            elif [[ "$error_code" -gt 0 ]]; then
+                handle_tarball_error "$file_to_create" "$logfile"
+            else
+                rm -f $logfile
+                commit_archives "$file_to_create"
+            fi
+        ;;
+        *)
+            if [[ "$error_code" -gt 0 ]]; then
+                handle_tarball_error "$file_to_create" "$logfile"
+            else
+                rm -f $logfile
+                commit_archives "$file_to_create"
+            fi
+        ;;
+    esac
 
     # Reset the error code 
     error_code=0
@@ -591,6 +606,7 @@ function build_clear_archive
 
         # lzma archives should be piped manually
         "tar.lz")
+            BM__CURRENT_COMMAND="tar"
             if [[ "$verbosedebug" == "true" ]]; then
                 tail -f $logfile &
             fi
@@ -603,6 +619,7 @@ function build_clear_archive
         
         # dar has a special commandline, that cannot fit the common tar way
         "dar")
+            BM__CURRENT_COMMAND="dar"
             debug "$command $target> $logfile 2>&1"
             tail_logfile "$logfile"
 
@@ -612,12 +629,15 @@ function build_clear_archive
 
         # the common commandline
         *)
+            BM__CURRENT_COMMAND="generic"
             debug "$command $file_to_create \"$target\" > $logfile 2>&1"
             tail_logfile "$logfile"
+            debug "$command $file_to_create \"$target\""
             $command $file_to_create "$target" > $logfile 2>&1 || error_code=$?
             check_error_code "$error_code" "$file_to_create" "$logfile"
         ;;
     esac
+    BM__CURRENT_COMMAND=""
 }
 
 

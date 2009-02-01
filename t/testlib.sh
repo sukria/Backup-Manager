@@ -2,6 +2,7 @@
 # Load the backup-manager's library
 locallib="../lib"
 libdir="$locallib"
+source $locallib/externals.sh
 source $locallib/gettext.sh
 source $locallib/logger.sh
 source $locallib/dialog.sh

@@ -37,8 +37,11 @@ Select a list of remote hosts to connect to.
 
 Select the user to use for connection.
 
+=back
 
 =head1 OPTIONAL ARGS
+
+=over 4
 
 =item B<--password=>I<password>
 
@@ -93,6 +96,8 @@ Flag to enable verbose mode.
 =item B<date>
 
 Date pattern to select some files to upload, can be a valid date (YYYYMMDD) or 'today' or 'yesterday'.
+
+=back
 
 =head1 ERROR CODES
 

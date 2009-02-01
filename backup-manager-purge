@@ -49,6 +49,8 @@ outdated by the TTL.
 Specify the time to live (in days) for the archives. Any archive that is older
 than I<ttl> days will be outdated.
 
+=back
+
 =head1 OPTIONAL ARGS
 
 =item B<--files-from=>file

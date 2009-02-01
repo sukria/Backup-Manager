@@ -8,6 +8,9 @@
 	  (Thanks to Mihnea-Costin Grigore; closes Debian #496051) 
 	* Resets the error_code so a failure doesn't propagate.
 	  (Thanks to Filippo Giunchedi, closes Debian #482087)
+	* Rewrite of check_error_code() so we can ignore some error codes
+	  depending on the program used.
+	  (Closes Debian #482089).
 
 
 2008-10-24	Alexis Sukrieh  <sukria@backup-manager.org>

@@ -6,6 +6,8 @@
 	  (thanks to Jochen Zimmermann; closes Debian #494833).
 	* Removes MySQL configuration file when automatically created.
 	  (Thanks to Mihnea-Costin Grigore; closes Debian #496051) 
+	* Resets the error_code so a failure doesn't propagate.
+	  (Thanks to Filippo Giunchedi, closes Debian #482087)
 
 
 2008-10-24	Alexis Sukrieh  <sukria@backup-manager.org>

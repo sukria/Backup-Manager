@@ -495,7 +495,8 @@ function __get_backup_tarball_remote_command()
 # This function will take care of changing the behaviour of BM
 # regarding the error code given
 # 0 is a success case (remove the logfile and commit the archive).
-# 1 is a warning case (don't remove the logfile but commit the archive).
+# tar/1 is a warning case (file changed; don't remove the logfile but commit the archive).
+# dar/11 is a waring case (file changed; don't remove the logfile but commit the archive).
 # >1 is an error code (don't remove the logile, don't commit the archive).
 function check_error_code()
 {
@@ -525,6 +526,9 @@ function check_error_code()
         rm -f $logfile
         commit_archives "$file_to_create"
     fi
+
+    # Reset the error code 
+    error_code=0
 }
 
 function __get_backup_tarball_command()

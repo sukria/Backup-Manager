@@ -1,144 +1,6 @@
 #!/usr/bin/perl 
 # Backup Manager Upload - Multiprotocol uploader for backup-manager.
 
-##############################################################
-# POD
-##############################################################
-# {{{
-
-=head1 NAME
-
-backup-manager-upload - Multiprotocol uploader for backup-manager.
-
-=head1 SYNOPSIS
-
-backup-manager-upload [options] date 
-
-=head1 DESCRIPTION
-
-B<backup-manager-upload> will upload all the archives generated on the given 
-date to the specified host with either ftp or scp.
-It's also possible to use this program for uploading data to an Amazon S3 account.
-Some metadates are available like "today" or "yesterday".
-
-=head1 REQUIRED ARGS
-
-=over 4
-
-=item B<--mode=>I<transfer-mode>
-
-Select the transfer mode to use : ftp, scp, or s3.
-
-=item B<--host=>I<hostname1,hostname2,...,hostnameN>
-
-Select a list of remote hosts to connect to.
-
-=item B<--user=>I<username>
-
-Select the user to use for connection.
-
-=back
-
-=head1 OPTIONAL ARGS
-
-=over 4
-
-=item B<--password=>I<password>
-
-Select the ftp user's password (only needed for ftp transfers).
-
-=item B<--key=>I<path_to_private_key>
-
-Select the ssh private key file to use when opening the ssh session for scp transfer.
-Obviously, this is only needed for scp transfer mode.
-If you don't specify a key file, the user's default private key will be used.
-
-=item B<--directory=>I<directory>
-
-Select the location on the remote host where files will be uploaded.
-Default is /backup/uploads.
-
-=item B<--bucket=>I<bucket>
-
-Sets the bucket name for the Amazon S3 service backup into.
-
-=item B<--root=>I<directory>
-
-Select the local directory where files are.
-Default is /var/archives
-
-=item B<--gpg-recipient=>I<gpg-recipient> 
-
-Select the gpg public key for encryptiong the archives when uploading
-with the method ssh-gpg. This can be a short or long key id or a
-descriptive name. The precise syntax is described in the gpg man page.
-
-=item B<--list>
-
-Just list the files to upload.
-
-=item B<--ftp-purge>
-
-Purge the remote directory before uploading files in FTP mode.
-
-=item B<--s3-purge>
-
-Purge the remote directory before uploading files in FTP mode.
-
-=item B<--ssh-purge>
-
-Purge the remote directory before uploading files in SSH mode.
-
-=item B<--verbose>
-
-Flag to enable verbose mode.
-
-=item B<date>
-
-Date pattern to select some files to upload, can be a valid date (YYYYMMDD) or 'today' or 'yesterday'.
-
-=back
-
-=head1 ERROR CODES
-
-If something goes wrong during an upload, backup-manager-upload will exit 
-with a non null value. In such a case every error messages are sent to 
-STDERR.
-
-Here are the possible error codes:
-
-=over 4
-
-=item bad command line (wrong arguments) : 10
-
-=item FTP transfer failure : 20
-
-=item SCP transfer failure : 21
-
-=item S3 transfer failure : 22
-
-=item Unknown upload method: 23
-
-=back
-
-=cut
-
-
-=head1 SEE ALSO
-
-L<backup-manager(3)>
-
-=head1 AUTHORS
-
-Alexis Sukrieh - main code and design
-
-Brad Dixon - Amazon S3 upload method
-
-Jan Metzger - ssh-gpg upload method
-
-=cut
-# }}}
-
 use strict;
 use warnings;
 use BackupManager::Config;
@@ -1020,5 +882,135 @@ else {
 	exit E_UNKNOWN;
 }
 
-#}}}
+__END__
+=head1 NAME
 
+backup-manager-upload - Multiprotocol uploader for backup-manager.
+
+=head1 SYNOPSIS
+
+backup-manager-upload [options] date 
+
+=head1 DESCRIPTION
+
+B<backup-manager-upload> will upload all the archives generated on the given 
+date to the specified host with either ftp or scp.
+It's also possible to use this program for uploading data to an Amazon S3 account.
+Some metadates are available like "today" or "yesterday".
+
+=head1 REQUIRED ARGS
+
+=over 4
+
+=item B<--mode=>I<transfer-mode>
+
+Select the transfer mode to use : ftp, scp, or s3.
+
+=item B<--host=>I<hostname1,hostname2,...,hostnameN>
+
+Select a list of remote hosts to connect to.
+
+=item B<--user=>I<username>
+
+Select the user to use for connection.
+
+=back
+
+=head1 OPTIONAL ARGS
+
+=over 4
+
+=item B<--password=>I<password>
+
+Select the ftp user's password (only needed for ftp transfers).
+
+=item B<--key=>I<path_to_private_key>
+
+Select the ssh private key file to use when opening the ssh session for scp transfer.
+Obviously, this is only needed for scp transfer mode.
+If you don't specify a key file, the user's default private key will be used.
+
+=item B<--directory=>I<directory>
+
+Select the location on the remote host where files will be uploaded.
+Default is /backup/uploads.
+
+=item B<--bucket=>I<bucket>
+
+Sets the bucket name for the Amazon S3 service backup into.
+
+=item B<--root=>I<directory>
+
+Select the local directory where files are.
+Default is /var/archives
+
+=item B<--gpg-recipient=>I<gpg-recipient> 
+
+Select the gpg public key for encryptiong the archives when uploading
+with the method ssh-gpg. This can be a short or long key id or a
+descriptive name. The precise syntax is described in the gpg man page.
+
+=item B<--list>
+
+Just list the files to upload.
+
+=item B<--ftp-purge>
+
+Purge the remote directory before uploading files in FTP mode.
+
+=item B<--s3-purge>
+
+Purge the remote directory before uploading files in FTP mode.
+
+=item B<--ssh-purge>
+
+Purge the remote directory before uploading files in SSH mode.
+
+=item B<--verbose>
+
+Flag to enable verbose mode.
+
+=item B<date>
+
+Date pattern to select some files to upload, can be a valid date (YYYYMMDD) or 'today' or 'yesterday'.
+
+=back
+
+=head1 ERROR CODES
+
+If something goes wrong during an upload, backup-manager-upload will exit 
+with a non null value. In such a case every error messages are sent to 
+STDERR.
+
+Here are the possible error codes:
+
+=over 4
+
+=item bad command line (wrong arguments) : 10
+
+=item FTP transfer failure : 20
+
+=item SCP transfer failure : 21
+
+=item S3 transfer failure : 22
+
+=item Unknown upload method: 23
+
+=back
+
+=cut
+
+
+=head1 SEE ALSO
+
+L<backup-manager(3)>
+
+=head1 AUTHORS
+
+Alexis Sukrieh - main code and design
+
+Brad Dixon - Amazon S3 upload method
+
+Jan Metzger - ssh-gpg upload method
+
+=cut

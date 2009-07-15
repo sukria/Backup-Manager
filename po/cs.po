@@ -7,322 +7,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: backup-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-14 19:33+0200\n"
+"POT-Creation-Date: 2009-07-15 20:27+0200\n"
 "PO-Revision-Date: 2006-09-05 22:14+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: ../lib/archives.sh:31
-msgid "Internal error: wrong call to bm_merge_incremental_backups()."
-msgstr "Vnitřní chyba: chybné volání bm_merge_incremental_backups()."
-
-#: ../lib/upload-methods.sh:38
-msgid "Using the upload method \"ssh\"."
-msgstr "Používám nahrávací metodu \"ssh\"."
-
-#: ../lib/upload-methods.sh:47 ../lib/upload-methods.sh:85
-msgid "No valid destination found, SSH upload not possible."
-msgstr "Nebyl nalezen platný cíl, nahrání přes SSH není možné."
-
-#: ../lib/upload-methods.sh:68
-#, sh-format
-msgid ""
-"Error reported by backup-manager-upload for method \"scp\", check \"$logfile"
-"\"."
-msgstr ""
-"Metoda \"scp\" programu backup-manager-upload vrátila chybu, zkontrolujte "
-"\"$logfile\"."
-
-#: ../lib/upload-methods.sh:76
-msgid "Using the upload method \"ssh-gpg\"."
-msgstr "Používám nahrávací metodu \"ssh-gpg\"."
-
-#: ../lib/upload-methods.sh:88
-msgid ""
-"No gpg recipient given. Argument is mandatory if upload method ssh-gpg is "
-"used."
-msgstr ""
-"Nebyl zadán žádný gpg příjemce. Při použití metody ssh-gpg je argument "
-"povinný."
-
-#: ../lib/upload-methods.sh:105
-#, sh-format
-msgid ""
-"Error reported by backup-manager-upload for method \"ssh-gpg\", check "
-"\"$logfile\"."
-msgstr ""
-"Metoda \"ssh-gpg\" programu backup-manager-upload vrátila chybu, "
-"zkontrolujte \"$logfile\"."
-
-#: ../lib/upload-methods.sh:112
-msgid "Using the upload method \"ftp\"."
-msgstr "Používám nahrávací metodu \"ftp\"."
-
-#: ../lib/upload-methods.sh:122
-msgid "No valid destination found, FTP upload not possible."
-msgstr "Nebyl nalezen platný cíl, nahrání přes FTP není možné."
-
-#: ../lib/upload-methods.sh:138
-#, sh-format
-msgid ""
-"Error reported by backup-manager-upload for method \"ftp\", check \"$logfile"
-"\"."
-msgstr ""
-"Metoda \"ftp\" programu backup-manager-upload vrátila chybu, zkontrolujte "
-"\"$logfile\"."
-
-#: ../lib/upload-methods.sh:146
-msgid "Using the upload method \"S3\"."
-msgstr "Používám nahrávací metodu \"S3\"."
-
-#: ../lib/upload-methods.sh:168
-#, sh-format
-msgid ""
-"Error reported by backup-manager-upload for method \"s3\", check \"$logfile"
-"\"."
-msgstr ""
-"Metoda \"s3\" programu backup-manager-upload vrátila chybu, zkontrolujte "
-"\"$logfile\"."
-
-#: ../lib/upload-methods.sh:174
-#, sh-format
-msgid "Uploading $directory to ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
-msgstr "Nahrávám $directory na ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
-
-#: ../lib/upload-methods.sh:185
-msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
-msgstr ""
-"Použití rsync vyžaduje klíč (nastavte BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
-
-#: ../lib/upload-methods.sh:196
-#, sh-format
-msgid "Upload of $directory with rsync failed; check $logfile."
-msgstr "Nahrání $directory pomocí rsync selhalo; zkontrolujte $logfile."
-
-#: ../lib/upload-methods.sh:215
-msgid "No valid destination found, RSYNC upload not possible."
-msgstr "Nebyl nalezen platný cíl, nahrání přes RSYNC není možné."
-
-#: ../lib/upload-methods.sh:234
-msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
-msgstr ""
-"Metodě rsync nebyl předán žádný počítač, nastavte BM_UPLOAD_RSYNC_HOSTS."
-
-#: ../lib/upload-methods.sh:241
-msgid "Using the upload method \"rsync\"."
-msgstr "Používám nahrávací metodu \"rsync\"."
-
-#: ../lib/upload-methods.sh:248
-msgid "Using the upload method \"rsync-snapshots\"."
-msgstr "Používám nahrávací metodu \"rsync-snapshots\"."
-
-#: ../lib/backup-methods.sh:26
-#, sh-format
-msgid "$file_to_create: ok (${size}M,"
-msgstr "$file_to_create: ok (${size}M,"
-
-#: ../lib/backup-methods.sh:54
-#, sh-format
-msgid "Unable to purge duplicates of $file_to_create"
-msgstr "Nemohu smazat duplikáty $file_to_create"
-
-#: ../lib/backup-methods.sh:59
-#, sh-format
-msgid "Unable to change the owner of \"$file_to_create\"."
-msgstr "Nemohu změnit vlastníka \"$file_to_create\"."
-
-#: ../lib/backup-methods.sh:61
-#, sh-format
-msgid "Unable to change file permissions of \"$file_to_create\"."
-msgstr "Nemohu změnit oprávnění k \"$file_to_create\"."
-
-#: ../lib/backup-methods.sh:72
-#, fuzzy
-msgid "Warning, process interrupted."
-msgstr "Varování, proces přerušen, archivy mohou být porušeny."
-
-#: ../lib/backup-methods.sh:76
-#, fuzzy, sh-format
-msgid "Removing archive \"$bm_pending_archive\" (build interrupted)."
-msgstr "Odstraňuji archiv \"$archive\"."
-
-#: ../lib/backup-methods.sh:82
-#, sh-format
-msgid ""
-"Restoring incremental-building details list: \"$bm_pending_incremental_list"
-"\"."
-msgstr ""
-
-#: ../lib/backup-methods.sh:116
-#, sh-format
-msgid "Unable to create \"$target\", check $logfile"
-msgstr "Nemohu vytvořit \"$target\", zkontrolujte $logfile"
-
-#: ../lib/backup-methods.sh:130
-#, sh-format
-msgid "File $file_to_create already exists, skipping."
-msgstr "Soubor $file_to_create již existuje, přeskakuji."
-
-#: ../lib/backup-methods.sh:141
-msgid "gzip is not installed but gzip compression needed."
-msgstr ""
-
-#: ../lib/backup-methods.sh:149
-msgid "bzip2 is not installed but bzip2 compression needed."
-msgstr ""
-
-#: ../lib/backup-methods.sh:167 ../lib/backup-methods.sh:191
-#, sh-format
-msgid "Unable to exec $command; check $logfile"
-msgstr "Nemohu spustit $command, zkontrolujte $logfile"
-
-#: ../lib/backup-methods.sh:173
-#, fuzzy, sh-format
-msgid "Compressor $compress is needed."
-msgstr "Komprese $compress vyžaduje $gzip."
-
-#: ../lib/backup-methods.sh:198
-#, sh-format
-msgid "No such compressor supported: $compress."
-msgstr "Tato komprese není podporovaná: $compress."
-
-#: ../lib/backup-methods.sh:204
-#, sh-format
-msgid "Unable to find $file_to_create"
-msgstr "Nemohu najít $file_to_create"
-
-#: ../lib/backup-methods.sh:331
-msgid "No frequency given, set BM_TARBALLINC_MASTERDATETYPE."
-msgstr "Nebyla zadána frekvence, nastavte BM_TARBALLINC_MASTERDATETYPE."
-
-#: ../lib/backup-methods.sh:342
-#, sh-format
-msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
-msgstr "Neznámá frekvence: $BM_TARBALLINC_MASTERDATETYPE"
-
-#: ../lib/backup-methods.sh:375
-#, sh-format
-msgid "Building master backup for target: \"$dir_name\"."
-msgstr "Vytvářím hlavní zálohu pro cíl: \"$dir_name\"."
-
-#: ../lib/backup-methods.sh:503
-#, sh-format
-msgid ""
-"The archive command returned 1 but the archive has been created; check "
-"\"$logfile\"."
-msgstr ""
-
-#: ../lib/backup-methods.sh:534
-#, sh-format
-msgid "The archive type \"tar.bz2\" depends on the tool \"$bzip\"."
-msgstr "Typ archivu \"tar.bz2\" závisí na nástroji \"$bzip\"."
-
-#: ../lib/backup-methods.sh:541
-#, sh-format
-msgid "The archive type \"tar.lz\" depends on the tool \"$lzma\"."
-msgstr "Typ archivu \"tar.lz\" závisí na nástroji \"$lzma\"."
-
-#: ../lib/backup-methods.sh:548
-#, sh-format
-msgid "The archive type \"zip\" depends on the tool \"$zip\"."
-msgstr "Typ archivu \"zip\" závisí na nástroji \"$zip\"."
-
-#: ../lib/backup-methods.sh:554
-#, sh-format
-msgid "The archive type \"dar\" depends on the tool \"$dar\"."
-msgstr "Typ archivu \"dar\" závisí na nástroji \"$dar\"."
-
-#: ../lib/backup-methods.sh:560 ../lib/backup-methods.sh:642
-#: ../lib/backup-methods.sh:688
-#, sh-format
-msgid "The archive type \"$BM_TARBALL_FILETYPE\" is not supported."
-msgstr "Typ archivu \"$BM_TARBALL_FILETYPE\" není podporován."
-
-#: ../lib/backup-methods.sh:616
-msgid "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
-msgstr ""
-"Konfigurační proměnná \"$BM_ENCRYPTION_RECIPIENT\" musí být definována."
-
-#: ../lib/backup-methods.sh:622
-#, sh-format
-msgid ""
-"The encryption is not yet possible with \"$BM_TARBALL_FILETYPE\" archives."
-msgstr "Šifrování archivů \"$BM_TARBALL_FILETYPE\" zatím není možné."
-
-#: ../lib/backup-methods.sh:660
-#, sh-format
-msgid "The program \"$gpg\" is needed."
-msgstr "Je vyžadován program \"$gpg\"."
-
-#: ../lib/backup-methods.sh:669 ../lib/backup-methods.sh:702
-#, sh-format
-msgid "File $file_to_check already exists, skipping."
-msgstr "Soubor $file_to_check již existuje, přeskakuji."
-
-#: ../lib/backup-methods.sh:725
-#, sh-format
-msgid "Target \"$t\" does not exist, skipping."
-msgstr "Cíl \"$t\" neexistuje, přeskakuji."
-
-#: ../lib/backup-methods.sh:800 ../lib/backup-methods.sh:837
-#: ../lib/backup-methods.sh:879 ../lib/backup-methods.sh:903
-#, sh-format
-msgid "Using method \"$method\"."
-msgstr "Používám metodu \"$method\"."
-
-#: ../lib/backup-methods.sh:826
-msgid "1 error occurred during the tarball generation."
-msgstr "Během vytváření tar archivu se objevila 1 chyba."
-
-#: ../lib/backup-methods.sh:828
-#, sh-format
-msgid "$nb_err errors occurred during the tarball generation."
-msgstr "Během vytváření tar archivu se objevily chyby (celkem $nb_err)."
-
-#: ../lib/backup-methods.sh:839
-#, sh-format
-msgid "The \"mysql\" method is chosen, but $mysqldump is not found."
-msgstr "Je vybrána metoda \"mysql\", avšak $mysqldump nelze nalézt."
-
-#: ../lib/backup-methods.sh:849
-#, sh-format
-msgid "Using existing MySQL client configuration file: $HOME/.my.cnf"
-msgstr ""
-
-#: ../lib/backup-methods.sh:852
-#, sh-format
-msgid "Creating a default MySQL client configuration file: $HOME/.my.cnf"
-msgstr ""
-
-#: ../lib/backup-methods.sh:881
-#, sh-format
-msgid "The \"svn\" method is chosen, but $svnadmin is not found."
-msgstr "Je vybrána metoda \"svn\", avšak $svnadmin nelze nalézt."
-
-#: ../lib/backup-methods.sh:887
-#, sh-format
-msgid "SVN repository \"$repository\" is not valid; skipping."
-msgstr "SVN repozitář \"$repository\" není platný; přeskakuji."
-
-#: ../lib/backup-methods.sh:912
-#, sh-format
-msgid "Not enough args for this archive ($archive), skipping."
-msgstr "Pro tento archiv ($archive) nemám dost argumentů, přeskakuji."
-
-#: ../lib/backup-methods.sh:919
-msgid "Cannot create archive."
-msgstr "Nemohu vytvořit archiv."
-
-#: ../lib/logger.sh:143 ../backup-manager:265
-msgid "Unable to exec post-command."
-msgstr "Nemohu spustit závěrečný příkaz."
-
-#: ../lib/logger.sh:145
-msgid "Releasing lock"
-msgstr "Uvolňuji zámek"
 
 #: ../lib/actions.sh:44
 msgid "No backup method used."
@@ -385,14 +76,14 @@ msgstr "Závěrečný příkaz selhal."
 msgid "Post-command returned: \"$RET\" (success)."
 msgstr "Závěrečný příkaz vrátil: \"$RET\" (úspěch)."
 
-#: ../lib/actions.sh:175
+#: ../lib/actions.sh:180
 msgid ""
 "The BM_TARBALL_FILETYPE conf key is set to \"zip\" but zip is not installed."
 msgstr ""
 "Konfigurační klíč BM_TARBALL_FILETYPE je nastaven na \"zip\", ale zip není "
 "nainstalován."
 
-#: ../lib/actions.sh:180
+#: ../lib/actions.sh:185
 msgid ""
 "The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not "
 "installed."
@@ -400,224 +91,225 @@ msgstr ""
 "Konfigurační klíč BM_TARBALL_FILETYPE je nastaven na \"bzip2\", ale bzip2 "
 "není nainstalován."
 
-#: ../lib/actions.sh:185
+#: ../lib/actions.sh:190
 msgid ""
 "The BM_TARBALL_FILETYPE conf key is set to \"dar\" but dar is not installed."
 msgstr ""
 "Konfigurační klíč BM_TARBALL_FILETYPE je nastaven na \"dar\", ale dar není "
 "nainstalován."
 
-#: ../lib/actions.sh:197
+#: ../lib/actions.sh:202
 #, sh-format
 msgid "The repository $BM_REPOSITORY_ROOT does not exist, creating it."
 msgstr "Úložiště $BM_REPOSITORY_ROOT neexistuje, vytvářím je."
 
-#: ../lib/files.sh:79 ../lib/files.sh:94
-msgid "No path given."
-msgstr "Nebyla zadána cesta."
-
-#: ../lib/files.sh:169
+#: ../lib/backup-methods.sh:26
 #, sh-format
-msgid "Removing lock for old PID, $pid is not running."
-msgstr "Odstraňuji zámek pro staré PID, $pid již neběží."
+msgid "$file_to_create: ok (${size}M,"
+msgstr "$file_to_create: ok (${size}M,"
 
-#: ../lib/files.sh:179
+#: ../lib/backup-methods.sh:54
 #, sh-format
-msgid ""
-"A backup-manager process ($pid) is already running with the conffile "
-"$conffile"
-msgstr ""
-"Proces backup-manageru ($pid) již běží s konfiguračním souborem $conffile"
+msgid "Unable to purge duplicates of $file_to_create"
+msgstr "Nemohu smazat duplikáty $file_to_create"
 
-#: ../lib/files.sh:183 ../lib/files.sh:189
-#, sh-format
-msgid "Getting lock for backup-manager $pid with $conffile"
-msgstr "Získávám zámek pro backup-manager $pid s $conffile"
+#: ../lib/backup-methods.sh:65
+#, fuzzy, sh-format
+msgid "Unable to change the owner of \"$file\"."
+msgstr "Nemohu změnit vlastníka \"$md5file\"."
 
-#: ../lib/files.sh:192
-msgid "failed (check the file permissions)."
-msgstr "selhalo (zkontrolujte přístupová práva souborů)."
+#: ../lib/backup-methods.sh:67
+#, fuzzy, sh-format
+msgid "Unable to change file permissions of \"$file\"."
+msgstr "Nemohu změnit oprávnění k \"$md5file\"."
 
-#: ../lib/files.sh:280
-#, sh-format
-msgid "$file is not a regular file."
-msgstr "$file není běžný soubor."
+#: ../lib/backup-methods.sh:78
+#, fuzzy
+msgid "Warning, process interrupted."
+msgstr "Varování, proces přerušen, archivy mohou být porušeny."
 
-#: ../lib/files.sh:305
-#, sh-format
-msgid "Removing obsolete master backup: \"$file\"."
-msgstr "Odstraňuji zastaralou hlavní zálohu: \"$file\"."
-
-#: ../lib/files.sh:313
-#, sh-format
-msgid "Removing obsolete master backup (isolated): \"$file\"."
-msgstr "Odstraňuji zastaralou hlavní zálohu (izolovaná): \"$file\"."
-
-#: ../lib/files.sh:320
-#, sh-format
-msgid "Removing archive \"$file\"."
-msgstr "Odstraňuji archiv \"$file\"."
-
-#: ../lib/files.sh:342
-msgid "Directory given was not found."
-msgstr "Zadaný adresář nebyl nalezen."
-
-#: ../lib/files.sh:363
-#, sh-format
-msgid "Removing archive \"$archive\"."
+#: ../lib/backup-methods.sh:82
+#, fuzzy, sh-format
+msgid "Removing archive \"$bm_pending_archive\" (build interrupted)."
 msgstr "Odstraňuji archiv \"$archive\"."
 
-#: ../lib/files.sh:387
-#, sh-format
-msgid "The given file does not exist: $file_to_create"
-msgstr "Zadaný soubor neexistuje: $file_to_create"
-
-#: ../lib/files.sh:392
-msgid "No file given."
-msgstr "Nebyl zadán žádný soubor."
-
-#: ../lib/files.sh:397 ../lib/files.sh:399 ../lib/files.sh:413
-msgid "Unable to get date from file."
-msgstr "Nemohu ze souboru získat datum."
-
-#: ../lib/files.sh:403
-msgid "Unable to find the pattern of the file."
-msgstr "Nemohu najít vzor souboru."
-
-#: ../lib/files.sh:419
-#, sh-format
-msgid "Unable to find the md5 hash of file \"$file\" in file \"$md5file\"."
-msgstr "Nemohu najít md5 hash souboru \"$file\" v souboru \"$md5file\"."
-
-#: ../lib/files.sh:425
-#, sh-format
-msgid "$file is a duplicate of $file_to_create (using symlink)."
-msgstr "$file je kopií $file_to_create (používám symbolický odkaz)."
-
-#: ../lib/dialog.sh:27
-msgid "Output:"
-msgstr "Výstup:"
-
-#: ../lib/dialog.sh:28
-msgid "Print this short help message."
-msgstr "Vytiskne tuto krátkou nápovědu."
-
-#: ../lib/dialog.sh:29
-msgid "Print what happens on STDOUT."
-msgstr "Vytiskne na STDOUT prováděné kroky."
-
-#: ../lib/dialog.sh:30
-msgid "Disable warnings."
-msgstr "Zakáže varování."
-
-#: ../lib/dialog.sh:33
-msgid "Single actions:"
-msgstr "Samostatné akce:"
-
-#: ../lib/dialog.sh:34
-msgid "Just upload the files of the day."
-msgstr "Pouze nahraje denní soubory."
-
-#: ../lib/dialog.sh:35
-msgid "Just burn the files of the day."
-msgstr "Pouze vypálí denní soubory."
-
-#: ../lib/dialog.sh:36
-msgid "Just test the md5 sums."
-msgstr "Pouze zkontroluje md5 součty."
-
-#: ../lib/dialog.sh:37
-msgid "Just purge old archives."
-msgstr "Pouze smaže staré archivy."
-
-#: ../lib/dialog.sh:40
-msgid "Behaviour:"
-msgstr "Chování:"
-
-#: ../lib/dialog.sh:41
-msgid "Choose an alternate config file."
-msgstr "Použije alternativní konfigurační soubor."
-
-#: ../lib/dialog.sh:42
-msgid "Force overwrite of existing archives."
-msgstr "Povolí přepsání stávajících archivů."
-
-#: ../lib/dialog.sh:45
-msgid "Unwanted actions:"
-msgstr "Zakazující akce:"
-
-#: ../lib/dialog.sh:46
-msgid "Disable the upload process."
-msgstr "Zakáže nahrání na jiný počítač."
-
-#: ../lib/dialog.sh:47
-msgid "Disable the burning process."
-msgstr "Zakáže vypalování."
-
-#: ../lib/dialog.sh:48
-msgid "Disable the purge process."
-msgstr "Zakáže promazání starých archivů."
-
-#: ../lib/dialog.sh:62 ../lib/dialog.sh:81
-msgid "Not in interactive mode, cannot continue."
-msgstr "Nejsem v interaktivním režimu, nemohu pokračovat."
-
-#: ../lib/sanitize.sh:32
-#, sh-format
-msgid "The configuration key $key is not set, using \"$default\"."
-msgstr "Konfigurační klíč $key není nastaven, používám \"$default\"."
-
-#: ../lib/sanitize.sh:43
+#: ../lib/backup-methods.sh:88
 #, sh-format
 msgid ""
-"The configuration key \"$deprecated_key\" is deprecated, you should rename "
-"it \"$new_key\". Using \"$deprecated_value\"."
+"Restoring incremental-building details list: \"$bm_pending_incremental_list"
+"\"."
 msgstr ""
-"Konfigurační klíč \"$deprecated_key\" je zastaralý, měli byste jej "
-"přejmenovat na \"$new_key\". Používám \"$deprecated_value\"."
 
-#: ../lib/sanitize.sh:84
+#: ../lib/backup-methods.sh:124
 #, sh-format
-msgid "The configuration key $key is not set but $keymandatory is enabled."
-msgstr "Konfigurační klíč $key není nastaven, ale $keymandatory je povolen."
+msgid "Unable to create \"$target\", check $logfile"
+msgstr "Nemohu vytvořit \"$target\", zkontrolujte $logfile"
 
-#: ../lib/sanitize.sh:100
+#: ../lib/backup-methods.sh:140
 #, sh-format
-msgid "Deprecated boolean, $key is set to \"yes\", setting \"true\" instead."
-msgstr "Změněn typ boolean, $key má hodnotu \"yes\", nastavuji na \"true\"."
+msgid "File $file_to_create already exists, skipping."
+msgstr "Soubor $file_to_create již existuje, přeskakuji."
 
-#: ../lib/sanitize.sh:105
+#: ../lib/backup-methods.sh:151
+msgid "gzip is not installed but gzip compression needed."
+msgstr ""
+
+#: ../lib/backup-methods.sh:159
+msgid "bzip2 is not installed but bzip2 compression needed."
+msgstr ""
+
+#: ../lib/backup-methods.sh:177 ../lib/backup-methods.sh:201
 #, sh-format
-msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
-msgstr "Změněn typ boolean, $key má hodnotu \"no\", nastavuji na \"false\"."
+msgid "Unable to exec $command; check $logfile"
+msgstr "Nemohu spustit $command, zkontrolujte $logfile"
 
-#: ../lib/sanitize.sh:162
+#: ../lib/backup-methods.sh:183
+#, fuzzy, sh-format
+msgid "Compressor $compress is needed."
+msgstr "Komprese $compress vyžaduje $gzip."
+
+#: ../lib/backup-methods.sh:208
+#, sh-format
+msgid "No such compressor supported: $compress."
+msgstr "Tato komprese není podporovaná: $compress."
+
+#: ../lib/backup-methods.sh:214
+#, sh-format
+msgid "Unable to find $file_to_create"
+msgstr "Nemohu najít $file_to_create"
+
+#: ../lib/backup-methods.sh:342
+msgid "No frequency given, set BM_TARBALLINC_MASTERDATETYPE."
+msgstr "Nebyla zadána frekvence, nastavte BM_TARBALLINC_MASTERDATETYPE."
+
+#: ../lib/backup-methods.sh:353
+#, sh-format
+msgid "Unknown frequency: $BM_TARBALLINC_MASTERDATETYPE"
+msgstr "Neznámá frekvence: $BM_TARBALLINC_MASTERDATETYPE"
+
+#: ../lib/backup-methods.sh:386
+#, sh-format
+msgid "Building master backup for target: \"$dir_name\"."
+msgstr "Vytvářím hlavní zálohu pro cíl: \"$dir_name\"."
+
+#: ../lib/backup-methods.sh:515
+msgid "Tar reported a file changed during archive creation."
+msgstr ""
+
+#: ../lib/backup-methods.sh:526
+msgid "Dar reported a file changed during archive creation."
+msgstr ""
+
+#: ../lib/backup-methods.sh:564
+#, sh-format
+msgid "The archive type \"tar.bz2\" depends on the tool \"$bzip\"."
+msgstr "Typ archivu \"tar.bz2\" závisí na nástroji \"$bzip\"."
+
+#: ../lib/backup-methods.sh:571
+#, sh-format
+msgid "The archive type \"tar.lz\" depends on the tool \"$lzma\"."
+msgstr "Typ archivu \"tar.lz\" závisí na nástroji \"$lzma\"."
+
+#: ../lib/backup-methods.sh:578
+#, sh-format
+msgid "The archive type \"zip\" depends on the tool \"$zip\"."
+msgstr "Typ archivu \"zip\" závisí na nástroji \"$zip\"."
+
+#: ../lib/backup-methods.sh:584
+#, sh-format
+msgid "The archive type \"dar\" depends on the tool \"$dar\"."
+msgstr "Typ archivu \"dar\" závisí na nástroji \"$dar\"."
+
+#: ../lib/backup-methods.sh:590 ../lib/backup-methods.sh:677
+#: ../lib/backup-methods.sh:723
+#, sh-format
+msgid "The archive type \"$BM_TARBALL_FILETYPE\" is not supported."
+msgstr "Typ archivu \"$BM_TARBALL_FILETYPE\" není podporován."
+
+#: ../lib/backup-methods.sh:651
+msgid "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
+msgstr ""
+"Konfigurační proměnná \"$BM_ENCRYPTION_RECIPIENT\" musí být definována."
+
+#: ../lib/backup-methods.sh:657
+#, sh-format
 msgid ""
-"BM_TARBALLINC_MASTERDATEVALUE should not be greater than 6, falling back to 0"
+"The encryption is not yet possible with \"$BM_TARBALL_FILETYPE\" archives."
+msgstr "Šifrování archivů \"$BM_TARBALL_FILETYPE\" zatím není možné."
+
+#: ../lib/backup-methods.sh:695
+#, sh-format
+msgid "The program \"$gpg\" is needed."
+msgstr "Je vyžadován program \"$gpg\"."
+
+#: ../lib/backup-methods.sh:704 ../lib/backup-methods.sh:737
+#, sh-format
+msgid "File $file_to_check already exists, skipping."
+msgstr "Soubor $file_to_check již existuje, přeskakuji."
+
+#: ../lib/backup-methods.sh:769
+#, fuzzy, sh-format
+msgid "Target \"$t\" is found in blacklist, skipping."
+msgstr "Cíl \"$t\" neexistuje, přeskakuji."
+
+#: ../lib/backup-methods.sh:773
+#, sh-format
+msgid "Target \"$t\" does not exist, skipping."
+msgstr "Cíl \"$t\" neexistuje, přeskakuji."
+
+#: ../lib/backup-methods.sh:849 ../lib/backup-methods.sh:888
+#: ../lib/backup-methods.sh:938 ../lib/backup-methods.sh:962
+#, sh-format
+msgid "Using method \"$method\"."
+msgstr "Používám metodu \"$method\"."
+
+#: ../lib/backup-methods.sh:875
+msgid "1 error occurred during the tarball generation."
+msgstr "Během vytváření tar archivu se objevila 1 chyba."
+
+#: ../lib/backup-methods.sh:877
+#, sh-format
+msgid "$nb_err errors occurred during the tarball generation."
+msgstr "Během vytváření tar archivu se objevily chyby (celkem $nb_err)."
+
+#: ../lib/backup-methods.sh:890
+#, sh-format
+msgid "The \"mysql\" method is chosen, but $mysqldump is not found."
+msgstr "Je vybrána metoda \"mysql\", avšak $mysqldump nelze nalézt."
+
+#: ../lib/backup-methods.sh:900
+#, sh-format
+msgid "Using existing MySQL client configuration file: $mysql_conffile"
 msgstr ""
 
-#: ../lib/sanitize.sh:272
+#: ../lib/backup-methods.sh:904
 #, sh-format
-msgid ""
-"When validating the configuration file $conffile, $nb_warnings warnings were "
-"found."
+msgid "Creating a default MySQL client configuration file: $mysql_conffile"
 msgstr ""
-"Při ověřování konfiguračního souboru $conffile bylo nalezeno $nb_warnings "
-"varování."
 
-#: ../lib/md5sum.sh:30
-msgid "Internal error: bad usage of function get_md5sum_from_file()"
-msgstr "Vnitřní chyba: chybné použití funkce get_md5sum_from_file()"
-
-#: ../lib/md5sum.sh:34
+#: ../lib/backup-methods.sh:928
 #, sh-format
-msgid "No md5file found: $md5file"
-msgstr "Nebyl nalezen soubor s md5 součty: $md5file"
+msgid "Removing default MySQL client configuration file: $mysql_conffile"
+msgstr ""
 
-#: ../lib/md5sum.sh:82
+#: ../lib/backup-methods.sh:940
 #, sh-format
-msgid "Archive given does not exist in the repository: $archive"
-msgstr "Zadaný archiv v úložišti neexistuje: $archive"
+msgid "The \"svn\" method is chosen, but $svnadmin is not found."
+msgstr "Je vybrána metoda \"svn\", avšak $svnadmin nelze nalézt."
+
+#: ../lib/backup-methods.sh:946
+#, sh-format
+msgid "SVN repository \"$repository\" is not valid; skipping."
+msgstr "SVN repozitář \"$repository\" není platný; přeskakuji."
+
+#: ../lib/backup-methods.sh:971
+#, sh-format
+msgid "Not enough args for this archive ($archive), skipping."
+msgstr "Pro tento archiv ($archive) nemám dost argumentů, přeskakuji."
+
+#: ../lib/backup-methods.sh:978
+msgid "Cannot create archive."
+msgstr "Nemohu vytvořit archiv."
 
 #: ../lib/burning-methods.sh:37
 #, sh-format
@@ -821,17 +513,346 @@ msgstr "Počet médií nutných pro vypálení: $number_of_indexes."
 msgid "Burning content of $index"
 msgstr "Vypaluji obsah $index"
 
-#: ../backup-manager:140
+#: ../lib/dialog.sh:27
+msgid "Output:"
+msgstr "Výstup:"
+
+#: ../lib/dialog.sh:28
+msgid "Print this short help message."
+msgstr "Vytiskne tuto krátkou nápovědu."
+
+#: ../lib/dialog.sh:29
+msgid "Print what happens on STDOUT."
+msgstr "Vytiskne na STDOUT prováděné kroky."
+
+#: ../lib/dialog.sh:30
+msgid "Disable warnings."
+msgstr "Zakáže varování."
+
+#: ../lib/dialog.sh:33
+msgid "Single actions:"
+msgstr "Samostatné akce:"
+
+#: ../lib/dialog.sh:34
+msgid "Just upload the files of the day."
+msgstr "Pouze nahraje denní soubory."
+
+#: ../lib/dialog.sh:35
+msgid "Just burn the files of the day."
+msgstr "Pouze vypálí denní soubory."
+
+#: ../lib/dialog.sh:36
+msgid "Just test the md5 sums."
+msgstr "Pouze zkontroluje md5 součty."
+
+#: ../lib/dialog.sh:37
+msgid "Just purge old archives."
+msgstr "Pouze smaže staré archivy."
+
+#: ../lib/dialog.sh:40
+msgid "Behaviour:"
+msgstr "Chování:"
+
+#: ../lib/dialog.sh:41
+msgid "Choose an alternate config file."
+msgstr "Použije alternativní konfigurační soubor."
+
+#: ../lib/dialog.sh:42
+msgid "Force overwrite of existing archives."
+msgstr "Povolí přepsání stávajících archivů."
+
+#: ../lib/dialog.sh:45
+msgid "Unwanted actions:"
+msgstr "Zakazující akce:"
+
+#: ../lib/dialog.sh:46
+msgid "Disable the upload process."
+msgstr "Zakáže nahrání na jiný počítač."
+
+#: ../lib/dialog.sh:47
+msgid "Disable the burning process."
+msgstr "Zakáže vypalování."
+
+#: ../lib/dialog.sh:48
+msgid "Disable the purge process."
+msgstr "Zakáže promazání starých archivů."
+
+#: ../lib/dialog.sh:62 ../lib/dialog.sh:81
+msgid "Not in interactive mode, cannot continue."
+msgstr "Nejsem v interaktivním režimu, nemohu pokračovat."
+
+#: ../lib/files.sh:79 ../lib/files.sh:94
+msgid "No path given."
+msgstr "Nebyla zadána cesta."
+
+#: ../lib/files.sh:169
+#, sh-format
+msgid "Removing lock for old PID, $pid is not running."
+msgstr "Odstraňuji zámek pro staré PID, $pid již neběží."
+
+#: ../lib/files.sh:179
+#, sh-format
+msgid ""
+"A backup-manager process ($pid) is already running with the conffile "
+"$conffile"
+msgstr ""
+"Proces backup-manageru ($pid) již běží s konfiguračním souborem $conffile"
+
+#: ../lib/files.sh:183 ../lib/files.sh:189
+#, sh-format
+msgid "Getting lock for backup-manager $pid with $conffile"
+msgstr "Získávám zámek pro backup-manager $pid s $conffile"
+
+#: ../lib/files.sh:192
+msgid "failed (check the file permissions)."
+msgstr "selhalo (zkontrolujte přístupová práva souborů)."
+
+#: ../lib/files.sh:280
+#, sh-format
+msgid "$file is not a regular file."
+msgstr "$file není běžný soubor."
+
+#: ../lib/files.sh:305
+#, sh-format
+msgid "Removing obsolete master backup: \"$file\"."
+msgstr "Odstraňuji zastaralou hlavní zálohu: \"$file\"."
+
+#: ../lib/files.sh:313
+#, sh-format
+msgid "Removing obsolete master backup (isolated): \"$file\"."
+msgstr "Odstraňuji zastaralou hlavní zálohu (izolovaná): \"$file\"."
+
+#: ../lib/files.sh:320
+#, sh-format
+msgid "Removing archive \"$file\"."
+msgstr "Odstraňuji archiv \"$file\"."
+
+#: ../lib/files.sh:342
+msgid "Directory given was not found."
+msgstr "Zadaný adresář nebyl nalezen."
+
+#: ../lib/files.sh:363
+#, sh-format
+msgid "Removing archive \"$archive\"."
+msgstr "Odstraňuji archiv \"$archive\"."
+
+#: ../lib/files.sh:387
+#, sh-format
+msgid "The given file does not exist: $file_to_create"
+msgstr "Zadaný soubor neexistuje: $file_to_create"
+
+#: ../lib/files.sh:392
+msgid "No file given."
+msgstr "Nebyl zadán žádný soubor."
+
+#: ../lib/files.sh:397 ../lib/files.sh:399 ../lib/files.sh:413
+msgid "Unable to get date from file."
+msgstr "Nemohu ze souboru získat datum."
+
+#: ../lib/files.sh:403
+msgid "Unable to find the pattern of the file."
+msgstr "Nemohu najít vzor souboru."
+
+#: ../lib/files.sh:419
+#, sh-format
+msgid "Unable to find the md5 hash of file \"$file\" in file \"$md5file\"."
+msgstr "Nemohu najít md5 hash souboru \"$file\" v souboru \"$md5file\"."
+
+#: ../lib/files.sh:425
+#, sh-format
+msgid "$file is a duplicate of $file_to_create (using symlink)."
+msgstr "$file je kopií $file_to_create (používám symbolický odkaz)."
+
+#: ../lib/logger.sh:144 ../backup-manager:257
+msgid "Unable to exec post-command."
+msgstr "Nemohu spustit závěrečný příkaz."
+
+#: ../lib/logger.sh:146
+msgid "Releasing lock"
+msgstr "Uvolňuji zámek"
+
+#: ../lib/md5sum.sh:30
+msgid "Internal error: bad usage of function get_md5sum_from_file()"
+msgstr "Vnitřní chyba: chybné použití funkce get_md5sum_from_file()"
+
+#: ../lib/md5sum.sh:34
+#, sh-format
+msgid "No md5file found: $md5file"
+msgstr "Nebyl nalezen soubor s md5 součty: $md5file"
+
+#: ../lib/md5sum.sh:82
+#, sh-format
+msgid "Archive given does not exist in the repository: $archive"
+msgstr "Zadaný archiv v úložišti neexistuje: $archive"
+
+#: ../lib/sanitize.sh:32
+#, sh-format
+msgid "The configuration key $key is not set, using \"$default\"."
+msgstr "Konfigurační klíč $key není nastaven, používám \"$default\"."
+
+#: ../lib/sanitize.sh:43
+#, sh-format
+msgid ""
+"The configuration key \"$deprecated_key\" is deprecated, you should rename "
+"it \"$new_key\". Using \"$deprecated_value\"."
+msgstr ""
+"Konfigurační klíč \"$deprecated_key\" je zastaralý, měli byste jej "
+"přejmenovat na \"$new_key\". Používám \"$deprecated_value\"."
+
+#: ../lib/sanitize.sh:84
+#, sh-format
+msgid "The configuration key $key is not set but $keymandatory is enabled."
+msgstr "Konfigurační klíč $key není nastaven, ale $keymandatory je povolen."
+
+#: ../lib/sanitize.sh:100
+#, sh-format
+msgid "Deprecated boolean, $key is set to \"yes\", setting \"true\" instead."
+msgstr "Změněn typ boolean, $key má hodnotu \"yes\", nastavuji na \"true\"."
+
+#: ../lib/sanitize.sh:105
+#, sh-format
+msgid "Deprecated boolean, $key is set to \"no\", setting \"false\" instead."
+msgstr "Změněn typ boolean, $key má hodnotu \"no\", nastavuji na \"false\"."
+
+#: ../lib/sanitize.sh:128
+#, sh-format
+msgid "Unable to create BM_TEMP_DIR: \"$BM_TEMP_DIR\"."
+msgstr ""
+
+#: ../lib/sanitize.sh:166
+msgid ""
+"BM_TARBALLINC_MASTERDATEVALUE should not be greater than 6, falling back to 0"
+msgstr ""
+
+#: ../lib/sanitize.sh:276
+#, sh-format
+msgid ""
+"When validating the configuration file $conffile, $nb_warnings warnings were "
+"found."
+msgstr ""
+"Při ověřování konfiguračního souboru $conffile bylo nalezeno $nb_warnings "
+"varování."
+
+#: ../lib/upload-methods.sh:38
+msgid "Using the upload method \"ssh\"."
+msgstr "Používám nahrávací metodu \"ssh\"."
+
+#: ../lib/upload-methods.sh:47 ../lib/upload-methods.sh:85
+msgid "No valid destination found, SSH upload not possible."
+msgstr "Nebyl nalezen platný cíl, nahrání přes SSH není možné."
+
+#: ../lib/upload-methods.sh:68
+#, sh-format
+msgid ""
+"Error reported by backup-manager-upload for method \"scp\", check \"$logfile"
+"\"."
+msgstr ""
+"Metoda \"scp\" programu backup-manager-upload vrátila chybu, zkontrolujte "
+"\"$logfile\"."
+
+#: ../lib/upload-methods.sh:76
+msgid "Using the upload method \"ssh-gpg\"."
+msgstr "Používám nahrávací metodu \"ssh-gpg\"."
+
+#: ../lib/upload-methods.sh:88
+msgid ""
+"No gpg recipient given. Argument is mandatory if upload method ssh-gpg is "
+"used."
+msgstr ""
+"Nebyl zadán žádný gpg příjemce. Při použití metody ssh-gpg je argument "
+"povinný."
+
+#: ../lib/upload-methods.sh:105
+#, sh-format
+msgid ""
+"Error reported by backup-manager-upload for method \"ssh-gpg\", check "
+"\"$logfile\"."
+msgstr ""
+"Metoda \"ssh-gpg\" programu backup-manager-upload vrátila chybu, "
+"zkontrolujte \"$logfile\"."
+
+#: ../lib/upload-methods.sh:112
+msgid "Using the upload method \"ftp\"."
+msgstr "Používám nahrávací metodu \"ftp\"."
+
+#: ../lib/upload-methods.sh:122
+msgid "No valid destination found, FTP upload not possible."
+msgstr "Nebyl nalezen platný cíl, nahrání přes FTP není možné."
+
+#: ../lib/upload-methods.sh:138
+#, sh-format
+msgid ""
+"Error reported by backup-manager-upload for method \"ftp\", check \"$logfile"
+"\"."
+msgstr ""
+"Metoda \"ftp\" programu backup-manager-upload vrátila chybu, zkontrolujte "
+"\"$logfile\"."
+
+#: ../lib/upload-methods.sh:146
+msgid "Using the upload method \"S3\"."
+msgstr "Používám nahrávací metodu \"S3\"."
+
+#: ../lib/upload-methods.sh:168
+#, sh-format
+msgid ""
+"Error reported by backup-manager-upload for method \"s3\", check \"$logfile"
+"\"."
+msgstr ""
+"Metoda \"s3\" programu backup-manager-upload vrátila chybu, zkontrolujte "
+"\"$logfile\"."
+
+#: ../lib/upload-methods.sh:174
+#, sh-format
+msgid "Uploading $directory to ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
+msgstr "Nahrávám $directory na ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
+
+#: ../lib/upload-methods.sh:185
+msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
+msgstr ""
+"Použití rsync vyžaduje klíč (nastavte BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
+
+#: ../lib/upload-methods.sh:196
+#, sh-format
+msgid "Upload of $directory with rsync failed; check $logfile."
+msgstr "Nahrání $directory pomocí rsync selhalo; zkontrolujte $logfile."
+
+#: ../lib/upload-methods.sh:215
+msgid "No valid destination found, RSYNC upload not possible."
+msgstr "Nebyl nalezen platný cíl, nahrání přes RSYNC není možné."
+
+#: ../lib/upload-methods.sh:234
+msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
+msgstr ""
+"Metodě rsync nebyl předán žádný počítač, nastavte BM_UPLOAD_RSYNC_HOSTS."
+
+#: ../lib/upload-methods.sh:241
+msgid "Using the upload method \"rsync\"."
+msgstr "Používám nahrávací metodu \"rsync\"."
+
+#: ../lib/upload-methods.sh:248
+msgid "Using the upload method \"rsync-snapshots\"."
+msgstr "Používám nahrávací metodu \"rsync-snapshots\"."
+
+#: ../backup-manager:127
 msgid "The -b option must be followed by a valid date (YYYYMMDD)."
 msgstr "Za volbou -b musí následovat platný datum (YYYYMMDD)."
 
-#: ../backup-manager:175
+#: ../backup-manager:162
 msgid "The -c option must be followed by an existing filename."
 msgstr "Za volbou -c musí následovat jméno existujícího souboru"
 
-#: ../backup-manager:215
+#: ../backup-manager:202
 msgid "Unable to exec the pre-command"
 msgstr "Nemohu spustit úvodní příkaz"
+
+#~ msgid "Internal error: wrong call to bm_merge_incremental_backups()."
+#~ msgstr "Vnitřní chyba: chybné volání bm_merge_incremental_backups()."
+
+#~ msgid "Unable to change the owner of \"$file_to_create\"."
+#~ msgstr "Nemohu změnit vlastníka \"$file_to_create\"."
+
+#~ msgid "Unable to change file permissions of \"$file_to_create\"."
+#~ msgstr "Nemohu změnit oprávnění k \"$file_to_create\"."
 
 #, fuzzy
 #~ msgid "Compressor $compress requires $gzip."

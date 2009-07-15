@@ -347,7 +347,7 @@ function __get_master_day()
         master_day=$(date +'%w')
     ;;
     monthly)
-        master_day=$(date +'%d')
+        master_day=$(date +'%-d')
     ;;
     *)
         error "Unknown frequency: \$BM_TARBALLINC_MASTERDATETYPE"

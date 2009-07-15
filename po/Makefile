@@ -22,7 +22,7 @@ install: backup-manager.pot $(MOFILES)
 	done
 
 $(POFILES_SRC):
-	find ../lib -type f -name \*.sh > $(POFILES_SRC)
+	find ../lib -type f -name \*.sh | sort > $(POFILES_SRC)
 	echo ../backup-manager >> $(POFILES_SRC)
 
 $(PACKAGE).pot: $(POFILES_SRC)

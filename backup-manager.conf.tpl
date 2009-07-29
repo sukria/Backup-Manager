@@ -461,6 +461,10 @@ export BM_BURNING_MAXSIZE="650"
 # set this to "true" or "false"
 export BM_LOGGER="true"
 
+# Which level of messages do you want to log to syslog?
+# possible values are : debug,info,warning,error
+export BM_LOGGER_LEVEL="warning"
+
 # You can choose which facility to use
 export BM_LOGGER_FACILITY="user"
 

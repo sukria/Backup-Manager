@@ -270,6 +270,7 @@ fi
 confkey_require "BM_LOGGER" "true"
 if [[ "$BM_LOGGER" = "true" ]]; then 
     confkey_require "BM_LOGGER_FACILITY" "user"
+    confkey_require "BM_LOGGER_LEVEL" "warning"
 fi
 
 if [[ $nb_warnings -gt 0 ]]; then

@@ -11,6 +11,20 @@ use BackupManager::Logger;
 
 my $dialog_verbose = 0;
 
+sub should_log($) {
+    my ($level) = @_;
+
+    my $level_score = {
+        debug => 0,
+        info => 1,
+        warning => 2,
+        error => 3,
+    };
+
+    my $conf_level = $ENV{BM_LOGGER_LEVEL} || 'warning';
+    return $level_score->{$level} >= $level_score->{$conf_level};
+}
+
 sub init_dialog($)
 {
     my ($verbose) = @_;
@@ -23,7 +37,7 @@ sub print_info
 	$message = "" unless defined $message;
     chomp $message;
 
-	info ($message);
+	info ($message) if should_log 'info';
 	print STDOUT $message."\n" if $dialog_verbose;
 }
 
@@ -33,7 +47,7 @@ sub print_warning
 	$message = "" unless defined $message;
     chomp $message;
 
-	warning ($message);
+	warning ($message) if should_log 'warning';
 	print STDERR $message."\n" if $dialog_verbose;
 }
 
@@ -43,7 +57,7 @@ sub print_error
 	$message = "" unless defined $message;
     chomp $message;
 
-	error ($message);
+	error ($message) if should_log 'error';
 	print STDERR $message."\n";
 }
 

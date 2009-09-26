@@ -8,6 +8,7 @@ use BackupManager::Dialog;
 use POSIX qw(strftime);
 use File::Temp qw(tempfile);
 use File::Basename;
+use File::stat;
 
 use constant TRUE => 1;
 use constant FALSE => 0;

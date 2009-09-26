@@ -640,7 +640,7 @@ sub send_files_with_s3($$$$$$)
 	}
 
 	if ($Net::Amazon::S3::VERSION < '0.39') {
-		print_error "Net::Amazon::S3 >= 0.39 is required, cannot use S3 service : $@";
+		print_error "Net::Amazon::S3 >= 0.39 is required, but version ${Net::Amazon::S3::VERSION} was found, cannot use S3 service";
 		return FALSE;
 	}
 

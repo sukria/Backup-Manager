@@ -658,7 +658,7 @@ sub send_files_with_s3($$$$$$)
 		return FALSE;
 	}
 
-	my $totalbytes;
+	my $totalbytes = 0;
 	my $starttime = time();
 	my %uploaded;
         my $backup_bucket;
@@ -726,7 +726,7 @@ sub send_files_with_s3($$$$$$)
 		}
 	}
 
-	print_info "Uploaded $totalbytes of data to S3 in " . 
+	print_info "Uploaded $totalbytes bytes of data to S3 in " . 
             (time() - $starttime) . " seconds";
     return TRUE;
 }

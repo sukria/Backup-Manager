@@ -640,12 +640,11 @@ sub send_files_with_s3($$$$$$)
 		return FALSE;
 	}
 
-	eval "use File::Slurp qw(slurp)";
-	if ($@) {
-		print_error "File::Slurp is not available, cannot use S3 service";
+	if ($Net::Amazon::S3::VERSION < '0.39') {
+		print_error "Net::Amazon::S3 >= 0.39 is required, cannot use S3 service : $@";
 		return FALSE;
 	}
-	
+
 	# getting args
 	my ($user, $passwd, $bucket, $ra_hosts, $repository, $ra_files) = @_;
         

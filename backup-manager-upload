@@ -695,16 +695,17 @@ sub send_files_with_s3($$$$$$)
 		foreach my $file (@{$ra_files}) {
 		    chomp $file;
 		    my ($filename) = ($file =~ /^.*[\\\/](.*)/ );
-		    my $contents = slurp( $file, binmode => ':raw');
-		    print_info "opened $file of length " . length($contents) . " and will name the key $filename";
-		    $totalbytes += length($contents);
-		    $bucket_obj->add_key(
-                                $filename, $contents,
+			my $file_length = stat($file)->size;
+		    print_info "opened $file of length $file_length and will name the key $filename";
+
+		    $totalbytes += $file_length;
+		    $bucket_obj->add_key_filename(
+                                $filename, $file,
 				     {
 				     content_type => "application/binary"
 				     }
 				 );
-		    $uploaded{$filename} = length($contents);
+		    $uploaded{$filename} = $file_length;
 		}
 
 		# get a list of files and confirm uploads

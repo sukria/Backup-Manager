@@ -214,6 +214,11 @@ export BM_MYSQL_PORT="3306"
 # which compression format to use? (gzip or bzip2)
 export BM_MYSQL_FILETYPE="bzip2"
 
+# Extra options to append to mysqldump
+# (take care to what you do; this will be silently added to the 
+# command line.)
+export BM_MYSQL_EXTRA_OPTIONS=""
+
 ##############################################################
 # Backup method: svn
 #############################################################

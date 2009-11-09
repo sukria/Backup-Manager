@@ -426,6 +426,9 @@ export BM_UPLOAD_RSYNC_DUMPSYMLINKS="false"
 #  - CDR    : burn the whole ARCHIVES_REPOSITORY or 
 #             only the generated archives.
 #  - none   : disable the burning system
+#
+# Note that if backup-manager is run from interactive prompt you
+# will be asked to insert disc(s) when needed
 
 export BM_BURNING_METHOD="none"
 

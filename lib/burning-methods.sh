@@ -133,10 +133,10 @@ function check_cdrom_md5_sums()
 # Obviously, we will use mkisofs for generating the iso and 
 # cdrecord for burning CD, growisofs for the DVD.
 # Note that we pipe the iso image directly to cdrecord
-# in this way, we prevent the use of preicous disk place.
+# in this way, we prevent the use of precious disk place.
 #
 # Two cases are possible:
-# - non-interactive mode: will try to burn data on a signle disc
+# - non-interactive mode: will try to burn data on a single disc
 # - interactive mode : will ask for next disc if needed.
 function burn_files()
 {
@@ -233,7 +233,7 @@ function burn_files_interactive()
         find_what_to_burn "${BM_REPOSITORY_ROOT}/*"
         size=$(size_of_path "${BM_REPOSITORY_ROOT}")
     fi
-    info "Trying to burn \$BM_REPOSITORY_ROOT (\$size MB) in interactive mode."
+    info "Trying to burn \$BM_REPOSITORY_ROOT (\$size MB) in interactive mode. You will be prompted to enter insert a disc when needed"
     burn_multiples_media "$what_to_burn"
 }
 
@@ -445,9 +445,9 @@ function __burn_session_from_file()
     
     what_to_burn_session=""
 
-    for file in $(cat "$index_file")
+    for file_to_burn in $(cat "$index_file")
       do
-      what_to_burn_session="$what_to_burn_session $file"
+      what_to_burn_session="$what_to_burn_session $file_to_burn"
     done
     
     what_to_burn="$what_to_burn_session"

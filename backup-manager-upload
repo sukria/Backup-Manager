@@ -326,9 +326,6 @@ sub send_files_with_scp($$$$$)
                 return FALSE;
             }
         }
-
-        # cleaning the repo
-        ssh_clean_directory ($user, $host, $repository) if ($g_sshclean);
 	
 		foreach my $file (@{$ra_files}) {
 			chomp $file;
@@ -347,6 +344,10 @@ sub send_files_with_scp($$$$$)
                 return FALSE;
             }
 		}
+
+        # cleaning the repo
+        ssh_clean_directory ($user, $host, $repository) if ($g_sshclean);
+
 	}
 
     return TRUE;

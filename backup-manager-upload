@@ -29,6 +29,7 @@ my $g_user 	= undef;
 my $g_pass 	= undef;
 my $g_ftpclean  = undef;
 my $g_s3clean   = undef;
+my $g_s3max_size = 1024*1024*1024; # 1G
 my $g_sshclean   = undef;
 my $g_protocol 	= 'scp';
 my $g_remote_dir= '/var/archives/uploads';
@@ -52,6 +53,7 @@ BackupManager::Config::getopt("$0 -m=mode -h=host -u=user [options] date\n
 --gpg-recipient : Selects the public key used for gpg encryption (only for ssh-gpg mode).
 --ftp-purge	: Purge the remote directory before uploading files in FTP mode.
 --s3-purge	: Purge the remote directory before uploading files in S3 mode.
+--s3-maxsize	: Maximum file size to upload.  If file execeds this size, it will be `split`. Keep in mind S3's limit is 5GB; default is 1GB.
 --ssh-purge	: Purge the remote directory before uploading files in SSH mode.
 date		: All files >= date will be uploaded. Either a valid date (YYYYMMDD) or one of this words : today, yesterday",
 'verbose'	=> sub { init_dialog($_[1]) },
@@ -66,6 +68,7 @@ date		: All files >= date will be uploaded. Either a valid date (YYYYMMDD) or on
 'gpg-recipient=s' => \$g_gpg_recipient,
 'ftp-purge'	=> \$g_ftpclean,
 's3-purge'	=> \$g_s3clean,
+'s3-maxsize=i'	=> \$g_s3max_size,
 'ssh-purge'	=> \$g_sshclean,
 'list'		=> \$g_list,
 );
@@ -647,7 +650,7 @@ sub send_files_with_s3($$$$$$)
 
 	# getting args
 	my ($user, $passwd, $bucket, $ra_hosts, $repository, $ra_files) = @_;
-        
+
 	unless (defined $user and 
 		defined $passwd and
 		defined $bucket and
@@ -661,75 +664,90 @@ sub send_files_with_s3($$$$$$)
 	my $totalbytes = 0;
 	my $starttime = time();
 	my %uploaded;
-        my $backup_bucket;
-	
+	my $backup_bucket;
+
 	# loop on each hosts given and connect to them.
 	foreach my $host (@{$ra_hosts}) {
-	    my $s3 = Net::Amazon::S3->new(
-					  {   
-					      aws_access_key_id => $user,
-					      aws_secret_access_key => $passwd,
-                          timeout => 300
-					      }
-					  );
+		my $s3 = Net::Amazon::S3->new(
+			{   
+				aws_access_key_id => $user,
+				aws_secret_access_key => $passwd,
+				timeout => 300
+			}
+		);
 
-	    unless (defined $s3) {
-		    print_error "unable to connect to $host : $@\n";
-            return FALSE;
-        }
-        
+		unless (defined $s3) {
+			print_error "unable to connect to $host : $@\n";
+			return FALSE;
+		}
+
 		print_info "Connected to $host";
 
-                my $bucket_obj = $s3->bucket($bucket);
+		my $bucket_obj = $s3->bucket($bucket);
 
-                my $response = $bucket_obj->list;
+		my $response = $bucket_obj->list;
 
-                if (not ( $response->{bucket} ) ) {
-                    print_info "Bucket $bucket does not exist... creating";
-		    $bucket_obj = $s3->add_bucket( { bucket => $bucket } );
-		    print_error "Could not create bucket $bucket" if not ( $bucket_obj );
-                }
+		if (not ( $response->{bucket} ) ) {
+			print_info "Bucket $bucket does not exist... creating";
+			$bucket_obj = $s3->add_bucket( { bucket => $bucket } );
+			print_error "Could not create bucket $bucket" if not ( $bucket_obj );
+		}
 
 		s3_clean_directory($bucket_obj) if ($g_s3clean);
-			    
-		foreach my $file (@{$ra_files}) {
-		    chomp $file;
-		    my ($filename) = ($file =~ /^.*[\\\/](.*)/ );
-			my $file_length = stat($file)->size;
-		    print_info "opened $file of length $file_length and will name the key $filename";
 
-		    $totalbytes += $file_length;
-		    $bucket_obj->add_key_filename(
-                                $filename, $file,
-				     {
-				     content_type => "application/binary"
-				     }
-				 );
-		    $uploaded{$filename} = $file_length;
+		foreach my $file (@{$ra_files}) {
+			chomp $file;
+			my @splits = $file;
+			if( stat($file)->size > $g_s3max_size ) {
+				my $split_prefix = "$file-split-";
+				my $cmd = "/usr/bin/split -b $g_s3max_size $file $split_prefix";
+				if( system($cmd) != 0 ) {
+					print_error "Could not run '$cmd' to split $file into chunks of size $g_s3max_size";
+					next;
+				} else {
+					@splits = glob("$split_prefix*");
+				}
+			}
+
+			for my $split (@splits) {
+				my ($filename) = ($split =~ /^.*[\\\/](.*)/ );
+				my $file_length = stat($split)->size;
+
+				print_info "opened $split of length $file_length and will name the key $filename";
+
+				$totalbytes += $file_length;
+				$bucket_obj->add_key_filename(
+					$filename, $split,
+					{
+						content_type => "application/binary"
+					}
+				);
+				$uploaded{$filename} = $file_length;
+			}
 		}
 
 		# get a list of files and confirm uploads
-                $response = $bucket_obj->list;
-                my @keys = @{ $response->{keys} };
+		$response = $bucket_obj->list;
+		my @keys = @{ $response->{keys} };
 		foreach my $key ( @keys ) {
-		    if (not defined $uploaded{$key->{key}}) {
-                next;
-		    }
-		    if ($key->{size} == $uploaded{$key->{key}}) {
-                print_info $key->{key} . " uploaded sucessfully";
-                delete $uploaded{$key->{key}};
-		    } 
-            else {
-			    print_error $key->{key} . " did not upload sucessfully. S3 reports $key is " . $key->{size} . " bytes rather than " . $uploaded{$key->{key}};
-    			delete $uploaded{$key->{key}};
-                return FALSE;
-		    }
+			if (not defined $uploaded{$key->{key}}) {
+				next;
+			}
+			if ($key->{size} == $uploaded{$key->{key}}) {
+				print_info $key->{key} . " uploaded sucessfully";
+				delete $uploaded{$key->{key}};
+			} 
+			else {
+				print_error $key->{key} . " did not upload sucessfully. S3 reports $key is " . $key->{size} . " bytes rather than " . $uploaded{$key->{key}};
+				delete $uploaded{$key->{key}};
+				return FALSE;
+			}
 		}
 	}
 
 	print_info "Uploaded $totalbytes bytes of data to S3 in " . 
-            (time() - $starttime) . " seconds";
-    return TRUE;
+	(time() - $starttime) . " seconds";
+	return TRUE;
 }
 
 # }}}

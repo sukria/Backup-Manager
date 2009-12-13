@@ -114,13 +114,18 @@ function exec_pre_command()
 {
     debug "exec_pre_command()"
 
+	assert_file_exists "$BM_PRE_BACKUP_COMMAND" || \
+		_exit 10 "PRE_COMMAND" "Cannot run pre command"
+	assert_file_is_executable "$BM_PRE_BACKUP_COMMAND" || \
+		_exit 10 "PRE_COMMAND" "Cannot run pre command" 
+
     if [[ ! -z "$BM_PRE_BACKUP_COMMAND" ]]; then
         info "Running pre-command: \$BM_PRE_BACKUP_COMMAND."
         RET=`$BM_PRE_BACKUP_COMMAND` || RET="false" 
         case "$RET" in
             "false")
                 warning "Pre-command failed. Stopping the process."
-                _exit 15
+                _exit 15 "PRE_COMMAND"
             ;;
 
             *)
@@ -135,13 +140,18 @@ function exec_post_command()
 {
     debug "exec_post_command()"
 
+	assert_file_exists "$BM_POST_BACKUP_COMMAND" || \
+		_exit 10 "POST_COMMAND" "Cannot run post command"
+	assert_file_is_executable "$BM_POST_BACKUP_COMMAND" || \
+		_exit 10 "POST_COMMAND" "Cannot run post command"
+
     if [[ ! -z "$BM_POST_BACKUP_COMMAND" ]]; then
         info "Running post-command: \$BM_POST_BACKUP_COMMAND"
         RET=`$BM_POST_BACKUP_COMMAND` || RET="false"
         case "$RET" in
             "false")
                 warning "Post-command failed."
-                _exit 16
+                _exit 16 "POST_COMMAND"
             ;;
 
             *)

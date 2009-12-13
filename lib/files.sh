@@ -430,3 +430,19 @@ function purge_duplicate_archives()
     done
 }
 
+function assert_file_exists() {
+	file="$1"
+	if [[ ! -r "$file" ]]; then
+		warning "File '\$file' does not exist or is not readable."
+		return 1
+	fi
+}
+
+function assert_file_is_executable() {
+	file="$1"
+	if [[ ! -x "$file" ]]; then
+		warning "File '\$file' is not executable"
+		return 1
+	fi
+}
+

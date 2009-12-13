@@ -42,6 +42,11 @@ export BM_ARCHIVE_CHMOD="660"
 # Number of days we have to keep an archive (Time To Live)
 export BM_ARCHIVE_TTL="5"
 
+# At which frequency will you build your archives?
+# You can choose either "daily" or "hourly". 
+# This should match your CRON configuration.
+export BM_ARCHIVE_FREQUENCY="daily"
+
 # Do you want to purge only the top-level directory or all
 # directories under BM_REPOSITORY_ROOT?
 export BM_REPOSITORY_RECURSIVEPURGE="false"

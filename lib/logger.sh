@@ -151,11 +151,22 @@ function error()
 # remove the logfile
 function _exit()
 {
-    exec_post_command || error "Unable to exec post-command."
+	exit_code="$1"
+	exit_context="$2"
+	exit_reason="$3"
+
+    if [[ "$exit_context" != "POST_COMMAND" ]]; then
+		exec_post_command || error "Unable to exec post-command."
+	fi
+
     umask $BM_UMASK >/dev/null
     info "Releasing lock"
     release_lock
     bm_dbus_send_progress 100 "Finished"
     bm_dbus_send_event "shutdown" "$@"
-    exit $@
+
+	if [[ -n "$exit_reason" ]]; then 
+		info "Exit reason: \$exit_reason"
+	fi
+    exit $exit_code
 }

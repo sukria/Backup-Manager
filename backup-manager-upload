@@ -8,6 +8,7 @@ use BackupManager::Dialog;
 use POSIX qw(strftime);
 use File::Temp qw(tempfile);
 use File::Basename;
+use File::stat;
 
 use constant TRUE => 1;
 use constant FALSE => 0;
@@ -639,12 +640,11 @@ sub send_files_with_s3($$$$$$)
 		return FALSE;
 	}
 
-	eval "use File::Slurp qw(slurp)";
-	if ($@) {
-		print_error "File::Slurp is not available, cannot use S3 service";
+	if ($Net::Amazon::S3::VERSION < '0.39') {
+		print_error "Net::Amazon::S3 >= 0.39 is required, but version ${Net::Amazon::S3::VERSION} was found, cannot use S3 service";
 		return FALSE;
 	}
-	
+
 	# getting args
 	my ($user, $passwd, $bucket, $ra_hosts, $repository, $ra_files) = @_;
         
@@ -658,7 +658,7 @@ sub send_files_with_s3($$$$$$)
 		return FALSE;
 	}
 
-	my $totalbytes;
+	my $totalbytes = 0;
 	my $starttime = time();
 	my %uploaded;
         my $backup_bucket;
@@ -695,16 +695,17 @@ sub send_files_with_s3($$$$$$)
 		foreach my $file (@{$ra_files}) {
 		    chomp $file;
 		    my ($filename) = ($file =~ /^.*[\\\/](.*)/ );
-		    my $contents = slurp( $file, binmode => ':raw');
-		    print_info "opened $file of length " . length($contents) . " and will name the key $filename";
-		    $totalbytes += length($contents);
-		    $bucket_obj->add_key(
-                                $filename, $contents,
+			my $file_length = stat($file)->size;
+		    print_info "opened $file of length $file_length and will name the key $filename";
+
+		    $totalbytes += $file_length;
+		    $bucket_obj->add_key_filename(
+                                $filename, $file,
 				     {
 				     content_type => "application/binary"
 				     }
 				 );
-		    $uploaded{$filename} = length($contents);
+		    $uploaded{$filename} = $file_length;
 		}
 
 		# get a list of files and confirm uploads
@@ -726,7 +727,7 @@ sub send_files_with_s3($$$$$$)
 		}
 	}
 
-	print_info "Uploaded $totalbytes of data to S3 in " . 
+	print_info "Uploaded $totalbytes bytes of data to S3 in " . 
             (time() - $starttime) . " seconds";
     return TRUE;
 }

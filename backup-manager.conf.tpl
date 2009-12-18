@@ -219,6 +219,11 @@ export BM_MYSQL_PORT="3306"
 # which compression format to use? (gzip or bzip2)
 export BM_MYSQL_FILETYPE="bzip2"
 
+# Extra options to append to mysqldump
+# (take care to what you do; this will be silently added to the 
+# command line.)
+export BM_MYSQL_EXTRA_OPTIONS=""
+
 ##############################################################
 # Backup method: svn
 #############################################################
@@ -431,6 +436,9 @@ export BM_UPLOAD_RSYNC_DUMPSYMLINKS="false"
 #  - CDR    : burn the whole ARCHIVES_REPOSITORY or 
 #             only the generated archives.
 #  - none   : disable the burning system
+#
+# Note that if backup-manager is run from interactive prompt you
+# will be asked to insert disc(s) when needed
 
 export BM_BURNING_METHOD="none"
 

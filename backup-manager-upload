@@ -55,7 +55,7 @@ BackupManager::Config::getopt("$0 -m=mode -h=host -u=user [options] date\n
 --gpg-recipient : Selects the public key used for gpg encryption (only for ssh-gpg mode).
 --ftp-purge	: Purge the remote directory before uploading files in FTP mode.
 --s3-purge	: Purge the remote directory before uploading files in S3 mode.
---s3-maxsize	: Maximum file size to upload.  If file execeds this size, it will be `split`. Keep in mind S3's limit is 5GB; default is 1GB.
+--s3-maxsize	: Maximum file size to upload.  If file execeds this size, it will be `split`. Default is 4GB
 --ssh-purge	: Purge the remote directory before uploading files in SSH mode.
 date		: All files >= date will be uploaded. Either a valid date (YYYYMMDD) or one of this words : today, yesterday",
 'verbose'	=> sub { init_dialog($_[1]) },

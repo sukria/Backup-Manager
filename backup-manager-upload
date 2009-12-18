@@ -713,7 +713,7 @@ sub send_files_with_s3($$$$$$)
 			}
 
 			for my $split (@splits) {
-				my ($filename) = ($split =~ /^.*[\\\/](.*)/ );
+				my $filename = basename($split);
 				my $file_length = stat($split)->size;
 
 				print_info "opened $split of length $file_length and will name the key $filename";

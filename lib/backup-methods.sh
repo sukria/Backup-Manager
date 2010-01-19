@@ -904,8 +904,8 @@ function backup_method_mysql()
         warning "Creating a default MySQL client configuration file: \$mysql_conffile"
         echo "[client]" > $mysql_conffile
         echo "# The following password will be sent to all standard MySQL clients" >> $mysql_conffile
-        echo "password=\"$BM_MYSQL_ADMINPASS\"" >> $mysql_conffile
         chmod 600 $mysql_conffile
+        echo "password=\"$BM_MYSQL_ADMINPASS\"" >> $mysql_conffile
         BM_SHOULD_PURGE_MYCNF="true"
     fi
     base_command="$mysqldump --defaults-extra-file=$mysql_conffile $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT"

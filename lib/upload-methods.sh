@@ -127,9 +127,17 @@ bm_upload_ftp()
     if [[ "$BM_UPLOAD_FTP_PURGE" = "true" ]]; then
             ftp_purge_switch="--ftp-purge"
     fi
+
+    # Additionnal flag for the FTP method
+    ftp_test_switch=""
+    if [[ "$BM_UPLOAD_FTP_TEST" = "true" ]]; then
+            ftp_test_switch="--ftp-test"
+		# create the test file
+		$dd if=/dev/zero of=$BM_REPOSITORY_ROOT/2mb_file.dat bs=1M count=2 > /dev/null 2>&1
+    fi
  
     logfile="$(mktemp ${BM_TEMP_DIR}/bmu-log.XXXXXX)"
-    $bmu $v_switch $ftp_purge_switch \
+    $bmu $v_switch $ftp_purge_switch $ftp_test_switch \
         -m="ftp" \
         -h="$bm_upload_hosts" \
         -u="$BM_UPLOAD_FTP_USER" \

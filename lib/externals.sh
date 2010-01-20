@@ -17,3 +17,4 @@ mysqldump=$(which mysqldump 2> /dev/null) || true
 svnadmin=$(which svnadmin 2> /dev/null) || true
 logger=$(which logger 2> /dev/null) || true
 nice_bin=$(which nice 2> /dev/null) || true
+dd=$(which dd 2> /dev/null) || true

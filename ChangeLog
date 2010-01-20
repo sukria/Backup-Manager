@@ -1,3 +1,8 @@
+2010-01-20  Sven Joachim
+	* Search for genisoimage and wodim in addition to mkisofs and cdrecord
+	* Change mode of $mysql_conffile to 600 before writing password to it
+	* Fix long version of -c option in backup-manager.8 (closes Debian #225)
+
 2009-09-26  Rached Ben Mustapha <rached@benmur.net>
 	* Fix uploading very big archive files which don't fit in memory
 	  to Amazon S3.

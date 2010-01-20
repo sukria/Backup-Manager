@@ -582,9 +582,16 @@ sub send_files_with_ftp($$$$$)
                 return FALSE;
             }
 
-            unless (ftptls_login($ftp, $user, $passwd, $repository)) {
-                print_error "unable to login and cwd on ${host}:${repository} in FTP TLS mode.";
+            unless (ftptls_login($ftp, $user, $passwd)) {
+                print_error "unable to login on ${host} in FTP TLS mode.";
                 return FALSE;
+            }
+            unless (ftptls_cwd($ftp, $repository)) {
+                print_info "The directory ${repository} does not exist, trying to create it.";
+                unless (ftptls_mkdir($ftp, $repository)) {
+                print_error  "unable to create directory ${repository} in FTP TLS mode: " . $ftp->message;
+                return FALSE;
+                }
             }
             print_info "Logged on $host, in $repository (FTP TLS mode)";
         }
@@ -597,9 +604,16 @@ sub send_files_with_ftp($$$$$)
                 return FALSE;
             }
 
-            unless (ftp_login($ftp, $user, $passwd, $repository)) {
-                print_error "unable to login and cwd on ${host}:${repository} in FTP mode.";
+            unless (ftp_login($ftp, $user, $passwd)) {
+                print_error "unable to login on ${host} in FTP mode.";
                 return FALSE;
+            }
+            unless (ftp_cwd($ftp, $repository)) {
+                print_info "The directory ${repository} does not exist, trying to create it.";
+                unless (ftp_mkdir($ftp, $repository)) {
+                print_error  "unable to create directory ${repository} in FTP mode: " . $ftp->message;
+                return FALSE;
+                }
             }
             print_info "Logged on $host, in $repository (FTP binary mode)";
         }
@@ -631,16 +645,22 @@ sub send_files_with_ftp($$$$$)
         foreach my $file (@{$ra_files}) {
             chomp $file;
             if ($BM_UPLOAD_FTP_SECURE) {
-                unless (ftptls_put_file ($ftp, $file)) {
+                if (!ftptls_put_file ($ftp, $file)) {
 		    print_error "Unable to transfer $file";
 		    return FALSE;
-		}
+                }
+                else {
+			print_info "File $file transfered\n";
+                }
             }
             else {
-                unless (ftp_put_file ($ftp, $file)) {
+                if (!ftp_put_file ($ftp, $file)) {
 		    print_error "Unable to transfer $file: " . $ftp->message;
 		    return FALSE;
-		}
+                }
+                else {
+            print_info "File $file transfered\n";
+                }
             }
         }
         print_info "All transfers done, loging out from $host\n";
@@ -649,22 +669,43 @@ sub send_files_with_ftp($$$$$)
     return TRUE;
 }
 
-sub ftp_login ($$$$)
+sub ftp_login ($$$)
 {
-    my ($ftp, $user, $passwd, $repository) = @_;
+    my ($ftp, $user, $passwd) = @_;
     return ($ftp->login($user, $passwd) and
-            $ftp->binary() and
-            $ftp->cwd($repository));
+            $ftp->binary());
 }
 
-sub ftptls_login ($$$$)
+sub ftptls_login ($$$)
 {
-    my ($ftp, $user, $passwd, $repository) = @_;
+    my ($ftp, $user, $passwd) = @_;
     return ($ftp->user($user) and
-            $ftp->pass($passwd) and
-            $ftp->cwd($repository));
+            $ftp->pass($passwd));
 }
 
+sub ftp_cwd ($$)
+{
+    my ($ftp, $repository) = @_;
+    return ($ftp->cwd($repository));
+}
+
+sub ftptls_cwd ($$)
+{
+    my ($ftp, $repository) = @_;
+    return ($ftp->cwd($repository));
+}
+
+sub ftp_mkdir ($$)
+{
+    my ($ftp, $repository) = @_;
+    return ($ftp->mkdir($repository));
+}
+
+sub ftptls_mkdir ($$)
+{
+    my ($ftp, $repository) = @_;
+    return ($ftp->mkdir($repository));
+}
 
 sub ftp_put_file ($$)
 {

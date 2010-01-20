@@ -357,6 +357,11 @@ export BM_UPLOAD_FTP_SECURE="false"
 # This is mandatory for NATed/firewalled environments 
 export BM_UPLOAD_FTP_PASSIVE="true"
 
+# Test the FTP connection before starting archives upload.
+# This will enable BM to try sending a 2MB test file before
+# sending any archive
+export BM_UPLOAD_FTP_TEST="false"
+
 # the user to use for the FTP connections/transfers
 export BM_UPLOAD_FTP_USER=""
 

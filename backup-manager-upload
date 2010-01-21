@@ -412,7 +412,7 @@ sub ftptls_upload_test_file($)
 		my $remote_filesize = $ftp->size($ftp_test_filename);
 		# Delete both test files
 		system("rm -f $BM_REPOSITORY_ROOT/$ftp_test_filename");
-		$ftp->dele($ftp_test_filename);
+		$ftp->delete($ftp_test_filename);
 		# Test filesize (should be 2MB)
 		if($remote_filesize == 2097152) {
 			return TRUE;

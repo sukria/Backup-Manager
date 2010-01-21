@@ -30,6 +30,7 @@ my $g_host 	= undef;
 my $g_user 	= undef;
 my $g_pass 	= undef;
 my $g_ftpclean  = undef;
+my $g_ftptest  = undef;
 my $g_s3clean   = undef;
 my $g_s3max_size = 4*1024*1024*1024; # 4G
 my $g_sshclean   = undef;
@@ -54,6 +55,7 @@ BackupManager::Config::getopt("$0 -m=mode -h=host -u=user [options] date\n
 -l|--list	: Only prints which files would be uploaded.
 --gpg-recipient : Selects the public key used for gpg encryption (only for ssh-gpg mode).
 --ftp-purge	: Purge the remote directory before uploading files in FTP mode.
+--ftp-test	: Send a test file before uploading archives in FTP mode.
 --s3-purge	: Purge the remote directory before uploading files in S3 mode.
 --s3-maxsize	: Maximum file size to upload.  If file execeds this size, it will be `split`. Default is 4GB
 --ssh-purge	: Purge the remote directory before uploading files in SSH mode.
@@ -69,6 +71,7 @@ date		: All files >= date will be uploaded. Either a valid date (YYYYMMDD) or on
 'root|r=s'	=> \$g_root_dir,
 'gpg-recipient=s' => \$g_gpg_recipient,
 'ftp-purge'	=> \$g_ftpclean,
+'ftp-test'	=> \$g_ftptest,
 's3-purge'	=> \$g_s3clean,
 's3-maxsize=i'	=> \$g_s3max_size,
 'ssh-purge'	=> \$g_sshclean,
@@ -361,6 +364,66 @@ sub send_files_with_scp($$$$$)
 ##############################################################
 # {{{
 
+# Function for testing upload before sending the archives
+# The test file is uploaded, and its size is compared to the local file.
+# If the size is correct, the test is successfull and we can continue
+# with the archives.
+sub ftp_upload_test_file($)
+{
+    my $ftp = shift;
+	
+	my $BM_REPOSITORY_ROOT = $ENV{BM_REPOSITORY_ROOT};
+	my $ftp_test_filename = "2mb_file.dat";
+	my $file_to_send = $BM_REPOSITORY_ROOT . "/" . $ftp_test_filename;
+	
+	if (!ftp_put_file ($ftp, $file_to_send)) {
+		print_error "Unable to transfer $file_to_send: " . $ftp->message;
+		return FALSE;
+	}
+	else {
+		my $remote_filesize = $ftp->size($ftp_test_filename);
+		# Delete both test files
+		system("rm -f $BM_REPOSITORY_ROOT/$ftp_test_filename");
+		$ftp->delete($ftp_test_filename);
+		# Test filesize (should be 2MB)
+		if($remote_filesize == 2097152) {
+			return TRUE;
+		}
+		else {
+			print_error "Remote and local test files filesize mismatch";
+			return FALSE;
+		}
+	}
+}
+
+sub ftptls_upload_test_file($)
+{
+    my $ftp = shift;
+	
+	my $BM_REPOSITORY_ROOT = $ENV{BM_REPOSITORY_ROOT};
+	my $ftp_test_filename = "2mb_file.dat";
+	my $file_to_send = $BM_REPOSITORY_ROOT . "/" . $ftp_test_filename;
+	
+	if (!ftptls_put_file ($ftp, $file_to_send)) {
+		print_error "Unable to transfer $file_to_send: " . $ftp->message;
+		return FALSE;
+	}
+	else {
+		my $remote_filesize = $ftp->size($ftp_test_filename);
+		# Delete both test files
+		system("rm -f $BM_REPOSITORY_ROOT/$ftp_test_filename");
+		$ftp->dele($ftp_test_filename);
+		# Test filesize (should be 2MB)
+		if($remote_filesize == 2097152) {
+			return TRUE;
+		}
+		else {
+			print_error "Remote and local test files filesize mismatch";
+			return FALSE;
+		}
+	}
+}
+
 # Function for purging a directory
 # over FTP, the same way as the repository is purged.
 # Every files with a date field too old according to BM_UPLOAD_FTP_TTL
@@ -519,9 +582,16 @@ sub send_files_with_ftp($$$$$)
                 return FALSE;
             }
 
-            unless (ftptls_login($ftp, $user, $passwd, $repository)) {
-                print_error "unable to login and cwd on ${host}:${repository} in FTP TLS mode.";
+            unless (ftptls_login($ftp, $user, $passwd)) {
+                print_error "unable to login on ${host} in FTP TLS mode.";
                 return FALSE;
+            }
+            unless (ftptls_cwd($ftp, $repository)) {
+                print_info "The directory ${repository} does not exist, trying to create it.";
+                unless (ftptls_mkdir($ftp, $repository)) {
+                print_error  "unable to create directory ${repository} in FTP TLS mode: " . $ftp->message;
+                return FALSE;
+                }
             }
             print_info "Logged on $host, in $repository (FTP TLS mode)";
         }
@@ -534,11 +604,34 @@ sub send_files_with_ftp($$$$$)
                 return FALSE;
             }
 
-            unless (ftp_login($ftp, $user, $passwd, $repository)) {
-                print_error "unable to login and cwd on ${host}:${repository} in FTP mode.";
+            unless (ftp_login($ftp, $user, $passwd)) {
+                print_error "unable to login on ${host} in FTP mode.";
                 return FALSE;
             }
+            unless (ftp_cwd($ftp, $repository)) {
+                print_info "The directory ${repository} does not exist, trying to create it.";
+                unless (ftp_mkdir($ftp, $repository)) {
+                print_error  "unable to create directory ${repository} in FTP mode: " . $ftp->message;
+                return FALSE;
+                }
+            }
             print_info "Logged on $host, in $repository (FTP binary mode)";
+        }
+
+        # Now that we're connected and logged in, test an upload if needed
+        if ($g_ftptest) {
+            if ($BM_UPLOAD_FTP_SECURE) {
+                unless (ftptls_upload_test_file($ftp)) {
+                    print_error "Unable to transfer test file";
+                    return FALSE;
+                }
+            }
+            else {
+                unless (ftp_upload_test_file($ftp)) {
+                print_error "Unable to transfer test file";
+                return FALSE;
+                }
+            }
         }
 			
         # Now that we're connected and logged in, purge the repo if needed
@@ -552,16 +645,22 @@ sub send_files_with_ftp($$$$$)
         foreach my $file (@{$ra_files}) {
             chomp $file;
             if ($BM_UPLOAD_FTP_SECURE) {
-                unless (ftptls_put_file ($ftp, $file)) {
+                if (!ftptls_put_file ($ftp, $file)) {
 		    print_error "Unable to transfer $file";
 		    return FALSE;
-		}
+                }
+                else {
+			print_info "File $file transfered\n";
+                }
             }
             else {
-                unless (ftp_put_file ($ftp, $file)) {
+                if (!ftp_put_file ($ftp, $file)) {
 		    print_error "Unable to transfer $file: " . $ftp->message;
 		    return FALSE;
-		}
+                }
+                else {
+            print_info "File $file transfered\n";
+                }
             }
         }
         print_info "All transfers done, loging out from $host\n";
@@ -570,22 +669,43 @@ sub send_files_with_ftp($$$$$)
     return TRUE;
 }
 
-sub ftp_login ($$$$)
+sub ftp_login ($$$)
 {
-    my ($ftp, $user, $passwd, $repository) = @_;
+    my ($ftp, $user, $passwd) = @_;
     return ($ftp->login($user, $passwd) and
-            $ftp->binary() and
-            $ftp->cwd($repository));
+            $ftp->binary());
 }
 
-sub ftptls_login ($$$$)
+sub ftptls_login ($$$)
 {
-    my ($ftp, $user, $passwd, $repository) = @_;
+    my ($ftp, $user, $passwd) = @_;
     return ($ftp->user($user) and
-            $ftp->pass($passwd) and
-            $ftp->cwd($repository));
+            $ftp->pass($passwd));
 }
 
+sub ftp_cwd ($$)
+{
+    my ($ftp, $repository) = @_;
+    return ($ftp->cwd($repository));
+}
+
+sub ftptls_cwd ($$)
+{
+    my ($ftp, $repository) = @_;
+    return ($ftp->cwd($repository));
+}
+
+sub ftp_mkdir ($$)
+{
+    my ($ftp, $repository) = @_;
+    return ($ftp->mkdir($repository));
+}
+
+sub ftptls_mkdir ($$)
+{
+    my ($ftp, $repository) = @_;
+    return ($ftp->mkdir($repository));
+}
 
 sub ftp_put_file ($$)
 {

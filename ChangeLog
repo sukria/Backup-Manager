@@ -1,3 +1,7 @@
+2010-01-20  Philippe Villiers
+	* FIX bug #240 : will now create all needed dirs if $BM_REPOSITORY_ROOT
+	  or its parents do not exist
+	
 2010-01-20  Sven Joachim
 	* Search for genisoimage and wodim in addition to mkisofs and cdrecord
 	* Change mode of $mysql_conffile to 600 before writing password to it

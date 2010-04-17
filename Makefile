@@ -1,4 +1,4 @@
-# Copyright © 2005-2006 The Backup Manager Authors
+# Copyright © 2005-2010 The Backup Manager Authors
 # See the AUTHORS file for details.
 #
 # This program is free software; you can redistribute it and/or

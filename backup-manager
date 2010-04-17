@@ -27,7 +27,7 @@ set -e
 
 RELEASE="true"
 REVISION='$Revision$'
-VERSION="0.7.8"
+VERSION="0.7.9"
 
 # All the paths we provide
 libdir="/usr/share/backup-manager"

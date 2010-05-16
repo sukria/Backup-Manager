@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright © 2005-2006 Alexis Sukrieh
+# Copyright © 2005-2010 Alexis Sukrieh
 # See the AUTHORS file for details.
 #
 # This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@ set -e
 
 RELEASE="true"
 REVISION='$Revision$'
-VERSION="0.7.8"
+VERSION="0.7.9"
 
 # All the paths we provide
 libdir="/usr/share/backup-manager"
@@ -173,7 +173,7 @@ while [[ $# -ge 1 ]]; do
     esac
     shift
 done
-info "Backup Manager $VERSION - Copyright (c) 2004-2007 Alexis Sukrieh"
+info "Backup Manager $VERSION - Copyright (c) 2004-2010 Alexis Sukrieh"
 
 debug "Loading configuration file : \"$conffile\"."
 source $conffile

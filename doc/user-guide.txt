@@ -13,7 +13,7 @@
 Copyright Notice
 ----------------
 
-     copyright (C) 2005 Alexis Sukrieh
+     copyright (C) 2010 Alexis Sukrieh
 
      This user guide is free software; you may redistribute it and/or
      modify it under the terms of the GNU General Public License as

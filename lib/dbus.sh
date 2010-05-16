@@ -1,4 +1,4 @@
-# Copyright � 2007 Rached Ben Mustapha
+# Copyright © 2007 Rached Ben Mustapha
 #
 # See the AUTHORS file for details.
 #

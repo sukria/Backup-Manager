@@ -1,4 +1,4 @@
-# Copyright © 2005-2006 The Backup Manager Authors
+# Copyright © 2005-2010 The Backup Manager Authors
 # See the AUTHORS file for details.
 #
 # This program is free software; you can redistribute it and/or
@@ -78,10 +78,10 @@ install_doc:
 	@echo -e "\n*** Building the User Guide ***\n"
 	$(MAKE) -C doc DESTDIR=$(DESTDIR)
 	install -d $(DOCDIR)
-	install --owner=root --group=root --mode=0644 $(DOCPDF) $(DOCDIR)
-	install --owner=root --group=root --mode=0644 $(DOCTXT) $(DOCDIR)
+	install -o root -g root -m 0644 $(DOCPDF) $(DOCDIR)
+	install -o root -g root -m 0644 $(DOCTXT) $(DOCDIR)
 	install -d $(DOCHTMLDIR)
-	install --owner=root --group=root --mode=0644 $(DOCHTMLFILES) $(DOCHTMLDIR)
+	install -o root -g root -m 0644 $(DOCHTMLFILES) $(DOCHTMLDIR)
 
 # The translation stuff
 install_po:
@@ -91,7 +91,7 @@ install_po:
 install_lib:
 	@echo -e "\n*** Installing libraries ***\n"
 	install -d $(LIBDIR)
-	install --owner=root --group=root --mode=0644 $(SHFILES) $(LIBDIR)
+	install -o root -g root -m 0644 $(SHFILES) $(LIBDIR)
 
 # The main stuff to build the backup-manager package
 install_bin:
@@ -99,14 +99,14 @@ install_bin:
 	mkdir -p $(DESTDIR)/usr/sbin
 	mkdir -p $(DESTDIR)/usr/bin
 	mkdir -p $(SHAREDIR)
-	install --owner=root --group=root --mode=0755 backup-manager $(DESTDIR)/usr/sbin
-	install --owner=root --group=root --mode=0755 backup-manager-purge $(DESTDIR)/usr/bin
-	install --owner=root --group=root --mode=0755 backup-manager-upload $(DESTDIR)/usr/bin
-	install --owner=root --group=root --mode=0644 backup-manager.conf.tpl $(SHAREDIR)
+	install -o root -g root -m 0755 backup-manager $(DESTDIR)/usr/sbin
+	install -o root -g root -m 0755 backup-manager-purge $(DESTDIR)/usr/bin
+	install -o root -g root -m 0755 backup-manager-upload $(DESTDIR)/usr/bin
+	install -o root -g root -m 0644 backup-manager.conf.tpl $(SHAREDIR)
 	
 	mkdir -p $(PERL5DIR)
 	mkdir -p $(PERL5DIR)/BackupManager
-	install --owner=root --group=root --mode=0644 BackupManager/*.pm $(PERL5DIR)/BackupManager
+	install -o root -g root -m 0644 BackupManager/*.pm $(PERL5DIR)/BackupManager
 
 # Building manpages
 man/backup-manager-upload.8:
@@ -124,7 +124,7 @@ manpages-stamp: man/backup-manager-upload.8 man/backup-manager-purge.8
 install_man: manpages-stamp
 	@echo -e "\n*** Installing man pages ***\n"
 	install -d $(DESTDIR)/usr/share/man/man8/
-	install --owner=root --group=root --mode=0644 man/*.8 $(DESTDIR)/usr/share/man/man8/
+	install -o root -g root -m 0644 man/*.8 $(DESTDIR)/usr/share/man/man8/
 
 testperldir:
 	@echo "PERL5DIR: $(PERL5DIR)"

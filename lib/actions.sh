@@ -1,4 +1,4 @@
-# Copyright © 2005-2006 Alexis Sukrieh
+# Copyright © 2005-2010 Alexis Sukrieh
 #
 # See the AUTHORS file for details.
 #
@@ -200,7 +200,7 @@ function create_directories()
     if [[ ! -d $BM_REPOSITORY_ROOT ]]
     then
         info "The repository \$BM_REPOSITORY_ROOT does not exist, creating it."
-        mkdir $BM_REPOSITORY_ROOT
+        mkdir -p $BM_REPOSITORY_ROOT
     fi
 
     # for security reason, the repository should not be world readable

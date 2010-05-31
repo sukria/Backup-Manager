@@ -94,17 +94,20 @@ function replace_deprecated_booleans()
     do
         key=$(echo "$line" | awk -F '=' '{print $1}')
         value=$(echo "$line" | awk -F '=' '{print $2}')
-        if [[ -n "$key" ]]; then
-            if [[ $(expr match "$key" BM_) -gt 0 ]]; then
-                if [[ "$value" = "yes" ]]; then
-                    warning "Deprecated boolean, \$key is set to \"yes\", setting \"true\" instead."
-                    nb_warnings=$(($nb_warnings + 1))
-                    eval "export $key=\"true\""
-                fi
-                if [[ "$value" = "no" ]]; then
-                    warning "Deprecated boolean, \$key is set to \"no\", setting \"false\" instead."
-                    nb_warnings=$(($nb_warnings + 1))
-                    eval "export $key=\"false\""
+        # Be sure to not treat BM_ARCHIVE_PREFIX as a deprecated boolean
+        if [[ "$key" != "BM_ARCHIVE_PREFIX" ]]; then
+            if [[ -n "$key" ]]; then
+                if [[ $(expr match "$key" BM_) -gt 0 ]]; then
+                    if [[ "$value" = "yes" ]]; then
+                        warning "Deprecated boolean, \$key is set to \"yes\", setting \"true\" instead."
+                        nb_warnings=$(($nb_warnings + 1))
+                        eval "export $key=\"true\""
+                    fi
+                    if [[ "$value" = "no" ]]; then
+                        warning "Deprecated boolean, \$key is set to \"no\", setting \"false\" instead."
+                        nb_warnings=$(($nb_warnings + 1))
+                        eval "export $key=\"false\""
+                    fi
                 fi
             fi
         fi

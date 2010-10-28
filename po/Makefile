@@ -1,4 +1,4 @@
-prefix=$(DESTDIR)
+prefix=$(DESTDIR)/$(PREFIX)
 
 # List here all source files with translatable strings.
 POTFILES= \
@@ -17,8 +17,8 @@ install: backup-manager.pot $(MOFILES)
 	@echo "Installing mo files"
 	for file in $(MOFILES); do \
 		lang=`echo $$file | sed 's/\.mo//'`; \
-		install -d $(prefix)/usr/share/locale/$$lang/LC_MESSAGES/; \
-		install -m 0644 $$file $(prefix)/usr/share/locale/$$lang/LC_MESSAGES/backup-manager.mo; \
+		install -d $(prefix)/share/locale/$$lang/LC_MESSAGES/; \
+		install -m 0644 $$file $(prefix)/share/locale/$$lang/LC_MESSAGES/backup-manager.mo; \
 	done
 
 $(POFILES_SRC):

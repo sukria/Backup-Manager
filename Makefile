@@ -27,15 +27,19 @@
 # Overwrite that variable if you need to prefix the destination 
 # (needed for vendors).
 DESTDIR?=
+PREFIX?=/usr
 
 # Overwrite that variable with the Perl vendorlib Config value if 
 # you package Backup Manager
 PERL5DIR?="$(DESTDIR)$(shell perl -MConfig -e 'print "$$Config{sitelib}"')"
 
 # Some static paths, specific to backup-manager
-LIBDIR=$(DESTDIR)/usr/share/backup-manager
+BINDIR=$(PREFIX)/bin
+SBINDIR=$(PREFIX)/sbin
+
+LIBDIR=$(DESTDIR)/$(PREFIX)/share/backup-manager
 CONTRIB=$(LIBDIR)/contrib
-SHAREDIR=$(DESTDIR)/usr/share/backup-manager
+SHAREDIR=$(DESTDIR)/$(PREFIX)/share/backup-manager
 SHFILES=\
 	lib/externals.sh \
 	lib/dialog.sh \
@@ -53,7 +57,7 @@ SHFILES=\
 	lib/md5sum.sh 
 
 # For the backup-manager-doc package
-DOCDIR		 = $(DESTDIR)/usr/share/doc/backup-manager
+DOCDIR		 = $(DESTDIR)/$(PREFIX)/share/doc/backup-manager
 DOCHTMLDIR	 = $(DOCDIR)/user-guide.html
 DOCPDF		 = doc/user-guide.pdf
 DOCHTMLFILES = doc/user-guide.html/*.html
@@ -96,12 +100,12 @@ install_lib:
 # The main stuff to build the backup-manager package
 install_bin:
 	@echo -e "\n*** Installing scripts ***\n"
-	mkdir -p $(DESTDIR)/usr/sbin
-	mkdir -p $(DESTDIR)/usr/bin
+	mkdir -p $(DESTDIR)/$(SBINDIR)
+	mkdir -p $(DESTDIR)/$(BINDIR)
 	mkdir -p $(SHAREDIR)
-	install -o root -g 0 -m 0755 backup-manager $(DESTDIR)/usr/sbin
-	install -o root -g 0 -m 0755 backup-manager-purge $(DESTDIR)/usr/bin
-	install -o root -g 0 -m 0755 backup-manager-upload $(DESTDIR)/usr/bin
+	install -o root -g 0 -m 0755 backup-manager $(DESTDIR)/$(SBINDIR)
+	install -o root -g 0 -m 0755 backup-manager-purge $(DESTDIR)/$(BINDIR)
+	install -o root -g 0 -m 0755 backup-manager-upload $(DESTDIR)/$(BINDIR)
 	install -o root -g 0 -m 0644 backup-manager.conf.tpl $(SHAREDIR)
 	
 	mkdir -p $(PERL5DIR)
@@ -123,8 +127,8 @@ manpages-stamp: man/backup-manager-upload.8 man/backup-manager-purge.8
 # Installing the man pages.
 install_man: manpages-stamp
 	@echo -e "\n*** Installing man pages ***\n"
-	install -d $(DESTDIR)/usr/share/man/man8/
-	install -o root -g 0 -m 0644 man/*.8 $(DESTDIR)/usr/share/man/man8/
+	install -d $(DESTDIR)/$(PREFIX)/share/man/man8/
+	install -o root -g 0 -m 0644 man/*.8 $(DESTDIR)/$(PREFIX)/share/man/man8/
 
 testperldir:
 	@echo "PERL5DIR: $(PERL5DIR)"

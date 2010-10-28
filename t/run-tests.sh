@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/env bash
 
 set -e
 # set -x
@@ -39,7 +39,7 @@ do
         count
         echo -n "[t $total] Running test $file: "
         
-        if /bin/bash $file 2>/dev/null; then
+        if bash $file 2>/dev/null; then
             test_success $file
         else
             test_failure $file

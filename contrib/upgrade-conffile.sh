@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/env bash
 
 # This will assist you for upgrading a conffile of version prior
 # to 0.5.9.

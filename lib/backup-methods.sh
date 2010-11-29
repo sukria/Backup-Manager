@@ -483,6 +483,10 @@ function __get_backup_tarball_remote_command()
             __get_flags_tar_blacklist "$target"
             command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j "$target""
         ;;
+        tar.lz) 
+            __get_flags_tar_blacklist "$target"
+            command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --lzma "$target""
+        ;;
         *)
             error "Remote tarball building is not possible with this archive filetype: \"$BM_TARBALL_FILETYPE\"."
         ;;
@@ -571,7 +575,7 @@ function __get_backup_tarball_command()
                 error "The archive type \"tar.lz\" depends on the tool \"\$lzma\"."
             fi
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target | $lzma -z -"
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --lzma -f"
         ;;
         zip) 
             if [[ ! -x $zip ]]; then
@@ -604,19 +608,6 @@ function build_clear_archive
     # A couple of archive types have a special command line
     case "$BM_TARBALL_FILETYPE" in 
 
-        # lzma archives should be piped manually
-        "tar.lz")
-            BM__CURRENT_COMMAND="tar"
-            if [[ "$verbosedebug" == "true" ]]; then
-                tail -f $logfile &
-            fi
-            
-            debug "$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -z - > $file_to_create 2>>$logfile"
-            tail_logfile "$logfile"
-            $tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f - $target 2>>$logfile | $lzma -z - > $file_to_create 2>>$logfile || error_code=$?
-            check_error_code "$error_code" "$file_to_create" "$logfile"
-        ;;
-        
         # dar has a special commandline, that cannot fit the common tar way
         "dar")
             BM__CURRENT_COMMAND="dar"

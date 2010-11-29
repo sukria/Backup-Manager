@@ -182,7 +182,12 @@ function check_filetypes()
         ;;
         "tar.bz2" )
             if [[ ! -x "$bzip" ]]; then
-                error "The BM_TARBALL_FILETYPE conf key is set to \"bzip2\" but bzip2 is not installed."
+                error "The BM_TARBALL_FILETYPE conf key is set to \"tar.bz2\" but bzip2 is not installed."
+            fi
+        ;;
+         "tar.lz" )
+            if [[ ! -x "$lzma" ]]; then
+                error "The BM_TARBALL_FILETYPE conf key is set to \"tar.lz\" but lzma is not installed."
             fi
         ;;
         "dar" )

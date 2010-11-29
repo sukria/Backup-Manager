@@ -1,15 +1,22 @@
 2010-05-31  Philippe Villiers <kissifrot@gmail.com>
+	* FIX bugs #237 and #244
+	- fixes incremental backups for tar.lz
+	- fixes exclude patterns for tar.lz
+	- nice level not set for tar.lz archives #237
+	(Thanks to Maciek Sitarz for the patch)
+
+2010-05-31  Philippe Villiers <kissifrot@gmail.com>
 	* FIX bug #240 :  Be sure to not treat BM_ARCHIVE_PREFIX as a deprecated
 	  boolean.
-	  
+
 +2010-04-17  Philippe Villiers <kissifrot@gmail.com>
 	* FIX bug #246 : Archives created in "/" never obsoloted.
 	(Thanks to Nicolas Baradakis for the patch)
-	  
+
 2010-01-20  Philippe Villiers <kissifrot@gmail.com>
 	* FIX bug #240 : will now create all needed dirs if $BM_REPOSITORY_ROOT
 	  or its parents do not exist
-	
+
 2010-01-20  Sven Joachim
 	* Search for genisoimage and wodim in addition to mkisofs and cdrecord
 	* Change mode of $mysql_conffile to 600 before writing password to it

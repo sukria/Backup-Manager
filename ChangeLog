@@ -5,7 +5,7 @@
 	- fixes incremental backups for tar.lz
 	- fixes exclude patterns for tar.lz
 	- nice level not set for tar.lz archives #237
-	(Thanks to Maciek Sitarz for the patch)
+	(Thanks to Maciek Sitarz and Larsen for the patch)
 
 2010-05-31  Philippe Villiers <kissifrot@gmail.com>
 	* FIX bug #240 :  Be sure to not treat BM_ARCHIVE_PREFIX as a deprecated

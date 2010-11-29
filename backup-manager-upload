@@ -55,7 +55,7 @@ BackupManager::Config::getopt("$0 -m=mode -h=host -u=user [options] date\n
 -l|--list	: Only prints which files would be uploaded.
 --gpg-recipient : Selects the public key used for gpg encryption (only for ssh-gpg mode).
 --ftp-purge	: Purge the remote directory before uploading files in FTP mode.
---ftp-test	: Send a test file before uploading archives in FTP mode.
+--ftp-test	: Sends a test file before uploading archives in FTP mode.
 --s3-purge	: Purge the remote directory before uploading files in S3 mode.
 --s3-maxsize	: Maximum file size to upload.  If file execeds this size, it will be `split`. Default is 4GB
 --ssh-purge	: Purge the remote directory before uploading files in SSH mode.

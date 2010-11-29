@@ -129,7 +129,8 @@ function handle_tarball_error()
 
 function __exec_meta_command()
 {
-    command="$nice_bin -n $BM_ARCHIVE_NICE_LEVEL $1"
+    nice="$nice_bin -n $BM_ARCHIVE_NICE_LEVEL"
+    command="$nice $1"
     file_to_create="$2"
     compress="$3"
     debug "__exec_meta_command ($command, $file_to_create, $compress)"
@@ -165,11 +166,11 @@ function __exec_meta_command()
                 debug "$command > $file_to_create 2> $logfile"
                 tail_logfile "$logfile"
                 if [[ "$BM_ENCRYPTION_METHOD" = "gpg" ]]; then
-                    $command 2>$logfile | $compress_bin -f -q -9 2>$logfile | $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.$ext.gpg 2> $logfile
-                    debug "$command | $compress_bin -f -q -9 | $gpg $BM__GPG_HOMEDIR -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create.$ext.gpg 2> $logfile"
+                    $command 2>$logfile | $compress_bin -f -q -9 2>$logfile | $nice $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.$ext.gpg 2> $logfile
+                    debug "$command | $compress_bin -f -q -9 | $nice $gpg $BM__GPG_HOMEDIR -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create.$ext.gpg 2> $logfile"
                     file_to_create="$file_to_create.$ext.gpg"
                 else
-                    $command 2> $logfile | $compress_bin -f -q -9 > $file_to_create.$ext 2> $logfile
+                    $command 2> $logfile | $nice $compress_bin -f -q -9 > $file_to_create.$ext 2> $logfile
                     file_to_create="$file_to_create.$ext"
                 fi
 
@@ -191,7 +192,7 @@ function __exec_meta_command()
             debug "$command 1> $file_to_create 2>$logfile"
             tail_logfile "$logfile"
             if [[ "$BM_ENCRYPTION_METHOD" = "gpg" ]]; then
-                $command | $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.gpg 2> $logfile
+                $command | $nice $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.gpg 2> $logfile
                 file_to_create="$file_to_create.gpg"
             else
                 $command 1> $file_to_create 2>$logfile

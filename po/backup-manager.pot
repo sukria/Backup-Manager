@@ -507,62 +507,70 @@ msgid "Print this short help message."
 msgstr ""
 
 #: ../lib/dialog.sh:29
-msgid "Print what happens on STDOUT."
+msgid "Print version number."
 msgstr ""
 
 #: ../lib/dialog.sh:30
+msgid "Print what happens on STDOUT."
+msgstr ""
+
+#: ../lib/dialog.sh:31
+msgid "Print debug messages on STDOUT."
+msgstr ""
+
+#: ../lib/dialog.sh:32
 msgid "Disable warnings."
 msgstr ""
 
-#: ../lib/dialog.sh:33
+#: ../lib/dialog.sh:35
 msgid "Single actions:"
 msgstr ""
 
-#: ../lib/dialog.sh:34
+#: ../lib/dialog.sh:36
 msgid "Just upload the files of the day."
 msgstr ""
 
-#: ../lib/dialog.sh:35
+#: ../lib/dialog.sh:37
 msgid "Just burn the files of the day."
 msgstr ""
 
-#: ../lib/dialog.sh:36
+#: ../lib/dialog.sh:38
 msgid "Just test the md5 sums."
 msgstr ""
 
-#: ../lib/dialog.sh:37
+#: ../lib/dialog.sh:39
 msgid "Just purge old archives."
 msgstr ""
 
-#: ../lib/dialog.sh:40
+#: ../lib/dialog.sh:42
 msgid "Behaviour:"
 msgstr ""
 
-#: ../lib/dialog.sh:41
+#: ../lib/dialog.sh:43
 msgid "Choose an alternate config file."
 msgstr ""
 
-#: ../lib/dialog.sh:42
+#: ../lib/dialog.sh:44
 msgid "Force overwrite of existing archives."
 msgstr ""
 
-#: ../lib/dialog.sh:45
+#: ../lib/dialog.sh:47
 msgid "Unwanted actions:"
 msgstr ""
 
-#: ../lib/dialog.sh:46
+#: ../lib/dialog.sh:48
 msgid "Disable the upload process."
 msgstr ""
 
-#: ../lib/dialog.sh:47
+#: ../lib/dialog.sh:49
 msgid "Disable the burning process."
 msgstr ""
 
-#: ../lib/dialog.sh:48
+#: ../lib/dialog.sh:50
 msgid "Disable the purge process."
 msgstr ""
 
-#: ../lib/dialog.sh:62 ../lib/dialog.sh:81
+#: ../lib/dialog.sh:64 ../lib/dialog.sh:83
 msgid "Not in interactive mode, cannot continue."
 msgstr ""
 

@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: backup-manager 0.7.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-07-15 20:27+0200\n"
-"PO-Revision-Date: 2010-01-20 22:16+0100\n"
+"PO-Revision-Date: 2010-11-29 23:11+0100\n"
 "Last-Translator: Philippe Villiers <kissifrot@gmail.com>\n"
 "Language-Team: Debian l10n French Team <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -500,63 +500,71 @@ msgid "Print this short help message."
 msgstr "Affiche ce court message d'aide."
 
 #: ../lib/dialog.sh:29
+msgid "Print version number."
+msgstr "Affiche le numéro de version."
+
+#: ../lib/dialog.sh:30
 msgid "Print what happens on STDOUT."
 msgstr "Affiche ce qui se passe sur STDOUT."
 
-#: ../lib/dialog.sh:30
+#: ../lib/dialog.sh:31
+msgid "Print debug messages on STDOUT."
+msgstr "Affiche les messages de débug sur STDOUT."
+
+#: ../lib/dialog.sh:32
 msgid "Disable warnings."
 msgstr "Désactive les avertissements."
 
-#: ../lib/dialog.sh:33
+#: ../lib/dialog.sh:35
 msgid "Single actions:"
 msgstr "Actions uniques :"
 
-#: ../lib/dialog.sh:34
+#: ../lib/dialog.sh:36
 msgid "Just upload the files of the day."
 msgstr "Se contente d'envoyer les fichiers du jour."
 
-#: ../lib/dialog.sh:35
+#: ../lib/dialog.sh:37
 msgid "Just burn the files of the day."
 msgstr "Se contente de graver les fichiers du jour."
 
-#: ../lib/dialog.sh:36
+#: ../lib/dialog.sh:38
 msgid "Just test the md5 sums."
 msgstr "Se contente de tester les sommes MD5."
 
-#: ../lib/dialog.sh:37
+#: ../lib/dialog.sh:39
 msgid "Just purge old archives."
 msgstr "Se contente de supprimer les vieilles archives."
 
-#: ../lib/dialog.sh:40
+#: ../lib/dialog.sh:42
 msgid "Behaviour:"
 msgstr "Comportement :"
 
-#: ../lib/dialog.sh:41
+#: ../lib/dialog.sh:43
 msgid "Choose an alternate config file."
 msgstr "Choisit un fichier de configuration alternatif."
 
-#: ../lib/dialog.sh:42
+#: ../lib/dialog.sh:44
 msgid "Force overwrite of existing archives."
 msgstr "Oblige la réécriture d'archives existantes."
 
-#: ../lib/dialog.sh:45
+#: ../lib/dialog.sh:47
 msgid "Unwanted actions:"
 msgstr "Actions non désirées :"
 
-#: ../lib/dialog.sh:46
+#: ../lib/dialog.sh:48
 msgid "Disable the upload process."
 msgstr "Désactive la phase d'envoi de fichiers."
 
-#: ../lib/dialog.sh:47
+#: ../lib/dialog.sh:49
 msgid "Disable the burning process."
 msgstr "Désactive la phase de gravure de données."
 
-#: ../lib/dialog.sh:48
+#: ../lib/dialog.sh:50
 msgid "Disable the purge process."
 msgstr "Désactive la phase de nettoyage."
 
-#: ../lib/dialog.sh:62
-#: ../lib/dialog.sh:81
+#: ../lib/dialog.sh:64
+#: ../lib/dialog.sh:83
 msgid "Not in interactive mode, cannot continue."
 msgstr "Pas en mode interactif, impossible de continuer."
 
@@ -798,14 +806,16 @@ msgstr "Impossible d'exécuter la précommande."
 
 #~ msgid "Internal error: wrong call to bm_merge_incremental_backups()."
 #~ msgstr "Erreur interne : mauvais appel à bm_merge_incremental_backups()."
+
 #~ msgid "Unable to change the owner of \"$file_to_create\"."
 #~ msgstr "Impossible de changer le propriétaire de « $file_to_create »."
+
 #~ msgid "Unable to change file permissions of \"$file_to_create\"."
 #~ msgstr "Impossible de changer les droits d'accès de « $file_to_create »."
 
 #, fuzzy
 #~ msgid "Compressor $compress requires $gzip."
 #~ msgstr "L'archiveur $compress nécessite $bzip."
+
 #~ msgid "Compressor $compress requires $bzip."
 #~ msgstr "L'archiveur $compress nécessite $bzip."
-

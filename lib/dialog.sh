@@ -19,7 +19,7 @@
 # to send feedback tothe user.
 #
 # print on STDOUT the usage 
-usage()
+function usage()
 {
     echo_translated "$0 [options]"
 

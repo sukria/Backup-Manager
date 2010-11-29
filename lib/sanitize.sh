@@ -75,7 +75,7 @@ function confkey_require()
     fi
 }
 
-confkey_error()
+function confkey_error()
 {
     key="$1"
     keymandatory="$2"

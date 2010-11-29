@@ -1,6 +1,8 @@
 2010-11-29  Philippe Villiers <kissifrot@gmail.com>
 	* FIX bug #101 : Added support for PostgreSQL backup method (Thanks to
 	 Helios de Creisquer for the patch)
+	* FIX bug #225 : Added "--version" and "--debug" to --help output (Thanks
+	to Larsen for the patch)
 	* FIX bugs #237 and #244
 	- fixes incremental backups for tar.lz
 	- fixes exclude patterns for tar.lz

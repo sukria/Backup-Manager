@@ -26,7 +26,9 @@ function usage()
     echo ""
     echo_translated "Output:"
     echo -n "--help|-h           : "; echo_translated "Print this short help message."
+    echo -n "--version           : "; echo_translated "Print version number."
     echo -n "--verbose|-v        : "; echo_translated "Print what happens on STDOUT."
+    echo -n "--debug|-d          : "; echo_translated "Print debug messages on STDOUT."
     echo -n "--no-warnings       : "; echo_translated "Disable warnings."
 
     echo ""

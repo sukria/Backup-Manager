@@ -31,6 +31,9 @@ function make_archives()
         mysql)
             backup_method_mysql "$method"
         ;;
+        pgsql)
+            backup_method_pgsql "$method"
+        ;;
         tarball|tarball-incremental)
             backup_method_tarball "$method"
         ;;

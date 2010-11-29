@@ -72,6 +72,7 @@ export BM_ARCHIVE_NICE_LEVEL="10"
 # - tarball
 # - tarball-incremental
 # - mysql
+# - pgsql
 # - svn
 # - pipe
 # - none
@@ -187,7 +188,7 @@ export BM_TARBALLINC_MASTERDATEVALUE="1"
 # BM_TARBALLINC_MASTERDATEVALUE="1"
 
 ##############################################################
-# Backup method: MYSQl
+# Backup method: MYSQL
 #############################################################
 
 # This method is dedicated to MySQL databases.
@@ -223,6 +224,37 @@ export BM_MYSQL_FILETYPE="bzip2"
 # (take care to what you do; this will be silently added to the 
 # command line.)
 export BM_MYSQL_EXTRA_OPTIONS=""
+
+##############################################################
+# Backup method: PostgreSQL
+#############################################################
+
+# This method is dedicated to PostgreSQL databases.
+# You should not use the tarball method for backing up database
+# directories or you may have corrupted archives.
+# Enter here the list of databases to backup.
+# Wildcard: __ALL__ (will dump all the databases in one archive)
+export BM_PGSQL_DATABASES="__ALL__"
+
+# The user who is allowed to read every databases filled in BM_PGSQL_DATABASES
+export BM_PGSQL_ADMINLOGIN="root"
+
+# its password
+export BM_PGSQL_ADMINPASS=""
+
+# the host where the database is
+export BM_PGSQL_HOST="localhost"
+
+# the port where PostgreSQL listen to on the host
+export BM_PGSQL_PORT="5432"
+
+# which compression format to use? (gzip or bzip2)
+export BM_PGSQL_FILETYPE="bzip2"
+
+# Extra options to append to pg_dump
+# (take care to what you do; this will be silently added to the 
+# command line.)
+export BM_PGSQL_EXTRA_OPTIONS=""
 
 ##############################################################
 # Backup method: svn

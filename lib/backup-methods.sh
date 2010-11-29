@@ -869,6 +869,60 @@ function backup_method_tarball()
     fi
 }
 
+function backup_method_pgsql()
+{
+    method="$1"
+    pgsql_conffile="$HOME/.pgpass"
+    pgsql_conffile_bm="$HOME/.pgpass.backup-manager.bak"
+
+    debug "backup_method_pgsql ($method)"
+
+    info "Using method \"\$method\"."
+    if [[ ! -x $pgdump ]]; then
+        error "The \"pgsql\" method is chosen, but \$pgdump is not found."
+    fi
+
+    opt=" -U$BM_PGSQL_ADMINLOGIN -h$BM_PGSQL_HOST -p$BM_PGSQL_PORT" 
+    BM_SHOULD_PURGE_PGPASS="false"
+
+    if [[ -f $pgsql_conffile ]]; then
+        info "Found existing PgSQL client configuration file: \$pgsql_conffile"
+        info "Looking for matching credentials in this file..."
+        if ! grep -qE "(${BM_PGSQL_HOST}|[^:]*):(${BM_PGSQL_PORT}|[^:]*):[^:]*:${BM_PGSQL_ADMINLOGIN}:${BM_PGSQL_ADMINPASS}" $pgsql_conffile then
+            info "No matching credentials: inserting our own."
+            cp $pgsql_conffile $pgsql_conffile_bm
+            BM_SHOULD_PURGE_PGPASS="true"
+            echo "${BM_PGSQL_HOST}:${BM_PGSQL_PORT}:${BM_PGSQL_ADMINLOGIN}:${BM_PGSQL_ADMINPASS}" >> $pgsql_conffile
+        fi
+    else
+        warning "Creating a default PgSQL client configuration file: \$HOME/.pgpass"
+        echo "${BM_PGSQL_HOST}:${BM_PGSQL_PORT}:${BM_PGSQL_ADMINLOGIN}:${BM_PGSQL_ADMINPASS}" >> $pgsql_conffile
+        chmod 0600 $pgsql_conffile
+    fi
+
+    compress="$BM_PGSQL_FILETYPE"
+
+    for database in $BM_PGSQL_DATABASES
+    do
+        if [[ "$database" = "__ALL__" ]]; then
+            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-all-pgsql-databases.$TODAY.sql"
+            command="${pgdump}all $opt $BM_PGSQL_EXTRA_OPTIONS"
+        else
+            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${database}.$TODAY.sql"
+            command="$pgdump $opt $database $BM_PGSQL_EXTRA_OPTIONS"
+        fi
+        __create_file_with_meta_command
+    done
+
+    # purge the .pgpass file, if created by Backup Manager
+    if [[ "$BM_SHOULD_PURGE_PGPASS" == "true" ]]; then
+        info "restoring initial .pgpass file."
+        warning "To avoid problems with .pgpass, insert the configured host:port:user:pass in $pgsql_conffile"
+        mv $pgsql_conffile_bm $pgsql_conffile
+    fi
+}
+
+
 function backup_method_mysql()
 {
     method="$1"
@@ -899,7 +953,7 @@ function backup_method_mysql()
         echo "password=\"$BM_MYSQL_ADMINPASS\"" >> $mysql_conffile
         BM_SHOULD_PURGE_MYCNF="true"
     fi
-    base_command="$mysqldump --defaults-extra-file=$mysql_conffile $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT"
+    base_command="$mysqldump --defaults-extra-file=$mysql_conffile $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT $BM_MYSQL_EXTRA_OPTIONS"
     compress="$BM_MYSQL_FILETYPE"   
 
     for database in $BM_MYSQL_DATABASES

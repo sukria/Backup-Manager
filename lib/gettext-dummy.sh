@@ -18,14 +18,14 @@
 
 # Here we have to find a way to get the \$foo occurences 
 # substituted with value of $foo...
-translate()
+function translate()
 {
     out=$(echo "$1" | sed -e 's/\\\$/\$/g')
     out=$(eval "echo \"$out\"")
     echo "$out"
 }
 
-echo_translated()
+function echo_translated()
 {
     if [[ "$1" = "-n" ]]; then
         message=$(translate "$2")

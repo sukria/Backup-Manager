@@ -46,7 +46,7 @@ USER_BUS_OBJECT="/org/backupmanager/instance/UserInstance/${USERNAME}"
 function bm_dbus_init()
 {
     debug "bm_dbus_init()"
-    dbus_send=$(which dbus-send) || true
+    dbus_send=$(which dbus-send 2>/dev/null) || true
 
     if [ -x "${dbus_send}" ]; then
         if [ "${UID}" = "0" ]; then

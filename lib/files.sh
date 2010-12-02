@@ -58,7 +58,7 @@ function get_dir_name()
         do
             parent=$directory
         done
-        dirname=$directory
+        dirname=-$directory
         export IFS=$OLDIFS
     else
         echo ""

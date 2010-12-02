@@ -166,8 +166,16 @@ if [[ "$BM_ARCHIVE_METHOD" = "tarball-incremental" ]] &&
 fi
 if [[ -n "$BM_TARBALLINC_MASTERDATEVALUE" ]]; then
     if [[ "$BM_TARBALLINC_MASTERDATEVALUE" -gt "6" ]]; then
-        warning "BM_TARBALLINC_MASTERDATEVALUE should not be greater than 6, falling back to 0"
-        export BM_TARBALLINC_MASTERDATEVALUE="0"
+        if [[ "$BM_TARBALLINC_MASTERDATETYPE" = "weekly" ]]; then
+            warning "BM_TARBALLINC_MASTERDATEVALUE should not be greater than 6, falling back to 0"
+            export BM_TARBALLINC_MASTERDATEVALUE="0"
+        else
+        # monthly
+            if [[ "$BM_TARBALLINC_MASTERDATEVALUE" -gt "31" ]]; then
+                warning "BM_TARBALLINC_MASTERDATEVALUE should not be greater than 31, falling back to 1"
+                export BM_TARBALLINC_MASTERDATEVALUE="1"
+            fi
+        fi
     fi
 fi
 

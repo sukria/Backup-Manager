@@ -889,7 +889,7 @@ function backup_method_pgsql()
     if [[ -f $pgsql_conffile ]]; then
         info "Found existing PgSQL client configuration file: \$pgsql_conffile"
         info "Looking for matching credentials in this file..."
-        if ! grep -qE "(${BM_PGSQL_HOST}|[^:]*):(${BM_PGSQL_PORT}|[^:]*):[^:]*:${BM_PGSQL_ADMINLOGIN}:${BM_PGSQL_ADMINPASS}" $pgsql_conffile then
+        if ! grep -qE "(${BM_PGSQL_HOST}|[^:]*):(${BM_PGSQL_PORT}|[^:]*):[^:]*:${BM_PGSQL_ADMINLOGIN}:${BM_PGSQL_ADMINPASS}" $pgsql_conffile; then
             info "No matching credentials: inserting our own."
             cp $pgsql_conffile $pgsql_conffile_bm
             BM_SHOULD_PURGE_PGPASS="true"

@@ -1,3 +1,12 @@
+2010-12-03 Philippe Villiers <kissifrot@gmail.com>
+	* Typo fix in backup_method_pgsql().
+
+2010-12-02 Philippe Villiers <kissifrot@gmail.com>
+	* FIX bug #171 : Bad file name for tarballs with "short" nameformat
+	(Thanks to Laurent Léonard for th patch)
+	* Fixed regression in fix for bug #179 (it breaks the 'monthly'
+	BM_TARBALLINC_MASTERDATEVALUE). 
+
 2010-11-29  Philippe Villiers <kissifrot@gmail.com>
 	* FIX bug #101 : Added support for PostgreSQL backup method (Thanks to
 	 Helios de Creisquer for the patch)
@@ -9,11 +18,16 @@
 	- nice level not set for tar.lz archives #237
 	(Thanks to Maciek Sitarz and Larsen for the patch)
 
+2010-10-28  Rached Ben Mustapha <rached@benmur.net>
+	* Don't hardcode /usr when installing 
+	* The root group does not exist on FreeBSD, install using gid 0 
+	* Don't hardcode the path to bash
+
 2010-05-31  Philippe Villiers <kissifrot@gmail.com>
 	* FIX bug #240 :  Be sure to not treat BM_ARCHIVE_PREFIX as a deprecated
 	  boolean.
 
-+2010-04-17  Philippe Villiers <kissifrot@gmail.com>
+2010-04-17  Philippe Villiers <kissifrot@gmail.com>
 	* FIX bug #246 : Archives created in "/" never obsoloted.
 	(Thanks to Nicolas Baradakis for the patch)
 

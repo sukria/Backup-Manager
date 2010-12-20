@@ -1,3 +1,9 @@
+Backup Manager 0.7.10.1
+
+	[ Larsen ]
+	* Fix for bug #237
+	  Add nice level to commands used in lib/backup-methods.sh
+
 Backup Manager 0.7.10
 
 	[ Philippe Villiers ]

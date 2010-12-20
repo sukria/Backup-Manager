@@ -1,43 +1,6 @@
 
-* Code
+Backup Manager is currently maintained by Philippe Villiers.
 
-Backup Manager is developed and maintained by Alexis Sukrieh.
+It was first written by Alexis Sukrieh.
 
-Here are the contributors, almost sorted by activity on the project
-        
-        - Sven Joachim <svenjoac@gmx.de> (Debian maintainer as well)
-        - Thomas Parmelan <tom+backup-manager@ankh.fr.eu.org>
-        - Michel Grentzinger <michelg@backup-manager.org>
-        - Jan Metzger <5cent1@gmx.net>
-        - Andreas "Jimmy" Gredler <jimmy@backup-manager.org>
-        - Brad Dixon <rbdixon@gmail.com>
-        - Michael.Guerin <mickkael@free.fr>
-        - Michael Prokop <mikap@grml.org> 
-    
-* Documentation
-
-    User Guide
-        - Alexis Sukrieh <sukria@backup-manager.org>
-        - Sven Joachim <svenjoac@gmx.de>
-
-* Translations:
-
-    German: 
-        Sven Joachim <svenjoac@gmx.de>
-    
-    Spanish: 
-        Niv Sardi-Altivanik <xaiki@cxhome.ath.cx>
-        César Gómez Martín <cesar.gomez@gmail.com>
-    
-    Italian: 
-        Matteo Frare Barutti <xenon@ngi.it>
-    
-    French:
-        Alexis Sukrieh <sukria@backup-manager.org>
-    
-    Vietnamese:
-        Clytie Siddall <clytie@riverland.net.au>
-    
-    Dutch:
-        Bjorn Wetzels <Bjorn.Wetzels@planet.nl>
-
+Check the ChangeLog file for details about contributors.

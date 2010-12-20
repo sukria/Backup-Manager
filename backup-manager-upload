@@ -567,16 +567,16 @@ sub send_files_with_ftp($$$$$)
     else {
         print_error "Unsupported value for BM_UPLOAD_FTP_SECURE : $BM_UPLOAD_FTP_SECURE";
         return FALSE;
-    }   
-    
-	# loop on each hosts given and connect to them.
-	foreach my $host (@{$ra_hosts}) {
+    }
+
+    # loop on each hosts given and connect to them.
+    foreach my $host (@{$ra_hosts}) {
 
         my $ftp;
         
         # The FTP over TLS transfer mode
         if ($BM_UPLOAD_FTP_SECURE) {
-    		$ftp = ftptls_connect_to_host ($host);
+            $ftp = ftptls_connect_to_host ($host);
             unless (defined $ftp) {
                 print_error "Unable to connect to host: $host";
                 return FALSE;
@@ -598,7 +598,7 @@ sub send_files_with_ftp($$$$$)
 
         # The unencrypted FTP transfers
         else {
-    		$ftp = ftp_connect_to_host ($host);
+            $ftp = ftp_connect_to_host ($host);
             unless (defined $ftp) {
                 print_error "Unable to connect to host: $host";
                 return FALSE;
@@ -633,7 +633,7 @@ sub send_files_with_ftp($$$$$)
                 }
             }
         }
-			
+
         # Now that we're connected and logged in, purge the repo if needed
         if ($g_ftpclean) {
             unless (ftp_clean_directory($ftp)) {
@@ -646,26 +646,26 @@ sub send_files_with_ftp($$$$$)
             chomp $file;
             if ($BM_UPLOAD_FTP_SECURE) {
                 if (!ftptls_put_file ($ftp, $file)) {
-		    print_error "Unable to transfer $file";
-		    return FALSE;
+                    print_error "Unable to transfer $file";
+                    return FALSE;
                 }
                 else {
-			print_info "File $file transfered\n";
+                    print_info "File $file transfered\n";
                 }
             }
             else {
                 if (!ftp_put_file ($ftp, $file)) {
-		    print_error "Unable to transfer $file: " . $ftp->message;
-		    return FALSE;
+                    print_error "Unable to transfer $file: " . $ftp->message;
+                    return FALSE;
                 }
                 else {
-            print_info "File $file transfered\n";
+                    print_info "File $file transfered\n";
                 }
             }
         }
-        print_info "All transfers done, loging out from $host\n";
+        print_info "All transfers done, logging out from $host\n";
         $ftp->quit;
-	}	
+    }
     return TRUE;
 }
 

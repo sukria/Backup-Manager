@@ -218,7 +218,7 @@ function bm_upload_rsync_common()
     fi
     if [[ -z "$BM_UPLOAD_RSYNC_DESTINATION" ]]; then
         BM_UPLOAD_RSYNC_DESTINATION="$BM_UPLOAD_DESTINATION"
-    fi        
+    fi
     if [[ -z "$BM_UPLOAD_RSYNC_DESTINATION" ]]; then
         error "No valid destination found, RSYNC upload not possible."
     fi
@@ -228,6 +228,10 @@ function bm_upload_rsync_common()
         if [[ "$BM_UPLOAD_RSYNC_DUMPSYMLINKS" = "true" ]]; then
             rsync_options="-vaL"
         fi
+    fi
+
+    if [[ ! -z $BM_UPLOAD_RSYNC_BLACKLIST ]]; then
+        rsync_options="${rsync_options} --exclude=\"$BM_UPLOAD_RSYNC_BLACKLIST\""
     fi
 
     for directory in $BM_UPLOAD_RSYNC_DIRECTORIES

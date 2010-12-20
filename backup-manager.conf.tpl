@@ -454,6 +454,10 @@ export BM_UPLOAD_RSYNC_HOSTS=""
 # enter true or false (true can lead to huge archives, be careful).    
 export BM_UPLOAD_RSYNC_DUMPSYMLINKS="false"
 
+# Files/folders to exclude when rsyncing. Warning: rsync will interpret
+# it as a mask, so will exclude any file/folder corresponding to it
+export BM_UPLOAD_RSYNC_BLACKLIST=""
+
 ##############################################################
 # Section "BURNING" 
 # - Automatic CDR/CDRW/DVDR burning

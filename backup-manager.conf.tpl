@@ -389,6 +389,11 @@ export BM_UPLOAD_FTP_SECURE="false"
 # This is mandatory for NATed/firewalled environments 
 export BM_UPLOAD_FTP_PASSIVE="true"
 
+# Timeout (in seconds) for FTP transfer
+# This setting only has effect when using FTP transfer with
+# secure mode disabled (BM_UPLOAD_FTP_SECURE to "false")
+export BM_UPLOAD_FTP_TIMEOUT="120"
+
 # Test the FTP connection before starting archives upload.
 # This will enable BM to try sending a 2MB test file before
 # sending any archive

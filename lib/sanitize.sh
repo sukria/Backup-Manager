@@ -237,11 +237,22 @@ if [[ "$BM_UPLOAD_METHOD" = "ssh" ]]; then
     confkey_require "BM_UPLOAD_SSH_PORT" "22"
 fi
 
+if [[ "$BM_UPLOAD_METHOD" = "ftp" ]]; then
+    confkey_require "BM_UPLOAD_FTP_TIMEOUT" "120"
+fi
+
 if [[ "$BM_ARCHIVE_METHOD" = "mysql" ]]; then
     confkey_require "BM_MYSQL_ADMINLOGIN" "root"
     confkey_require "BM_MYSQL_HOST" "localhost"
     confkey_require "BM_MYSQL_PORT" "3306"
     confkey_require "BM_MYSQL_FILETYPE" "tar.gz"
+fi
+
+if [[ "$BM_ARCHIVE_METHOD" = "pgsql" ]]; then
+    confkey_require "BM_PGSQL_ADMINLOGIN" "root"
+    confkey_require "BM_PGSQL_HOST" "localhost"
+    confkey_require "BM_PGSQL_PORT" "3306"
+    confkey_require "BM_PGSQL_FILETYPE" "tar.gz"
 fi
 
 # Burning system

@@ -492,6 +492,13 @@ sub ftp_connect_to_host ($)
         return undef;
     }
 
+    # get the timeout from the configuration
+    # default is set to 120.
+    my $BM_UPLOAD_FTP_TIMEOUT = $ENV{"BM_UPLOAD_FTP_TIMEOUT"};
+    unless (defined $BM_UPLOAD_FTP_TIMEOUT) {
+        $BM_UPLOAD_FTP_TIMEOUT = 120;
+    }
+
     # trying to get Net::FTP.
     eval "use Net::FTP";
     if ($@) {
@@ -502,6 +509,7 @@ sub ftp_connect_to_host ($)
         $ftp = new Net::FTP (
                 $host, 
                 Debug => 0,
+                Timeout => $BM_UPLOAD_FTP_TIMEOUT,
                 Passive => $BM_UPLOAD_FTP_PASSIVE);
     };
     if ($@) {
@@ -539,8 +547,6 @@ sub ftptls_connect_to_host ($)
 # http://search.cpan.org/~eyck/Net-Lite-FTP-0.45/lib/Net/Lite/FTP.pm
 sub send_files_with_ftp($$$$$)
 {
-	
-	
 	# getting args
 	my ($user, $passwd, $ra_hosts, $repository, $ra_files) = @_;
 	unless (defined $user and 

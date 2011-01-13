@@ -656,7 +656,7 @@ sub send_files_with_ftp($$$$$)
                     return FALSE;
                 }
                 else {
-                    print_info "File $file transfered\n";
+                    print_info "File $file transferred\n";
                 }
             }
             else {
@@ -665,7 +665,7 @@ sub send_files_with_ftp($$$$$)
                     return FALSE;
                 }
                 else {
-                    print_info "File $file transfered\n";
+                    print_info "File $file transferred\n";
                 }
             }
         }

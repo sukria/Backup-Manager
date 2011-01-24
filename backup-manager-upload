@@ -589,13 +589,13 @@ sub send_files_with_ftp($$$$$)
             }
 
             unless (ftptls_login($ftp, $user, $passwd)) {
-                print_error "unable to login on ${host} in FTP TLS mode.";
+                print_error "Unable to login on ${host} in FTP TLS mode.";
                 return FALSE;
             }
             unless (ftptls_cwd($ftp, $repository)) {
                 print_info "The directory ${repository} does not exist, trying to create it.";
                 unless (ftptls_mkdir($ftp, $repository)) {
-                print_error  "unable to create directory ${repository} in FTP TLS mode: " . $ftp->message;
+                print_error  "Unable to create directory ${repository} in FTP TLS mode: " . $ftp->message;
                 return FALSE;
                 }
             }
@@ -611,13 +611,13 @@ sub send_files_with_ftp($$$$$)
             }
 
             unless (ftp_login($ftp, $user, $passwd)) {
-                print_error "unable to login on ${host} in FTP mode.";
+                print_error "Unable to login on ${host} in FTP mode.";
                 return FALSE;
             }
             unless (ftp_cwd($ftp, $repository)) {
                 print_info "The directory ${repository} does not exist, trying to create it.";
                 unless (ftp_mkdir($ftp, $repository)) {
-                print_error  "unable to create directory ${repository} in FTP mode: " . $ftp->message;
+                print_error  "Unable to create directory ${repository} in FTP mode: " . $ftp->message;
                 return FALSE;
                 }
             }
@@ -627,15 +627,21 @@ sub send_files_with_ftp($$$$$)
         # Now that we're connected and logged in, test an upload if needed
         if ($g_ftptest) {
             if ($BM_UPLOAD_FTP_SECURE) {
-                unless (ftptls_upload_test_file($ftp)) {
+                if (!ftptls_upload_test_file($ftp)) {
                     print_error "Unable to transfer test file";
                     return FALSE;
                 }
+                else {
+                    print_info "Test file transferred\n";
+                }
             }
             else {
-                unless (ftp_upload_test_file($ftp)) {
-                print_error "Unable to transfer test file";
-                return FALSE;
+                if (!ftp_upload_test_file($ftp)) {
+                    print_error "Unable to transfer test file";
+                    return FALSE;
+                }
+                else {
+                    print_info "Test file transferred\n";
                 }
             }
         }
@@ -647,7 +653,7 @@ sub send_files_with_ftp($$$$$)
             }
         }
 
-        # Put all the files over the connexion
+        # Put all the files over the connection
         foreach my $file (@{$ra_files}) {
             chomp $file;
             if ($BM_UPLOAD_FTP_SECURE) {
@@ -806,7 +812,7 @@ sub send_files_with_s3($$$$$$)
 		);
 
 		unless (defined $s3) {
-			print_error "unable to connect to $host : $@\n";
+			print_error "Unable to connect to $host : $@\n";
 			return FALSE;
 		}
 

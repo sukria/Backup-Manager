@@ -16,7 +16,7 @@
 # The backup-manager's dialog.sh library.
 #
 # This will handle every functions dedicated 
-# to send feedback tothe user.
+# to send feedback to the user.
 #
 # print on STDOUT the usage 
 function usage()
@@ -59,7 +59,7 @@ function bm_prompt()
 {
     # this must be translated here, I cannot do it here! 
     question="$1"
-         
+
     if ! tty -s ; then
         error "Not in interactive mode, cannot continue."
     fi
@@ -91,7 +91,7 @@ function tail_logfile
 {
     logfile="$1"
     if [[ "$verbosedebug" == "true" ]]; then
-        debug "Outping content of $logfile to stderr"
+        debug "Outputting content of $logfile to stderr"
         tail -f $logfile &
     fi
 }

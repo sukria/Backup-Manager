@@ -77,10 +77,10 @@ function log()
     
     log_buffer=""
     # if there's the -n switch, we buffer the message 
-    if [[ "$1" = "-n" ]]; then
+    if [[ "$1" == "-n" ]]; then
         # output the message to STDOUT
         message=$(echo_translated "$@")
-        if [[ "$bm_log_switch" = "true" ]]; then
+        if [[ "$bm_log_switch" == "true" ]]; then
             echo -n "${message}"
         fi
         BM_LOG_BUFFER="${log_buffer}${message}"

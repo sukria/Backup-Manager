@@ -491,6 +491,18 @@ sub ftp_connect_to_host ($)
         print_error "Unsupported value for BM_UPLOAD_FTP_PASSIVE : $BM_UPLOAD_FTP_PASSIVE";
         return undef;
     }
+	
+	# get the log level from the configuration for debug mode
+	my $BM_LOGGER_LEVEL = $ENV{"BM_LOGGER_LEVEL"};
+    unless (defined $BM_LOGGER_LEVEL) {
+        $BM_LOGGER_LEVEL = "warning";
+    }
+    if ($BM_LOGGER_LEVEL eq "debug") {
+        $BM_LOGGER_LEVEL="1";
+    }
+    else {
+        $BM_LOGGER_LEVEL="0";
+    }
 
     # get the timeout from the configuration
     # default is set to 120.
@@ -508,7 +520,7 @@ sub ftp_connect_to_host ($)
     eval {
         $ftp = new Net::FTP (
                 $host, 
-                Debug => 0,
+                Debug => $BM_LOGGER_LEVEL,
                 Timeout => $BM_UPLOAD_FTP_TIMEOUT,
                 Passive => $BM_UPLOAD_FTP_PASSIVE);
     };

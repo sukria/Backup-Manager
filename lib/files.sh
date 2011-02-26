@@ -164,8 +164,15 @@ function get_lock()
 
         # be sure that the process is running
         if [[ ! -z $pid ]]; then
-            real_pid=$(ps --no-headers --pid $pid |awk '{print $1}')
-            if [[ -z $real_pid ]]; then
+	    unamestr=`uname | xargs | awk '{print tolower($0)}'`
+	    # For OSX & fink :
+	    if [[ "$unamestr" == 'darwin' ]]; then
+		real_pid=$(ps -p $pid |tail -n +2 |awk '{print $1}')
+	    else
+		real_pid=$(ps --no-headers --pid $pid |awk '{print $1}')
+	    fi
+            
+	    if [[ -z $real_pid ]]; then
                 echo_translated "Removing lock for old PID, \$pid is not running."
                 release_lock
                 #unmount_tmp_dir

@@ -244,6 +244,8 @@ sub outdate_archives($$)
     
     my %seen = ();
     foreach my $archive (sort @{$ra_archives}) {
+        print_info "Checking archive $archive";
+        
         my $data = $g_rh_archives->{dataByPath}{$archive};
         next unless defined $data;
         next unless defined $data->{date};

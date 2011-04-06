@@ -10,7 +10,7 @@ Backup Manager 0.7.10
 	* Typo fix in backup_method_pgsql().
 	* FIX bug #171
 	  Bad file name for tarballs with "short" nameformat
-	  (Thanks to Laurent Léonard for the patch)
+	  (Thanks to Laurent LÃ©onard for the patch)
 	* Fixed regression in fix for bug #179 (it breaks the 'monthly'
 	  BM_TARBALLINC_MASTERDATEVALUE). 
 	* FIX bug #101
@@ -618,7 +618,7 @@ Backup Manager 0.7.8
 2006-04-03  Alexis Sukrieh  <sukria@backup-manager.org>
 
 	* lib/files.sh:
-	  + applied patch from Mario Domgörgen for fixing the
+	  + applied patch from Mario DomgÃ¶rgen for fixing the
 	  get_date_from_archive() function. (closes: #68)
 	* t/run-tests.sh:
 	  + Now redirect errors in /dev/null.

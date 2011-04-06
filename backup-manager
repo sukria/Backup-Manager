@@ -182,7 +182,7 @@ info "Backup Manager $VERSION - Copyright (c) 2004-2011 Alexis Sukrieh"
 if [[ "$noupload" == "true" ]]\
 || [[ "$noburn" == "true" ]]\
 || [[ "$nopurge" == "false" ]]; then
-    curr_time = $(`date +%Y-%m-%d%t%T`)
+    curr_time=`date +%Y-%m-%d%t%T`
     info "Process started at $curr_time"
 fi
 
@@ -273,7 +273,7 @@ release_lock
 debug "Exiting"
 umask $BM_UMASK >/dev/null
 
-curr_time = $(`date +%Y-%m-%d%t%T`)
+curr_time=`date +%Y-%m-%d%t%T`
 info "Process finished at $curr_time"
 
 bm_dbus_send_progress 100 "Finished"

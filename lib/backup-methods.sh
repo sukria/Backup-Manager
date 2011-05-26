@@ -893,11 +893,11 @@ function backup_method_pgsql()
             info "No matching credentials: inserting our own."
             cp $pgsql_conffile $pgsql_conffile_bm
             BM_SHOULD_PURGE_PGPASS="true"
-            echo "${BM_PGSQL_HOST}:${BM_PGSQL_PORT}:${BM_PGSQL_ADMINLOGIN}:${BM_PGSQL_ADMINPASS}" >> $pgsql_conffile
+            echo "${BM_PGSQL_HOST}:${BM_PGSQL_PORT}:*:${BM_PGSQL_ADMINLOGIN}:${BM_PGSQL_ADMINPASS}" >> $pgsql_conffile
         fi
     else
         warning "Creating a default PgSQL client configuration file: \$HOME/.pgpass"
-        echo "${BM_PGSQL_HOST}:${BM_PGSQL_PORT}:${BM_PGSQL_ADMINLOGIN}:${BM_PGSQL_ADMINPASS}" >> $pgsql_conffile
+        echo "${BM_PGSQL_HOST}:${BM_PGSQL_PORT}:*:${BM_PGSQL_ADMINLOGIN}:${BM_PGSQL_ADMINPASS}" >> $pgsql_conffile
         chmod 0600 $pgsql_conffile
     fi
 

@@ -29,11 +29,16 @@ RELEASE="true"
 REVISION='$Revision$'
 VERSION="0.7.10.1"
 
+#Set prefix for paths
+BIN_PREFIX=/usr/bin
+LIB_PREFIX=/usr/lib
+VAR_PREFIX=/var/lib
+
 # All the paths we provide
-libdir="/usr/share/backup-manager"
-vardir="/var/lib/backup-manager"
-bmu="/usr/bin/backup-manager-upload"
-bmp="/usr/bin/backup-manager-purge"
+libdir="$LIB_PREFIX/backup-manager"
+vardir="$VAR_PREFIX/backup-manager"
+bmu="$BIN_PREFIX/backup-manager-upload"
+bmp="$BIN_PREFIX/backup-manager-purge"
 
 # Find which lockfile to use
 # If we are called by an unprivileged user, use a lockfile inside the user's home;

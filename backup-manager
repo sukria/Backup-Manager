@@ -188,7 +188,9 @@ debug "Sanitizing the configuration file."
 source $libdir/sanitize.sh
 
 debug "Initializing environment"
-bm_init_env 
+bm_init_env
+# Use a single md5 file to store all archives.
+export MD5FILE="${BM_REPOSITORY_ROOT}/${BM_ARCHIVE_PREFIX}-hashes.md5"
 
 debug "Checking if logger is available"
 check_logger

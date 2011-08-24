@@ -337,6 +337,20 @@ export BM_UPLOAD_HOSTS=""
 # Where to put archives on the remote hosts (global)
 export BM_UPLOAD_DESTINATION=""
 
+# Uncomment the 'export ...' line below to activate the uploaded archives
+# database.
+# Using the database will avoid extraneous uploads to remote hosts in the
+# case of running more than one backup-manager jobs per day (such as when
+# you are using different configuration files for different parts of your
+# filesystem).
+# Note that when you upload to multiple hosts, a single succesfull upload
+# will mark the archive as uploaded. Thus upload errors to specific hosts
+# will have to be resolved manually.
+# You can specify any filename, but it is recommended to keep the database
+# inside the archive repository. The variable's value has been preset to
+# that.
+#export BM_UPLOADED_ARCHIVES=${BM_REPOSITORY_ROOT}/${BM_ARCHIVE_PREFIX}-uploaded.list
+
 ##############################################################
 # The SSH method
 #############################################################

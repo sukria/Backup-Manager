@@ -237,7 +237,9 @@ function __get_flags_relative_blacklist()
     target="$2"
     debug "__get_flags_relative_blacklist ($switch, $target)"
 
-    target=${target%/}
+    if [ "$target" != "/" ]; then
+        target=${target%/}
+    fi
     blacklist=""
     for pattern in $BM_TARBALL_BLACKLIST
     do
@@ -251,7 +253,13 @@ function __get_flags_relative_blacklist()
                 # making a relative path...
                 pattern="${pattern#$target}"
                 length=$(expr length $pattern)
-                pattern=$(expr substr $pattern 2 $length)
+                # for $target="/", no spare / is left at the beggining
+                # after the # substitution; thus take substr from pos 1
+                if [ "$target" != "/" ]; then
+                    pattern=$(expr substr $pattern 2 $length)
+                else
+                    pattern=$(expr substr $pattern 1 $length)
+                fi
 
                 # ...and blacklisting it
                 blacklist="$blacklist ${switch}${pattern}"

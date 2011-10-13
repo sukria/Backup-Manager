@@ -38,15 +38,13 @@ function commit_archive()
         echo "$str ${md5hash})"
     fi
 
-    md5file="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${TODAY}.md5"
-
     # Check if the md5file contains already the md5sum of the file_to_create.
     # In this case, the new md5sum overwrites the old one.
-    if grep "$base" $md5file >/dev/null 2>&1 ; then
-        previous_md5sum=$(get_md5sum_from_file $base $md5file)
-        sed -e "/$base/s/$previous_md5sum/$md5hash/" -i $md5file
+    if grep "$base" $MD5FILE >/dev/null 2>&1 ; then
+        previous_md5sum=$(get_md5sum_from_file $base $MD5FILE)
+        sed -e "/$base/s/$previous_md5sum/$md5hash/" -i $MD5FILE
     else
-        echo "$md5hash  $base" >> $md5file
+        echo "$md5hash  $base" >> $MD5FILE
     fi
 
     # Now that the file is created, remove previous duplicates if exists...

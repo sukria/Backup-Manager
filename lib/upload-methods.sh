@@ -64,7 +64,7 @@ function bm_upload_ssh()
           -h="$bm_upload_hosts" \
           -u="$BM_UPLOAD_SSH_USER" \
           -d="$BM_UPLOAD_SSH_DESTINATION" \
-          -r="$BM_REPOSITORY_ROOT" today 2>$logfile || 
+          -r="$BM_REPOSITORY_ROOT" ${TODAY} 2>$logfile || 
     error "Error reported by backup-manager-upload for method \"scp\", check \"\$logfile\"."
     rm -f $logfile
 }
@@ -101,7 +101,7 @@ function bm_upload_ssh_gpg()
          -u="$BM_UPLOAD_SSH_USER" \
          -d="$BM_UPLOAD_SSH_DESTINATION" \
          -r="$BM_REPOSITORY_ROOT" \
-         --gpg-recipient="$BM_UPLOAD_SSHGPG_RECIPIENT" today 2>$logfile|| 
+         --gpg-recipient="$BM_UPLOAD_SSHGPG_RECIPIENT" ${TODAY} 2>$logfile|| 
     error "Error reported by backup-manager-upload for method \"ssh-gpg\", check \"\$logfile\"."
     rm -f $logfile
 }
@@ -142,7 +142,7 @@ function bm_upload_ftp()
         -h="$bm_upload_hosts" \
         -u="$BM_UPLOAD_FTP_USER" \
         -d="$BM_UPLOAD_FTP_DESTINATION" \
-        -r="$BM_REPOSITORY_ROOT" today 2>$logfile|| 
+        -r="$BM_REPOSITORY_ROOT" ${TODAY} 2>$logfile|| 
     error "Error reported by backup-manager-upload for method \"ftp\", check \"\$logfile\"."
     rm -f $logfile
 
@@ -172,7 +172,7 @@ function bm_upload_s3()
         -h="$bm_upload_hosts" \
         -u="$BM_UPLOAD_S3_ACCESS_KEY" \
         -b="$BM_UPLOAD_S3_DESTINATION" \
-        -r="$BM_REPOSITORY_ROOT" today 2>$logfile || 
+        -r="$BM_REPOSITORY_ROOT" ${TODAY} 2>$logfile || 
     error "Error reported by backup-manager-upload for method \"s3\", check \"\$logfile\"."
     rm -f $logfile
 }

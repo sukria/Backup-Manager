@@ -413,10 +413,9 @@ function purge_duplicate_archives()
                 error "Unable to get date from file."
             
             # get the md5 hash of the file we parse, in its .md5 file
-            md5file="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${date_of_file}.md5"
-            md5sum_to_check="$(get_md5sum_from_file $file $md5file)"
+            md5sum_to_check="$(get_md5sum_from_file $file $MD5FILE)"
             if [[ -z "$md5sum_to_check" ]]; then
-                warning "Unable to find the md5 hash of file \"\$file\" in file \"\$md5file\"."
+                warning "Unable to find the md5 hash of file \"\$file\" in file \"\$MD5FILE\"."
                 continue
             fi
             

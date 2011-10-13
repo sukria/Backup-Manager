@@ -108,6 +108,61 @@ sub get_formated_date($)
 	}
 }
 
+# The idea behind BM_UPLOADED_ARCHIVES is to have a database of what archives
+# have been uploaded so far. This allows multiple execution of upload actions
+# within a day without resending all archives of the day from the beginning.
+
+# Add one file,host pair to $BM_UPLOADED_ARCHIVES database.
+# Called immediately *after* successful uploading of an archive.
+sub appendto_uploaded_archives($$)
+{
+    my $file = shift;
+    my $host = shift;
+    unless ( defined $file and defined $host ) {
+        print_error "required args needed";
+        return FALSE;
+    }
+
+    my $upload_fname = $ENV{BM_UPLOADED_ARCHIVES};
+    unless ( defined $upload_fname ) {
+        # Uncomment next line if you want the mandatory use
+        # of BM_UPLOADED_ARCHIVES (ie always have it around).
+        #print_error "BM_UPLOADED_ARCHIVES is not defined";
+        return FALSE;
+    }
+
+    # if $file already in database, append host to that line;
+    # else append a lines "$file $host" to the end.
+
+    my $io_error = 0;
+    if ( ! system( "grep -q \"^$file \" $upload_fname" ) ) {
+        my $cmd = "sed -i \"s:^$file .*\$:\& $host:\" $upload_fname";
+        $io_error = system("$cmd");
+    }
+    elsif ( open(my $fh, ">>", $upload_fname) ) {
+        print($fh "$file $host\n") or $io_error = 1;
+        close $fh;
+    }
+    else {
+        $io_error = 2;
+    }
+    if ( $io_error ) {
+        print_error "IO error: did not update $upload_fname with '$file $host'";
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
+# Get all files of the specified date; filter the list through 
+# BM_UPLOADED_ARCHIVES if it is set in the environment.
+# NOTE:  Doing the filtering here implies that the archive is considered
+# uploaded if a single upload to a host succeeds; that is even when there
+# are failures to other hosts (in case of multiple host uploading).
+# To consider it uploaded when all hosts succeed, the filtering must be
+# transfered to the individual upload subroutines (and check for existence
+# of file,host pair in the database).
+#
 sub get_files_list_from_date($)
 {
 	my $date = shift;

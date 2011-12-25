@@ -892,21 +892,29 @@ function backup_method_pgsql()
     fi
 
     opt=" -U$BM_PGSQL_ADMINLOGIN -h$BM_PGSQL_HOST -p$BM_PGSQL_PORT" 
+
+    # We need a second variable, to know if the backup pgpass file was used.
+
     BM_SHOULD_PURGE_PGPASS="false"
+    BM_USING_BACKUP_PGPASS="false"
 
     if [[ -f $pgsql_conffile ]]; then
         info "Found existing PgSQL client configuration file: \$pgsql_conffile"
         info "Looking for matching credentials in this file..."
         if ! grep -qE "(${BM_PGSQL_HOST}|[^:]*):(${BM_PGSQL_PORT}|[^:]*):[^:]*:${BM_PGSQL_ADMINLOGIN}:${BM_PGSQL_ADMINPASS}" $pgsql_conffile; then
             info "No matching credentials: inserting our own."
-            cp $pgsql_conffile $pgsql_conffile_bm
             BM_SHOULD_PURGE_PGPASS="true"
+            BM_USING_BACKUP_PGPASS="true"
+            mv $pgsql_conffile $pgsql_conffile_bm
+            touch $pgsql_conffile
+            chmod 0600 $pgsql_conffile
             echo "${BM_PGSQL_HOST}:${BM_PGSQL_PORT}:*:${BM_PGSQL_ADMINLOGIN}:${BM_PGSQL_ADMINPASS}" >> $pgsql_conffile
         fi
     else
         warning "Creating a default PgSQL client configuration file: \$HOME/.pgpass"
-        echo "${BM_PGSQL_HOST}:${BM_PGSQL_PORT}:*:${BM_PGSQL_ADMINLOGIN}:${BM_PGSQL_ADMINPASS}" >> $pgsql_conffile
+        touch $pgsql_conffile
         chmod 0600 $pgsql_conffile
+        echo "${BM_PGSQL_HOST}:${BM_PGSQL_PORT}:*:${BM_PGSQL_ADMINLOGIN}:${BM_PGSQL_ADMINPASS}" >> $pgsql_conffile
     fi
 
     compress="$BM_PGSQL_FILETYPE"
@@ -925,9 +933,13 @@ function backup_method_pgsql()
 
     # purge the .pgpass file, if created by Backup Manager
     if [[ "$BM_SHOULD_PURGE_PGPASS" == "true" ]]; then
-        info "restoring initial .pgpass file."
-        warning "To avoid problems with .pgpass, insert the configured host:port:user:pass in $pgsql_conffile"
-        mv $pgsql_conffile_bm $pgsql_conffile
+        info "Removing default PostgreSQL password file: \$pgsql_conffile"
+        rm -f $pgsql_conffile
+        if [[ "$BM_USING_BACKUP_PGPASS" == "true" ]]; then
+            info "restoring initial \$pgsql_conffile file from backup."
+            warning "To avoid problems with \$pgsql_conffile, insert the configured host:port:database:user:password inside."
+            mv $pgsql_conffile_bm $pgsql_conffile
+        fi
     fi
 }
 

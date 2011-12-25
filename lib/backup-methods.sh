@@ -891,7 +891,14 @@ function backup_method_pgsql()
         error "The \"pgsql\" method is chosen, but \$pgdump is not found."
     fi
 
-    opt=" -U$BM_PGSQL_ADMINLOGIN -h$BM_PGSQL_HOST -p$BM_PGSQL_PORT" 
+    # Allow empty host when connecting to postgress with unix sockets.
+
+    if [[ "X$BM_PGSQL_HOST" = "X" ]]; then
+        BM_PGSQL_HOSTFLAGS=""
+    else
+        BM_PGSQL_HOSTFLAGS="-h$BM_PGSQL_HOST"
+    fi
+    opt=" -U$BM_PGSQL_ADMINLOGIN $BM_PGSQL_HOSTFLAGS -p$BM_PGSQL_PORT"
 
     # We need a second variable, to know if the backup pgpass file was used.
 

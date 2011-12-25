@@ -887,8 +887,10 @@ function backup_method_pgsql()
     debug "backup_method_pgsql ($method)"
 
     info "Using method \"\$method\"."
-    if [[ ! -x $pgdump ]]; then
-        error "The \"pgsql\" method is chosen, but \$pgdump is not found."
+    if [[ -x $pgdump ]] && [[ -x ${pgdump}all ]]; then
+        :
+    else
+        error "The \"postgresql\" method is chosen, but \$pgdump and/or \$pgdumpall are not found."
     fi
 
     # Allow empty host when connecting to postgress with unix sockets.

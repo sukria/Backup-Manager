@@ -934,7 +934,7 @@ function backup_method_pgsql()
             file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-all-pgsql-databases.$TODAY.sql"
             command="${pgdump}all $opt $BM_PGSQL_EXTRA_OPTIONS"
         else
-            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${database}.$TODAY.sql"
+            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-pgsql-${database}.$TODAY.sql"
             command="$pgdump $opt $database $BM_PGSQL_EXTRA_OPTIONS"
         fi
         __create_file_with_meta_command
@@ -992,7 +992,7 @@ function backup_method_mysql()
             file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-all-mysql-databases.$TODAY.sql"
             command="$base_command --all-databases"
         else
-            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${database}.$TODAY.sql"
+            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-mysql-${database}.$TODAY.sql"
             command="$base_command $database"
         fi
         __create_file_with_meta_command

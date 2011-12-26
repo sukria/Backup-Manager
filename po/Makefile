@@ -38,13 +38,16 @@ clean:
 		  backup-manager.files \
 	      $(MOFILES) \
 		  messages messages.mo \
-		  messages.po 
-		  
+		  messages.po
+	for file in $(wildcard *.old); do \
+		mv -f $$file `echo $$file | sed 's/\.old//'`; \
+		done
+
 .po.mo: backup-manager.pot
 	@echo "Merging $(PACKAGE).pot and $*.po"
 	@msgmerge $*.po $(PACKAGE).pot -o $*.po.new
 	@if [ "`diff $*.po $*.po.new | grep '[<>]' | wc -l`" -ne 2 ]; then \
-        mv -f $*.po.new $*.po; \
+        mv -f --backup=simple --suffix='.old' $*.po.new $*.po; \
     else \
         rm -f $*.po.new; \
     fi

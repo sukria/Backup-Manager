@@ -58,7 +58,12 @@ function check_cdrom_md5_sums()
     if [[ ! -d $mount_point ]]; then
         error "The mount point \$mount_point is not there."
     fi
-    
+
+    # if MD5FILE does not exist, there are no md5 sums to compare anyway
+    if [[ ! -f $MD5FILE ]]; then
+        error "Missing md5 sums database ($MD5FILE); cannot check md5 sums."
+    fi
+
     # unmount if needed
     bm_safe_unmount $BM_BURNING_DEVICE
 
@@ -74,41 +79,30 @@ function check_cdrom_md5_sums()
         date_of_file=$(get_date_from_file $file)
         prefix_of_file=$(get_prefix_from_file $file)
 
-    # Doesn't check the md5 sum of the md5sum file...
-    if [[ "$base_file" = "${prefix_of_file}-${date_of_file}.md5" ]] ; then
-        continue
-    fi
-
-
-       # Which file should contain the MD5 hashes for that file ?
-       if [[ "$prefix_of_file" != "index" ]]; then
-           md5_file="$BM_REPOSITORY_ROOT/${prefix_of_file}-${date_of_file}.md5"
-       else
-           md5_file="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX-${date_of_file}.md5"
-       fi
-        
-       str=$(echo_translated "Checking MD5 sum for \$base_file:")
-
-        # if it does not exist, we create it (that will take much time).
-        if [[ ! -f $md5_file ]]; then
-            save_md5_sum $file $md5_file || continue
+        # Do not check the md5 sums of indexes.
+        if [[ "$prefix_of_file" = "index" ]]; then
+            continue
         fi
-        
-        # try to read the previously saved md5 hash in the file
-        md5hash_trust=$(get_md5sum_from_file ${base_file} $md5_file)
 
-        # If the MD5 hash was not found, generate it and save it now.
+        str=$(echo_translated "Checking MD5 sum for \$base_file:")
+
+        # try to read the previously saved md5 hash in the database
+        md5hash_trust=$(get_md5sum_from_file ${base_file} $MD5FILE)
+
+        # If the MD5 hash was not found, do not generate it; instead
+        # issue a warning that the burned archive cannot be verified
         if [[ -z "$md5hash_trust" ]]; then
-            save_md5_sum $file $md5_file || continue
-            md5hash_trust=$(get_md5sum_from_file ${base_file} $md5_file)
+            warning "Cannot verify correct burning of $base_file; did not found md5 sum in database"
+            continue
         fi
-        
+
+        # now calculate burnt archive's md5 sum and compare with database
         md5hash_cdrom=$(get_md5sum $file) || md5hash_cdrom="undefined"
-        case "$md5hash_cdrom" in
-            "$md5hash_trust")
+        case $md5hash_cdrom in
+            $md5hash_trust)
                 echo_translated "\$str ok."
             ;;
-            "undefined")
+            undefined)
                 echo_translated "\$str failed (read error)."
                 has_error=1
             ;;

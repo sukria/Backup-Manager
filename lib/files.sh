@@ -380,9 +380,15 @@ function clean_directory()
 function purge_duplicate_archives()
 {
     file_to_create="$1"
-    debug "purge_duplicate_archives ($file_to_create)"
 
-    md5hash=$(get_md5sum $file_to_create)
+    if [[ -z "$2" ]]; then
+        debug "purge_duplicate_archives ($file_to_create)"
+        md5hash=$(get_md5sum $file_to_create)
+    else
+        # if the 2nd argument exists, it is the md5sum
+        md5hash="$2"
+        debug "purge_duplicate_archives ($file_to_create, $md5hash)"
+    fi
 
     # Only purge if BM_ARCHIVE_PURGEDUPS = true
     if [[ -z "$BM_ARCHIVE_PURGEDUPS" ]] ||

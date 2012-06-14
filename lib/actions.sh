@@ -108,9 +108,8 @@ function clean_repositories()
     clean_directory $BM_REPOSITORY_ROOT
 }
 
-
 # This will run the pre-command given.
-# If this command prints on STDOUT "false", 
+# If this command exit with non-zero status,
 # backup-manager will stop here.
 function exec_pre_command()
 {
@@ -118,17 +117,13 @@ function exec_pre_command()
 
     if [[ ! -z "$BM_PRE_BACKUP_COMMAND" ]]; then
         info "Running pre-command: \$BM_PRE_BACKUP_COMMAND."
-        RET=`$BM_PRE_BACKUP_COMMAND >/dev/null 2>&1` || RET="false" 
-        case "$RET" in
-            "false")
-                warning "Pre-command failed. Stopping the process."
-                _exit 15 "PRE_COMMAND"
-            ;;
-
-            *)
-                info "Pre-command returned: \"\$RET\" (success)."
-            ;;
-        esac
+        $BM_PRE_BACKUP_COMMAND
+        if [ $? -eq 0 ]; then
+            info "Pre-command succeeded."
+        else
+            warning "Pre-command failed. Stopping the process."
+            _exit 15 "PRE_COMMAND"
+        fi
     fi
 
 }
@@ -139,17 +134,13 @@ function exec_post_command()
 
     if [[ ! -z "$BM_POST_BACKUP_COMMAND" ]]; then
         info "Running post-command: \$BM_POST_BACKUP_COMMAND"
-        RET=`$BM_POST_BACKUP_COMMAND >/dev/null 2>&1` || RET="false"
-        case "$RET" in
-            "false")
-                warning "Post-command failed."
-                _exit 16 "POST_COMMAND"
-            ;;
-
-            *)
-                info "Post-command returned: \"\$RET\" (success)."
-            ;;
-        esac
+        $BM_POST_BACKUP_COMMAND
+        if [ $? -eq 0 ]; then
+            info "Post-command succeeded."
+        else
+            warning "Post-command failed."
+            _exit 15 "POST_COMMAND"
+        fi
     fi
 }
 

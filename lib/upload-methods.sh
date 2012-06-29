@@ -234,6 +234,10 @@ function bm_upload_rsync_common()
         rsync_options="${rsync_options} --exclude=\"$BM_UPLOAD_RSYNC_BLACKLIST\""
     fi
 
+    if [[ ! -z $BM_UPLOAD_RSYNC_EXTRA_OPTIONS ]]; then
+        rsync_options="${rsync_options} $BM_UPLOAD_RSYNC_EXTRA_OPTIONS"
+    fi
+
     for directory in $BM_UPLOAD_RSYNC_DIRECTORIES
     do
         if [[ -n "$bm_upload_hosts" ]]; then

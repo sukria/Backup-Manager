@@ -225,6 +225,12 @@ export BM_MYSQL_FILETYPE="bzip2"
 # command line.)
 export BM_MYSQL_EXTRA_OPTIONS=""
 
+# Make separate backups of each database?
+export BM_MYSQL_SEPARATELY="true"
+
+# Specify DBs to exclude here (separated by space) 
+export BM_MYSQL_DBEXCLUDE=""
+
 ##############################################################
 # Backup method: PostgreSQL
 #############################################################

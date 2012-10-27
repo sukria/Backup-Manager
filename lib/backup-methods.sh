@@ -47,8 +47,9 @@ function commit_archive()
         echo "$md5hash  $base" >> $MD5FILE
     fi
 
-    # Now that the file is created, remove previous duplicates if exists...
-    purge_duplicate_archives $file_to_create || 
+    # Now that the file is created, remove previous duplicates if exist.
+    # Pass in the calculated (costly) md5 sum, to speed things up.
+    purge_duplicate_archives $file_to_create $md5hash ||
         error "Unable to purge duplicates of \$file_to_create"
 
     # ownership

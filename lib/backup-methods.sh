@@ -993,6 +993,25 @@ function backup_method_mysql()
     base_command="$mysqldump --defaults-extra-file=$mysql_conffile $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT $BM_MYSQL_EXTRA_OPTIONS"
     compress="$BM_MYSQL_FILETYPE"   
 
+    # get each DB name if backing up separately
+    if [ "$BM_MYSQL_DATABASES" = "__ALL__" ]; then
+        if [ "$BM_MYSQL_SEPARATELY" = "true" ]; then
+            if [[ ! -x $mysql ]]; then
+                error "Can´t find "$mysql" but this is needed when backing up databases separately."
+            fi
+
+            DBNAMES=$($mysql --defaults-extra-file=$mysql_conffile -u $BM_MYSQL_ADMINLOGIN -h $BM_MYSQL_HOST -P $BM_MYSQL_PORT -B -N -e "show databases" | sed 's/ /%/g')
+
+            # if DBs are excluded
+            for exclude in $BM_MYSQL_DBEXCLUDE
+            do
+                DBNAMES=$(echo $DBNAMES | sed "s/\b$exclude\b//g")
+            done
+
+            BM_MYSQL_DATABASES=$DBNAMES
+        fi
+    fi
+
     for database in $BM_MYSQL_DATABASES
     do
         if [[ "$database" = "__ALL__" ]]; then

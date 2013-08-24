@@ -788,7 +788,7 @@ function __make_local_tarball_token
             "dar")
                 __get_flags_dar_incremental "$dir_name"
             ;;
-            "tar"|"tar.gz"|"tar.bz2")
+            "tar"|"tar.gz"|"tar.bz2"|"tar.lz")
                 __get_flags_tar_incremental "$dir_name"
             ;;
             esac

@@ -14,6 +14,7 @@ cdrecord=$(which cdrecord 2> /dev/null) || cdrecord=$(which wodim 2> /dev/null) 
 md5sum=$(which md5sum 2> /dev/null) || true
 bc=$(which bc 2> /dev/null) || true
 mysqldump=$(which mysqldump 2> /dev/null) || true
+mysql=$(which mysql 2> /dev/null) || true
 pgdump=$(which pg_dump 2>/dev/null) || true
 svnadmin=$(which svnadmin 2> /dev/null) || true
 logger=$(which logger 2> /dev/null) || true

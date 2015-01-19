@@ -981,18 +981,16 @@ function backup_method_mysql()
         echo "password=\"$BM_MYSQL_ADMINPASS\"" >> $mysql_conffile
         BM_SHOULD_PURGE_MYCNF="true"
     fi
+    if [[ "$BM_MYSQL_DATABASES" = "__ALL__" ]]; then
+        BM_MYSQL_DATABASES=`mysql --defaults-extra-file=$mysql_conffile -B --skip-column-names -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT -e "show databases"`
+    fi
     base_command="$mysqldump --defaults-extra-file=$mysql_conffile $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT $BM_MYSQL_EXTRA_OPTIONS"
     compress="$BM_MYSQL_FILETYPE"   
 
     for database in $BM_MYSQL_DATABASES
     do
-        if [[ "$database" = "__ALL__" ]]; then
-            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-all-mysql-databases.$TODAY.sql"
-            command="$base_command --all-databases"
-        else
-            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-mysql-${database}.$TODAY.sql"
-            command="$base_command $database"
-        fi
+        file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-mysql-${database}.$TODAY.sql"
+        command="$base_command $database"
         __create_file_with_meta_command
     done   
 

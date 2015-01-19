@@ -357,6 +357,9 @@ function clean_directory()
          \( -type f -o -type l \) -print \
          | $bmp --ttl=$BM_ARCHIVE_TTL > $list
     
+echo "Files to delete:"
+cat $list
+echo "*******************"
     # Then actually remove the files
     for archive in `cat $list`
     do

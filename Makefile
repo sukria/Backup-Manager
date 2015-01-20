@@ -31,7 +31,8 @@ PREFIX?=/usr/local
 
 # Overwrite that variable with the Perl vendorlib Config value if 
 # you package Backup Manager
-PERL5DIR?="$(DESTDIR)$(shell perl -MConfig -e 'print "$$Config{sitelib}"')"
+## PERL5DIR?="$(DESTDIR)$(shell perl -MConfig -e 'print "$$Config{sitelib}"')"
+PERL5DIR?=/usr/share/perl5
 
 # Some static paths, specific to backup-manager
 BINDIR=$(PREFIX)/bin

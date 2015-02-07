@@ -1,0 +1,2005 @@
+<!DOCTYPE debiandoc PUBLIC "-//DebianDoc//DTD DebianDoc//EN" [
+  <!-- include version information so we don't have to hard code it
+       within the document -->
+  <!ENTITY % versiondata SYSTEM "version.ent"> %versiondata;
+  <!-- common, language independent entities -->
+  <!ENTITY % commondata  SYSTEM "common.ent" > %commondata;
+
+  <!-- if you are translating this document, please notate the CVS
+       revision of the original developer's reference in cvs-en-rev -->
+  <!-- <!ENTITY cvs-en-rev "X.YZW"> -->
+
+  <!-- how to mark a section that needs more work -->
+  <!ENTITY FIXME "<em>FIXME:</em>&nbsp;">
+
+]>
+
+<!-- Template of a configuration key description
+
+     Please, follow this template for *each* configuration key
+     this will allow us to make a nice appendix later, think of our 
+     users ;-)
+
+<sect1 id="BM_MYCONFIGURATION_KEY"><tt>BM_MYCONFIGURATION_KEY</tt>
+
+<p>
+<em>Type: TYPE, default: <tt>DEFAULT</tt>.</em>
+
+<p>
+Description
+
+<p>
+Example:
+
+<example>
+</example>
+
+-->
+
+<debiandoc>
+	<book>
+		<title>&bmngr; &bmngr-version; User Guide
+
+		<author>Alexis Sukrieh
+		
+		<version>&version; - &date-en; 
+
+		<copyright>
+			<copyrightsummary>
+copyright &copy; 2010 Alexis Sukrieh
+			</copyrightsummary>
+
+	<p>
+This user guide is free software; you may redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2, or (at your option) any
+later version.
+	<p>
+This is distributed in the hope that it will be useful, but
+<em>without any warranty</em>; without even the implied warranty of
+was merchantability or fitness for a particular purpose.  See the GNU
+General Public License for more details.
+	<p>
+A copy of the GNU General Public License is available on the World Wide
+Web at <url id="&url-gpl;" name="the GNU web site">.  You can also obtain 
+it by writing to the &fsf-addr;.
+
+<toc detail="sect1">
+
+<chapt id="about">About this manual
+
+<sect id="about-scope">Scope
+<p>
+&bmngr; is a system tool designed to handle backups. It is written with
+simplicity in mind. 
+
+<p>
+If you want to handle a couple of tarballs, reading the
+default configuration file might be enough to understand the main design.
+On the other hand, if you want to know more about the global design of the
+program, how to write your own backup methods or even look at some real life
+examples, this guide is for you.
+
+<p>
+This document describes the main design of the software and gives information
+about supported configuration keys. All backup methods are described, with
+a sample configuration file as illustration. Whenever possible, advices and best
+practices are given. 
+
+<p>
+This manual also describes every configuration variables supported in the
+version &bmngr-version;.
+
+<sect id="about-version">Version
+
+<p>
+This document is updated whenever a new release of &bmngr; is published.
+The current version covers all features and configuration details about version &bmngr-version;.
+
+<p>
+The first version of this document was written  with the release 0.6 of &bmngr;.
+
+
+<sect id="about-authors">Authors
+<p>
+The first version of this document was made in late 2005, by Alexis Sukrieh and 
+has been reviewed by Sven Joachim.
+
+<p>
+While the author of this document has tried hard to avoid typos and other
+errors, these do still occur. If you discover an error in this manual or if you
+want to give any comments, suggestions, or criticisms please send an email to
+the development list, backup-manager-devel@backup-manager.org, or submit a bug
+report against the "Documentation" product, in the bug tracking
+system<footnote>http://bugzilla.backup-manager.org/</footnote>.
+
+<chapt id="configuration">Configuration files
+
+<p>
+<em>&bmngr;'s behaviour is defined in configuration files. You can run &bmngr;
+with different configuration files (at the same time or not).  This chapter will
+cover all the configuration keys supported in version &bmngr-version; and will
+explain their meaning.</em>
+
+<sect id="design">Repository and Archives
+
+<p>
+&bmngr; stores <em>archives</em> it builds in a <em>repository</em>.
+<em>Archives</em> are built by using a <em>backup method</em>. 
+
+<sect1 id="archive-repo">The Repository
+
+<!-- -->
+<sect2 id="BM_REPOSITORY_ROOT"><tt>BM_REPOSITORY_ROOT</tt>
+
+<p>
+<em>Type: string, default: <tt>/var/archives</tt>.</em>
+
+<p>
+The repository is the place in your filesystem
+where all archives are stored.
+This is a particular place for &bmngr;, it will be cleaned during backup
+sessions: archives older than the authorized lifetime will be purged.
+If the repository does not exist, it will be created at runtime.
+
+<p>
+Isolating the repository on a dedicated partition is a good idea. This can
+prevent the repository from eating all the disk space of the partition.
+With a bad configuration file, backup sessions can lead to huge archives, 
+for many reasons, so take care.
+
+<p>
+Example:
+
+<example>
+export BM_REPOSITORY_ROOT="/var/archives"
+</example>
+
+<sect2 id="BM_REPOSITORY_SECURE"><tt>BM_REPOSITORY_SECURE</tt>
+
+<p>
+<em>Type: boolean, default: <tt>true</tt>.</em>
+
+<p> For security reasons, the repository can be accessible by a specific
+user/group pair. This will prevent the archives from being readable (and
+writable) by any user in the system. This mode is enabled by default (owned by
+<tt>root:root</tt>).
+
+<p> To enable this mode, set the configuration key <tt>BM_REPOSITORY_SECURE</tt>
+to <tt>yes</tt>, then update <tt>BM_REPOSITORY_USER</tt> and
+<tt>BM_REPOSITORY_GROUP</tt> to your needs.
+
+<p>
+You can also change the permission of the repository and the archives, that is
+possible with two configuration variables: <tt>BM_REPOSITORY_CHMOD</tt> and
+<tt>BM_ARCHIVE_CHMOD</tt>.
+
+<p>
+Example:
+
+<example>
+export BM_REPOSITORY_SECURE="true"
+export BM_REPOSITORY_USER="root"
+export BM_REPOSITORY_GROUP="root"
+export BM_REPOSITORY_CHMOD="770"
+export BM_ARCHIVE_CHMOD="660"
+</example>
+
+<sect1 id="encryption">Encryption
+<p>
+<em>
+If you cannot trust the place where you store your archives, you can choose to
+encrypt them so you are the only one who can read their content.
+That's a very good idea for archives you plan to upload to some remote place,
+or even for the archives you want to daily export on removable media.
+</em>
+
+<sect2 id="BM_ENCRYPTION_METHOD"><tt>BM_ENCRYPTION_METHOD</tt>
+<p>
+<em>Type: string, default: undefined.</em>
+<p>
+For &bmngr;, encryption is defined in one place in the configuration file.
+If the variable "<tt>BM_ENCRYPTION_METHOD</tt>" is not defined, no encryption occurs
+during the archive build process, if a method is defined there, then any
+archive built are encrypted through a pipeline with that method.
+
+<p>
+Be aware that encryption is supported for the methods "mysql", "pipe",
+"tarball" and "tarball-incremental" but only for those file types: 
+tar, tar.gz, tar.bz2.
+
+<p>
+The only valid method supported for encrypting archives is "gpg".
+
+<p>
+&bmngr; will encrypt your archive through a pipeline in order not to write any
+byte of unencrypted data on the physical media. The encryption will be
+performed with a command line like the following:
+
+<example>
+&lt;command&gt; | gpg -r "$BM_ENCRYPTION_RECIPIENT" -e > archive.gpg
+</example>
+
+<p>
+To decrypt an archive built with GPG encryption, you have to be the owner of
+the private GPG key for which the encryption was made.
+
+Then issue the following:
+<example>
+$ gpg -d &lt;archive.gpg&gt; > archive
+</example>
+
+<p>
+GPG will then prompt you for the private key passphrase and will decrypt the
+content of the archive if the passphrase is valid.
+
+<p>
+Refer to the GPG documentation for more details of encryption.
+
+<sect2 id="BM_ENCRYPTION_RECIPIENT"><tt>BM_ENCRYPTION_RECIPIENT</tt>
+<p>
+<em>Type: string, default: undefined.</em>
+<p>
+As explained in the previous section, that variable should contain the GPG
+recipient for the encryption, eg: your GPG ID.
+
+<p>
+Examples of valid GPG ID:
+
+<example>
+export BM_ENCRYPTION_RECIPIENT="0x1EE5DD34"
+export BM_ENCRYPTION_RECIPIENT="Alexis Sukrieh"
+export BM_ENCRYPTION_RECIPIENT="sukria@sukria.net"
+</example>
+
+<sect1 id="archives">Archives
+
+<p>
+<em>Archives are produced by backup methods, they can be virtually anything, but
+will always be named like the following: <tt>prefix-name-date.filetype</tt>.  An
+archive is a file that contains data, it can be compressed or not, in a binary
+form or not.</em>
+
+<sect2 id="BM_ARCHIVE_STRICTPURGE"><tt>BM_ARCHIVE_STRICTPURGE</tt>
+
+<p>
+<em>Type: boolean, default: <tt>true</tt>.</em>
+
+<p>
+As explained in the BM_REPOSITORY_ROOT section, every archive built by &bmngr; will
+be purged when their lifetime expires. In versions prior to 0.7.6, any archive
+were purged.
+<p>
+You can now choose to purge only the archive built in the scope of the
+configuration file, that is: archives prefixed with BM_ARCHIVE_PREFIX.
+
+<p>
+This is useful if you share the same BM_REPOSITORY_ROOT with different instances
+of &bmngr; that have different purging rules (eg: a BM_REPOSITORY_ROOT shared
+over NFS for multiple &bmngr; configuration).
+
+<p>
+Example:
+
+<example>
+export BM_ARCHIVE_STRICTPURGE="true"
+</example>
+
+<sect2 id="BM_ARCHIVE_NICE_LEVEL"><tt>BM_ARCHIVE_NICE_LEVEL</tt>
+
+<p>
+<em>Type: string, default: <tt>10</tt>.</em>
+
+<p>
+Backup Manager does handle several archive methods, which can use a lot of ressources 
+(mostly CPU); although this can be acceptable if Backup Manager is run at night, on a 
+always-running server, it can seriously slow-down a desktop computer.
+Indeed, most of the time, desktop users use anacron to run backup-manager when possible, 
+and most of time this is when the desktop is actually used.
+
+<p>
+To enhance the desktop-experience when archives are built, 
+you can adjust the niceness used for archive creation with this configuration variable.
+
+<p>
+To set a low priority to the archive creation processes, use a high number (max: 19).
+See the manpage of nice for details.
+
+<p>
+Example:
+
+<example>
+export BM_ARCHIVE_NICE_LEVEL="19" # recommanded for desktop users.
+</example>
+
+<sect2 id="BM_ARCHIVE_PURGEDUPS"><tt>BM_ARCHIVE_PURGEDUPS</tt>
+
+<p>
+<em>Type: boolean, default: <tt>true</tt>.</em>
+
+<p>
+If disk usage matters in your backup strategy, you might find useful to use
+&bmngr;'s duplicates purging feature. When an archive is generated, &bmngr;
+looks at the previous versions of this archive.  If it finds that a previous
+archive is the same file as the one it has just built, the previous one is
+replaced by a symlink to the new one.  This is useful if you don't want to have
+the same archive twice in the repository.
+
+<p>
+Example:
+
+<example>
+export BM_ARCHIVE_PURGEDUPS="true"
+
+host-etc.20051115.tar.gz
+host-etc.20051116.tar.gz -> /var/archives/host-etc.20051117.tar.gz
+host-etc.20051117.tar.gz
+</example>
+
+<sect2 id="BM_ARCHIVE_TTL"><tt>BM_ARCHIVE_TTL</tt>
+
+<p>
+<em>Type: integer, default: <tt>5</tt>.</em>
+
+<p>
+One of the main concepts behind the handling of the repository is to purge
+deprecated archives automatically. The purge session is always performed
+when you launch &bmngr;. During this phase, all archives older than the
+authorized lifetime are dropped.
+
+<p>
+Since version 0.7.3, &bmngr; purges only files it has created whereas in previous
+versions, it used to purge also other files within the repository.
+
+<p>
+Note that when using the incremental method for building archives, &bmngr; will
+handle differently master backups and incremental ones. The incremental backups
+will be purged like any other archives (when exceeding the authorized lifetime).
+On the ohter hand, deprecated master backups won't be purged unless there is a
+younger master backup in the repository. Then, even with a lifetime set to three
+days, a master backup will live more than three days, until a newer master
+backup is built.
+
+<p>
+Example:
+
+<example>
+export BM_ARCHIVE_TTL="5"
+</example>
+
+<sect2 id="BM_REPOSITORY_RECURSIVEPURGE"><tt>BM_REPOSITORY_RECURSIVEPURGE</tt>
+
+<p>
+<em>Type: boolean, default: <tt>false</tt>.</em>
+
+<p>
+On most setups, all the archives are stored in the top-level directory
+specified by the configuration key <tt>BM_REPOSITORY_ROOT</tt>. But it can make
+sense to have subdirectories, for instance to store archives uploaded from
+other hosts running &bmngr;. In this case, it is possible to ask &bmngr; to
+purge those directories too, by setting <tt>BM_REPOSITORY_RECURSIVEPURGE</tt>
+to <tt>true</tt>.
+
+<p>
+Please note that the <tt>BM_ARCHIVE_TTL</tt> value is global, so if you want to
+have different lifetimes for some archives, this is not the way to go.  In this
+case you should save them outside <tt>BM_REPOSITORY_ROOT</tt> and write a cron
+job to do the purge (possibly calling <tt>backup-manager --purge</tt> with an
+alternate configuration file).
+
+<p>
+Example:
+
+<example>
+export BM_REPOSITORY_RECURSIVEPURGE="false"
+</example>
+
+<sect2 id="BM_ARCHIVE_PREFIX"><tt>BM_ARCHIVE_PREFIX</tt>
+
+<p>
+<em>Type: string, default: <tt>$HOSTNAME</tt>.</em>
+
+<p>
+This is the prefix used for naming archives.
+
+<p>
+Example:
+
+<example>
+export BM_ARCHIVE_PREFIX="$HOSTNAME"
+
+# echo $HOSTNAME
+ouranos
+# ls /var/archives
+ouranos-20051123.md5 
+ouranos-usr-local-src.20051123.tar.gz
+ouranos-etc.20051123.tar.gz
+</example>
+
+<sect id="methods">Backup Methods
+
+<p>
+The core feature of &bmngr; is to make archives, for doing this, a
+<em>method</em> is used. Each method can require a set of configuration keys.
+We will describe here every method supported in the version &bmngr-version;.
+
+<p>
+The method you choose must be defined in the configuration key
+<tt>BM_ARCHIVE_METHOD</tt>. You can put here a list of all the different methods 
+you want to use. Take care to put every configuration key needed by all the 
+methods you choose.
+Note that you can also choose none of the proposed methods, if you don't want
+to build archives with this configuration file, then just put <tt>none</tt>.
+
+<p>
+A couple of other configuration keys may be needed depending on the method you
+choose. 
+
+<p>
+Example:
+
+<example>
+export BM_ARCHIVE_METHOD="tarball-incremental mysql"
+</example>
+
+<sect1 id="tarball">Tarballs
+
+<sect2 id="tarball-desc">Description
+
+<p>
+<em>Method name: <tt>tarball</tt>, configuration key prefix: <tt>BM_TARBALL</tt>.</em>
+
+<p>
+If all you want to do is to handle a couple of tarballs of your file system, you
+can use this method.  This method takes a list of directories
+and builds the corresponding tarballs.  
+This method is the default one, this is the easiest to use, it just
+builds tarballs as you could do with your own tar script. Its main drawback is
+to eat a lot of disk space: archives can be big from a day to another, even if
+there are no changes in their content. See the <tt>tarball-incremental</tt>
+method if you want to optimize archives' size.
+
+<p>
+When building full backups (when not building incremental ones), &bmngr; will append 
+the keyword "master" to the name of the archive. This is very useful when using 
+the <tt>tarball-incremental</tt> method for seeing where the full backups are quickly.
+
+<p>
+A couple of options are available: the name format
+of the archive, the compression type (gzip, zip, bzip2, none) and the
+facility to dereference symlinks when building the tarball.
+
+<sect2 id="BM_TARBALL_NAMEFORMAT"><tt>BM_TARBALL_NAMEFORMAT</tt>
+<p>
+This configuration key defines how to perform the naming of the archive. Two
+values are possible:
+
+<list>
+<item><tt>long</tt>: the name will be made with the absolute path of the directory
+(eg: <tt>var-log-apache</tt> for <tt>/var/log/apache</tt>).
+<item><tt>short</tt>: the name will just contain the directory (eg:
+<tt>apache</tt> for <tt>/var/log/apache</tt>). 
+</list>
+
+<p>
+Suggested value: <tt>long</tt>.
+
+<sect2 id="BM_TARBALL_FILETYPE"><tt>BM_TARBALL_FILETYPE</tt>
+
+<p>
+<em>Type: enum(tar, tar.gz, tar.bz2, tar.lz, zip, dar), default: <tt>tar.gz</tt>.</em>
+
+<p>
+Basically, this configuration key defines the filetype of the resulting archive.
+In a way, it defines which compressor to use (zip, gzip, dar or bzip2).
+Here are the supported values: <tt>tar</tt>, <tt>tar.gz</tt>, <tt>tar.bz2</tt>,
+<tt>zip</tt> and <tt>dar</tt>. 
+Note that depending on the filetype you choose, you will have to
+make sure you have the corresponding compressor installed.
+
+<p>
+For the best compression rate, choose <tt>tar.bz2</tt> or <tt>tar.lz</tt>.
+
+<p>
+Since version 0.7.1, &bmngr; supports <em>dar</em> archives. This archiver 
+provides some interesting features like the archive slicing.
+<p>
+Since version 0.7.5, &bmngr; supports <em>lzma</em> archives. 
+
+<p>
+Make sure to statisfy dependencies according to the filetype you choose:
+
+<list>
+<item> tar.bz2 : needs "bzip2".
+<item> tar.lz : needs "lzma".
+<item> dar : needs "dar".
+<item> zip : needs "zip".
+</list>
+
+<sect2 id="BM_TARBALL_SLICESIZE"><tt>BM_TARBALL_SLICESIZE</tt>
+
+<p>
+<em>Type: string</em>
+
+<p>
+If you want to make sure your archives won't exceed a given size (for instance 2
+GB) you can use that configuration variable, but only if you are using the
+<tt>dar</tt> <tt>BM_TARBALL_FILETYPE</tt>. Indeed this feature is only supported
+by dar.
+
+<p>
+If you want to limit your archives size to 1 giga byte, use such a statement:
+
+<example>
+BM_TARBALL_SLICESIZE="1000M"
+</example>
+
+<p>
+Refer to the dar manpage for details about slices.
+
+<sect2 id="BM_TARBALL_EXTRA_OPTIONS"><tt>BM_TARBALL_EXTRA_OPTIONS</tt>
+
+<p>
+<em>Type: string</em>
+
+<p>
+If you want to provide extra options to "tar" or "dar" you may do so
+here. Leave blank unless you know what you are doing.
+
+<p>
+Example: to enable verbosity with tar (which would appeard in the logfiles), use this:
+
+<example>
+BM_TARBALL_EXTRA_OPTIONS="-v"
+</example>
+
+<sect2 id="BM_TARBALL_DUMPSYMLINKS"><tt>BM_TARBALL_DUMPSYMLINKS</tt>
+
+<p>
+<em>Type: boolean, default: <tt>true</tt>.</em>
+
+<p>
+It is possible, when generating the tarball (or the zip file) to dereference the
+symlinks. If you enable this feature, every symbolic link in the file system
+will be replaced in the archive by the file it points to. Use this feature with
+care, it can quickly lead to huge archives, or even worse: if you have a
+circular symlink somewhere, this will lead to an infinite archive!
+
+<p>
+In most of the cases, you should not use this feature.
+
+<sect2 id="BM_TARBALL_DIRECTORIES"><tt>BM_TARBALL_DIRECTORIES</tt>
+
+<p>
+<em>Type: space-separated list, default: <tt>null</tt>.</em>
+
+<p>
+Since version 0.7.3, this variable is replaced by the array BM_TARBALL_TARGETS[],
+it's still supported for backward compatibility though.
+You can use this variable for defining the locations to backup, but you must not
+use this variable if one or more of the paths you want to archive contain a space.
+
+<p>
+If you want to backup some targets that have spaces in their name (eg
+"Program Files"), you must not use this variable, but the array 
+BM_TARBALL_TARGETS[] instead.  
+
+<p>
+Example: 
+
+<example>
+export BM_TARBALL_DIRECTORIES="/etc /home /var/log/apache"
+</example>
+
+<sect2 id="BM_TARBALL_TARGETS"><tt>BM_TARBALL_TARGETS</tt>
+
+<p>
+<em>Type: array, default: <tt>"/etc", "/boot"</tt>.</em>
+
+<p>
+This variable holds every place you want to backup. This is the recommanded
+variable to use for defining your backup targets (<tt>BM_TARBALL_DIRECTORIES</tt> is
+deprecated since version 0.7.3).
+
+<p>
+You can safely put items that contain spaces (eg: "Program Files") whereas you
+can't with <tt>BM_TARBALL_DIRECTORIES</tt>.
+
+<p>
+You can also put Bash patterns in BM_TARBALL_TARGETS[], it will be expanded at
+runtime to find the resulting targets. For instance :
+BM_TARBALL_TARGETS[0]="/home/*" will lead to backup every home's sub-directory.
+
+<p>
+Example
+
+<example>
+BM_TARBALL_TARGETS[0]="/etc"
+BM_TARBALL_TARGETS[1]="/home/*"
+BM_TARBALL_TARGETS[2]="/boot"
+BM_TARBALL_TARGETS[3]="/mnt/win/Program Files"
+</example>
+
+<sect2 id="BM_TARBALL_BLACKLIST"><tt>BM_TARBALL_BLACKLIST</tt>
+
+<p>
+<em>Type: space-separated list, default: <tt>"/proc /dev /sys /tmp"</tt>.</em>
+
+<p>
+It can be very useful to prevent some locations of your filesytem from being
+included in the archives. This is really useful when you use wildcards in
+BM_TARBALL_DIRECTORIES. Indeed, you may want to backup every top-level directory
+of your filesystem (<tt>/*</tt>) but without volatile locations like
+<tt>/tmp</tt>, <tt>/dev</tt> and <tt>/proc</tt>.
+
+<p>
+You can also use this variable for excluding every files of a given extension,
+like for instance mp3 or mpg files.
+
+<p>
+Example: 
+
+<example>
+export BM_TARBALL_BLACKLIST="/tmp /dev /proc *.mp3 *.mpg"
+</example>
+
+<sect2 id="BM_TARBALL_OVER_SSH"><tt>BM_TARBALL_OVER_SSH</tt>
+<p>
+<em>Type: boolean, default: <tt>false</tt>.</em>
+<p>
+<strong>Dependency: <tt>BM_UPLOAD_SSH</tt></strong>
+
+<p>
+If you want to archive some remote locations from a server where &bmngr; is insalled, you can choose to 
+build archives over SSH. This is useful if you don't want to install &bmngr; every where and setup some 
+upload methods from all thoses servers to a central data storage server.
+This way, &bmngr; will build some archives directly over SSH and will store the resulting tarballs locally,
+as if it was built like any other archive. The resulting archive will be prefixed with the remote hostname 
+instead of <tt>BM_ARCHIVE_PREFIX</tt>.
+
+<p>
+This feature requires that the following variables are set in the BM_UPLOAD_SSH section:
+<list>
+    <item><tt>BM_UPLOAD_SSH_USER</tt>: the user to use for connecting to the remote server. Note
+              that this user will run tar remotely, so take care to archive something this user can read!
+    <item><tt>BM_UPLOAD_SSH_KEY</tt>: as usal, the path to the private key to use for establishing the connection.
+    <item><tt>BM_UPLOAD_SSH_HOSTS</tt>: A list of hosts where to run the tarball builds.
+</list>
+
+<p>
+If you enable this feature, note that the resulting configuration file will have the following restrictions:
+<list>
+    <item>Remote tarball build only works with the <tt>tarball</tt> method, it will silently behaves the same 
+          with <tt>tarball-incremental</tt>.
+    <item>You cannot use the remote build and the local one in the same configuration file. If you want to do both,
+          use two configuration files.
+</list>
+
+<p>
+Example: You have three hosts: host01, host02 and host03. You want to set up
+host01 as a data storage server, it has a big /var/archives partition. You want
+to archive "/etc", "/home" and "/var/log" on box02 and box03 and store the archives on
+host01.
+
+<example>
+[...]
+export BM_ARCHIVE_METHOD="tarball"
+
+export BM_TARBALL_OVER_SSH="true"
+export BM_TARBALL_FILETYPE="tar.bz2"
+export BM_TARBALL_DIRECTORIES="/etc /home /var/log"
+
+export BM_UPLOAD_SSH_USER="bamuser"
+export BM_UPLOAD_SSH_KEY="/home/bamuser/.ssh/id_dsa"
+export BM_UPLOAD_SSH_HOSTS="box02 box03"
+
+</example>
+
+Of course, for this to work correctly, <tt>`bamuser'</tt> should be a valid user on box02
+and box03; it must be allowed to connect to them with SSH key autentication and 
+has to be able to read those directories.
+
+
+<sect1 id="tarballinc">Incremental tarballs
+<sect2 id="tarballinc-desc">Description
+
+<p>
+<em>Method name: <tt>tarball-incremental</tt>, configuration key prefix:
+<tt>BM_TARBALLINC</tt>.</em>
+
+<p>
+If you want to handle tarballs without wasting disk space, you should use this
+method. The concept of this method is simple: You choose a frequency when a full
+backup is made (exactly like the one made by the tarball mehod). All the days
+between two full backups, archives contain only the files that have changed from
+the previous archive.
+
+<p>
+For instance, let's say you want to backup /home with this method. Your /home
+directory is composed by two sub-directories: /home/foo and /home/bar.
+You choose a weekly frequency and say that monday will be the "fullbackup" day.
+Obviously, you will have a full tarball of /home on monday. 
+Then, if a file changed inside /home/foo and if /home/bar
+remains unchanged, tuesday's archive will only contain the modified files of
+/home/foo. Using this method will save a lot of disk space.
+
+<p>
+To build incremental tarballs, &bmngr; uses tar's switch 
+<tt>--listed-incremental</tt>. This will create a file for each target which
+will contain some statistics used by tar to figure out if a file should be
+backed up or not.
+When &bmngr; is run for the first time, this file doesn't exist, so the first
+tarballs made are always master backups.
+If the <em>incremental list</em> files get removed, the next backups won't be
+incremental.
+
+<p>
+Since version 0.7.3, it's possible to see at the first glance if a backup is
+a master or an incremental one: master backup have the keyword <tt>master</tt>
+appended to the date.
+When purging the repository, the master backups are not removed as the
+incremental ones. &bmngr; always keep a master backup that is older than
+incremental archives. 
+
+<p>
+This method uses all the tarball's configuration keys and adds two more. One to
+define the kind of frequency, the other to choose on which day the full backups 
+should be done.
+
+<sect2 id="BM_TARBALLINC_MASTERDATETYPE"><tt>BM_TARBALLINC_MASTERDATETYPE</tt>
+
+<p>
+<em>Type: enum(weekly, monthly), default: <tt>weekly</tt>.</em>
+
+<p>
+This is the type of frequency you want to use. If you choose <tt>weekly</tt>,
+you'll have to choose a day number between 0 and 6 for the
+BM_TARBALLINC_MASTERDATEVALUE configuration key, if you choose <tt>monthly</tt>,
+the day number will be between 1 and 31.
+
+
+<sect2 id="BM_TARBALLINC_MASTERDATEVALUE"><tt>BM_TARBALLINC_MASTERDATEVALUE</tt>
+
+<p>
+<em>Type: integer, default: <tt>1</tt>.</em>
+
+<p>
+The number of the day when making full backups. Note that its meaning directly
+depends on the <tt>BM_TARBALLINC_MASTERDATETYPE</tt>. 
+For instance, 1 means <em>"monday"</em> if you
+choose a weekly frequency, but it means <em>"the first day of the month"</em>
+if you choose a monthly frequency.
+
+<sect1 id="mysql">MySQL databases
+<sect2 id="mysql-desc">Description
+
+<p>
+<em>Method name: <tt>mysql</tt>, configuration keys prefix:
+<tt>BM_MYSQL</tt>.</em>
+
+<p>
+This method provides a way to archive MySQL databases, the archives are made with 
+mysqldump (SQL text files) and can be compressed.
+
+<p>
+In versions prior to 0.7.6, &bmngr; used to pass the MySQL client's password through 
+the command line. As explained by the MySQL manual, that's a security issue as
+the password is then readable for a short time in the /proc directory (or using
+the ps command).
+
+<p>
+To close that vulnerability, the MySQL client password is not passed through
+the command line anymore, it is written in a configuration file located in the
+home directory of the user running &bmngr; : <tt>~/.my.cnf</tt>.
+
+<p>
+If that file doesn't exist at runtime, &bmngr; will create it and will then
+write the password provided in <tt>BM_MYSQL_ADMINPASS</tt> inside. 
+
+<sect2 id="BM_MYSQL_DATABASES"><tt>BM_MYSQL_DATABASES</tt>
+
+<p>
+<em>Type: space-separated list, default: <tt>__ALL__</tt>.</em>
+<p>
+This is the list of databases you want to archive.
+You can put the keyword <tt>__ALL__</tt> if you like to backup every database without 
+having to list them.
+<p>
+Example:
+
+<example>
+export BM_MYSQL_DATABASES="mysql mybase wordpress dotclear phpbb2"
+</example>
+
+<sect2 id="BM_MYSQL_SAFEDUMPS"><tt>BM_MYSQL_SAFEDUMPS</tt>
+<p>
+<em>Type: boolean, default: <tt>true</tt>.</em>
+
+<p>
+The best way to produce MySQL dumps is done by using mysqldump's <tt>--opt</tt> switch. 
+This makes the dump directly usable with mysql (adds the drop table
+statements), locks tables during the dump generation and other cool things (see <tt>mysqldump</tt>).
+This is recommended for full-clean-safe backups, but needs a 
+privileged user (for the lock permissions).
+
+<p>
+Example:
+
+<example>
+export BM_MYSQL_SAFEDUMPS="true"
+</example>
+
+
+<sect2 id="BM_MYSQL_ADMINLOGIN"><tt>BM_MYSQL_ADMINLOGIN</tt>
+
+<p>
+<em>Type: string, default: <tt>root</tt>.</em>
+
+<p>
+The MySQL login you want to use for connecting to the database. Make sure this login 
+can read all the databases you've set in <tt>BM_MYSQL_DATABASES</tt>.
+
+<p>
+Example:
+
+<example>
+export BM_MYSQL_ADMINLOGIN="root"
+</example>
+
+<sect2 id="BM_MYSQL_ADMINPASS"><tt>BM_MYSQL_ADMINPASS</tt>
+
+<p>
+<em>Type: string, default: <tt>undefined</tt>.</em>
+<p>
+The MySQL client password.
+
+<p>
+If you have already made your own ~/.my.cnf configuration file, you don't have
+to set that variable.
+
+<p>
+If you don't know what is the <tt>~/.my.cnf</tt> configuration file, set the password,
+then &bmngr; will take care of creating the MySQL client configuration file.
+
+<p>
+Example:
+
+<example>
+export BM_MYSQL_ADMINPASS="MySecretPass"
+</example>
+
+
+<sect2 id="BM_MYSQL_HOST"><tt>BM_MYSQL_HOST</tt>
+
+<p>
+<em>Type: string, default: <tt>localhost</tt>.</em>
+
+<p>
+The database host where the databases are.
+
+<p>
+Example:
+
+<example>
+export BM_MYSQL_HOST="localhost"
+</example>
+
+<sect2 id="BM_MYSQL_PORT"><tt>BM_MYSQL_PORT</tt>
+
+<p>
+<em>Type: string, default: <tt>3306</tt>.</em>
+
+<p>
+The port on <tt>BM_MYSQL_HOST</tt> where the mysql server is listening.
+
+<p>
+Example:
+
+<example>
+export BM_MYSQL_PORT="3306"
+</example>
+
+<sect2 id="BM_MYSQL_FILETYPE"><tt>BM_MYSQL_FILETYPE</tt>
+
+<p>
+<em>Type: enum(gzip, bzip2), default: <tt>bzip2</tt>.</em>
+
+<p>
+The archive is made with mysqldump which renders SQL lines; the 
+resulting text file can be compressed.
+If you want to compress the file, choose the compressor you want.
+Leave it blank if you want pure SQL files.
+
+<p>
+Example:
+
+<example>
+export BM_MYSQL_FILETYPE="bzip2"
+</example>
+
+<sect1 id="svn">Subversion repositories
+<sect2 id="svn-desc">Description
+
+<p>
+You can archive Subversion repositories with this method. The archive will be 
+made with <tt>svnadmin</tt> and will contain XML data (text files).
+Like the mysql method, you can choose to compress it.
+
+<sect2 id="BM_SVN_REPOSITORIES"><tt>BM_SVN_REPOSITORIES</tt>
+
+<p>
+<em>Type: space-separated list</em>
+
+<p>
+This is the list of absolute paths to the SVN repositories to archive.
+
+<p>
+Example:
+
+<example>
+export BM_SVN_REPOSITORIES="/srv/svnroot/repo1 /srv/svnroot/repo2"
+</example>
+
+<sect2 id="BM_SVN_COMPRESSWITH"><tt>BM_SVN_COMPRESSWITH</tt>
+
+<p>
+<em>Type: enum(gzip, bzip2), default: <tt>bzip2</tt>.</em>
+
+<p>
+If you want to compress the resulting XML files, choose a compressor here.
+Leave this blank if you don't want any compression.
+
+<p>
+Example:
+
+<example>
+export BM_SVN_COMPRESSWITH="gzip"
+</example>
+
+<sect1 id="pipe">Generic methods
+<sect2 id="pipe-desc">Description
+
+<p>
+Even if most of the common needs are covered by the existing methods, there is always
+a case uncovered. &bmngr; provides a way for backing up anything, and can be used in such 
+circumstances.
+
+<p>
+This method is called <tt>pipe</tt>, it is more complex to use but can virtually backup anything.
+The concept is simple, a pipe method is defined by the following items:
+
+<list>
+<item>A name (for naming the archive)
+<item>A command (that produces content on stdout)
+<item>A file type (txt, sql, dump, ...)
+<item>A compressor (gzip, bzip2)
+</list>
+
+<p>
+Those configuration keys are arrays, so you can implement as many pipe methods
+as you like.
+
+<p>
+For each pipe method defined, &bmngr; will launch the command given and redirect 
+the content sent to stdout by this command to a file named with the name of the 
+method and its filetype. Then, if the method uses a compressor, the file will 
+be compressed.
+
+<sect2 id="pipe-example">Example
+<p>
+Example for archiving a remote MySQL database through SSH:
+
+<example>
+BM_PIPE_COMMAND[0]="ssh host -c \"mysqldump -ufoo -pbar base\"" 
+BM_PIPE_NAME[0]="base" 
+BM_PIPE_FILETYPE[0]="sql"
+BM_PIPE_COMPRESS[0]="gzip"
+</example>
+
+<p>
+Imagine you have a second pipe method to implement, for instance building 
+a tarball trough SSH:
+
+<example>
+BM_PIPE_COMMAND[1]="ssh host -c \"tar -c -z /home/user\"" 
+BM_PIPE_NAME[1]="host.home.user" 
+BM_PIPE_FILETYPE[1]="tar.gz"
+BM_PIPE_COMPRESS[1]=""
+</example>
+
+<p>
+Note that we have incremented the array's index.
+
+<sect id="uploads">Upload Methods
+
+<sect1 id="uploads-desc">Description
+<p>
+<em>One of the most important thing to do when backing up file systems is to store 
+the archives on different places. The more different physical spaces you have, the better. 
+&bmngr; provides a way for achieving this goal : the upload methods. </em>
+
+<p>
+There are different upload methods, each of them behaves differently and provides particular 
+features. In &bmngr; &bmngr-version; you can use FTP, SSH, RSYNC or Amazon S3 uploads.
+
+<p>In the same manner as for backup methods, you can choose to use as many 
+upload methods as you like. If you don't want to use this feature at all, just put
+the keyword <tt>none</tt> in the configuration <tt>BM_UPLOAD_METHOD</tt>.
+
+<p>
+Note that the FTP, SSH and S3 methods are dedicated to upload archives, 
+using those method depends on the use of at least one backup method.
+
+<p>
+On the opposite, the RSYNC method uploads a directory to remote locations, 
+this directory can be your repository or whatever other location of your
+file sytem.
+
+<sect1 id="uploads-global">Global configuration keys
+<p>
+The following configuration keys are global in the upload section:
+
+<sect2 id="BM_UPLOAD_HOSTS"><tt>BM_UPLOAD_HOSTS</tt>
+<p>
+<em>Type: space-separated list</em>
+<p>
+Each of the hosts defined in that list is used by all the upload methods
+when establishing connections. For instance if you want to perform SSH uploads of 
+your archives and RSYNC upload of a location to the same host, put it in this list.
+<p>
+Example:
+<example>
+export BM_UPLOAD_HOSTS="mirror1.lan.mysite.net mirror2.lan.mysite.net"
+</example>
+
+<sect2 id="BM_UPLOAD_DESTINATION"><tt>BM_UPLOAD_DESTINATION</tt>
+<p>
+<em>Type: string</em>
+<p>
+This is the absolute path of the directory in the remote hosts where to
+put the files uploaded.
+<p>
+If you have installed installed &bmngr; on the remote host,
+a good idea is to choose a sub-directory of the repository.
+Then, during the remote host purge phase, your uploads will be 
+cleaned at the same time.
+<p>
+You can also define a destination dedicated to your host: 
+<tt>BM_UPLOAD_DESTINATION="/var/archives/$HOSTNAME"</tt>
+
+<p>Example:
+
+<p>
+Let's say you want that all your uploads are performed on the host mirror2.lan.mysite.net,
+in the sub-directory /var/archives/uploads
+
+<example>
+export BM_UPLOAD_HOSTS="mirror2.lan.mysite.net"
+export BM_UPLOAD_DESTINATION="/var/archives/uploads"
+</example>
+
+<sect1 id="upload-ssh">SSH uploads
+
+<sect2 id="uploads-ssh-desc">Description
+<p>
+<em>Method name: <tt>ssh</tt>, goal: upload archives to remote hosts over SSH.
+This method depends on a backup method.
+</em>
+
+<p>
+If you want to upload your archives on remote locations, you can use the SSH method. 
+This method is good if you like to use a secure tunnel between the two points of 
+the upload.
+
+<p>
+The call to <tt>scp</tt> will be done with the identity of the user <tt>BM_UPLOAD_SSH_USER</tt>, 
+thus, you have to make sure this user can have access to the repository (take care to the secure mode).
+
+<sect2 id="BM_UPLOAD_SSH_USER"><tt>BM_UPLOAD_SSH_USER</tt>
+<p>
+<em>Type: string</em>
+<p>
+This is the user to use for performing the ssh connection. Make sure this user can access 
+repository.
+<p>
+Example:
+<example>
+export BM_UPLOAD_SSH_USER="bmngr"
+</example>
+
+<sect2 id="BM_UPLOAD_SSH_KEY"><tt>BM_UPLOAD_SSH_KEY</tt>
+<p>
+<em>Type: string</em>
+<p>
+This is the path to the private key of the user BM_UPLOAD_SSH_USER. 
+<p>
+Example:
+<example>
+export BM_UPLOAD_SSH_KEY="/home/bmngr/.ssh/id_dsa"
+</example>
+
+<sect2 id="BM_UPLOAD_SSH_PORT"><tt>BM_UPLOAD_SSH_PORT</tt>
+<p>
+<em>Type: integer</em>
+<p>
+You may want to connect to remote hosts with a specific port. 
+Use this configuration key then.
+<p>
+Example:
+<example>
+export BM_UPLOAD_SSH_PORT="1352"
+</example>
+
+<sect2 id="BM_UPLOAD_SSH_HOSTS"><tt>BM_UPLOAD_SSH_HOSTS</tt>
+<p>
+<em>Type: space-separated list</em>
+<p>
+Put here the list of hosts to use for SSH-only uploads.
+Note that if you put some hosts in <tt>BM_UPLOAD_HOSTS</tt>, they will be used as well. 
+<p>
+Example:
+<example>
+export BM_UPLOAD_SSH_HOSTS="mirror3.lan.mysite.net"
+</example>
+
+<sect2 id="BM_UPLOAD_SSH_PURGE"><tt>BM_UPLOAD_SSH_PURGE</tt>
+<p>
+<em>Type: boolean</em>
+<p>
+If you set this boolean to "true", the remote archives will be purged before
+the new ones are uploaded.  The purging rules are the same as the ones &bmngr;
+uses for local purging. If <tt>BM_UPLOAD_SSH_TTL</tt> is defined, this time to
+live will be used, else <tt>BM_ARCHIVE_TTL</tt> will be used.
+
+<p>
+Example:
+<example>
+export BM_UPLOAD_SSH_PURGE="true"
+export BM_UPLOAD_SSH_TTL="10"
+</example>
+
+<sect2 id="BM_UPLOAD_SSH_DESTINATION"><tt>BM_UPLOAD_SSH_DESTINATION</tt>
+<p>
+<em>Type: string</em>
+<p>
+Put here the destination for SSH-only uploads, this key overrides 
+<tt>BM_UPLOAD_DESTINATION</tt>.
+<p>
+Example:
+<example>
+export BM_UPLOAD_SSH_DESTINATION="/var/archives/scp-uploads"
+</example>
+
+<sect1 id="upload-ssh-gpg"> Encrypted SSH uploads
+<sect2 id="upload-ssh-gpg-desc"> Description
+<p>
+<em>Method name: <tt>ssh-gpg</tt>, goal: encrypt arcives using public
+key encryption and upload the result to untrusted remote hosts
+over SSH. This method depends on a backup method.  </em>
+
+<p>
+The upload using SSH can also be combined with public key encryption
+provided by <tt>gpg</tt>. The archives will be encrypted using a
+public key prior to sending them over the network, so on the remote
+server your files are protected from inspection.  
+
+<p>
+This method can be used to protect your data from inspection on
+untrusted remote servers. However, since the encrypted files are not
+signed, this does not protect you from archive manipulation. So the
+<em>md5</em> hases are still needed.
+<p>
+This method uses all of the configuartion keys of the <em>ssh</em> method. One
+additional key is required.
+<sect2
+id="BM_UPLOAD_SSH_GPG_RECIPIENT"><tt>BM_UPLOAD_SSH_GPG_RECIPIENT</tt>
+
+<p>
+<em>Type: string</em>
+<p>
+This parameter sets the recipient for which the archive is
+encrypted. A valid specification is a short or long key id, or a
+descriptive name, as explained in the <tt>gpg</tt> man page. The public key for
+this identity must be in the key ring of the user running <tt>gpg</tt>, which
+is the same as specified by <tt>BM_UPLOAD_SSH_USER</tt>. To test this
+run the command <tt> gpg --list-keys ID </tt> as that user, where
+<tt>ID</tt> is the ID as you give it to this parameter. If <tt>gpg</tt>
+displays exactly one key, then you are fine. Refer to the <tt>gpg</tt> man page
+for further details.
+<p>
+Example:
+
+<example>
+export BM_UPLOAD_SSH_GPG_RECIPIENT="email@address.com"
+export BM_UPLOAD_SSH_GPG_RECIPIENT="ECE009856"
+</example>
+
+<sect1 id="upload-ftp">FTP uploads
+<sect2 id="uploads-ftp-desc">Description
+<p>
+If security does not matter much on your lan (between the two points of the upload) you can choose to use the 
+FTP method.
+One of the main pros of this method is that it can perform purging independently. You can safely use this method
+for uploading files to a host where you just have an FTP account.
+
+<sect2 id="BM_UPLOAD_FTP_SECURE"><tt>BM_UPLOAD_FTP_SECURE</tt>
+<p>
+<em>Type: boolean, default: false.</em>
+<p>
+If this variable is set to true, all FTP transfers will be done over SSL.
+<p>
+Example:
+<example>
+export BM_UPLOAD_FTP_SECURE="true"
+</example>
+
+
+<sect2 id="BM_UPLOAD_FTP_PASSIVE"><tt>BM_UPLOAD_FTP_PASSIVE</tt>
+<p>
+<em>Type: boolean, default: true.</em>
+<p>
+If this variable is set to true, FTP transfers will be performed in passive mode, 
+which is mandatory in NATed/firewalled environments.
+<p>
+Example:
+<example>
+export BM_UPLOAD_FTP_PASSIVE="true"
+</example>
+
+<sect2 id="BM_UPLOAD_FTP_TTL"><tt>BM_UPLOAD_FTP_TTL</tt>
+<p>
+<em>Type: integer, default: $BM_ARCHIVE_TTL</em>
+<p>
+Using different <em>time to live</em> values for local and remote archives can
+be useful in certain situations.  For instance, it's possible to install &bmngr;
+locally, make it build archives, upload them to a remote FTP host and then purge
+them locally (but not on the remote host). Doing this is possible with setting a
+null value to the local TTL (BM_ARCHIVE_TTL) and a non-null value to
+BM_UPLOAD_FTP_TTL.
+<p>
+Example:
+<example>
+# in your main conffile -- /etc/backup-manager.conf
+export BM_ARCHIVE_TTL="0"
+export BM_UPLOAD_FTP_TTL="5"
+export BM_POST_BACKUP_COMMAND="/usr/sbin/backup-manager --purge"
+
+# in your cron job:
+/usr/sbin/backup-manager
+/usr/sbin/backup-manager --purge
+
+(Don't put the post-command in the main conffile or you'll face an infinite loop.)
+</example>
+
+<sect2 id="BM_UPLOAD_FTP_USER"><tt>BM_UPLOAD_FTP_USER</tt>
+<p>
+<em>Type: string.</em>
+<p>
+Put here the FTP user to use for opening the connections.
+<p>
+Example:
+<example>
+export BM_UPLOAD_FTP_USER="bmngr"
+</example>
+
+<sect2 id="BM_UPLOAD_FTP_PASSWORD"><tt>BM_UPLOAD_FTP_PASSWORD</tt>
+<p>
+<em>Type: string.</em>
+<p>
+Put here the password to use for authenticating the FTP session,(in plain text).
+<p>
+Example:
+<example>
+export BM_UPLOAD_FTP_PASSWORD="secret"
+</example>
+
+<sect2 id="BM_UPLOAD_FTP_HOSTS"><tt>BM_UPLOAD_FTP_HOSTS</tt>
+<p>
+<em>Type: space-separated list</em>
+<p>
+Put here the list of hosts to use for FTP-only uploads.
+Note that if you put some hosts in <tt>BM_UPLOAD_HOSTS</tt>, they will be used as well. 
+<p>
+Example:
+<example>
+export BM_UPLOAD_FTP_HOSTS="mirror4.lan.mysite.net"
+</example>
+
+<sect2 id="BM_UPLOAD_FTP_DESTINATION"><tt>BM_UPLOAD_FTP_DESTINATION</tt>
+<p>
+<em>Type: string</em>
+<p>
+Put here the destination for FTP-only uploads, this key overrides 
+<tt>BM_UPLOAD_DESTINATION</tt>.
+<p>
+Example:
+<example>
+export BM_UPLOAD_FTP_DESTINATION="/var/archives/ftp-uploads"
+</example>
+
+<sect2 id="BM_UPLOAD_FTP_PURGE"><tt>BM_UPLOAD_FTP_PURGE</tt>
+<p>
+<em>Type: boolean, default: <tt>true</tt></em>
+<p>
+You can choose to purge deprecated archives before uploading new ones.
+This purge is done over FTP and uses the configuration key <tt>BM_ARCHIVE_TTL</tt> in 
+the same manner as the local purge behaves (the FTP purge is not recursive though).
+<p>
+Example:
+<example>
+export BM_UPLOAD_FTP_PURGE="true"
+</example>
+
+<sect1 id="upload-s3">Amazon S3 uploads
+<sect2 id="uploads-s3-desc">Description
+
+<p>
+Amazon's new Simple Storage Service (S3) is an Internet "web service"
+that permits you to store unlimited blocks of data on their replicated
+and managed systems. See http://aws.amazon.com for more
+information. Registration is free and the rates are quite reasonable.
+
+<p>
+Using the S3 upload method will permit your archives to be stored on
+Amazon's S3 service. You must allocate a "bucket" to the exclusive use
+of Backup Manager. Each of your created archives will be uploaded to
+S3 and stored within this bucket in a key name that matches the name
+of the archive.
+
+<p>
+As with the other backup methods Backup Manager does not assist you in
+restoring files from archives. You must retrieve archives from S3
+using other mechanisms such as the S3Shell provided as an examle
+command line utility by Amazon.
+
+<p>
+Note that when using this upload method, the <tt>BM_UPLOAD_HOSTS</tt> variable is 
+ignored as the only valid host for S3 uploads in <tt>s3.amazon.com</tt>.
+
+<sect2 id="BM_UPLOAD_S3_DESTINATION"><tt>BM_UPLOAD_S3_DESTINATION</tt>
+<p>
+<em>Type: string.</em>
+<p>
+This option is required for the S3 upload method. This specifies the
+bucket used to store backup data. If the bucket does not exist it will
+be created as a private bucket. This key overrides
+<tt>BM_UPLOAD_DESTINATION</tt>. Note that Amazon requires that bucket
+names be globally unique. Be creative picking one.
+<p>
+Example:
+<example>
+export BM_UPLOAD_S3_DESTINATION="my_backup_bucket"
+</example>
+
+<sect2 id="BM_UPLOAD_S3_ACCESS_KEY"><tt>BM_UPLOAD_S3_ACCESS_KEY</tt>
+<p>
+<em>Type: string.</em>
+<p>
+This option is required for the S3 upload method. After you have
+registered Amazon will provide you an access key. You must use this
+key to access your storage on S3.
+<p>
+Example:
+<example>
+export BM_UPLOAD_S3_ACCESS_KEY="a9sabkz0342dasv"
+</example>
+
+<sect2 id="BM_UPLOAD_S3_SECRET_KEY"><tt>BM_UPLOAD_S3_SECRET_KEY</tt>
+<p>
+<em>Type: string.</em>
+<p>
+This option is required for the S3 upload method. After you have
+registered Amazon will provide you a secret key. You must use this
+key to write to your storage on S3.
+<p>
+Example:
+<example>
+export BM_UPLOAD_S3_SECRET_KEY="lkj2341askj123sa"
+</example>
+
+<sect2 id="BM_UPLOAD_S3_PURGE"><tt>BM_UPLOAD_S3_PURGE</tt>
+<p>
+<em>Type: boolean, default: <tt>true</tt></em>
+<p>
+You can choose to purge deprecated archives before uploading new ones.
+This purge is done over S3 and uses the configuration key <tt>BM_ARCHIVE_TTL</tt> in 
+the same manner as the local purge behaves (the S3 purge is not recursive though).
+<p>
+Example:
+<example>
+export BM_UPLOAD_S3_PURGE="true"
+</example>
+
+<sect1 id="upload-rsync">RSYNC uploads
+<sect2 id="upload-rsync-desc">Description
+<p>
+You may want to upload some parts of your file system to some remote hosts. 
+In these cases, archives are not needed, you just want to synchronize some 
+directories to remote places. This is where the RSYNC upload method is useful.
+<p>
+RSYNC uploads need a SSH user/key pair to behave correctly, thus there is a 
+dependency against the keys <tt>BM_UPLOAD_SSH_USER</tt> and <tt>BM_UPLOAD_SSH_KEY</tt>.
+
+<sect2 id="BM_UPLOAD_RSYNC_DIRECTORIES"><tt>BM_UPLOAD_RSYNC_DIRECTORIES</tt>
+<p>
+<em>Type: space-separated list</em>
+<p>
+Put here the list of local directories you want to upload with rsync.
+<p>
+Example:
+<example>
+export BM_UPLOAD_RSYNC_DIRECTORIES="/data/photos /data/videos /data/mp3"
+</example>
+
+<sect2 id="BM_UPLOAD_RSYNC_HOSTS"><tt>BM_UPLOAD_RSYNC_HOSTS</tt>
+<p>
+<em>Type: space-separated list</em>
+<p>
+Put here the list of hosts to use for RSYNC-only uploads.
+Note that if you put some hosts in <tt>BM_UPLOAD_HOSTS</tt>, they will be used as well. 
+<p>
+Example:
+<example>
+export BM_UPLOAD_RSYNC_HOSTS="mirror5.lan.mysite.net"
+</example>
+
+<sect2 id="BM_UPLOAD_RSYNC_DESTINATION"><tt>BM_UPLOAD_RSYNC_DESTINATION</tt>
+<p>
+<em>Type: string</em>
+<p>
+Put here the destination for RSYNC-only uploads, this key overrides 
+<tt>BM_UPLOAD_DESTINATION</tt>.
+<p>
+Example:
+<example>
+export BM_UPLOAD_RSYNC_DESTINATION="/var/archives/rsync-snapshots"
+</example>
+
+<sect2 id="BM_UPLOAD_RSYNC_DUMPSYMLINKS"><tt>BM_UPLOAD_RSYNC_DUMPSYMLINKS</tt>
+<p>
+<em>Type: boolean, default: <tt>false</tt>.</em>
+<p>
+You can choose to dereference files pointed by symlinks in your RSYNC snapshots.
+This feature should be used with care.
+<p>
+Example:
+<example>
+export BM_UPLOAD_RSYNC_DUMPSYMLINKS="false"
+</example>
+
+<sect id="exports">Exports
+<p>
+<em>
+Another way of storing your archives to a safe place is to use external media.
+</em>
+
+<p>
+In version &bmngr-version;, only CDs and DVDs are supported as external media, so we will discuss
+in this section only the <tt>BM_BURNING</tt> features. 
+Other exports are expected to come in next versions though.
+
+<sect1 id="exports-burning">Burning CDR/DVD media
+<p>
+In the version &bmngr-version;, &bmngr; supports four different kinds of media: CDR, 
+CDRW and DVD+R(W) and DVD-R(W).
+
+<sect2 id="BM_BURNING_METHOD"><tt>BM_BURNING_METHOD</tt>
+<p>
+Set the key <tt>BM_BURNING_METHOD</tt> to the method corresponding to the media you want to burn:
+
+<list>
+<item>CDR
+<item>CDRW 
+<item>DVD 
+<item>DVD-RW
+</list>
+
+<p>
+In <em>non-interactive mode</em> (when backup-manager is not lauchned from a terminal),
+any of these methods will try to put the whole archive repository in the media, if it does not 
+fit in the media, it will try to put only the archives built on the day, if that's not possible,
+nothing will be burnt.
+
+<p>
+In <em>interactive mode</em> (when backup-manager is launched from a terminal),
+the whole repository will be burnt into as many media as needed. When a medium is 
+satured with archives, backup-manager will pause the process asking the user to put a new 
+media inside.
+
+<p>
+The <tt>CDRW</tt> and <tt>DVD-RW</tt> methods will first blank the media, 
+so you can safely use these methods if you want to use the same medium several times.
+
+<p>
+The <tt>CDR</tt> and <tt>DVD</tt> medthods won't blank the medium first 
+(DVD+RW media doesn't need blanking, it's possible to re-burn data on-the-fly 
+over such media)..
+
+<p>
+DVD media are handled by the tool <tt>dvd+rw-tools</tt>, problems can occur in CRON environment with 
+<tt>dvd+rw-tools</tt> versions prior to <tt>6.1</tt>, make sure to have <tt>6.1</tt>
+or later if you want to burn DVD media with Backup Manager.
+
+<p>
+As usual, you can put <tt>none</tt> in order to disable the burning process.
+
+<p>
+All those burning methods share the same configuration keys, so it's easy to
+switch from a medium to another.
+
+<sect2 id="BM_BURNING_DEVICE"><tt>BM_BURNING_DEVICE</tt>
+<p>
+<em>Type: string, default: <tt>/dev/cdrom</tt>.</em>
+<p>
+This is mandatory for using the burning feature, it's the device 
+to use for mounting the media. It's needed by backup manager for 
+performing the MD5 checks and for other needs.
+<p>
+Example:
+<example>
+export BM_BURNING_DEVICE="/dev/cdrom"
+</example>
+
+<sect2 id="BM_BURNING_DEVFORCED"><tt>BM_BURNING_DEVFORCED</tt>
+<p>
+<em>Type: string</em>
+<p>
+&bmngr; uses <tt>cdrecord</tt> for burning CDs. If when you run
+<tt>cdrecord -scanbus</tt> you don't see your burning device, that means you will have to 
+force the device in ATA mode. 
+To tell &bmngr; to do so, just put here the path to your device, and a switch will be appended to the
+cdrecord commandline like the following : <tt>cdrecrord ... dev=$BM_BURNING_DEVFORCED ...</tt>.
+<p>
+Leave this configuration key blank if you see your device with <tt>cdrecord -scanbus</tt>, 
+in this case, &bmngr; will use the default cdrecord device for burning CDR media.
+<p>
+Example:
+<example>
+export BM_BURNING_DEVFORCED="/dev/cdrom"
+</example>
+
+<sect2 id="BM_BURNING_ISO_FLAGS"><tt>BM_BURNING_ISO_FLAGS</tt>
+<p>
+<em>Type: string, default: "-R -J"</em>
+
+<p>
+Media burned with &bmngr; will be made using a Joliet disc image. 
+The flags defined in that variable will be appended to the mkisofs command
+lines in order to specify wich media image to use.
+
+<p>
+The default value "-R -J" produces a Joliet image, if you want to make 
+non-Joliet disc images, you can change these flags. Refer to the manpage of
+mkisofs for details about possible disc images.
+
+<p>
+Don't change that variable if you don't know what you're doing.
+
+<p>
+Example:
+<example>
+export BM_BURNING_ISO_FLAGS="-R -J"
+</example>
+
+<sect2 id="BM_BURNING_MAXSIZE"><tt>BM_BURNING_MAXSIZE</tt>
+<p>
+<em>Type: integer, default: <tt>700</tt>.</em>
+<p>
+This is where you define the maximum size (in megabytes) 
+of the media you will put in the device.
+Here is the list of the common sizes:
+
+<list>
+<item>CDR/CDRW: 650, 700, 800
+<item>DVD: 4700
+</list>
+
+<p>
+When &bmngr; looks in the repository for burning data, it will try to put 
+the whole archive repository in the media. If the summarized size of the
+repository does not fit in <tt>BM_BURNING_MAXSIZE</tt>, &bmngr; will then 
+try to put only the archives of the day.
+
+<p>
+Example for a CD burner
+<example>
+export BM_BURNING_METHOD="CDRW"
+export BM_BURNING_MAXSIZE="700"
+</example>
+
+<p>
+Example for a DVD burner:
+<example>
+export BM_BURNING_METHOD="DVD"
+export BM_BURNING_MAXSIZE="4700"
+</example>
+
+<sect2 id="BM_BURNING_CHKMD5"><tt>BM_BURNING_CHKMD5</tt>
+<p>
+<em>Type: boolean, default: <tt>true</tt>.</em>
+<p>
+If this boolean is set to a true value, every MD5 sum will be checked when the media 
+is burned in order to make sure everything is ok.
+<p>
+Note that you can choose to perform this checkup with the command 
+switch <tt>--md5check</tt>.
+<p>
+Example:
+<example>
+exports BM_BURNING_CHKMD5="true"
+</example>
+
+<sect id="advanced">Advanced features
+<p>
+<em>A couple of advanced features are provided, they will be covered in this section.</em>
+
+<sect1 id="BM_TEMP_DIR"><tt>BM_TEMP_DIR</tt>
+
+<p>
+<em>Type: string, default: <tt>/tmp/backup-manager</tt>.</em>
+
+<p>
+This is the temporary directory where temporary files are created by Backup Manager.
+
+<p>
+Example:
+
+<example>
+export BM_ARCHIVE_CHMOD="/tmp/backup-manager"
+</example>
+
+
+<sect1 id="advanced-logger">Logging to syslog
+
+<p>
+If you want to log &bmngr; actions to syslog, you can enable the internal
+logger, this is done with the configuration key <tt>BM_LOGGER</tt>. You are also
+able to choose which syslog facility to use thanks to the key
+<tt>BM_LOGGER_FACILITY</tt>.
+
+<sect2 id="BM_LOGGER"><tt>BM_LOGGER</tt>
+<p>
+<em>Type: boolean, default: <tt>true</tt>.</em>
+<p>
+If this boolean is set to true, &bmngr; will log everything to syslog.
+<p>
+Example:
+<example>
+exports BM_LOGGER="true"
+</example>
+
+
+<sect2 id="BM_LOGGER_FACILITY"><tt>BM_LOGGER_FACILITY</tt>
+<p>
+<em>Type: string, default: <tt>user</tt>.</em>
+<p>
+You can specify here a syslog facility to use, this can be useful if you like to
+filter messages from &bmngr; to a special syslog file.
+<p>
+Example:
+<example>
+exports BM_LOGGER_FACILITY="cron"
+</example>
+
+<sect1 id="advanced-externals">Writing external hooks
+<p>
+You have the availability to write your own hooks if you want to automate some
+special beaviours within the &bmngr; process. You may like to mount over NFS your
+archive repository <em>before</em> the backup session and unmount it after, or
+you may like to launch your own uploader script when the backup session is
+finished. 
+<p>
+In order to let you implement any solution you like, &bmngr; provides two
+different hooks: the <em>pre-command</em> and <em>post-command</em> hooks.
+
+<sect2 id="BM_PRE_BACKUP_COMMAND"><tt>BM_PRE_BACKUP_COMMAND</tt>
+<p>
+<em>Type: string</em>
+<p>
+Put here the path to a program (or a shell command) to launch before the backup
+session. If the command fails (exits with non zero value, or prints the keyword
+<tt>false</tt> on stdout) the backup session will stop. If the pre-command
+succeeds, the process can follow.
+
+<p>
+Example with a basic shell command:
+<example>
+export BM_PRE_BACKUP_COMMAND="mount -t nfs mirror.lan.net:/exports/backups /var/archives"
+</example>
+
+<p>
+Example with a custom script:
+<example>
+export BM_PRE_BACKUP_COMMAND="/usr/local/bin/backup-prepare.pl $TODAY"
+</example>
+
+<sect2 id="BM_POST_BACKUP_COMMAND"><tt>BM_POST_BACKUP_COMMAND</tt>
+<p>
+<em>Type: string</em>
+<p>
+Put here the path to a program (or a shell command) to launch after the backup
+session. If the command fails (exits with non zero value, or prints the keyword
+<tt>false</tt> on stdout) &bmngr; will exit with an error code (and will log to
+syslog the post-command failure if the logger is enabled).
+
+<p>
+Example with a basic shell command:
+<example>
+export BM_POST_BACKUP_COMMAND="umount /var/archives"
+</example>
+
+<p>
+Example with a custom script:
+<example>
+export BM_POST_BACKUP_COMMAND="/usr/local/bin/backup-cleanup.pl $TODAY"
+</example>
+
+<chapt id="using">Using &bmngr;
+<p>
+<em>Now that you know in details how to write your configuration files, 
+let's see how to use &bmngr;.</em>
+
+<sect id="command">Command line 
+
+<sect1 id="command-desc">Restrictions
+<p>
+In version &bmngr-version;, &bmngr; can only be used by <tt>root</tt>, 
+as it has be designed as a systemwide tool.
+
+<example>
+$ backup-manager
+backup-manager must be run as root.
+</example>
+
+If you want to launch it from the command line, you first have to use the <tt>root</tt>
+account.
+
+<example>
+$ su
+Password:
+# backup-manager -h
+/usr/sbin/backup-manager [options]
+
+Output:
+--help|-h           : Print this short help message.
+--verbose|-v        : Print what happens on STDOUT.
+--no-warnings       : Disable warnings.
+
+Single actions:
+--upload|-u         : Just upload the files of the day.
+--burn|-b           : Just burn the files of the day.
+--md5check|-m       : Just test the md5 sums.
+--purge|-p          : Just purge old archives.
+
+Behaviour:
+--conffile|-c file  : Choose an alternate config file.
+--force|-f          : Force overwrite of existing archives.
+
+Unwanted actions:
+--no-upload         : Disable the upload process.
+--no-burn           : Disable the burning process.
+--no-purge          : Disable the purge process.
+ouranos:/home/sukria#
+</example>
+
+<p>
+As you can see in the example above, using the <tt>-h</tt> switch (or <tt>--help</tt>) gives 
+a short help message and prints all supported command switches.
+We will cover in this section each of them.
+
+<sect1 id="command-switched">Options
+<p>
+The following switches can be used for altering &bmngr;'s behaviour. 
+
+<sect2 id="version"><tt>--version</tt>
+<p>
+Prints on stdout the &bmngr; version installed on the system and exit.
+
+<p>
+Example:
+
+<example>
+# backup-manager --version
+Backup Manager 0.6
+</example>
+
+<sect2 id="verbose"><tt>--verbose</tt> or <tt>-v</tt>
+<p>
+Using this switch will enabled the verbose mode. All actions are reported on stdout.
+
+<p>
+Example:
+<example>
+# backup-manager -v
+Getting lock for backup-manager 10605 with /etc/backup-manager.conf: ok
+Cleaning /var/archives
+Entering directory /var/archives/lost+found.
+[...]
+</example>
+
+<sect2 id="no-warnings"><tt>--no-warnings</tt>
+<p>
+When a non-critical problem occurs (an error occured but the backup process can follow)
+&bmngr; will print a warning message (and will log it if the logger is enabled).
+If you don't want to see warning messages, you can append this switch on the command line.
+
+<sect2 id="conffile"><tt>--conffile</tt> or <tt>-c</tt>
+<p>
+&bmngr; relies on configuration files, by default, the file <tt>/etc/backup-manager.conf</tt> is used but 
+you can choose to run it with a different one. This is done by using the following syntax :
+
+<example>
+# backup-manager -c &lt;FILE&gt;
+</example>
+
+<p>
+Note that &bmngr; is designed to work properly when launched in parallel mode with different configuration 
+files, but it will refuse to run twice at the same time with the same configuration file.
+You can then safely do something like that:
+
+<example>
+# backup-manager -c /etc/backup-manager/backup-nfs.conf &
+# backup-manager -c /etc/backup-manager/backup-homedirs.conf &
+# backup-manager -c /etc/backup-manager/backup-rsync-filer.conf
+</example>
+
+<sect2 id="force"><tt>--force</tt>
+<p>
+When building an archive, &bmngr; looks if the archive already exists in the repository, if so, a warning 
+is sent saying that the archive exists. If you want to bypass this warning and overwrite archives, use 
+this switch.
+
+<sect2 id="upload"><tt>--upload</tt> or <tt>-u</tt>
+<p>
+If you have made a configuration file that enables the uploading system, you can ask &bmngr; to 
+perform the uploading session instead of the whole process with this switch.
+
+<sect2 id="burn"><tt>--burn</tt> or <tt>-b</tt> [&lt;DATE&gt;]
+<p>
+If you have made a configuration file that enables the burning system, you can ask &bmngr; to 
+perform the burning session instead of the whole process with this switch.
+<p>
+You can also ask &bmngr; to burn only archives of a given date with providing a timestamp 
+after the <tt>--burn</tt> switch.
+
+<p>
+Example:
+
+<p>
+Burning all the archives made on March, 12nd 2006:
+<example>
+# backup-manager --bnurn 20060312
+</example>
+
+<sect2 id="md5check"><tt>--md5check</tt> or <tt>-m</tt>
+<p>
+
+If you have made a configuration file that enables the MD5 checks on burnt media, you can ask &bmngr; to 
+perform the MD5 checks instead of the whole process with this switch.
+
+<sect2 id="purge"><tt>--purge</tt> or <tt>-p</tt>
+<p>
+This switch will as &bmngr; to just perform the archive repository purge: 
+removing any depreacted archives (according to <tt>BM_ARCHIVE_TTL</tt>.
+
+<sect2 id="no-upload"><tt>--no-upload</tt> or <tt>-p</tt>
+<p>
+Use this switch if you have a configuration file that enables the uploading system and want to run
+&bmngr; without it.
+
+<sect2 id="no-burn"><tt>--no-burn</tt>
+<p>
+Use this switch if you have a configuration file that enables the burning system and want to run
+&bmngr; without it.
+
+<sect2 id="no-purge"><tt>--no-purge</tt> or <tt>-p</tt>
+<p>
+Use this switch if you want to disable the purging phase. This can be useful if you like 
+to implement another kind of purging system, with a post-command hook for instance.
+
+<sect id="cron">CRON integration
+
+<p>
+There is a global idea behind &bmngr;'s design: "<em>You won't do it if you have to think about it</em>".
+This is specifically true for backup concerns and it is strongly adviced to automate your 
+backup process with a tasks scheduler like CRON.
+
+<p>
+Setting up a &bmngr; job in cron is pretty easy, you just have to write a shell script under
+the appropriate CRON sub-directory that will call backup-manager. 
+The best sub-directory to choose is <tt>/etc/cron.daily</tt> as &bmngr; handles daily archives.
+
+<p>
+Here is an example of a CRON script:
+
+<example>
+cat > /etc/cron.daily/backup-manager
+#!/bin/sh
+
+/usr/sbin/backup-manager
+</example>
+
+<p>
+If you want to be notified by mail if a problem occurs during the backup session, 
+just make sure you receive mails coming from CRON. When the verbose mode is off, 
+only warnings and errors are printed on stdout, so you will receive a mail from
+the &bmngr; CRON job only in case of unexpected effects.
+
+<p>
+On the other hand, if you like to receive daily mails from the job, even if everything
+went well, just append the --verbose switch like that :
+
+<example>
+cat > /etc/cron.daily/backup-manager
+#!/bin/sh
+
+/usr/sbin/backup-manager --verbose
+</example>
+
+<!--
+
+<chapt id="restore">Restoring Archives
+<p>
+You make archives for being ready to back your system up when needed. When such a time
+comes, you will have to restore an archive. In the current version, Backup Manager does
+not provide a way to automatically restore an archive. You'll have to do it by
+hand. This is planed to be supported in next versions though.
+
+<p>
+We will cover in this chapter evry method for restoring archives. Of course the
+restore method depends on the kind of archive you have to manipulate.
+
+<sect id="restore-tarballs">Tarballs
+<p>
+Let's begin with the basic kind of archives, the "tarballs".
+
+<sect1 id="restore-tar"><tt>tar</tt>, <tt>tar.gz</tt> and <tt>tar.bz2</tt> archives
+<p>
+All these archives are made using the <tt>tar</tt> command, restoring them will
+be about to use tar with the appropriate options for uncompressing the archive.
+
+<p>
+Exemple: 
+
+<p>
+We want to restore the file <tt>/etc/passwd</tt> and the directory <tt>/home/john/work/</tt>.
+Every toplevel directory of our filesystem is archived:
+<example>
+BM_TARBALL_DIRECTORIES="/*"
+BM_TARBALL_BLACKLIST="/tmp /dev /proc /sys"
+</example>
+
+<p>
+We have to 
+
+<sect1 id="restore-zip"><tt>zip</tt> archives
+<sect1 id="restore-dar"><tt>dar</tt> archives
+
+<sect id="restore-incremental">Incremental tarballs
+
+<sect id="restore-mysql">MySQL dumps
+
+<sect id="restore-svn">SVN dumps
+
+-->
+
+</book>
+
+</debiandoc>
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:nil
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-declaration:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

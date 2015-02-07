@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- common entities file
+
+     Bits of text which are language independent.  In some cases it
+     makes sense to break these out because repetitively maintaining
+     them in different translations of the Developer's Reference is
+     wasteful.  In other cases, the data is rather volatile and
+     breaking it out make maintenance easier.
+  -->
+
+<!-- standard information -->
+<!ENTITY fsf-addr "Free Software Foundation,
+  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA">
+<!ENTITY file-GPL "<file>/usr/share/common-licenses/GPL</file>">
+<!ENTITY debian-formal "Debian GNU/Linux">
+<!ENTITY url-gpl "http://www.gnu.org/copyleft/gpl.html">
+
+<!-- Backup Manager related information -->
+<!ENTITY bmngr "Backup Manager">
+<!ENTITY bmngr-version "0.7.7">
+
+<!-- Email addresses -->
+<!ENTITY doc-email "<email>backup-manager-devel@backup-manager.org</email>">

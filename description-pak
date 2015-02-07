@@ -1,0 +1,22 @@
+command-line backup tool
+ This is a backup program, designed to help you make daily archives of your
+ file system.
+
+ Written in bash and perl, it can make tar, tar.gz, tar.bz2, and zip
+ archives and can be run in a parallel mode with different configuration
+ files. Other archives are possible: MySQL or SVN dumps, incremental
+ backups...
+
+ Los archivos son preservados por un número determinado de días y el
+ sistema de subida puede usar FTP, SSH o RSYNC para transferir los archivos
+ generados a una lista de anfitriones remotos.
+
+ Automatically burning archives to removable media such as CD or DVD is
+ also possible.
+ 
+ The configuration file is very simple and basic and gettext is used for
+ internationalization.
+Description-md5: 8fc0f3b1192f2c956d4ddc9d6f69ee01
+Homepage: http://www.backup-manager.org/
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Origin: Ubuntu

@@ -1,0 +1,19 @@
+Dependencies:
+    If you want to enable the localisation, you need gettext.
+    Perl is needed for FTP and SSH uploads.
+    Everything else is written in Bash.
+    
+How to install backup-manager
+
+~/backup-manager $ 
+~/backup-manager $ su 
+~/backup-manager # make install 
+~/backup-manager # cp /usr/share/backup-manager/backup-manager.conf.tpl /etc/backup-manager.conf 
+~/backup-manager #  
+
+You can then edit /etc/backup-manager.conf to fit your needs.
+
+Refere to the user guide for details: 
+http://www.backup-manager.org/documentation/user-guide/
+
+

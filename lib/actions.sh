@@ -168,7 +168,7 @@ function bm_init_env ()
 function bm_init_today()
 {
     debug "bm_init_today()"
-    export TODAY=`date +%Y%m%d`                  
+    export TODAY=`date +%Y%m%d%H%m%S`                  
 }
 
 # be sure that zip is supported.

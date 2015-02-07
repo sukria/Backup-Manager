@@ -1,0 +1,35 @@
+Warning: These interfaces are still experimental and are subject to
+change.
+
+backup-manager supports reporting its activity over dbus. Programs
+wanting to be notified should listen to these messages of the
+org.backupmanager.BackupManager interface :
+
+* ProgressNotify (int32 percentage, string label)
+* EventNotify (string event_name, string argument)
+* LogMessageNotify (string level, string message)
+
+Depending on who launched backup-manager (root or user), these messages
+are sent from the following bus objects :
+* /org/backupmanager/instance/SystemInstance of the system bus if
+  launched by root.
+* /org/backupmanager/instance/UserInstance/${USERNAME} of the user
+  session bus if launched by a regular user.
+
+If the dbus-send program is not in $PATH, or if the selected bus is
+unreachable, backup-manager should operate as normal, just not
+reporting its activity.
+
+To test, just launch, in two different terminals for better
+readability:
+
+* as root :
+ # dbus-monitor --system \
+      "type='signal',interface='org.backupmanager.BackupManager'"
+ # backup-manager [...] # as usual
+
+* or as a user :
+ $ dbus-monitor --session \
+      "type='signal',interface='org.backupmanager.BackupManager'"
+ $ backup-manager [...] # as usual
+

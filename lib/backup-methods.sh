@@ -58,8 +58,7 @@ function commit_archive()
     file_name=`get_name_from_archive "$file_to_create"`
     ext=$(echo $base | sed -e 's/.*\(20[0-9]\+\).\(.*\)/\2/')
     latest="$dirname/$file_prefix-$file_name.latest.$ext"
-    rm -f $latest
-    ln -s $file_to_create $latest
+    ln -f $file_to_create $latest
 }
 
 # security fixes if BM_REPOSITORY_SECURE is set to true

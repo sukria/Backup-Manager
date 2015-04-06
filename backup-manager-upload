@@ -94,12 +94,12 @@ sub get_formated_date($)
 	}
 
 	if ($date eq 'today') {
-		return strftime ('%Y%m%d', localtime);
+		return strftime ('%Y%m%d%H%M%S', localtime);
 	}
 	elsif ($date eq 'yesterday') {
-		return strftime ('%Y%m%d', localtime(time - (24 * 3600)));
+		return strftime ('%Y%m%d%H%M%S', localtime(time - (24 * 3600)));
 	}
-	elsif ($date =~ /^\d{4}\d{2}\d{2}$/) {
+	elsif ($date =~ /^\d{4}\d{2}\d{2}\d{2}\d{2}\d{2}$/) {
 		return $date;
 	}
 	else {

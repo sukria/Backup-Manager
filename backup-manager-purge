@@ -146,14 +146,14 @@ sub parse_archive ($)
     my ($prefix, $name, $date, $master, $filetype);
     $archive = basename ($archive);
 
-    if ($archive =~ m/^\s*($ENV{BM_ARCHIVE_PREFIX})-?(\S+)?\.?(\d{8})\.(master\.)?(\S+)\s*$/) {
+    if ($archive =~ m/^\s*($ENV{BM_ARCHIVE_PREFIX})-?(\S+)?\.?(\d{14})\.(master\.)?(\S+)\s*$/) {
 	($prefix, $name, $date, $master, $filetype) = ($1, $2, $3, $4, $5);
 	$master = $master ? 1 : 0;
 	$name = "$prefix-md5" if $filetype eq 'md5' and not $name;
     }
 
     # The archive pattern
-    elsif ($archive =~ /^\s*([^-]+)-(\S+)\.(\d{8})\.(\S+)\s*$/) {
+    elsif ($archive =~ /^\s*([^-]+)-(\S+)\.(\d{14})\.(\S+)\s*$/) {
         $prefix = $1;
         $name = $2;
         $date = $3;
@@ -169,7 +169,7 @@ sub parse_archive ($)
     }
 
     # The md5 file pattern
-    elsif ($archive =~ /^\s*([^-]+)-(\d{8})\.md5\s*$/) {
+    elsif ($archive =~ /^\s*([^-]+)-(\d{14})\.md5\s*$/) {
         $prefix = $1;
         $name = "$prefix-md5";
         $date = $2;
@@ -238,7 +238,7 @@ sub outdate_archives($$)
         exit E_INTERNAL;
     }
 
-    my $purge_date = strftime ('%Y%m%d', 
+    my $purge_date = strftime ('%Y%m%d%H%M%S',
                                localtime(time() - $g_ttl * 24 * 3600)); 
     print_info "Outdating archives made before $purge_date";
     

@@ -201,7 +201,7 @@ function get_date_from_archive()
     file="$1"
     debug "get_date_from_archive ($file)"
 
-    date=$(echo $file | sed -e 's/.*\(20[0-9][0-9][0-9][0-9][0-3][0-9]\).*/\1/')
+    date=$(echo $file | sed -e 's/.*\(20[0-9][0-9][0-9][0-9][0-3][0-9][0-2][0-9][0-5][0-9][0-5][0-9]\).*/\1/')
     echo "$date"
 }   
 

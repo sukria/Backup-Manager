@@ -1,4 +1,4 @@
-# Copyright © 2005-2010 The Backup Manager Authors
+# Copyright Â© 2005-2010 The Backup Manager Authors
 # See the AUTHORS file for details.
 #
 # This program is free software; you can redistribute it and/or
@@ -90,7 +90,7 @@ install_doc:
 
 # The translation stuff
 install_po:
-	$(MAKE) -C po install
+	$(MAKE) -C po install DESTDIR=$(DESTDIR) PREFIX=$(PREFIX)
 
 # The backup-manager libraries
 install_lib:

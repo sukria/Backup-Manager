@@ -1329,6 +1329,19 @@ export BM_POST_BACKUP_COMMAND="/usr/sbin/backup-manager --purge"
 
           export BM_UPLOAD_S3_PURGE="true"
 
+2.3.5.4. `BM_UPLOAD_S3_TTL'
+----------------------------
+
+     _Type: integer, default: $BM_ARCHIVE_TTL_
+
+     Using different _time to live_ values for local and remote archives can be
+     useful in certain situations.  For instance, it's possible to install
+     Backup Manager locally, make it build archives, upload them to S3 and then
+     purge them locally (but not on the remote host).  Doing this is possible
+     with setting a null value to the local TTL (BM_ARCHIVE_TTL) and a non-null
+     value to BM_UPLOAD_S3_TTL.
+
+
 2.3.7. RSYNC uploads
 --------------------
 

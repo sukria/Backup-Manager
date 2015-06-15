@@ -811,6 +811,10 @@ sub s3_clean_directory($)
 {
     my ($bucket) = @_;
     my $BM_ARCHIVE_TTL = $ENV{BM_ARCHIVE_TTL};
+    if (defined $ENV{BM_UPLOAD_S3_TTL} and
+        length ($ENV{BM_UPLOAD_S3_TTL})) {
+        $BM_ARCHIVE_TTL = $ENV{BM_UPLOAD_S3_TTL};
+    }
     return 0 unless defined $BM_ARCHIVE_TTL;
     my $date_to_remove = `date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago"`;
     chomp $date_to_remove;

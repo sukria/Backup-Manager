@@ -165,10 +165,13 @@ function __exec_meta_command()
                 tail_logfile "$logfile"
                 if [[ "$BM_ENCRYPTION_METHOD" = "gpg" ]]; then
                     $command 2>$logfile | $nice $compress_bin -f -q -9 2>$logfile | $nice $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.$ext.gpg 2> $logfile
+                    cmdpipestatus=${PIPESTATUS[0]}
                     debug "$command | $nice $compress_bin -f -q -9 | $nice $gpg $BM__GPG_HOMEDIR -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create.$ext.gpg 2> $logfile"
                     file_to_create="$file_to_create.$ext.gpg"
                 else
                     $command 2> $logfile | $nice $compress_bin -f -q -9 > $file_to_create.$ext 2> $logfile
+                    cmdpipestatus=${PIPESTATUS[0]}
+                    debug "$command 2> $logfile | $nice $compress_bin -f -q -9 > $file_to_create.$ext 2> $logfile"
                     file_to_create="$file_to_create.$ext"
                 fi
 
@@ -176,7 +179,12 @@ function __exec_meta_command()
                     warning "Unable to exec \$command; check \$logfile"
                     rm -f $file_to_create
                 else
-                    rm -f $logfile
+                    if [[ $cmdpipestatus -gt 0 ]]; then
+                        warning "Unable to exec first piped command \$command; check \$logfile"
+                        rm -f $file_to_create
+                    else
+                        rm -f $logfile
+                    fi
                 fi
             else
                 error "Compressor \$compress is needed."

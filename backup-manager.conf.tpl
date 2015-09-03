@@ -483,6 +483,12 @@ export BM_UPLOAD_RSYNC_HOSTS=""
 # enter true or false (true can lead to huge archives, be careful).    
 export BM_UPLOAD_RSYNC_DUMPSYMLINKS="false"
 
+# Do you want to limit the maximum available bandwidth rsync
+# can use ?
+# By default, no bandwidth limit is applied.
+# Example: 32M, 1024K, ...
+export BM_UPLOAD_RSYNC_BANDWIDTH_LIMIT=""
+
 ##############################################################
 # Section "BURNING" 
 # - Automatic CDR/CDRW/DVDR burning

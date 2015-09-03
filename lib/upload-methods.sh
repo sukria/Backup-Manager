@@ -230,6 +230,15 @@ function bm_upload_rsync_common()
         fi
     fi
 
+    # For every exclusion defined in the configuration,
+    # append an --exclude condition to the rsync command
+    if [[ ! -z "$BM_UPLOAD_RSYNC_EXCLUDE" ]]; then
+        for exclude in $BM_UPLOAD_RSYNC_EXCLUDE
+        do
+            rsync_options="${rsync_options} --exclude=${exclude}"
+        done
+    fi
+
     for directory in $BM_UPLOAD_RSYNC_DIRECTORIES
     do
         if [[ -n "$bm_upload_hosts" ]]; then

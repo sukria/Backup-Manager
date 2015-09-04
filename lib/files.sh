@@ -423,7 +423,8 @@ function purge_duplicate_archives()
             if [[ "$md5hash" = "$md5sum_to_check" ]]; then
                 info "\$file is a duplicate of \$file_to_create (using symlink)."
                 rm -f $file
-                ln -s $file_to_create $file
+                base=$(basename $file_to_create)
+                ln -s $base $file
             fi
         fi
     done

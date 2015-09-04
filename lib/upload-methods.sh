@@ -239,6 +239,11 @@ function bm_upload_rsync_common()
         done
     fi
 
+    # Apply a bandwidth limit if required by the user
+    if [[ ! -z "$BM_UPLOAD_RSYNC_BANDWIDTH_LIMIT" ]]; then
+        rsync_options="${rsync_options} --bwlimit=${BM_UPLOAD_RSYNC_BANDWIDTH_LIMIT}"
+    fi
+
     for directory in $BM_UPLOAD_RSYNC_DIRECTORIES
     do
         if [[ -n "$bm_upload_hosts" ]]; then

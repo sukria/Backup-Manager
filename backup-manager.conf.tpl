@@ -483,6 +483,11 @@ export BM_UPLOAD_RSYNC_DUMPSYMLINKS="false"
 # it as a mask, so will exclude any file/folder corresponding to it
 export BM_UPLOAD_RSYNC_BLACKLIST=""
 
+# Extra options to append to rsync
+# (take care to what you do; this will be silently added to the
+# command line.)
+export BM_UPLOAD_RSYNC_EXTRA_OPTIONS=""
+
 ##############################################################
 # Section "BURNING" 
 # - Automatic CDR/CDRW/DVDR burning

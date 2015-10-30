@@ -27,7 +27,7 @@ set -e
 
 RELEASE="true"
 REVISION='$Revision$'
-VERSION="0.7.10.1"
+VERSION="0.7.11"
 
 #Set prefix for paths
 BIN_PREFIX=/usr/bin

@@ -1,3 +1,67 @@
+Backup Manager 0.7.11
+	[ Matthieu CERDA ]
+	* Add bandwidth limiting support in rsync uploads
+	* Add file and directory exclusion support in rsync upload method
+	* Enable SSH port definition support for rsync uploads
+	
+	[ Philippe Villiers ]
+	* Backup should now stop and fail if the first piped command fails
+	* Fixed .pgpass format error on creation. 
+	
+	[ Nathaniel Clark ]
+	* Upload: Add seperate TTL for S3 purge
+
+	[ Guillaume Kulakowski ]
+	* Fix RedHat bug #1208596
+	  backup-manager package uses /share/locale/ while
+	   every other package use /usr/share/locale/
+	
+	[ Ivan Borzenkov ]
+	* backup all mysql databases one per file
+	
+	[ Christophe Labouisse ]
+	* Fix for issue #29
+	  tarball-incremental is not working with LZMA compression
+	  
+	[ Ian Young ]
+	* Fix POD syntax
+	
+	[ Larsen ]
+	* Save MySQL DBs separately
+
+	[ Max Tsepkov ]
+	* Change the way to run BM_*_BACKUP_COMMAND
+	* allow to add extra options to rsync upload
+	* directly run BM_PRE_BACKUP and BM_POST_BACKUP_COMMAND
+	
+	[ Armel FORTUN ]
+	
+	* Add the OSX Fink make install support
+
+	[ Toubib ]
+	
+	* Add vars for prefix use in Makefile
+
+	[ George Zarkadas ]
+	
+	* Fixes for gettext make process and postgresql database backup method
+	* Use a common naming scheme for archives created by one of the database
+	   backup methods.
+	* Test for all database dumping programs that postgresql uses, to avoid
+	   breaking backup-manager on a broken postgresql installation.
+	* Support empty hostname to allow connections to local postgresql
+	   database clusters using unix sockets.
+	* Tighten the security of .pgpass (and its backup) file handling. 
+	* Make the build/clean process of gettext (po) files idempotent.
+	* Fix for debian bts #608237
+	  use absolute blacklist paths for /
+	* Fix for debian bts #638803
+	  use $TODAY to upload patch
+	* Fix for debian bts #638919
+	  Use a single md5 file to store all archives.
+	* Fix for debian bts #638920
+	  upload-database patch
+
 Backup Manager 0.7.10.1
 
 	[ Larsen ]

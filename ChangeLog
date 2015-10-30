@@ -2,6 +2,8 @@ Backup Manager 0.7.12 (not yet released)
 	[ Philippe Villiers ]
 	* Fix for issue #35
 	  Add make uninstall
+	* Fix for issue #60
+	  Add -z to rsync parameters
 
 Backup Manager 0.7.11
 	[ Matthieu CERDA ]

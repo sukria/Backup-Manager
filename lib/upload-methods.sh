@@ -223,10 +223,10 @@ function bm_upload_rsync_common()
         error "No valid destination found, RSYNC upload not possible."
     fi
     
-    rsync_options="-va"
+    rsync_options="-zva"
     if [[ ! -z $BM_UPLOAD_RSYNC_DUMPSYMLINKS ]]; then
         if [[ "$BM_UPLOAD_RSYNC_DUMPSYMLINKS" = "true" ]]; then
-            rsync_options="-vaL"
+            rsync_options="-zvaL"
         fi
     fi
 

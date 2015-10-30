@@ -218,7 +218,7 @@ function bm_upload_rsync_common()
     fi
     if [[ -z "$BM_UPLOAD_RSYNC_DESTINATION" ]]; then
         BM_UPLOAD_RSYNC_DESTINATION="$BM_UPLOAD_DESTINATION"
-    fi        
+    fi
     if [[ -z "$BM_UPLOAD_RSYNC_DESTINATION" ]]; then
         error "No valid destination found, RSYNC upload not possible."
     fi
@@ -230,10 +230,14 @@ function bm_upload_rsync_common()
         fi
     fi
 
+    if [[ ! -z $BM_UPLOAD_RSYNC_EXTRA_OPTIONS ]]; then
+        rsync_options="${rsync_options} $BM_UPLOAD_RSYNC_EXTRA_OPTIONS"
+    fi
+
     # For every exclusion defined in the configuration,
     # append an --exclude condition to the rsync command
-    if [[ ! -z "$BM_UPLOAD_RSYNC_EXCLUDE" ]]; then
-        for exclude in $BM_UPLOAD_RSYNC_EXCLUDE
+    if [[ ! -z "$BM_UPLOAD_RSYNC_BLACKLIST" ]]; then
+        for exclude in $BM_UPLOAD_RSYNC_BLACKLIST
         do
             rsync_options="${rsync_options} --exclude=${exclude}"
         done

@@ -16,4 +16,33 @@ You can then edit /etc/backup-manager.conf to fit your needs.
 Refere to the user guide for details: 
 http://www.backup-manager.org/documentation/user-guide/
 
+For Apple OSX with Fink:
+------------------------
+
+1) Install Fink.
+
+2) Download Backup-Manager:
+
+  Olga:~ user$ curl -L https://github.com/sukria/Backup-Manager/zipball/v0.7.10 > ~/Desktop/Backup-manager-0.7.10.zip
+  Olga:~ user$ cd ~/Desktop
+  Olga:Desktop user$ unzip backup-manager-0.7.10.zip
+  Olga:Desktop user$ cd sukria-Backup-Manager-bc8f744
+
+3) Then "make install", and install the needed packages asked by Fink,
+as all the needed packages are not installed with the basic Fink install.
+
+  Olga:sukria-Backup-Manager-bc8f744 user$ make install -e FINK=/sw
+
+4) After complete install, copy, edit the "backup-manager.conf" file:
+
+  Olga:sukria-Backup-Manager-bc8f744 user$ cp /usr/share/backup-manager/backup-manager.conf.tpl /etc/backup-manager.conf
+  Olga:sukria-Backup-Manager-bc8f744 user$ vim /etc/backup-manager.conf
+
+5) Then you can start Backup-Manager with:
+
+  Olga:~ user$ env PATH=/sw/lib/coreutils/bin:$PATH backup-manager -v
+
+6) Backup-Manager is now installed in:
+
+  /usr/share/backup-manager
 

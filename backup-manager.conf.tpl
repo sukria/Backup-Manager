@@ -228,7 +228,7 @@ export BM_MYSQL_EXTRA_OPTIONS=""
 # Make separate backups of each database?
 export BM_MYSQL_SEPARATELY="true"
 
-# Specify DBs to exclude here (separated by space)
+# Specify DBs to exclude here (separated by space) 
 export BM_MYSQL_DBEXCLUDE=""
 
 ##############################################################
@@ -409,6 +409,11 @@ export BM_UPLOAD_FTP_SECURE="false"
 # This is mandatory for NATed/firewalled environments 
 export BM_UPLOAD_FTP_PASSIVE="true"
 
+# Timeout (in seconds) for FTP transfer
+# This setting only has effect when using FTP transfer with
+# secure mode disabled (BM_UPLOAD_FTP_SECURE to "false")
+export BM_UPLOAD_FTP_TIMEOUT="120"
+
 # Test the FTP connection before starting archives upload.
 # This will enable BM to try sending a 2MB test file before
 # sending any archive
@@ -469,10 +474,6 @@ export BM_UPLOAD_RSYNC_DIRECTORIES=""
 # Destination for rsync uploads (overrides BM_UPLOAD_DESTINATION) 
 export BM_UPLOAD_RSYNC_DESTINATION=""
 
-# Exclude files/subdirectories from the upload
-# Each entry must be separated with a space
-export BM_UPLOAD_RSYNC_EXCLUDE=""
-
 # The list of remote hosts, if you want to enable the upload
 # system, just put some remote hosts here (fqdn or IPs)
 # Leave it empty if you want to use the hosts that are defined in
@@ -482,6 +483,15 @@ export BM_UPLOAD_RSYNC_HOSTS=""
 # Do you want to dereference the files pointed by symlinks?   
 # enter true or false (true can lead to huge archives, be careful).    
 export BM_UPLOAD_RSYNC_DUMPSYMLINKS="false"
+
+# Files/folders to exclude when rsyncing. Warning: rsync will interpret
+# it as a mask, so will exclude any file/folder corresponding to it
+export BM_UPLOAD_RSYNC_BLACKLIST=""
+
+# Extra options to append to rsync
+# (take care to what you do; this will be silently added to the
+# command line.)
+export BM_UPLOAD_RSYNC_EXTRA_OPTIONS=""
 
 # Do you want to limit the maximum available bandwidth rsync
 # can use ?

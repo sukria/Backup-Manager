@@ -1,4 +1,9 @@
-prefix=$(DESTDIR)/$(PREFIX)
+SYSTEM := $(shell uname)
+ifeq ($(SYSTEM), Darwin)
+   prefix=$(DESTDIR)/sw
+else
+   prefix=$(DESTDIR)/$(PREFIX)
+endif
 
 # List here all source files with translatable strings.
 POTFILES= \

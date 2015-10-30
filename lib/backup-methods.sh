@@ -47,8 +47,9 @@ function commit_archive()
         echo "$md5hash  $base" >> $MD5FILE
     fi
 
-    # Now that the file is created, remove previous duplicates if exists...
-    purge_duplicate_archives $file_to_create || 
+    # Now that the file is created, remove previous duplicates if exist.
+    # Pass in the calculated (costly) md5 sum, to speed things up.
+    purge_duplicate_archives $file_to_create $md5hash ||
         error "Unable to purge duplicates of \$file_to_create"
 
     # ownership
@@ -906,7 +907,7 @@ function backup_method_pgsql()
     else
         BM_PGSQL_HOSTFLAGS="-h$BM_PGSQL_HOST"
     fi
-    opt=" -U$BM_PGSQL_ADMINLOGIN $BM_PGSQL_HOSTFLAGS -p$BM_PGSQL_PORT" 
+    opt=" -U$BM_PGSQL_ADMINLOGIN $BM_PGSQL_HOSTFLAGS -p$BM_PGSQL_PORT"
 
     # We need a second variable, to know if the backup pgpass file was used.
 
@@ -949,7 +950,7 @@ function backup_method_pgsql()
     # purge the .pgpass file, if created by Backup Manager
     if [[ "$BM_SHOULD_PURGE_PGPASS" == "true" ]]; then
         info "Removing default PostgreSQL password file: \$pgsql_conffile"
-	rm -f $pgsql_conffile
+        rm -f $pgsql_conffile
         if [[ "$BM_USING_BACKUP_PGPASS" == "true" ]]; then
             info "restoring initial \$pgsql_conffile file from backup."
             warning "To avoid problems with \$pgsql_conffile, insert the configured host:port:database:user:password inside."
@@ -996,7 +997,7 @@ function backup_method_mysql()
     if [ "$BM_MYSQL_DATABASES" = "__ALL__" ]; then
         if [ "$BM_MYSQL_SEPARATELY" = "true" ]; then
             if [[ ! -x $mysql ]]; then
-                error "Can�t find "$mysql" but this is needed when backing up databases separately."
+                error "Can't find "$mysql" but this is needed when backing up databases separately."
             fi
 
             DBNAMES=$($mysql --defaults-extra-file=$mysql_conffile -u $BM_MYSQL_ADMINLOGIN -h $BM_MYSQL_HOST -P $BM_MYSQL_PORT -B -N -e "show databases" | sed 's/ /%/g')

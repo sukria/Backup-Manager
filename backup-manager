@@ -27,7 +27,12 @@ set -e
 
 RELEASE="true"
 REVISION='$Revision$'
-VERSION="0.7.10"
+VERSION="0.7.10.1"
+
+#Set prefix for paths
+BIN_PREFIX=/usr/bin
+LIB_PREFIX=/usr/lib
+VAR_PREFIX=/var/lib
 
 #Set prefix for paths
 BIN_PREFIX=/usr/bin
@@ -50,6 +55,9 @@ if [[ "$UID" != 0 ]]; then
 else
     lockfile="$systemlockfile"
 fi
+
+# Default value for logger, as we didn't read the config file yet
+BM_LOGGER_LEVEL="info"
 
 # Load the backup-manager's library
 source $libdir/externals.sh
@@ -78,7 +86,7 @@ md5check="false"
 purge="false"
 conffile="/etc/backup-manager.conf"
 
-# the "no" flags
+# The "no" flags
 nopurge="false"
 noburn="false"
 noupload="false"
@@ -91,7 +99,7 @@ fi
 
 debug "Version : $VERSION, release : $RELEASE"
 
-# set useful global variables and initial
+# Set useful global variables and initial
 # checks
 bm_init_today
 bm_dbus_init
@@ -136,17 +144,17 @@ while [[ $# -ge 1 ]]; do
         --no-burn)
             noburn="true"
         ;;
-        -u|--upload) 
+        -u|--upload)
             upload="true"
         ;;
         --no-upload)
             noupload="true"
         ;;
-        -d|--debug) 
+        -d|--debug)
             verbosedebug="true"
             verbose="true"
         ;;
-        -v|--verbose) 
+        -v|--verbose)
             verbose="true"
         ;;
         --version)
@@ -156,7 +164,7 @@ while [[ $# -ge 1 ]]; do
         --no-warnings)
             warnings="false"
         ;;
-        -f|--force) 
+        -f|--force)
             force="true"
         ;;
         -c|--conffile)
@@ -178,7 +186,15 @@ while [[ $# -ge 1 ]]; do
     esac
     shift
 done
-info "Backup Manager $VERSION - Copyright (c) 2004-2010 Alexis Sukrieh"
+info "Backup Manager $VERSION - Copyright (c) 2004-2011 Alexis Sukrieh"
+
+# Display some more info if we're doing an action
+if [[ "$noupload" == "true" ]]\
+|| [[ "$noburn" == "true" ]]\
+|| [[ "$nopurge" == "false" ]]; then
+    curr_time=`date +%Y-%m-%d%t%T`
+    info "Process started at $curr_time"
+fi
 
 debug "Loading configuration file : \"$conffile\"."
 source $conffile
@@ -268,6 +284,9 @@ release_lock
 
 debug "Exiting"
 umask $BM_UMASK >/dev/null
+
+curr_time=`date +%Y-%m-%d%t%T`
+info "Process finished at $curr_time"
 
 bm_dbus_send_progress 100 "Finished"
 bm_dbus_send_event "shutdown" "0"

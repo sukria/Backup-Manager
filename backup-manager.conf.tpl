@@ -459,6 +459,11 @@ export BM_UPLOAD_S3_SECRET_KEY=""
 # purge archives on remote hosts before uploading?
 export BM_UPLOAD_S3_PURGE="false"
 
+# You can specify a time to live for archives uploaded to S3
+# This can let you use different ttl's locally and remotely
+# By default, BM_ARCHIVE_TTL will be used.
+export BM_UPLOAD_S3_TTL=""
+
 ##############################################################
 # The RSYNC method
 #############################################################
@@ -487,6 +492,12 @@ export BM_UPLOAD_RSYNC_BLACKLIST=""
 # (take care to what you do; this will be silently added to the
 # command line.)
 export BM_UPLOAD_RSYNC_EXTRA_OPTIONS=""
+
+# Do you want to limit the maximum available bandwidth rsync
+# can use ?
+# By default, no bandwidth limit is applied.
+# Example: 32M, 1024K, ...
+export BM_UPLOAD_RSYNC_BANDWIDTH_LIMIT=""
 
 ##############################################################
 # Section "BURNING" 

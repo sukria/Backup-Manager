@@ -187,8 +187,21 @@ sub get_files_list_from_date($)
         exit E_INVALID;
     }
 
-	while (<$g_root_dir/*$date*>) {
-        push @{$ra_files}, $_;
+    my $upload_fname = $ENV{BM_UPLOADED_ARCHIVES};
+    if ( defined $upload_fname ) {
+        # filter file list through the BM_UPLOADED_ARCHIVES database
+    	while (<$g_root_dir/*$date*>) {
+            my $file = $_;
+            my $cmd = "grep -q '$file' $upload_fname";
+            if ( system ("$cmd") ) {
+                push @{$ra_files}, $file;
+            }
+        }
+    }
+    else {
+    	while (<$g_root_dir/*$date*>) {
+            push @{$ra_files}, $_;
+        }
 	}
 
 	return $ra_files;
@@ -325,7 +338,12 @@ sub send_file_with_scp($$$$$)
 		print_error ("Unable to upload \"$file\". ".($! || $@ || $ret));
         return 0;
 	}
-	return 1;
+    else {
+        # use same name in both cases (gpg encryption is done on the fly);
+        # continue if writing to uploaded archives file fails.
+        appendto_uploaded_archives($file, $host);
+    }
+    return 1;
 }
 
 # How to upload files with scp.
@@ -723,22 +741,25 @@ sub send_files_with_ftp($$$$$)
         # Put all the files over the connection
         foreach my $file (@{$ra_files}) {
             chomp $file;
+            # continue if writing to uploaded archives file fails.
             if ($BM_UPLOAD_FTP_SECURE) {
-                if (!ftptls_put_file ($ftp, $file)) {
+                if (ftptls_put_file ($ftp, $file)) {
+                    appendto_uploaded_archives($file, $host);
+                    print_info "File $file transfered\n";
+                }
+                else {
                     print_error "Unable to transfer $file";
                     return FALSE;
                 }
-                else {
-                    print_info "File $file transferred\n";
-                }
             }
             else {
-                if (!ftp_put_file ($ftp, $file)) {
-                    print_error "Unable to transfer $file: " . $ftp->message;
-                    return FALSE;
+                if (ftp_put_file ($ftp, $file)) {
+                    appendto_uploaded_archives($file, $host);
+                    print_info "File $file transfered\n";
                 }
                 else {
-                    print_info "File $file transferred\n";
+                    print_error "Unable to transfer $file: " . $ftp->message;
+                    return FALSE;
                 }
             }
         }
@@ -814,6 +835,10 @@ sub s3_clean_directory($)
 {
     my ($bucket) = @_;
     my $BM_ARCHIVE_TTL = $ENV{BM_ARCHIVE_TTL};
+    if (defined $ENV{BM_UPLOAD_S3_TTL} and
+        length ($ENV{BM_UPLOAD_S3_TTL})) {
+        $BM_ARCHIVE_TTL = $ENV{BM_UPLOAD_S3_TTL};
+    }
     return 0 unless defined $BM_ARCHIVE_TTL;
     my $date_to_remove = `date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago"`;
     chomp $date_to_remove;
@@ -926,6 +951,8 @@ sub send_files_with_s3($$$$$$)
 				);
 				$uploaded{$filename} = $file_length;
 			}
+            # For the S3 method, we assume success in any case.
+            appendto_uploaded_archives($file, $host);
 		}
 
 		# get a list of files and confirm uploads

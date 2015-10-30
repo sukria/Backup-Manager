@@ -1,9 +1,8 @@
-
                       Backup Manager
 
          *    A really simple to use backup tool    *
 	
-                http://www.backup-manager.org
+           https://github.com/sukria/Backup-Manager/
 
 Description
 ---------------------------------------------------------------------
@@ -30,12 +29,7 @@ See the file INSTALL
 Rporting Bugs
 ---------------------------------------------------------------------
 
-Use the bug tracking system: http://bugzilla.backup-manager.org
+Use the GitHub bug tracking system: 
+https://github.com/sukria/Backup-Manager/issues
 
-
-Mailing Lists
----------------------------------------------------------------------
-
-You can subscribe to mailing lists at the following url:
-http://www.backup-manager.org/support-mailing-list/
 

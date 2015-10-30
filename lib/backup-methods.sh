@@ -797,7 +797,7 @@ function __make_local_tarball_token
             "dar")
                 __get_flags_dar_incremental "$dir_name"
             ;;
-            "tar"|"tar.gz"|"tar.bz2")
+            "tar"|"tar.gz"|"tar.bz2"|"tar.lz")
                 __get_flags_tar_incremental "$dir_name"
             ;;
             esac
@@ -997,7 +997,7 @@ function backup_method_mysql()
     if [ "$BM_MYSQL_DATABASES" = "__ALL__" ]; then
         if [ "$BM_MYSQL_SEPARATELY" = "true" ]; then
             if [[ ! -x $mysql ]]; then
-                error "Can´t find "$mysql" but this is needed when backing up databases separately."
+                error "Can't find "$mysql" but this is needed when backing up databases separately."
             fi
 
             DBNAMES=$($mysql --defaults-extra-file=$mysql_conffile -u $BM_MYSQL_ADMINLOGIN -h $BM_MYSQL_HOST -P $BM_MYSQL_PORT -B -N -e "show databases" | sed 's/ /%/g')

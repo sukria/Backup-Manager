@@ -53,6 +53,8 @@ than I<ttl> days will be outdated.
 
 =head1 OPTIONAL ARGS
 
+=over 4
+
 =item B<--files-from=>file
 
 A file containing a list of archives to parse, one archive per line.

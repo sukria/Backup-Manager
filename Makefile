@@ -1,4 +1,4 @@
-# Copyright © 2005-2010 The Backup Manager Authors
+# Copyright Â© 2005-2010 The Backup Manager Authors
 # See the AUTHORS file for details.
 #
 # This program is free software; you can redistribute it and/or
@@ -90,7 +90,7 @@ install_doc:
 
 # The translation stuff
 install_po:
-	$(MAKE) -C po install
+	$(MAKE) -C po install DESTDIR=$(DESTDIR) PREFIX=$(PREFIX)
 
 # The backup-manager libraries
 install_lib:
@@ -108,7 +108,7 @@ install_bin:
 	install -o root -g 0 -m 0755 backup-manager-purge $(DESTDIR)/$(BINDIR)
 	install -o root -g 0 -m 0755 backup-manager-upload $(DESTDIR)/$(BINDIR)
 	install -o root -g 0 -m 0644 backup-manager.conf.tpl $(SHAREDIR)
-	
+
 	# Set PREFIX to backup-manager binary
 	sed "s#^BIN_PREFIX=.*#BIN_PREFIX=$(DESTDIR)/$(BINDIR)#" -i $(DESTDIR)/$(SBINDIR)/backup-manager
 	sed "s#^LIB_PREFIX=.*#LIB_PREFIX=$(DESTDIR)/$(PREFIX)/lib#" -i $(DESTDIR)/$(SBINDIR)/backup-manager

@@ -192,7 +192,7 @@ function _exec_rsync_command()
            [[ -z "$BM_UPLOAD_SSH_KEY" ]]; then 
             error "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
         fi
-        ssh_option="ssh -l ${BM_UPLOAD_SSH_USER} -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}"
+        ssh_option="ssh -l ${BM_UPLOAD_SSH_USER} -p ${BM_UPLOAD_SSH_PORT} -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}"
         destination_option="${BM_UPLOAD_SSH_USER}@${host}:${destination_option}"
     fi
     
@@ -230,12 +230,22 @@ function bm_upload_rsync_common()
         fi
     fi
 
-    if [[ ! -z $BM_UPLOAD_RSYNC_BLACKLIST ]]; then
-        rsync_options="${rsync_options} --exclude=\"$BM_UPLOAD_RSYNC_BLACKLIST\""
-    fi
-
     if [[ ! -z $BM_UPLOAD_RSYNC_EXTRA_OPTIONS ]]; then
         rsync_options="${rsync_options} $BM_UPLOAD_RSYNC_EXTRA_OPTIONS"
+    fi
+
+    # For every exclusion defined in the configuration,
+    # append an --exclude condition to the rsync command
+    if [[ ! -z "$BM_UPLOAD_RSYNC_BLACKLIST" ]]; then
+        for exclude in $BM_UPLOAD_RSYNC_BLACKLIST
+        do
+            rsync_options="${rsync_options} --exclude=${exclude}"
+        done
+    fi
+
+    # Apply a bandwidth limit if required by the user
+    if [[ ! -z "$BM_UPLOAD_RSYNC_BANDWIDTH_LIMIT" ]]; then
+        rsync_options="${rsync_options} --bwlimit=${BM_UPLOAD_RSYNC_BANDWIDTH_LIMIT}"
     fi
 
     for directory in $BM_UPLOAD_RSYNC_DIRECTORIES

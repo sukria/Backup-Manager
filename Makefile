@@ -71,7 +71,7 @@ build: manpages
 
 # The backup-manager package
 install: build install_lib install_bin install_contrib install_man install_po
-install_binary: build install_lib install_bin 
+install_binary: build install_lib install_bin
 
 install_contrib:
 	@echo -e "*** Contrib files ***\n"
@@ -117,6 +117,19 @@ install_bin:
 	mkdir -p $(PERL5DIR)
 	mkdir -p $(PERL5DIR)/BackupManager
 	install -o root -g 0 -m 0644 BackupManager/*.pm $(PERL5DIR)/BackupManager
+	
+# Uninstall
+uninstall:
+    @rm -fv $(DESTDIR)$(SBINDIR)/backup-manager
+    @rm -fv $(DESTDIR)$(BINDIR)/backup-manager-purge
+    @rm -fv $(DESTDIR)$(BINDIR)/backup-manager-upload
+    @rm -fv $(SHAREDIR)/backup-manager.conf.tpl
+    @rm -fv $(DESTDIR)$(PREFIX)/share/man/man8/backup-manager*.8
+    @rm -Rfv $(LIBDIR)
+    @rm -Rfv $(PERL5DIR)/BackupManager
+    @rm -Rfv $(SHAREDIR)
+    @rm -Rfv $(DESTDIR)$(PREFIX)/share/doc/backup-manager
+    @rm -fv $(DESTDIR)$(PREFIX)/share/locale/*/LC_MESSAGES/backup-manager.mo
 
 # Building manpages
 man/backup-manager-upload.8:

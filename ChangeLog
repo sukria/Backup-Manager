@@ -1,3 +1,8 @@
+Backup Manager 0.7.12 (not yet released)
+	[ Philippe Villiers ]
+	* Fix for issue #29
+	  Add make uninstall
+
 Backup Manager 0.7.11
 	[ Matthieu CERDA ]
 	* Add bandwidth limiting support in rsync uploads

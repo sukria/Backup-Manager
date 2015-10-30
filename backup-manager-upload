@@ -629,7 +629,7 @@ sub ftptls_connect_to_host ($)
 # How to upload files with ftp.
 # We'll use the Net::FTP or the Net::Lite::FTP (for secured mode) module here.
 # Net::Lite::FTP can be found here :
-# http://search.cpan.org/~eyck/Net-Lite-FTP-0.45/lib/Net/Lite/FTP.pm
+# http://search.cpan.org/~eyck/Net-Lite-FTP-0.61/lib/Net/Lite/FTP.pm
 sub send_files_with_ftp($$$$$)
 {
 	# getting args

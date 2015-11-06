@@ -3,6 +3,9 @@ Backup Manager 0.7.12 (not yet released)
 	* Fix for issue #35
 	  Add make uninstall
 
+	[ psycho-nico ]
+	* use ssh port for rsync uploads
+
 Backup Manager 0.7.11
 	[ Matthieu CERDA ]
 	* Add bandwidth limiting support in rsync uploads

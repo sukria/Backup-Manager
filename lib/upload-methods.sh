@@ -192,7 +192,7 @@ function _exec_rsync_command()
            [[ -z "$BM_UPLOAD_SSH_KEY" ]]; then 
             error "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
         fi
-        ssh_option="ssh -l ${BM_UPLOAD_SSH_USER} -p ${BM_UPLOAD_SSH_PORT} -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}"
+        ssh_option="ssh -l ${BM_UPLOAD_SSH_USER} -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}"
         if [[ ! -z "$BM_UPLOAD_SSH_PORT" ]]; then
         	ssh_option="${ssh_option} -p ${BM_UPLOAD_SSH_PORT}"
         fi

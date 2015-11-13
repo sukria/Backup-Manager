@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-# Copyright © 2005-2010 Alexis Sukrieh
+# Copyright © 2005-2015 Alexis Sukrieh
 # See the AUTHORS file for details.
 #
 # This program is free software; you can redistribute it and/or
@@ -26,7 +26,6 @@
 set -e
 
 RELEASE="true"
-REVISION='$Revision$'
 VERSION="0.7.11"
 
 #Set prefix for paths
@@ -91,20 +90,14 @@ nopurge="false"
 noburn="false"
 noupload="false"
 
-# Init the version / revision flag
-if [[ "$RELEASE" = "false" ]]; then    
-    rev=$(echo "$REVISION" | sed -e 's/.Revision: \([0-9]*\).*/\1/g')
-    VERSION="${VERSION}r${rev}"
-fi
-
-debug "Version : $VERSION, release : $RELEASE"
+debug "Version : $VERSION"
 
 # Set useful global variables and initial
 # checks
 bm_init_today
 bm_dbus_init
 
-bm_dbus_send_event "startup" "Version : $VERSION, release : $RELEASE"
+bm_dbus_send_event "startup" "Version : $VERSION"
 bm_dbus_send_progress 0 "Initializing"
 
 # Catch signals for a nice exit.
@@ -186,7 +179,7 @@ while [[ $# -ge 1 ]]; do
     esac
     shift
 done
-info "Backup Manager $VERSION - Copyright (c) 2004-2011 Alexis Sukrieh"
+info "Backup Manager $VERSION - Copyright (c) 2004-2015 Alexis Sukrieh"
 
 # Display some more info if we're doing an action
 if [[ "$noupload" == "true" ]]\

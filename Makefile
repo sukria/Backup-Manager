@@ -120,16 +120,17 @@ install_bin:
 	
 # Uninstall
 uninstall:
-    @rm -fv $(DESTDIR)$(SBINDIR)/backup-manager
-    @rm -fv $(DESTDIR)$(BINDIR)/backup-manager-purge
-    @rm -fv $(DESTDIR)$(BINDIR)/backup-manager-upload
-    @rm -fv $(SHAREDIR)/backup-manager.conf.tpl
-    @rm -fv $(DESTDIR)$(PREFIX)/share/man/man8/backup-manager*.8
-    @rm -Rfv $(LIBDIR)
-    @rm -Rfv $(PERL5DIR)/BackupManager
-    @rm -Rfv $(SHAREDIR)
-    @rm -Rfv $(DESTDIR)$(PREFIX)/share/doc/backup-manager
-    @rm -fv $(DESTDIR)$(PREFIX)/share/locale/*/LC_MESSAGES/backup-manager.mo
+	@echo -e "\n*** Unsinstalling Backup-Manager ***\n"
+	@rm -fv $(DESTDIR)$(SBINDIR)/backup-manager
+	@rm -fv $(DESTDIR)$(BINDIR)/backup-manager-purge
+	@rm -fv $(DESTDIR)$(BINDIR)/backup-manager-upload
+	@rm -fv $(SHAREDIR)/backup-manager.conf.tpl
+	@rm -fv $(DESTDIR)$(PREFIX)/share/man/man8/backup-manager*.8
+	@rm -Rfv $(LIBDIR)
+	@rm -Rfv $(PERL5DIR)/BackupManager
+	@rm -Rfv $(SHAREDIR)
+	@rm -Rfv $(DESTDIR)$(PREFIX)/share/doc/backup-manager
+	@rm -fv $(DESTDIR)$(PREFIX)/share/locale/*/LC_MESSAGES/backup-manager.mo
 
 # Building manpages
 man/backup-manager-upload.8:

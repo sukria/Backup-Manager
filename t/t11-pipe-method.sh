@@ -8,7 +8,7 @@ source testlib.sh
 
 source confs/base.conf
 
-# taken verbatim from file attached to bug #4
+# taken verbatim from file attached to bug #4 that previously lived at
 # http://bugzilla.backup-manager.org/cgi-bin/attachment.cgi?id=1&action=view
 export BM_REPOSITORY_ROOT="$PWD/repository"
 export BM_ARCHIVE_METHOD="pipe"

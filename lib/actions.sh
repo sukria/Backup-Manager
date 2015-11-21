@@ -148,6 +148,12 @@ function bm_init_env()
 {
     debug "bm_init_env()"
     export TOOMUCH_TIME_AGO=`date +%d --date "$BM_ARCHIVE_TTL days ago"`
+
+    # Use a single md5 file to store all archives. This lives here to make the
+    # test suite work. It runs actions without touching the backup-manager
+    # script
+    export MD5FILE="${BM_REPOSITORY_ROOT}/${BM_ARCHIVE_PREFIX}-hashes.md5"
+
     if [[ -n "$HOME" ]]; then
         export BM__GPG_HOMEDIR="--homedir ${HOME}/.gnupg"
     else

@@ -1,8 +1,3 @@
-The text version of the user guide is provided here:
-user-guide.txt
-
-If you want to use the HTML or PDF format, grab it from the Backup
-Manager website:
-http://www.backup-manager.org/documentation/
-
-This has been written in SGML with the debiandoc tools.
+The documentation is shipped as an SGML document. To build the PDF, TXT and HTML
+versions of the documentation, run a "make" here. This uses tools debiandoc2xxx
+from the "debiandoc-sgml" debian package

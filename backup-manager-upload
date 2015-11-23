@@ -1,5 +1,8 @@
 #!/usr/bin/perl 
 # Backup Manager Upload - Multiprotocol uploader for backup-manager.
+# Copyright © 2005-2015 The Backup Manager Authors
+#
+# See the AUTHORS file for details.
 
 use strict;
 use warnings;

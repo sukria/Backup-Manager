@@ -1,4 +1,4 @@
-# Copyright © 2005-2010 Alexis Sukrieh
+# Copyright © 2005-2015 The Backup Manager Authors
 #
 # See the AUTHORS file for details.
 #
@@ -63,7 +63,7 @@ done
 }
 
 # Loop on the upload methods
-function upload_files ()
+function upload_files()
 {
     debug "upload_files()"
 
@@ -144,7 +144,7 @@ function exec_post_command()
     fi
 }
 
-function bm_init_env ()
+function bm_init_env()
 {
     debug "bm_init_env()"
     export TOOMUCH_TIME_AGO=`date +%d --date "$BM_ARCHIVE_TTL days ago"`

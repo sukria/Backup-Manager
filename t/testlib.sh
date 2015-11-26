@@ -48,6 +48,7 @@ fi
 
 libdir="../lib"
 bmu="../backup-manager-upload"
+bmp="../backup-manager-purge"
 
 conffile="confs/base.conf"
 version="false"

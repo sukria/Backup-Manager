@@ -52,6 +52,7 @@ pct_success=$(($nb_success * 100 / $total))
 echo "Success score: $pct_success% ($nb_success/$total)"
 if [[ "$nb_failure" -gt 0 ]]; then
     echo "Failed tests: $nb_failure"
+    exit 1
 fi
 
-
+exit 0

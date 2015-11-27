@@ -34,6 +34,7 @@ fi
 total=0
 nb_failure=0
 # Now process the tests
+cd `dirname $0`
 for file in t[0-9][0-9]*.sh
 do
         count

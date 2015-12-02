@@ -33,6 +33,9 @@ date_1_days_ago=$(date +"%Y%m%d" --date "1 days ago")
 date_2_days_ago=$(date +"%Y%m%d" --date "2 days ago")
 date_3_days_ago=$(date +"%Y%m%d" --date "3 days ago")
 date_4_days_ago=$(date +"%Y%m%d" --date "4 days ago")
+date_5_days_ago=$(date +"%Y%m%d" --date "5 days ago")
+date_6_days_ago=$(date +"%Y%m%d" --date "6 days ago")
+date_7_days_ago=$(date +"%Y%m%d" --date "7 days ago")
 
 bm_init_env
 bm_init_today
@@ -58,12 +61,17 @@ function create_test_repository()
     touch $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_today.tar.bz2
     touch $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_1_days_ago.tar.bz2
     touch $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_2_days_ago.tar.bz2
+    # outdated, but should be kept because ...
     touch $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_3_days_ago.tar.bz2
-    # deprecated but should not be removed, as master.
-    touch $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_4_days_ago.master.tar.bz2 
-
-    # some deprecated master backup isolated, should be removed
-    touch $BM_REPOSITORY_ROOT/ouranos01-home-sukria.$date_4_days_ago.master.tar.bz2
+    # ... this is an outdated master, but it's the youngest one, so keep it
+    touch $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_4_days_ago.master.tar.bz2
+    # outdated and should be removed because ...
+    touch $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_5_days_ago.tar.bz2 
+    # ... this is a master, but not the youngest one, so should be deleted along
+    # with its incremental archives
+    touch $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_6_days_ago.master.tar.bz2
+    # floating incremental archive. delete it.
+    touch $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_7_days_ago.tar.bz2 
 
     # Some master archive
     touch $BM_REPOSITORY_ROOT/ouranos-etc.$date_1_days_ago.master.txt
@@ -103,26 +111,55 @@ if [[ -e $BM_REPOSITORY_ROOT/ouranos-$date_4_days_ago.md5 ]]; then
     error=1
 fi
 
+if [[ ! -e $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_today.tar.bz2 ]]; then
+    info "$BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_today.tar.bz2 has been removed"
+    error=2
+fi
+if [[ ! -e $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_1_days_ago.tar.bz2 ]]; then
+    info "$BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_1_days_ago.tar.bz2 has been removed"
+    error=3
+fi
+if [[ ! -e $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_2_days_ago.tar.bz2 ]]; then
+    info "$BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_2_days_ago.tar.bz2 has been removed"
+    error=4
+fi
+if [[ ! -e $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_3_days_ago.tar.bz2 ]]; then
+    info "$BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_3_days_ago.tar.bz2 has been removed"
+    error=5
+fi
 if [[ ! -e $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_4_days_ago.master.tar.bz2 ]]; then
     info "$BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_4_days_ago.master.tar.bz2 has been removed"
-    error=2
+    error=6
+fi
+if [[ -e $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_5_days_ago.tar.bz2 ]]; then
+    info "$BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_5_days_ago.tar.bz2 has been kept"
+    error=7
+fi
+if [[ -e $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_6_days_ago.master.tar.bz2 ]]; then
+    info "$BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_6_days_ago.master.tar.bz2 has been kept"
+    error=8
+fi
+if [[ -e $BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_7_days_ago.tar.bz2 ]]; then
+    info "$BM_REPOSITORY_ROOT/ouranos01-usr-local-bin.$date_7_days_ago.tar.bz2 has been kept"
+    error=9
 fi
 
 if [[ ! -e $BM_REPOSITORY_ROOT/passwd ]]; then
     info "$BM_REPOSITORY_ROOT/passwd has been removed"
-    error=3
+    error=10
 fi
 if [[ ! -e $BM_REPOSITORY_ROOT/ouranos-01020102-fdisk.incremental-list.txt ]] ||
    [[ ! -e $BM_REPOSITORY_ROOT/ouranos01020102-fdisk.incremental-list.txt ]]; then
     info "files with 8 digits in their prefix removed"
-    error=4
+    error=11
 fi
 
 # the archive under a depth greater than 0 should not be purged
 if [[ ! -e "$BM_REPOSITORY_ROOT/subdir1/host-path-to-dir.$date_4_days_ago.txt" ]]; then
     info "archive $BM_REPOSITORY_ROOT/subdir1/host-path-to-dir.$date_4_days_ago.txt does not exist."
-    error=5
+    error=12
 fi    
+
 rm -rf $BM_REPOSITORY_ROOT
 
 # Test the purging system in recursive mode
@@ -135,7 +172,7 @@ clean_directory "$BM_REPOSITORY_ROOT"
 # the archive under a depth greater than 0 should be purged
 if [[ -e "$BM_REPOSITORY_ROOT/subdir1/host-path-to-dir.$date_4_days_ago.txt" ]]; then
     info "archive $BM_REPOSITORY_ROOT/subdir1/host-path-to-dir.$date_4_days_ago.txt exists."
-    error=5
+    error=13
 fi
 
 # rm -rf $BM_REPOSITORY_ROOT

@@ -34,6 +34,7 @@ fi
 total=0
 nb_failure=0
 # Now process the tests
+cd `dirname $0`
 for file in t[0-9][0-9]*.sh
 do
         count
@@ -51,6 +52,7 @@ pct_success=$(($nb_success * 100 / $total))
 echo "Success score: $pct_success% ($nb_success/$total)"
 if [[ "$nb_failure" -gt 0 ]]; then
     echo "Failed tests: $nb_failure"
+    exit 1
 fi
 
-
+exit 0

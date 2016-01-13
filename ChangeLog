@@ -4,6 +4,7 @@ Backup Manager 0.7.12 (not yet released)
 	  Add make uninstall
 	* Fix for issue #60
 	  Add -z to rsync parameters
+	* Override config's log level if specified by command line
 
 	[ psycho-nico ]
 	* use ssh port for rsync uploads

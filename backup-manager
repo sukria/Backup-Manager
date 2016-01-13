@@ -192,6 +192,17 @@ fi
 debug "Loading configuration file : \"$conffile\"."
 source $conffile
 
+# Override config's log level if specified by command line
+if [[ "$verbose" == "true" ]]; then
+    if [[ "$verbosedebug" == "true" ]]; then
+        BM_LOGGER_LEVEL="debug"
+    else
+        BM_LOGGER_LEVEL="info"
+fi
+if [[ "$warnings" == "false" ]]; then
+    BM_LOGGER_LEVEL="error"
+fi
+
 # Sanitize will try to find deprecated vartiables,
 debug "Sanitizing the configuration file."
 source $libdir/sanitize.sh

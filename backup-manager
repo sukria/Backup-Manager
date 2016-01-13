@@ -198,6 +198,7 @@ if [[ "$verbose" == "true" ]]; then
         BM_LOGGER_LEVEL="debug"
     else
         BM_LOGGER_LEVEL="info"
+    fi
 fi
 if [[ "$warnings" == "false" ]]; then
     BM_LOGGER_LEVEL="error"

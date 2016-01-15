@@ -1,4 +1,4 @@
-# Copyright (C) 2010 The Backup Manager Authors
+# Copyright © 2005-2016 The Backup Manager Authors
 #
 # See the AUTHORS file for details.
 #

@@ -1,4 +1,4 @@
-# Copyright (C) 2010 The Backup Manager Authors
+# Copyright © 2005-2016 The Backup Manager Authors
 #
 # See the AUTHORS file for details.
 #
@@ -192,7 +192,10 @@ function _exec_rsync_command()
            [[ -z "$BM_UPLOAD_SSH_KEY" ]]; then 
             error "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
         fi
-        ssh_option="ssh -l ${BM_UPLOAD_SSH_USER} -p ${BM_UPLOAD_SSH_PORT} -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}"
+        ssh_option="ssh -l ${BM_UPLOAD_SSH_USER} -o BatchMode=yes -o ServerAliveInterval=60 -i ${BM_UPLOAD_SSH_KEY}"
+        if [[ ! -z "$BM_UPLOAD_SSH_PORT" ]]; then
+        	ssh_option="${ssh_option} -p ${BM_UPLOAD_SSH_PORT}"
+        fi
         destination_option="${BM_UPLOAD_SSH_USER}@${host}:${destination_option}"
     fi
     
@@ -223,10 +226,10 @@ function bm_upload_rsync_common()
         error "No valid destination found, RSYNC upload not possible."
     fi
     
-    rsync_options="-va"
+    rsync_options="-zva"
     if [[ ! -z $BM_UPLOAD_RSYNC_DUMPSYMLINKS ]]; then
         if [[ "$BM_UPLOAD_RSYNC_DUMPSYMLINKS" = "true" ]]; then
-            rsync_options="-vaL"
+            rsync_options="-zvaL"
         fi
     fi
 

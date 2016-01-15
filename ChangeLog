@@ -1,3 +1,22 @@
+Backup Manager 0.7.12
+	[ Philippe Villiers ]
+	* Fix for issue #35
+	  Add make uninstall
+	* Fix for issue #60
+	  Add -z to rsync parameters
+	* Override config's log level if specified by command line
+
+	[ psycho-nico ]
+	* use ssh port for rsync uploads
+
+	[ Dima Kogan ]
+	* Fix for issue #65
+	  fix dead links
+	* Fix for issue #66
+	  fix test suite
+	* Fix for debian bts #784446
+	  fix purging of incremental archive while keeping the master
+
 Backup Manager 0.7.11
 	[ Matthieu CERDA ]
 	* Add bandwidth limiting support in rsync uploads

@@ -1,5 +1,6 @@
 #!/usr/bin/perl
-# Copyright © 2005-2010 Alexis Sukrieh
+# Copyright © 2005-2016 The Backup Manager Authors
+#
 # See the AUTHORS file for details.
 #
 # This program is free software; you can redistribute it and/or
@@ -219,17 +220,6 @@ sub read_archives($$)
     }
 }
 
-
-# Takes an archive and a meta-data hash ref
-# and return 1 if the archive is outded according to $g_ttl,
-# 0 else.
-sub outdate_master_archive($$$$$)
-{
-    my ($archive, $rh_meta, $purge_date,
-        $ra_archives, $ra_outdated) = @_;
-}
-
-
 # Takes two array refs. Reads from the first one the list of archives 
 # to process, and push in the second one the outdated archives.
 sub outdate_archives($$)
@@ -243,43 +233,74 @@ sub outdate_archives($$)
     my $purge_date = strftime ('%Y%m%d', 
                                localtime(time() - $g_ttl * 24 * 3600)); 
     print_info "Outdating archives made before $purge_date";
-    
-    my %seen = ();
-    foreach my $archive (sort @{$ra_archives}) {
-        print_info "Checking archive $archive";
-        
-        my $data = $g_rh_archives->{dataByPath}{$archive};
-        next unless defined $data;
-        next unless defined $data->{date};
-        next if $seen{$archive};
-        $seen{$archive} = 1;
-       
-        # if the date of the archive is older than $purge_date, we may have to outdate it
-        # unless, nothing to do for that archive.
-        next if ($data->{date} > $purge_date);
 
-        # we can outdate a master only if a younger master exists
-        if ($data->{master}) {
-            foreach my $master_date (
-                keys %{$g_rh_archives->{$data->{name}}{pathByDateMasters}}) {
-                if ($master_date > $data->{date}) {
-                    push @{$ra_outdated}, $archive;
-                    last;
+    my %outdated = (); # set of outdated archives. Will be converted to a list
+                       # at the end of this function
+    my %seen = ();
+    my $outdate_master_notmaster = sub
+    {
+        my $do_master = shift;
+
+
+      ARCHIVE_LOOP:
+        foreach my $archive (sort @{$ra_archives}) {
+            my $data = $g_rh_archives->{dataByPath}{$archive};
+            next unless defined $data;
+            next unless defined $data->{date};
+
+            # if the date of the archive is older than $purge_date, we may have to outdate it
+            # unless, nothing to do for that archive.
+            next if ($data->{date} > $purge_date);
+
+            # We can outdate a master only if a younger master exists
+            if ($data->{master} && $do_master) {
+                next if $seen{$archive};
+                $seen{$archive} = 1;
+
+                my $pathByDateMasters = $g_rh_archives->{$data->{name}}{pathByDateMasters};
+                foreach my $master_date ( keys %$pathByDateMasters) {
+                    if ($master_date > $data->{date}) {
+                        $outdated{$archive} = 1;
+                        last;
+                    }
                 }
             }
-        }
 
-        # here the archive is deprecated, its date is < to $purge_date
-        else {
-            # if BM_ARCHIVE_STRICTPURGE is true, we can only purge 
-            # an archive prefixed with BM_ARCHIVE_PREFIX
-            next if (($ENV{BM_ARCHIVE_STRICTPURGE} eq "true") and 
-                     ($data->{prefix} ne $ENV{BM_ARCHIVE_PREFIX}));
-            
-            # now, we're sure we can outdate the archive
-            push @{$ra_outdated}, $archive;
+            # here the archive is deprecated, its date is < to $purge_date
+            if (!$data->{master} && !$do_master) {
+
+                next if $seen{$archive};
+                $seen{$archive} = 1;
+
+                # An incremental archive should not be deleted if its master is
+                # still around. At this point I looked through all the masters
+                # and I know which ones I'm keeping. Any archive younger then
+                # the oldest master is kept
+                my $pathByDateMasters = $g_rh_archives->{$data->{name}}{pathByDateMasters};
+                foreach my $master_date ( keys %$pathByDateMasters) {
+                    if ($master_date < $data->{date} && !$outdated{$pathByDateMasters->{$master_date}}) {
+                        # I found an older master that I decided to keep. This
+                        # archive should thus be kept as well
+                        next ARCHIVE_LOOP;
+                    }
+                }
+
+                # if BM_ARCHIVE_STRICTPURGE is true, we can only purge 
+                # an archive prefixed with BM_ARCHIVE_PREFIX
+                next if (($ENV{BM_ARCHIVE_STRICTPURGE} eq "true") and 
+                         ($data->{prefix} ne $ENV{BM_ARCHIVE_PREFIX}));
+
+                # now, we're sure we can outdate the archive
+                $outdated{$archive} = 1;
+            }
         }
-    }
+    };
+
+
+    $outdate_master_notmaster->(1); # masters first
+    $outdate_master_notmaster->(0); # then the others
+
+    push @{$ra_outdated}, sort keys %outdated;
 }
 
 ##############################################################

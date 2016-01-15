@@ -47,7 +47,8 @@ else
 fi
 
 libdir="../lib"
-bmu="../backup-manager-upload"
+bmu="perl -I.. ../backup-manager-upload"
+bmp="perl -I.. ../backup-manager-purge"
 
 conffile="confs/base.conf"
 version="false"

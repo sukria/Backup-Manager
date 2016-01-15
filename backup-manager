@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-# Copyright © 2005-2010 Alexis Sukrieh
+# Copyright © 2005-2016 The Backup Manager Authors
 # See the AUTHORS file for details.
 #
 # This program is free software; you can redistribute it and/or
@@ -26,8 +26,7 @@
 set -e
 
 RELEASE="true"
-REVISION='$Revision$'
-VERSION="0.7.11"
+VERSION="0.7.12"
 
 #Set prefix for paths
 BIN_PREFIX=/usr/bin
@@ -91,20 +90,14 @@ nopurge="false"
 noburn="false"
 noupload="false"
 
-# Init the version / revision flag
-if [[ "$RELEASE" = "false" ]]; then    
-    rev=$(echo "$REVISION" | sed -e 's/.Revision: \([0-9]*\).*/\1/g')
-    VERSION="${VERSION}r${rev}"
-fi
-
-debug "Version : $VERSION, release : $RELEASE"
+debug "Version : $VERSION"
 
 # Set useful global variables and initial
 # checks
 bm_init_today
 bm_dbus_init
 
-bm_dbus_send_event "startup" "Version : $VERSION, release : $RELEASE"
+bm_dbus_send_event "startup" "Version : $VERSION"
 bm_dbus_send_progress 0 "Initializing"
 
 # Catch signals for a nice exit.
@@ -186,7 +179,7 @@ while [[ $# -ge 1 ]]; do
     esac
     shift
 done
-info "Backup Manager $VERSION - Copyright (c) 2004-2011 Alexis Sukrieh"
+info "Backup Manager $VERSION - Copyright (c) 2004-2015 Alexis Sukrieh"
 
 # Display some more info if we're doing an action
 if [[ "$noupload" == "true" ]]\
@@ -199,14 +192,24 @@ fi
 debug "Loading configuration file : \"$conffile\"."
 source $conffile
 
+# Override config's log level if specified by command line
+if [[ "$verbose" == "true" ]]; then
+    if [[ "$verbosedebug" == "true" ]]; then
+        BM_LOGGER_LEVEL="debug"
+    else
+        BM_LOGGER_LEVEL="info"
+    fi
+fi
+if [[ "$warnings" == "false" ]]; then
+    BM_LOGGER_LEVEL="error"
+fi
+
 # Sanitize will try to find deprecated vartiables,
 debug "Sanitizing the configuration file."
 source $libdir/sanitize.sh
 
 debug "Initializing environment"
 bm_init_env
-# Use a single md5 file to store all archives.
-export MD5FILE="${BM_REPOSITORY_ROOT}/${BM_ARCHIVE_PREFIX}-hashes.md5"
 
 debug "Checking if logger is available"
 check_logger

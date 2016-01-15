@@ -108,10 +108,8 @@ has been reviewed by Sven Joachim.
 <p>
 While the author of this document has tried hard to avoid typos and other
 errors, these do still occur. If you discover an error in this manual or if you
-want to give any comments, suggestions, or criticisms please send an email to
-the development list, backup-manager-devel@backup-manager.org, or submit a bug
-report against the "Documentation" product, in the bug tracking
-system<footnote>http://bugzilla.backup-manager.org/</footnote>.
+want to give any comments, suggestions, or criticisms please create a new issue
+at https://github.com/sukria/Backup-Manager/issues
 
 <chapt id="configuration">Configuration files
 

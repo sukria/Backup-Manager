@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-# Copyright © 2005-2015 The Backup Manager Authors
+# Copyright © 2005-2016 The Backup Manager Authors
 # See the AUTHORS file for details.
 #
 # This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 set -e
 
 RELEASE="true"
-VERSION="0.7.11"
+VERSION="0.7.12"
 
 #Set prefix for paths
 BIN_PREFIX=/usr/bin

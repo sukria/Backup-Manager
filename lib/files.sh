@@ -412,7 +412,7 @@ function purge_duplicate_archives()
         error "Unable to get date from file."
     fi
    
-    file_pattern=$(echo $file_to_create | sed -e "s/$date_of_file/\*/") || 
+    file_pattern=$(echo $file_to_create | sed -e "s/\\(.*\\)$date_of_file/\\1\*/") || 
         error "Unable to find the pattern of the file."
     
     # loop on each archive occurences (eg: archivename-*-filetype)

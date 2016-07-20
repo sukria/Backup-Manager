@@ -1,3 +1,12 @@
+Backup Manager 0.7.13 (not yet released)
+	[ Maximiliano Curia ]
+	* Fix for debian bts #831759
+	  Fix pattern generation
+	* Migrate from Net::Lite::FTP back to Net::FTP
+
+	[ mr-GreyWolf ]
+	* Add Russian language file
+
 Backup Manager 0.7.12
 	[ Philippe Villiers ]
 	* Fix for issue #35

@@ -1,0 +1,68 @@
+#!/bin/sh
+# $Revision: $
+# $Date: $
+
+set -e
+
+# Each test script should include testlib.sh
+source testlib.sh
+# When the test is ready, set this to false for nice outputs.
+# if you want to see what happens, use those flags
+# verbose="true"
+# warnings="true"
+
+# The conffile part of the test, see confs/* for details.
+source confs/base.conf
+source confs/tarball.conf
+
+TODAY=$(date +%Y%m%d)
+TESTDIR="testdir.$TODAY"
+
+export BM_ARCHIVE_ROOT="repository"
+export BM_ARCHIVE_METHOD="tarball"
+export BM_TARBALL_DIRECTORIES="$PWD/$TESTDIR"
+export BM_TARBALLINC_MASTERDATETYPE="weekly"
+export BM_TARBALL_FILETYPE="tar.gz"
+export BM_ARCHIVE_PURGEDUPS="true"
+
+# This test is for incremental backups, we don't want master backups!
+export BM_TARBALLINC_MASTERDATEVALUE="999"
+source $locallib/sanitize.sh
+
+bm_init_env
+bm_init_today
+YESTERDAY=$(date +%Y%m%d --date '1 days ago')
+TODAY=$YESTERDAY
+
+# The test actions
+rm -rf $BM_REPOSITORY_ROOT
+rm -rf $TESTDIR
+
+mkdir $TESTDIR
+mkdir $TESTDIR/dir1
+cat /etc/passwd > $TESTDIR/dir1/file1
+
+create_directories
+make_archives
+
+name=$(get_dir_name "$PWD/$TESTDIR" long)
+if [[ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$YESTERDAY.master.tar.gz" ]]; then
+    bm_init_today
+    make_archives
+
+    if [[ -L "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$YESTERDAY.master.tar.gz" ]]; then
+        info "Duplicate has been purged, succes."
+        rm -rf testdir
+        rm -rf $BM_ARCHIVE_ROOT
+        exit 0
+    else
+        warning "Duplicate has not been purged, failure."
+        rm -rf testdir
+        rm -rf $BM_ARCHIVE_ROOT
+        exit 1
+    fi
+else
+    rm -rf testdir
+    rm -rf $BM_ARCHIVE_ROOT
+    exit 20
+fi

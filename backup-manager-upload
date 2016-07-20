@@ -667,50 +667,31 @@ sub send_files_with_ftp($$$$$)
     foreach my $host (@{$ra_hosts}) {
 
         my $ftp;
-        
-        # The FTP over TLS transfer mode
+
+	$ftp = ftp_connect_to_host ($host);
+	unless (defined $ftp) {
+	    print_error "Unable to connect to host: $host";
+	    return FALSE;
+	}
         if ($BM_UPLOAD_FTP_SECURE) {
-            $ftp = ftptls_connect_to_host ($host);
-            unless (defined $ftp) {
-                print_error "Unable to connect to host: $host";
+            unless ($ftp->starttls()) {
+                print_error "Unable to start TLS connection on host: $host";
                 return FALSE;
             }
+	}
 
-            unless (ftptls_login($ftp, $user, $passwd)) {
-                print_error "Unable to login on ${host} in FTP TLS mode.";
-                return FALSE;
-            }
-            unless (ftptls_cwd($ftp, $repository)) {
-                print_info "The directory ${repository} does not exist, trying to create it.";
-                unless (ftptls_mkdir($ftp, $repository)) {
-                print_error  "Unable to create directory ${repository} in FTP TLS mode: " . $ftp->message;
-                return FALSE;
-                }
-            }
-            print_info "Logged on $host, in $repository (FTP TLS mode)";
-        }
-
-        # The unencrypted FTP transfers
-        else {
-            $ftp = ftp_connect_to_host ($host);
-            unless (defined $ftp) {
-                print_error "Unable to connect to host: $host";
-                return FALSE;
-            }
-
-            unless (ftp_login($ftp, $user, $passwd)) {
-                print_error "Unable to login on ${host} in FTP mode.";
-                return FALSE;
-            }
-            unless (ftp_cwd($ftp, $repository)) {
-                print_info "The directory ${repository} does not exist, trying to create it.";
-                unless (ftp_mkdir($ftp, $repository)) {
-                print_error  "Unable to create directory ${repository} in FTP mode: " . $ftp->message;
-                return FALSE;
-                }
-            }
-            print_info "Logged on $host, in $repository (FTP binary mode)";
-        }
+	unless (ftp_login($ftp, $user, $passwd)) {
+	    print_error "Unable to login on ${host} in FTP mode.";
+	    return FALSE;
+	}
+	unless (ftp_cwd($ftp, $repository)) {
+	    print_info "The directory ${repository} does not exist, trying to create it.";
+	    unless (ftp_mkdir($ftp, $repository)) {
+	    print_error  "Unable to create directory ${repository} in FTP mode: " . $ftp->message;
+	    return FALSE;
+	    }
+	}
+	print_info "Logged on $host, in $repository (FTP binary mode)";
 
         # Now that we're connected and logged in, test an upload if needed
         if ($g_ftptest) {

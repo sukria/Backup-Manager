@@ -854,9 +854,11 @@ function backup_method_tarball()
     debug "backup_method_tarball ($method)"
 
     info "Using method \"\$method\"."
-    
+    local oldgzip="$GZIP"
+    export GZIP="-n"
+
     # build the command line
-    case $BM_TARBALL_FILETYPE in 
+    case $BM_TARBALL_FILETYPE in
     tar|tar.bz2|tar.gz)
         dumpsymlinks="$(__get_flags_tar_dump_symlinks)"
     ;;
@@ -874,9 +876,9 @@ function backup_method_tarball()
     else
         __make_remote_tarball_archives
     fi
-    
+    GZIP="$oldgzip"
     # Handle errors
-    # since version 0.8, BM's follows up its process even if errors were triggered 
+    # since version 0.8, BM's follows up its process even if errors were triggered
     # during the archive generation.
     if [[ $nb_err -eq 1 ]]; then
         warning "1 error occurred during the tarball generation."

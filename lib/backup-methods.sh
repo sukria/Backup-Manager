@@ -711,7 +711,6 @@ function __build_local_archive()
         warning "File \$file_to_check already exists, skipping."
         debug "rm -f ${bm_pending_incremental_list}.orig"
         rm -f "${bm_pending_incremental_list}.orig"
-        continue
     fi
 }
 

@@ -17,7 +17,7 @@ source confs/tarball.conf
 export BM_ARCHIVE_ROOT="repository"
 export BM_ARCHIVE_METHOD="tarball"
 export BM_TARBALL_DIRECTORIES="$PWD"
-export BM_TARBALL_FILETYPE="tar.lz"
+export BM_TARBALL_FILETYPE="tar.lzma"
 source $locallib/sanitize.sh
 
 # The test actions
@@ -33,7 +33,7 @@ create_directories
 make_archives
 
 name=$(get_dir_name $PWD long)
-if [[ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.tar.lz" ]]; then
+if [[ -e "$BM_ARCHIVE_ROOT/$BM_ARCHIVE_PREFIX$name.$TODAY.master.tar.lzma" ]]; then
     rm -rf $BM_ARCHIVE_ROOT
     exit 0
 else

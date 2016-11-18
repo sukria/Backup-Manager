@@ -196,8 +196,8 @@ msgstr "Typ archivu \"tar.bz2\" závisí na nástroji \"$bzip\"."
 
 #: ../lib/backup-methods.sh:571
 #, sh-format
-msgid "The archive type \"tar.lz\" depends on the tool \"$lzma\"."
-msgstr "Typ archivu \"tar.lz\" závisí na nástroji \"$lzma\"."
+msgid "The archive type \"tar.lzma\" depends on the tool \"$lzma\"."
+msgstr "Typ archivu \"tar.lzma\" závisí na nástroji \"$lzma\"."
 
 #: ../lib/backup-methods.sh:578
 #, sh-format

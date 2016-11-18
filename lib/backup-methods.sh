@@ -499,6 +499,10 @@ function __get_backup_tarball_remote_command()
             __get_flags_tar_blacklist "$target"
             command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j "$target""
         ;;
+        tar.xz)
+            __get_flags_tar_blacklist "$target"
+            command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --xz "$target""
+        ;;
         tar.lzma)
             __get_flags_tar_blacklist "$target"
             command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --lzma "$target""
@@ -586,6 +590,13 @@ function __get_backup_tarball_command()
             __get_flags_tar_blacklist "$target"
             command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j -f"
         ;;
+        tar.xz)
+            if [[ ! -x $xz ]]; then
+                error "The archive type \"tar.xz\" depends on the tool \"\$xz\"."
+            fi
+            __get_flags_tar_blacklist "$target"
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --xz -f"
+        ;;
         tar.lzma)
             if [[ ! -x $lzma ]]; then
                 error "The archive type \"tar.lzma\" depends on the tool \"\$lzma\"."
@@ -658,7 +669,8 @@ function build_encrypted_archive
         error "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
     fi
 
-    if [[ "$BM_TARBALL_FILETYPE" = "tar.lzma" ]] ||
+    if [[ "$BM_TARBALL_FILETYPE" = "tar.xz" ]] ||
+       [[ "$BM_TARBALL_FILETYPE" = "tar.lzma" ]] ||
        [[ "$BM_TARBALL_FILETYPE" = "zip" ]] ||
        [[ "$BM_TARBALL_FILETYPE" = "dar" ]]; then
         error "The encryption is not yet possible with \"\$BM_TARBALL_FILETYPE\" archives."
@@ -797,7 +809,7 @@ function __make_local_tarball_token
             "dar")
                 __get_flags_dar_incremental "$dir_name"
             ;;
-            "tar"|"tar.gz"|"tar.bz2"|"tar.lzma")
+            "tar"|"tar.gz"|"tar.bz2"|"tar.xz"|"tar.lzma")
                 __get_flags_tar_incremental "$dir_name"
             ;;
             esac

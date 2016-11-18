@@ -196,8 +196,8 @@ msgstr "Het archieftype \"tar.bz2\" is afhankelijk van de tool \"$bzip\"."
 
 #: ../lib/backup-methods.sh:571
 #, sh-format
-msgid "The archive type \"tar.lz\" depends on the tool \"$lzma\"."
-msgstr "Het archieftype \"tar.lz\" is afhankelijk van de tool \"$lzma\"."
+msgid "The archive type \"tar.lzma\" depends on the tool \"$lzma\"."
+msgstr "Het archieftype \"tar.lzma\" is afhankelijk van de tool \"$lzma\"."
 
 #: ../lib/backup-methods.sh:578
 #, sh-format

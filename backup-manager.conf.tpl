@@ -114,7 +114,7 @@ export BM_TARBALL_NAMEFORMAT="long"
 
 # Type of archives
 # Available types are:
-#     tar, tar.gz, tar.bz2, tar.lz, dar, zip.
+#     tar, tar.gz, tar.bz2, tar.lzma, dar, zip.
 # Make sure to satisfy the appropriate dependencies 
 # (bzip2, dar, lzma, ...).
 export BM_TARBALL_FILETYPE="tar.gz"

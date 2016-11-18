@@ -499,7 +499,7 @@ function __get_backup_tarball_remote_command()
             __get_flags_tar_blacklist "$target"
             command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j "$target""
         ;;
-        tar.lz) 
+        tar.lzma)
             __get_flags_tar_blacklist "$target"
             command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --lzma "$target""
         ;;
@@ -586,9 +586,9 @@ function __get_backup_tarball_command()
             __get_flags_tar_blacklist "$target"
             command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j -f"
         ;;
-        tar.lz)
+        tar.lzma)
             if [[ ! -x $lzma ]]; then
-                error "The archive type \"tar.lz\" depends on the tool \"\$lzma\"."
+                error "The archive type \"tar.lzma\" depends on the tool \"\$lzma\"."
             fi
             __get_flags_tar_blacklist "$target"
             command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --lzma -f"
@@ -658,7 +658,7 @@ function build_encrypted_archive
         error "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
     fi
 
-    if [[ "$BM_TARBALL_FILETYPE" = "tar.lz" ]] || 
+    if [[ "$BM_TARBALL_FILETYPE" = "tar.lzma" ]] ||
        [[ "$BM_TARBALL_FILETYPE" = "zip" ]] ||
        [[ "$BM_TARBALL_FILETYPE" = "dar" ]]; then
         error "The encryption is not yet possible with \"\$BM_TARBALL_FILETYPE\" archives."
@@ -796,7 +796,7 @@ function __make_local_tarball_token
             "dar")
                 __get_flags_dar_incremental "$dir_name"
             ;;
-            "tar"|"tar.gz"|"tar.bz2"|"tar.lz")
+            "tar"|"tar.gz"|"tar.bz2"|"tar.lzma")
                 __get_flags_tar_incremental "$dir_name"
             ;;
             esac

@@ -499,7 +499,11 @@ function __get_backup_tarball_remote_command()
             __get_flags_tar_blacklist "$target"
             command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j "$target""
         ;;
-        tar.lz) 
+        tar.xz)
+            __get_flags_tar_blacklist "$target"
+            command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --xz "$target""
+        ;;
+        tar.lzma)
             __get_flags_tar_blacklist "$target"
             command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --lzma "$target""
         ;;
@@ -586,9 +590,16 @@ function __get_backup_tarball_command()
             __get_flags_tar_blacklist "$target"
             command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j -f"
         ;;
-        tar.lz)
+        tar.xz)
+            if [[ ! -x $xz ]]; then
+                error "The archive type \"tar.xz\" depends on the tool \"\$xz\"."
+            fi
+            __get_flags_tar_blacklist "$target"
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --xz -f"
+        ;;
+        tar.lzma)
             if [[ ! -x $lzma ]]; then
-                error "The archive type \"tar.lz\" depends on the tool \"\$lzma\"."
+                error "The archive type \"tar.lzma\" depends on the tool \"\$lzma\"."
             fi
             __get_flags_tar_blacklist "$target"
             command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --lzma -f"
@@ -658,7 +669,8 @@ function build_encrypted_archive
         error "The configuration variable \"BM_ENCRYPTION_RECIPIENT\" must be defined."
     fi
 
-    if [[ "$BM_TARBALL_FILETYPE" = "tar.lz" ]] || 
+    if [[ "$BM_TARBALL_FILETYPE" = "tar.xz" ]] ||
+       [[ "$BM_TARBALL_FILETYPE" = "tar.lzma" ]] ||
        [[ "$BM_TARBALL_FILETYPE" = "zip" ]] ||
        [[ "$BM_TARBALL_FILETYPE" = "dar" ]]; then
         error "The encryption is not yet possible with \"\$BM_TARBALL_FILETYPE\" archives."
@@ -711,7 +723,6 @@ function __build_local_archive()
         warning "File \$file_to_check already exists, skipping."
         debug "rm -f ${bm_pending_incremental_list}.orig"
         rm -f "${bm_pending_incremental_list}.orig"
-        continue
     fi
 }
 
@@ -797,7 +808,7 @@ function __make_local_tarball_token
             "dar")
                 __get_flags_dar_incremental "$dir_name"
             ;;
-            "tar"|"tar.gz"|"tar.bz2"|"tar.lz")
+            "tar"|"tar.gz"|"tar.bz2"|"tar.xz"|"tar.lzma")
                 __get_flags_tar_incremental "$dir_name"
             ;;
             esac
@@ -854,9 +865,11 @@ function backup_method_tarball()
     debug "backup_method_tarball ($method)"
 
     info "Using method \"\$method\"."
-    
+    local oldgzip="$GZIP"
+    export GZIP="-n"
+
     # build the command line
-    case $BM_TARBALL_FILETYPE in 
+    case $BM_TARBALL_FILETYPE in
     tar|tar.bz2|tar.gz)
         dumpsymlinks="$(__get_flags_tar_dump_symlinks)"
     ;;
@@ -874,9 +887,9 @@ function backup_method_tarball()
     else
         __make_remote_tarball_archives
     fi
-    
+    GZIP="$oldgzip"
     # Handle errors
-    # since version 0.8, BM's follows up its process even if errors were triggered 
+    # since version 0.8, BM's follows up its process even if errors were triggered
     # during the archive generation.
     if [[ $nb_err -eq 1 ]]; then
         warning "1 error occurred during the tarball generation."

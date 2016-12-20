@@ -197,8 +197,13 @@ msgstr "Kiểu kho nén « tar.bz2 » phụ thuộc vào công cụ « $bzip ».
 
 #: ../lib/backup-methods.sh:571
 #, sh-format
-msgid "The archive type \"tar.lz\" depends on the tool \"$lzma\"."
-msgstr "Kiểu kho nén « tar.lz » phụ thuộc vào công cụ « $lzma »."
+msgid "The archive type \"tar.xz\" depends on the tool \"$xz\"."
+msgstr "Kiểu kho nén « tar.xz » phụ thuộc vào công cụ « $xz »."
+
+#: ../lib/backup-methods.sh:571
+#, sh-format
+msgid "The archive type \"tar.lzma\" depends on the tool \"$lzma\"."
+msgstr "Kiểu kho nén « tar.lzma » phụ thuộc vào công cụ « $lzma »."
 
 #: ../lib/backup-methods.sh:578
 #, sh-format

@@ -91,7 +91,13 @@ msgstr ""
 
 #: ../lib/actions.sh:193
 msgid ""
-"The BM_TARBALL_FILETYPE conf key is set to \"tar.lz\" but lzma is not "
+"The BM_TARBALL_FILETYPE conf key is set to \"tar.xz\" but xz is not "
+"installed."
+msgstr ""
+
+#: ../lib/actions.sh:193
+msgid ""
+"The BM_TARBALL_FILETYPE conf key is set to \"tar.lzma\" but lzma is not "
 "installed."
 msgstr ""
 
@@ -208,7 +214,12 @@ msgstr ""
 
 #: ../lib/backup-methods.sh:576
 #, sh-format
-msgid "The archive type \"tar.lz\" depends on the tool \"$lzma\"."
+msgid "The archive type \"tar.xz\" depends on the tool \"$xz\"."
+msgstr ""
+
+#: ../lib/backup-methods.sh:576
+#, sh-format
+msgid "The archive type \"tar.lzma\" depends on the tool \"$lzma\"."
 msgstr ""
 
 #: ../lib/backup-methods.sh:583

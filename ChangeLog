@@ -1,8 +1,15 @@
-Backup Manager 0.7.13 (not yet released)
+Backup Manager 0.7.13
+	[ Matteo Cypriani ]
+	* Fix for issue #79
+	  Add support for xz compression
+	* Fix for issue #84
+	  Use .lzma extension for lzma-compressed files
+	
 	[ Maximiliano Curia ]
 	* Fix for debian bts #831759
 	  Fix pattern generation
 	* Migrate from Net::Lite::FTP back to Net::FTP
+	* Force gzip to ignore the filename and timestamp
 
 	[ mr-GreyWolf ]
 	* Add Russian language file

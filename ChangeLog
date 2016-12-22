@@ -1,3 +1,8 @@
+Backup Manager 0.7.13.1 (not yet released)
+	[ Philippe Villiers ]
+	* Fix for issue #91
+	  Fix hardcoded backup-manager-purge path
+
 Backup Manager 0.7.13
 	[ Matteo Cypriani ]
 	* Fix for issue #79

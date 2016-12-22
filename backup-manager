@@ -38,7 +38,7 @@ libdir="$LIB_PREFIX/backup-manager"
 vardir="$VAR_PREFIX/backup-manager"
 bmu="$BIN_PREFIX/backup-manager-upload"
 bmp="$BIN_PREFIX/backup-manager-purge"
-export BMP_PATH=$bmp
+export BM_BMP_PATH=$bmp
 
 # Find which lockfile to use
 # If we are called by an unprivileged user, use a lockfile inside the user's home;

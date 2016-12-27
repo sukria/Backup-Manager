@@ -898,6 +898,12 @@ sub send_files_with_s3($$$$$$)
 
 		my $response = $bucket_obj->list;
 
+		# check if S3 credentials are valid
+		if (! $response) {
+			print_error "Unable to access your S3 account. Check your AWS IAM credentials";
+			exit E_S3_FAILED;
+		}
+
 		if (not ( $response->{bucket} ) ) {
 			print_info "Bucket $bucket does not exist... creating";
 			$bucket_obj = $s3->add_bucket( { bucket => $bucket } );

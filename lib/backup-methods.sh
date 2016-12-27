@@ -253,7 +253,7 @@ function __get_flags_relative_blacklist()
     for pattern in $BM_TARBALL_BLACKLIST
     do
         # absolute paths 
-        char=$(expr substr $pattern 1 1)
+        char=$(expr substr "$pattern" 1 1)
         if [[ "$char" = "/" ]]; then
 
            # we blacklist only absolute paths related to $target
@@ -261,17 +261,28 @@ function __get_flags_relative_blacklist()
                 
                 # making a relative path...
                 pattern="${pattern#$target}"
-                length=$(expr length $pattern)
+                length=$(expr length "$pattern")
                 # for $target="/", no spare / is left at the beggining
                 # after the # substitution; thus take substr from pos 1
                 if [ "$target" != "/" ]; then
-                    pattern=$(expr substr $pattern 2 $length)
+                    pattern=$(expr substr "$pattern" 2 $length)
                 else
-                    pattern=$(expr substr $pattern 1 $length)
+                    pattern=$(expr substr "$pattern" 1 $length)
                 fi
 
                 # ...and blacklisting it
                 blacklist="$blacklist ${switch}${pattern}"
+
+                # Attention:
+                # exclude won't work when the pattern contains spaces.
+                # This problem may occur when an item of the blacklist
+                # ends with "*", is expanded by the shell, and has
+                # sub-dirs with a space in it's name.
+                # Pattern in quotes in $blacklist are not recognized
+                # by tar, so that is no solution.
+                # Disabling globbing (set -f) might work, but could 
+                # also have some unwanted side-effects.
+                # Would need more time to investigate/fix...
            fi
 
         # relative path are blindly appended to the blacklist

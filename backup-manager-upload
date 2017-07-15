@@ -290,7 +290,7 @@ sub ssh_clean_directory
 
     # First, create the list of existing archives
     my ($fh, $in) = get_tempfile('ssh-archives-XXXXXX');
-    my $cmd = "$ssh $ssh_options $user".'@'.$host." ls $location/*";
+    my $cmd = "$ssh $ssh_options $user".'@'.$host." 'ls $location/*'";
     my $buffer = `$cmd`;
     print $fh $buffer;
     close $fh;

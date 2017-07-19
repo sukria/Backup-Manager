@@ -110,8 +110,8 @@ install_bin:
 	-install -o root -g 0 -m 0644 backup-manager.conf.tpl $(DESTDIR)$(SHAREDIR)
 
 	# Set PREFIX to backup-manager binary
-	sed "s#^BIN_PREFIX=.*#BIN_PREFIX=$(DESTDIR)/$(BINDIR)#" -i $(DESTDIR)/$(SBINDIR)/backup-manager
-	sed "s#^LIB_PREFIX=.*#LIB_PREFIX=$(DESTDIR)/$(PREFIX)/lib#" -i $(DESTDIR)/$(SBINDIR)/backup-manager
+	sed "s#^BIN_PREFIX=.*#BIN_PREFIX=$(BINDIR)#" -i $(DESTDIR)/$(SBINDIR)/backup-manager
+	sed "s#^LIB_PREFIX=.*#LIB_PREFIX=$(PREFIX)/lib#" -i $(DESTDIR)/$(SBINDIR)/backup-manager
 	sed "s#^VAR_PREFIX=.*#VAR_PREFIX=$(VARDIR)#" -i $(DESTDIR)/$(SBINDIR)/backup-manager
 	
 	mkdir -p $(DESTDIR)/$(PERL5DIR)

@@ -83,10 +83,10 @@ install_doc:
 	@echo -e "\n*** Building the User Guide ***\n"
 	$(MAKE) -C doc DESTDIR=$(DESTDIR)
 	install -d $(DOCDIR)
-	install -o root -g 0 -m 0644 $(DOCPDF) $(DOCDIR)
-	install -o root -g 0 -m 0644 $(DOCTXT) $(DOCDIR)
+	-install -o root -g 0 -m 0644 $(DOCPDF) $(DOCDIR)
+	-install -o root -g 0 -m 0644 $(DOCTXT) $(DOCDIR)
 	install -d $(DOCHTMLDIR)
-	install -o root -g 0 -m 0644 $(DOCHTMLFILES) $(DOCHTMLDIR)
+	-install -o root -g 0 -m 0644 $(DOCHTMLFILES) $(DOCHTMLDIR)
 
 # The translation stuff
 install_po:
@@ -96,7 +96,7 @@ install_po:
 install_lib:
 	@echo -e "\n*** Installing libraries ***\n"
 	install -d $(LIBDIR)
-	install -o root -g 0 -m 0644 $(SHFILES) $(LIBDIR)
+	-install -o root -g 0 -m 0644 $(SHFILES) $(LIBDIR)
 
 # The main stuff to build the backup-manager package
 install_bin:
@@ -104,10 +104,10 @@ install_bin:
 	mkdir -p $(DESTDIR)/$(SBINDIR)
 	mkdir -p $(DESTDIR)/$(BINDIR)
 	mkdir -p $(SHAREDIR)
-	install -o root -g 0 -m 0755 backup-manager $(DESTDIR)/$(SBINDIR)
-	install -o root -g 0 -m 0755 backup-manager-purge $(DESTDIR)/$(BINDIR)
-	install -o root -g 0 -m 0755 backup-manager-upload $(DESTDIR)/$(BINDIR)
-	install -o root -g 0 -m 0644 backup-manager.conf.tpl $(SHAREDIR)
+	-install -o root -g 0 -m 0755 backup-manager $(DESTDIR)/$(SBINDIR)
+	-install -o root -g 0 -m 0755 backup-manager-purge $(DESTDIR)/$(BINDIR)
+	-install -o root -g 0 -m 0755 backup-manager-upload $(DESTDIR)/$(BINDIR)
+	-install -o root -g 0 -m 0644 backup-manager.conf.tpl $(SHAREDIR)
 
 	# Set PREFIX to backup-manager binary
 	sed "s#^BIN_PREFIX=.*#BIN_PREFIX=$(DESTDIR)/$(BINDIR)#" -i $(DESTDIR)/$(SBINDIR)/backup-manager
@@ -116,7 +116,7 @@ install_bin:
 	
 	mkdir -p $(PERL5DIR)
 	mkdir -p $(PERL5DIR)/BackupManager
-	install -o root -g 0 -m 0644 BackupManager/*.pm $(PERL5DIR)/BackupManager
+	-install -o root -g 0 -m 0644 BackupManager/*.pm $(PERL5DIR)/BackupManager
 	
 # Uninstall
 uninstall:
@@ -148,7 +148,7 @@ manpages-stamp: man/backup-manager-upload.8 man/backup-manager-purge.8
 install_man: manpages-stamp
 	@echo -e "\n*** Installing man pages ***\n"
 	install -d $(DESTDIR)/$(PREFIX)/share/man/man8/
-	install -o root -g 0 -m 0644 man/*.8 $(DESTDIR)/$(PREFIX)/share/man/man8/
+	-install -o root -g 0 -m 0644 man/*.8 $(DESTDIR)/$(PREFIX)/share/man/man8/
 
 testperldir:
 	@echo "PERL5DIR: $(PERL5DIR)"

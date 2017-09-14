@@ -31,16 +31,16 @@ PREFIX?=/usr/local
 
 # Overwrite that variable with the Perl vendorlib Config value if 
 # you package Backup Manager
-PERL5DIR?="$(DESTDIR)$(shell perl -MConfig -e 'print "$$Config{sitelib}"')"
+PERL5DIR?="$(shell perl -MConfig -e 'print "$$Config{sitelib}"')"
 
 # Some static paths, specific to backup-manager
 BINDIR=$(PREFIX)/bin
 SBINDIR=$(PREFIX)/sbin
 VARDIR=$(PREFIX)/var
 
-LIBDIR=$(DESTDIR)/$(PREFIX)/lib/backup-manager
+LIBDIR=$(PREFIX)/lib/backup-manager
 CONTRIB=$(LIBDIR)/contrib
-SHAREDIR=$(DESTDIR)/$(PREFIX)/share/backup-manager
+SHAREDIR=$(PREFIX)/share/backup-manager
 SHFILES=\
 	lib/externals.sh \
 	lib/dialog.sh \
@@ -58,7 +58,7 @@ SHFILES=\
 	lib/md5sum.sh 
 
 # For the backup-manager-doc package
-DOCDIR		 = $(DESTDIR)/$(PREFIX)/share/doc/backup-manager
+DOCDIR		 = $(PREFIX)/share/doc/backup-manager
 DOCHTMLDIR	 = $(DOCDIR)/user-guide.html
 DOCPDF		 = doc/user-guide.pdf
 DOCHTMLFILES = doc/user-guide.html/*.html
@@ -75,18 +75,18 @@ install_binary: build install_lib install_bin
 
 install_contrib:
 	@echo -e "*** Contrib files ***\n"
-	install -d $(CONTRIB)
-	install -m0755 contrib/*.sh $(CONTRIB)
+	install -d $(DESTDIR)/$(CONTRIB)
+	install -m0755 contrib/*.sh $(DESTDIR)/$(CONTRIB)
 
 # The backup-manager-doc package
 install_doc: 
 	@echo -e "\n*** Building the User Guide ***\n"
 	$(MAKE) -C doc DESTDIR=$(DESTDIR)
-	install -d $(DOCDIR)
-	install -o root -g 0 -m 0644 $(DOCPDF) $(DOCDIR)
-	install -o root -g 0 -m 0644 $(DOCTXT) $(DOCDIR)
-	install -d $(DOCHTMLDIR)
-	install -o root -g 0 -m 0644 $(DOCHTMLFILES) $(DOCHTMLDIR)
+	install -d $(DESTDIR)/$(DOCDIR)
+	-install -o root -g 0 -m 0644 $(DOCPDF) $(DESTDIR)/$(DOCDIR)
+	-install -o root -g 0 -m 0644 $(DOCTXT) $(DESTDIR)/$(DOCDIR)
+	install -d $(DESTDIR)/$(DOCHTMLDIR)
+	-install -o root -g 0 -m 0644 $(DOCHTMLFILES) $(DESTDIR)/$(DOCHTMLDIR)
 
 # The translation stuff
 install_po:
@@ -95,42 +95,44 @@ install_po:
 # The backup-manager libraries
 install_lib:
 	@echo -e "\n*** Installing libraries ***\n"
-	install -d $(LIBDIR)
-	install -o root -g 0 -m 0644 $(SHFILES) $(LIBDIR)
+	install -d $(DESTDIR)/$(LIBDIR)
+	-install -o root -g 0 -m 0644 $(SHFILES) $(DESTDIR)/$(LIBDIR)
 
 # The main stuff to build the backup-manager package
 install_bin:
 	@echo -e "\n*** Installing scripts ***\n"
 	mkdir -p $(DESTDIR)/$(SBINDIR)
 	mkdir -p $(DESTDIR)/$(BINDIR)
-	mkdir -p $(SHAREDIR)
-	install -o root -g 0 -m 0755 backup-manager $(DESTDIR)/$(SBINDIR)
-	install -o root -g 0 -m 0755 backup-manager-purge $(DESTDIR)/$(BINDIR)
-	install -o root -g 0 -m 0755 backup-manager-upload $(DESTDIR)/$(BINDIR)
-	install -o root -g 0 -m 0644 backup-manager.conf.tpl $(SHAREDIR)
+	mkdir -p $(DESTDIR)$(SHAREDIR)
+	-install -o root -g 0 -m 0755 backup-manager $(DESTDIR)/$(SBINDIR)
+	-install -o root -g 0 -m 0755 backup-manager-purge $(DESTDIR)/$(BINDIR)
+	-install -o root -g 0 -m 0755 backup-manager-upload $(DESTDIR)/$(BINDIR)
+	-install -o root -g 0 -m 0644 backup-manager.conf.tpl $(DESTDIR)$(SHAREDIR)
 
 	# Set PREFIX to backup-manager binary
-	sed "s#^BIN_PREFIX=.*#BIN_PREFIX=$(DESTDIR)/$(BINDIR)#" -i $(DESTDIR)/$(SBINDIR)/backup-manager
-	sed "s#^LIB_PREFIX=.*#LIB_PREFIX=$(DESTDIR)/$(PREFIX)/lib#" -i $(DESTDIR)/$(SBINDIR)/backup-manager
-	sed "s#^VAR_PREFIX=.*#VAR_PREFIX=$(VARDIR)#" -i $(DESTDIR)/$(SBINDIR)/backup-manager
+	sed \
+		-e "s#^bindir=.*#bindir=$(BINDIR)#" \
+		-e "s#^libdir=.*#libdir=$(LIBDIR)#" \
+		-e "s#^vardir=.*#vardir=$(VARDIR)#" \
+		-i $(DESTDIR)/$(SBINDIR)/backup-manager
 	
-	mkdir -p $(PERL5DIR)
-	mkdir -p $(PERL5DIR)/BackupManager
-	install -o root -g 0 -m 0644 BackupManager/*.pm $(PERL5DIR)/BackupManager
+	mkdir -p $(DESTDIR)/$(PERL5DIR)
+	mkdir -p $(DESTDIR)/$(PERL5DIR)/BackupManager
+	-install -o root -g 0 -m 0644 BackupManager/*.pm $(DESTDIR)/$(PERL5DIR)/BackupManager
 	
 # Uninstall
 uninstall:
 	@echo -e "\n*** Unsinstalling Backup-Manager ***\n"
-	@rm -fv $(DESTDIR)$(SBINDIR)/backup-manager
-	@rm -fv $(DESTDIR)$(BINDIR)/backup-manager-purge
-	@rm -fv $(DESTDIR)$(BINDIR)/backup-manager-upload
-	@rm -fv $(SHAREDIR)/backup-manager.conf.tpl
-	@rm -fv $(DESTDIR)$(PREFIX)/share/man/man8/backup-manager*.8
-	@rm -Rfv $(LIBDIR)
-	@rm -Rfv $(PERL5DIR)/BackupManager
-	@rm -Rfv $(SHAREDIR)
-	@rm -Rfv $(DESTDIR)$(PREFIX)/share/doc/backup-manager
-	@rm -fv $(DESTDIR)$(PREFIX)/share/locale/*/LC_MESSAGES/backup-manager.mo
+	@rm -fv $(DESTDIR)/$(SBINDIR)/backup-manager
+	@rm -fv $(DESTDIR)/$(BINDIR)/backup-manager-purge
+	@rm -fv $(DESTDIR)/$(BINDIR)/backup-manager-upload
+	@rm -fv $(DESTDIR)/$(SHAREDIR)/backup-manager.conf.tpl
+	@rm -fv $(DESTDIR)/$(PREFIX)/share/man/man8/backup-manager*.8
+	@rm -Rfv $(DESTDIR)/$(LIBDIR)
+	@rm -Rfv $(DESTDIR)/$(PERL5DIR)/BackupManager
+	@rm -Rfv $(DESTDIR)/$(SHAREDIR)
+	@rm -Rfv $(DESTDIR)/$(PREFIX)/share/doc/backup-manager
+	@rm -fv $(DESTDIR)/$(PREFIX)/share/locale/*/LC_MESSAGES/backup-manager.mo
 
 # Building manpages
 man/backup-manager-upload.8:
@@ -148,7 +150,7 @@ manpages-stamp: man/backup-manager-upload.8 man/backup-manager-purge.8
 install_man: manpages-stamp
 	@echo -e "\n*** Installing man pages ***\n"
 	install -d $(DESTDIR)/$(PREFIX)/share/man/man8/
-	install -o root -g 0 -m 0644 man/*.8 $(DESTDIR)/$(PREFIX)/share/man/man8/
+	-install -o root -g 0 -m 0644 man/*.8 $(DESTDIR)/$(PREFIX)/share/man/man8/
 
 testperldir:
 	@echo "PERL5DIR: $(PERL5DIR)"

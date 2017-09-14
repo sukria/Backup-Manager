@@ -28,16 +28,12 @@ set -e
 RELEASE="true"
 VERSION="0.7.13"
 
-#Set prefix for paths
-BIN_PREFIX=/usr/bin
-LIB_PREFIX=/usr/lib
-VAR_PREFIX=/var/lib
-
 # All the paths we provide
-libdir="$LIB_PREFIX/backup-manager"
-vardir="$VAR_PREFIX/backup-manager"
-bmu="$BIN_PREFIX/backup-manager-upload"
-bmp="$BIN_PREFIX/backup-manager-purge"
+libdir="/usr/lib/backup-manager"
+vardir="/var/lib/backup-manager"
+bindir="/usr/bin"
+bmu="$bindir/backup-manager-upload"
+bmp="$bindir/backup-manager-purge"
 export BM_BMP_PATH=$bmp
 
 # Find which lockfile to use

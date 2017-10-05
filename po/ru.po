@@ -38,12 +38,12 @@ msgstr "Невозможно изменить права доступа  \"$md5f
 
 #: ../lib/actions.sh:93
 msgid "No upload method used."
-msgstr "Невозможно использовать метод загрузки."
+msgstr "Невозможно использовать метод выгрузки."
 
 #: ../lib/actions.sh:96
 #, sh-format
 msgid "The upload method \"$method\" is not supported; skipping."
-msgstr "Метод загрузки \"$method\" не поддерживается; пропускаем."
+msgstr "Метод выгрузки \"$method\" не поддерживается; пропускаем."
 
 #: ../lib/actions.sh:108
 #, sh-format
@@ -544,7 +544,7 @@ msgstr "Одиночные действия:"
 
 #: ../lib/dialog.sh:36
 msgid "Just upload the files of the day."
-msgstr "Загрузите файлы дня."
+msgstr "Выгрузите файлы дня."
 
 #: ../lib/dialog.sh:37
 msgid "Just burn the files of the day."
@@ -576,7 +576,7 @@ msgstr "Нежелательные действия:"
 
 #: ../lib/dialog.sh:48
 msgid "Disable the upload process."
-msgstr "Отключить процесс загрузки."
+msgstr "Отключить процесс выгрузки."
 
 #: ../lib/dialog.sh:49
 msgid "Disable the burning process."
@@ -756,56 +756,56 @@ msgstr "При проверке файла конфигурации  $conffile, 
 
 #: ../lib/upload-methods.sh:38
 msgid "Using the upload method \"ssh\"."
-msgstr "Используется метод загрузки \"ssh\"."
+msgstr "Используется метод выгрузки \"ssh\"."
 
 #: ../lib/upload-methods.sh:47 ../lib/upload-methods.sh:85
 msgid "No valid destination found, SSH upload not possible."
-msgstr "Получатель  недоступен, загрузка по SSH невозможна."
+msgstr "Получатель  недоступен, выгрузка по SSH невозможна."
 
 #: ../lib/upload-methods.sh:68
 #, sh-format
 msgid "Error reported by backup-manager-upload for method \"scp\", check \"$logfile\"."
-msgstr "Получено сообщение об ошибке при метода загрузки \"scp\", читай \"$logfile\"."
+msgstr "Получено сообщение об ошибке при метода выгрузки \"scp\", читай \"$logfile\"."
 
 #: ../lib/upload-methods.sh:76
 msgid "Using the upload method \"ssh-gpg\"."
-msgstr "Используется  метод загрузки \"ssh-gpg\"."
+msgstr "Используется метод выгрузки \"ssh-gpg\"."
 
 #: ../lib/upload-methods.sh:88
 msgid "No gpg recipient given. Argument is mandatory if upload method ssh-gpg is used."
-msgstr "Не задан получатель gpg. Аргумент является обязательным, если используется метод загрузки  ssh-gpg."
+msgstr "Не задан получатель gpg. Аргумент является обязательным, если используется метод выгрузки  ssh-gpg."
 
 #: ../lib/upload-methods.sh:105
 #, sh-format
 msgid "Error reported by backup-manager-upload for method \"ssh-gpg\", check \"$logfile\"."
-msgstr "Получено сообщение об ошибке при метода загрузки \"ssh-gpg\", читай \"$logfile\"."
+msgstr "Получено сообщение об ошибке при использовании метода выгрузки \"ssh-gpg\", читай \"$logfile\"."
 
 #: ../lib/upload-methods.sh:112
 msgid "Using the upload method \"ftp\"."
-msgstr "Используется  метод загрузки \"ftp\"."
+msgstr "Используется метод выгрузки \"ftp\"."
 
 #: ../lib/upload-methods.sh:122
 msgid "No valid destination found, FTP upload not possible."
-msgstr "Получатель  недоступен, загрузка по FTP невозможна."
+msgstr "Получатель недоступен, выгрузка по FTP невозможна."
 
 #: ../lib/upload-methods.sh:146
 #, sh-format
 msgid "Error reported by backup-manager-upload for method \"ftp\", check \"$logfile\"."
-msgstr "Получено сообщение об ошибке при метода загрузки \"ftp\", читай \"$logfile\"."
+msgstr "Получено сообщение об ошибке при использовании метода выгрузки \"ftp\", читай \"$logfile\"."
 
 #: ../lib/upload-methods.sh:154
 msgid "Using the upload method \"S3\"."
-msgstr "Используется  метод загрузки \"S3\"."
+msgstr "Используется метод выгрузки \"S3\"."
 
 #: ../lib/upload-methods.sh:176
 #, sh-format
 msgid "Error reported by backup-manager-upload for method \"s3\", check \"$logfile\"."
-msgstr "Получено сообщение об ошибке при метода загрузки \"s3\", читай \"$logfile\"."
+msgstr "Получено сообщение об ошибке при использовании метода выгрузки \"s3\", читай \"$logfile\"."
 
 #: ../lib/upload-methods.sh:182
 #, sh-format
 msgid "Uploading $directory to ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
-msgstr "Загрузка $directory на ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
+msgstr "Выгрузка $directory на ${host}:${BM_UPLOAD_RSYNC_DESTINATION}"
 
 #: ../lib/upload-methods.sh:193
 msgid "Need a key to use rsync (set BM_UPLOAD_SSH_USER, BM_UPLOAD_SSH_KEY)."
@@ -814,23 +814,23 @@ msgstr "Нужны настройки для использования rsync (�
 #: ../lib/upload-methods.sh:204
 #, sh-format
 msgid "Upload of $directory with rsync failed; check $logfile."
-msgstr "Загрузка $directory по rsync не удалась; читай $logfile."
+msgstr "Звыгрузка $directory по rsync не удалась; читай $logfile."
 
 #: ../lib/upload-methods.sh:223
 msgid "No valid destination found, RSYNC upload not possible."
-msgstr "Получатель  недоступен, загрузка по RSYNC невозможна."
+msgstr "Получатель  недоступен, выгрузка по Rsync невозможна."
 
 #: ../lib/upload-methods.sh:242
 msgid "No hosts given to the rsync method, set BM_UPLOAD_RSYNC_HOSTS."
-msgstr "Не задан хост для метода загрузки rsync, задайте  значение в BM_UPLOAD_RSYNC_HOSTS."
+msgstr "Не задан хост для метода выгрузки rsync, задайте  значение в BM_UPLOAD_RSYNC_HOSTS."
 
 #: ../lib/upload-methods.sh:249
 msgid "Using the upload method \"rsync\"."
-msgstr "Используется  метод загрузки \"rsync\"."
+msgstr "Используется  метод выгрузки \"rsync\"."
 
 #: ../lib/upload-methods.sh:256
 msgid "Using the upload method \"rsync-snapshots\"."
-msgstr "Используется  метод загрузки \"rsync-snapshots\"."
+msgstr "Используется  метод выгрузки \"rsync-snapshots\"."
 
 #: ../backup-manager:127
 msgid "The -b option must be followed by a valid date (YYYYMMDD)."

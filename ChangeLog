@@ -1,4 +1,11 @@
-Backup Manager 0.7.13.1 (not yet released)
+Backup Manager 0.7.14
+	[ Guillaume Rousse ]
+	* Sanitize installation process
+	[ Philippe Villiers ]
+	* Fix for issue #97
+	  Remote purge through scp not working
+
+Backup Manager 0.7.13.1 (not released)
 	[ Philippe Villiers ]
 	* Fix for issue #91
 	  Fix hardcoded backup-manager-purge path

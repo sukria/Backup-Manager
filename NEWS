@@ -1,3 +1,5 @@
+NOTE: changes for versions above 0.7.6 are tracked in the ChangeLog file.
+
 0.7.6
     - Security Fix
         - Don't pass MySQL password in the commandline, use ~/.my.cnf instead
@@ -21,7 +23,7 @@
           $BM_ARCHIVE_PREFIX (bug #153)
 
     - Changes
-        - The post-command is now always exectued, event if an error occured
+        - The post-command is now always executed, event if an error occured
           before (bug #118).
         - Don't stop the pipe commands if one of them fails (bug #141).
 

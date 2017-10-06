@@ -1,3 +1,5 @@
+NOTE: changes for versions above 0.7.6 are tracked in the ChangeLog file.
+
 0.7.6
     - Security Fix
         - Don't pass MySQL password in the commandline, use ~/.my.cnf instead
@@ -9,7 +11,7 @@
         - Documentation of the local GPG encryption feature (bug #132).
 
     - Bug Fixes
-        - No limitation to the number of files located in 
+        - No limitation to the number of files located in
           $BM_REPOSITORY_ROOT (bug #110).
         - better handling of dar masters, don't fail if an archive is missing
           (bug #127).
@@ -21,7 +23,7 @@
           $BM_ARCHIVE_PREFIX (bug #153)
 
     - Changes
-        - The post-command is now always exectued, event if an error occured
+        - The post-command is now always executed, event if an error occured
           before (bug #118).
         - Don't stop the pipe commands if one of them fails (bug #141).
 
@@ -48,20 +50,20 @@
 
 0.7.4
     - New feature(s)
-        - Possible to purge remote archives through SSH (new configuration 
+        - Possible to purge remote archives through SSH (new configuration
           variables: BM_UPLOAD_SSH_PURGE, BM_UPLOAD_SSH_TTL).
 
     - Bug fixes
-        - Handle smartly pipe commands, don't think a command failed if not 
+        - Handle smartly pipe commands, don't think a command failed if not
           (closes: #83).
         - Can handle several targets in BM_TARBALL_TARGETS[] even if one the
           targets contains a space.
-        - Support for expandable targets in BM_TARBALL_TARGETS[] (eg: you can 
-          put /home/* and you'll get what you expect to).  
-        - Default configuation file set BM_TARBALL_OVER_SSH to "false" instead 
+        - Support for expandable targets in BM_TARBALL_TARGETS[] (eg: you can
+          put /home/* and you'll get what you expect to).
+        - Default configuation file set BM_TARBALL_OVER_SSH to "false" instead
           of "true".
         - Doesn't trigger an error when BM_TARBALL_DIRECTORIES is not set anymore.
-        - BM_TARBALL_DIRECTORIES is not deprecated anymore, possible to use it as 
+        - BM_TARBALL_DIRECTORIES is not deprecated anymore, possible to use it as
           well as BM_TARBALL_TARGETS[] the user can choose what he wants.
 
 0.7.3
@@ -71,82 +73,82 @@
         - New upload method: Support for the Amazon S3 Web Service.
           Thanks to Brad Dixon <rbdixon@gmail.com> for his work.
         - New option for the tarball generation: possible to build archives over
-          SSH (thanks to the new variable BM_TARBALL_OVER_SSH). 
-        - Possible to choose which permissions to set on the repository/archives 
+          SSH (thanks to the new variable BM_TARBALL_OVER_SSH).
+        - Possible to choose which permissions to set on the repository/archives
           when using the secure mode.
         - New configuration variable "BM_UPLOAD_TTL" so remote archives can live
           longer than local ones.
-          
+
     - Bug Fixes:
         - Possible to enable FTP passive uploads for boxes behind a firewall.
-        - The .md5 files are not left on remote servers anymore during the FTP 
+        - The .md5 files are not left on remote servers anymore during the FTP
           purging phase.
         - Bugfix in the duplicates purging system.
         - The burning system can now safely burn archives in non-interactive
-          mode. 
+          mode.
         - Support for targets to backup with spaces in their names.
-        
+
     - Changes:
-        - The variable BM_TARBALL_DIRECTORIES is deprecated, it's replaced by 
+        - The variable BM_TARBALL_DIRECTORIES is deprecated, it's replaced by
           the array BM_TARBALL_TARGETS[]; so paths with spaces can be safely
           handled.
         - Full backups are now named differently than incremental ones: the
           suffix "master" is appended to them.
         - During the purging phase, masters aren't purged unless a newer master
           is present.
-    
+
 0.7.2
     * New Features:
         + It's now possible to use the burning system interactively in
           order to burn the whole repository into several media.
           [Michel Grentzinger, Alexis Sukrieh]
-        
+
         + New option for the "--burn" switch, possible to give a
-          specific date for burning only data of that day 
+          specific date for burning only data of that day
           (eg: `--burn 20060310').
           [Michel Grentzinger, Alexis Sukrieh]
-        
+
         + New kind of DVD media: "DVD-RW". This kind of medium implies
           blanking the medium before burning data whereas the "DVD" kind
           doesn't.
           [Alexis Sukrieh]
-          
-    * Bug Fixes: 
+
+    * Bug Fixes:
         + Incremental backup with dar now works correctly.
         + MD5 hashes are updated in the .md5 file when rebuilding an existing archive.
         + Stop removing files located in $BM_REPOSITORY_ROOT that aren't archives.
         + This release closes a total of 16 known bugs since the last release.
           [The Devel Team]
-          
+
     * Changes:
         + Added support for the ServerAliveInterval ssh option.
           This helps when the "building file list" step of
- 	      rsync takes a long time (high I/O load for example), and the
-	      connection is closed because of non-activity.
+              rsync takes a long time (high I/O load for example), and the
+              connection is closed because of non-activity.
           [ Reched Ben Mustapha ]
 
 0.7.1
     * New Features:
         + Full "dar" archives support.
         + New variable `BM_MYSQL_SAFEDUMPS' for making safe MySQL dumps (locking tables).
-    * Changes: 
+    * Changes:
         + Better support of DVD-RW media, bugfix of the DVD burning method.
 
 2005-12-31 (0.6.1)   Alexis Sukrieh <sukria@backup-manager.org>
     * Bug fix
-      Several backup methods can be used safely in the same configuration file, 
+      Several backup methods can be used safely in the same configuration file,
       the incremental method will then work as expected (Bug #14 closed).
-      
+
 2005-12-19 (0.6)     Alexis Sukrieh <sukria@backup-manager.org>
     * New Features:
-        + New backup method "tarball-incremental" for building 
+        + New backup method "tarball-incremental" for building
           incremental backups.
         + New upload metyhod "rsync".
         + Support for multiple backup methods in BM_ARCHIVE_METHOD
         + Support for multiple upload methods in BM_UPLOAD_METHOD
         + User Guide available in different formats (HTML, PDF)
     * Changes:
-        + Booleans must be true/false values, yes/no are deprecated 
+        + Booleans must be true/false values, yes/no are deprecated
           (triggers warnings but backward compatible though).
         + Configuration key "BM_BURNING" is deprecated, use "BM_BURNING_METHOD" instead.
     * Bugs closed by this release:
@@ -166,108 +168,107 @@
 
 2005-11-07 (0.5.9b)  Alexis Sukrieh <sukria@sukria.net>
 
-	* New Features:
-	  + New method "svn", SubVersioNs repositories can be archived safely
-	    with svnadmin.
-	  + New method "pipe", Generic method for making archive with an external
-	    command, athe content sent to stdout will be used.
-	  + DVD burning support is available. You can choose to burn your
-	    archive repository on a DVD media, growisofs is used for this
-	    purpose.
-	* Changes:
-	  + Added a switch in the command line for the version number "--version".
-	  + Some more comments in the configuration file.
-	  + No default backup method anymore, trigger an error if unknown method
-	    given.
-	  + AUTHORS: fixed the name of "jimmy".
-	  + Makefile: man pages are generated and isntalled in the good section.
-	  + backup-manager.conf.tpl: Several typos.
-	* Bugs closed:
-	  +  md5 files now have two spaces between the hash and the file name so
-	    the file is now usable with md5sum --check. (closes: #3)
-	  + The backup switch now call backup_method_pipe() if needed.
-	  + "tarball" method is not the default one anymore, must be called
-	  explicitly.
-	* Translations:
-	  + po/fr.po: New version of the French translations.  
+        * New Features:
+          + New method "svn", SubVersioNs repositories can be archived safely
+            with svnadmin.
+          + New method "pipe", Generic method for making archive with an external
+            command, athe content sent to stdout will be used.
+          + DVD burning support is available. You can choose to burn your
+            archive repository on a DVD media, growisofs is used for this
+            purpose.
+        * Changes:
+          + Added a switch in the command line for the version number "--version".
+          + Some more comments in the configuration file.
+          + No default backup method anymore, trigger an error if unknown method
+            given.
+          + AUTHORS: fixed the name of "jimmy".
+          + Makefile: man pages are generated and isntalled in the good section.
+          + backup-manager.conf.tpl: Several typos.
+        * Bugs closed:
+          +  md5 files now have two spaces between the hash and the file name so
+            the file is now usable with md5sum --check. (closes: #3)
+          + The backup switch now call backup_method_pipe() if needed.
+          + "tarball" method is not the default one anymore, must be called
+          explicitly.
+        * Translations:
+          + po/fr.po: New version of the French translations.
 
 0.5.9 Alexis Sukrieh <sukria@backup-manager.org>
-	* Configuration keys have been drastically renamed.
-	* Added a contrib script for upgrading the configuration files
-	  to the new format: upgrade-conffile.sh
-	* Upgraded the validation process, so deprecated variables trigger warnings
-	  and are used as default values for the right name.
-	* Better control of the tar commands, when an error occured, user is warned,
-	  and a temp logfile is given.
-	* Huge code cleanup for providing a modular implementation for several archive 
-	  methods.
-	* New archive method : mysql 
-	  + uses mysqldump on a list of given databases.
-	  + facility to choose a compression format for the resulting SQL file.
-	* TODO backup method rsync
-	* TODO backup method pipe
+        * Configuration keys have been drastically renamed.
+        * Added a contrib script for upgrading the configuration files
+          to the new format: upgrade-conffile.sh
+        * Upgraded the validation process, so deprecated variables trigger warnings
+          and are used as default values for the right name.
+        * Better control of the tar commands, when an error occured, user is warned,
+          and a temp logfile is given.
+        * Huge code cleanup for providing a modular implementation for several archive
+          methods.
+        * New archive method : mysql
+          + uses mysqldump on a list of given databases.
+          + facility to choose a compression format for the resulting SQL file.
+        * TODO backup method rsync
+        * TODO backup method pipe
 
 0.5.8b Alexis Sukrieh <sukria@backup-manager.org>
-	* Configuration keys have been drastically renamed.
-	* Security fixes 
-	  + When burning a CDR, mktemp is used to prevent attacks on the file
-	    system.
-	  + It is possible to make the archive repository readable/writable by
-	    a given user/group pair.
-	* Features	
-	  + The configuration file is now validated before running.
-	    Warnings are triggered if configuration keys are not set.
-	* Bug fixes
-	  + If the filetype "tar.bz2" is chosen, /usr/bin/bzip2 is mandatory.
-	  + The pre-command is run before the creation of the archive
-	    repository.
-	  + No trailing spaces are lost anymore when printing messages.
-	* New configuration keys:
-	  + BM_PURGE_DUPLICATES tells if duplicates should be replaced by
-	    symlinks (default is yes).
-	  + BM_REPOSITORY_SECURE tells if the archive repository and the
-	    archive should be readable/writable by a given user:group (default
-	    is yes).
-	  + If BM_REPOSITORY_SECURE is activated, BM_USER and BM_GROUP should
-	    be filled (default is root:root).
-	  + BM_BURNING_CHKMD5 tells if the MD5 checksums should be checked when 
-	    a CDR is burnt (default is yes).
-	  + BM_BURNING_DEVFORCED tells backup manager to force a device
-	    whenever a cdrecord command is performed, and then bypass the
-	    default cdrecord device (default is disabled).
+        * Configuration keys have been drastically renamed.
+        * Security fixes
+          + When burning a CDR, mktemp is used to prevent attacks on the file
+            system.
+          + It is possible to make the archive repository readable/writable by
+            a given user/group pair.
+        * Features
+          + The configuration file is now validated before running.
+            Warnings are triggered if configuration keys are not set.
+        * Bug fixes
+          + If the filetype "tar.bz2" is chosen, /usr/bin/bzip2 is mandatory.
+          + The pre-command is run before the creation of the archive
+            repository.
+          + No trailing spaces are lost anymore when printing messages.
+        * New configuration keys:
+          + BM_PURGE_DUPLICATES tells if duplicates should be replaced by
+            symlinks (default is yes).
+          + BM_REPOSITORY_SECURE tells if the archive repository and the
+            archive should be readable/writable by a given user:group (default
+            is yes).
+          + If BM_REPOSITORY_SECURE is activated, BM_USER and BM_GROUP should
+            be filled (default is root:root).
+          + BM_BURNING_CHKMD5 tells if the MD5 checksums should be checked when
+            a CDR is burnt (default is yes).
+          + BM_BURNING_DEVFORCED tells backup manager to force a device
+            whenever a cdrecord command is performed, and then bypass the
+            default cdrecord device (default is disabled).
 
 0.5.8a Alexis Sukrieh <sukria@backup-manager.org>
 
-	* bug fix in the logger, the output is now clean.
-	* bug fix when making tarballs: we don't warn about an 
-	  already existing file if not true.
-	* New library for holding backup methods.
-	* first implementation of the rsync backup method 
-	  (experiemntal).
+        * bug fix in the logger, the output is now clean.
+        * bug fix when making tarballs: we don't warn about an
+          already existing file if not true.
+        * New library for holding backup methods.
+        * first implementation of the rsync backup method
+          (experiemntal).
 
 0.5.8  Alexis Sukrieh <sukria@backup-manager.org>
 
-	* Fixed a bug when calculating total disk usage of a specified 
-	  path when the locale is not en_EN or fr_FR.
-	* Added the possibility to log everything to syslog.
-	  A new configuration key is provided : BM_LOGGER for setting this 
-	  new feature on or off (default is on).
-	  Note that the user can choose which syslog facility he wants 
-	  (default is user).
-	* Added the facility to set BM_USER and BM_GROUP for providing a way
-	  to chmod and chown the repository and the archives.
-	  (closes a security issue)
-	* When creating archives, backup-manager now replaces any duplicate
-	  it founds with symlink to the most recent archive for saving
-	  disk space.
-	* Added BM_FTP_PURGE configuration key for removing files 
-	  on ftp transfer before uploading files.
+        * Fixed a bug when calculating total disk usage of a specified
+          path when the locale is not en_EN or fr_FR.
+        * Added the possibility to log everything to syslog.
+          A new configuration key is provided : BM_LOGGER for setting this
+          new feature on or off (default is on).
+          Note that the user can choose which syslog facility he wants
+          (default is user).
+        * Added the facility to set BM_USER and BM_GROUP for providing a way
+          to chmod and chown the repository and the archives.
+          (closes a security issue)
+        * When creating archives, backup-manager now replaces any duplicate
+          it founds with symlink to the most recent archive for saving
+          disk space.
+        * Added BM_FTP_PURGE configuration key for removing files
+          on ftp transfer before uploading files.
 
 0.5.7 Alexis Sukrieh <sukria@backup-manage.org>
 
-	* Removed the file TODO
-	* Added a COPYING file with the content of the GPL V2.
-	* Renamed backup-manager.conf.tpl backup-manager.conf.
-	* Better handling of pre and post commands.
-	* Added a file CHANGELOG.
-	
+        * Removed the file TODO
+        * Added a COPYING file with the content of the GPL V2.
+        * Renamed backup-manager.conf.tpl backup-manager.conf.
+        * Better handling of pre and post commands.
+        * Added a file CHANGELOG.

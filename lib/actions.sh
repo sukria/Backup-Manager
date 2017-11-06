@@ -47,7 +47,7 @@ function make_archives()
             info "No backup method used."
         ;;
         *)
-            if [ $(type -t "backup_method_${method}) = "function" ]; then
+            if [ $(type -t "backup_method_${method}") = "function" ]; then
                 backup_method_${method} "${method}"
             else
                 error "No such backup method: \$BM_ARCHIVE_METHOD"

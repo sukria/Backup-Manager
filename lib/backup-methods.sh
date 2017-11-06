@@ -1114,7 +1114,7 @@ function backup_method_mongodb()
                 error "Can't find "$mongo" but this is needed when backing up databases separately."
             fi
             
-            DBNAMES=$(echo 'var _=db.auth("'${BM_MONGODB_BACKUPLOGIN}'","'${BM_MONGODB_BACKUPLOGIN}'");_=db.adminCommand({listDatabases:1,nameOnly:true}).databases.forEach(function(d){print(d.name);});' | $mongo --quiet --host $BM_MONGODB_HOST:$BM_MONGODB_PORT admin)
+            DBNAMES=$(echo 'var _=db.auth("'${BM_MONGODB_BACKUPLOGIN}'","'${BM_MONGODB_BACKUPPASS}'");_=db.adminCommand({listDatabases:1,nameOnly:true}).databases.forEach(function(d){print(d.name);});' | $mongo --quiet --host $BM_MONGODB_HOST:$BM_MONGODB_PORT admin)
 
             # if DBs are excluded
             for exclude in $BM_MONGODB_DBEXCLUDE

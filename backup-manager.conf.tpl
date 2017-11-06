@@ -73,6 +73,7 @@ export BM_ARCHIVE_NICE_LEVEL="10"
 # - tarball-incremental
 # - mysql
 # - pgsql
+# - mongodb
 # - svn
 # - pipe
 # - none

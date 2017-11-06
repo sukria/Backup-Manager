@@ -22,3 +22,4 @@ logger=$(which logger 2> /dev/null) || true
 nice_bin=$(which nice 2> /dev/null) || true
 dd=$(which dd 2> /dev/null) || true
 mongodump=$(which dd 2> /dev/null) || true
+mongo=$(which dd 2> /dev/null) || true

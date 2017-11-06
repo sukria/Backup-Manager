@@ -276,7 +276,7 @@ export BM_MONGODB_DATABASES="__ALL__"
 # Typical sysbackup user can be created by the following command:
 # mongo --quiet --username=root admin
 # > use admin
-# > db.createUser({"user":"sysbackup","pwd":"somesecret","roles":["readAnyDatabase"]});
+# > db.createUser({user:"sysbackup",pwd:"somesecret",roles:["backup","clusterAdmin","readAnyDatabase"]});
 # > quit()
 export BM_MONGODB_BACKUPLOGIN="sysbackup"
 

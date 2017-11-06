@@ -263,6 +263,43 @@ export BM_PGSQL_FILETYPE="bzip2"
 export BM_PGSQL_EXTRA_OPTIONS=""
 
 ##############################################################
+# Backup method: MONGODB
+#############################################################
+
+# This method is dedicated to MONGODB databases.
+# Enter here the list of databases to backup.
+# Wildcard: __ALL__ (will dump all the databases in one archive)
+export BM_MONGODB_DATABASES="__ALL__"
+
+# The user who is allowed to read every databases filled in BM_MYSQL_DATABASES
+# Typical sysbackup user can be created by the following command:
+# mongo --quiet --username=root admin
+# > use admin
+# > db.createUser({"user":"sysbackup","pwd":"somesecret","roles":["readAnyDatabase"]});
+# > quit()
+export BM_MONGODB_BACKUPLOGIN="sysbackup"
+
+# its password
+export BM_MONGODB_BACKUPPASS=""
+
+# the host where the database is
+export BM_MYSQL_HOST="localhost"
+
+# the port where MySQL listen to on the host
+export BM_MYSQL_PORT="27017"
+
+# Extra options to append to mysqldump
+# (take care to what you do; this will be silently added to the 
+# command line.)
+export BM_MONGODB_EXTRA_OPTIONS=""
+
+# Make separate backups of each database?
+export BM_MONGODB_SEPARATELY="true"
+
+# Specify DBs to exclude here (separated by space) 
+export BM_MONGODB_DBEXCLUDE=""
+
+##############################################################
 # Backup method: svn
 #############################################################
 

@@ -1105,7 +1105,7 @@ function backup_method_mongodb()
         error "The \"mongodb\" method is chosen, but \$mongodump is not found."
     fi
 
-    base_command="echo $BM_MONGODB_BACKUPPASS | $mongodump --authenticationDatabase admin --quiet --username $BM_MONGODB_BACKUPLOGIN -host $BM_MONGODB_HOST:$BM_MONGODB_PORT $BM_MONGODB_EXTRA_OPTIONS --gzip --out - "
+    base_command="echo $BM_MONGODB_BACKUPPASS | $mongodump --authenticationDatabase=admin --quiet --username=$BM_MONGODB_BACKUPLOGIN --host=$BM_MONGODB_HOST:$BM_MONGODB_PORT $BM_MONGODB_EXTRA_OPTIONS --gzip --archive "
     
         # get each DB name if backing up separately
     if [ "$BM_MONGODB_DATABASES" = "__ALL__" ]; then
@@ -1129,11 +1129,11 @@ function backup_method_mongodb()
     for database in $BM_MONGODB_DATABASES
     do
         if [[ "$database" = "__ALL__" ]]; then
-            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-all-mongodb-databases.$TODAY.sql.gz"
+            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-all-mongodb-databases.$TODAY.archive.gz"
             compress="none"
             command="$base_command"
         else
-            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-mongodb-${database}.$TODAY.sql.gz"
+            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-mongodb-${database}.$TODAY.archive.gz"
             compress="none"
             command="$base_command -d $database"
         fi

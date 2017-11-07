@@ -1105,7 +1105,9 @@ function backup_method_mongodb()
         error "The \"mongodb\" method is chosen, but \$mongodump is not found."
     fi
 
+    # SECURITY CAVEAT: Because of https://jira.mongodb.org/browse/SERVER-5897 the password is disclosed thru ps during the backup
     base_command="echo $BM_MONGODB_BACKUPPASS | $mongodump --authenticationDatabase=admin --quiet --username=$BM_MONGODB_BACKUPLOGIN --host=$BM_MONGODB_HOST:$BM_MONGODB_PORT $BM_MONGODB_EXTRA_OPTIONS --gzip --archive "
+    base_command="$mongodump --authenticationDatabase=admin --quiet --username=$BM_MONGODB_BACKUPLOGIN --host=$BM_MONGODB_HOST:$BM_MONGODB_PORT $BM_MONGODB_EXTRA_OPTIONS --gzip --archive --password=$BM_MONGODB_BACKUPPASS"
     
         # get each DB name if backing up separately
     if [ "$BM_MONGODB_DATABASES" = "__ALL__" ]; then

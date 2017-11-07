@@ -284,10 +284,10 @@ export BM_MONGODB_BACKUPLOGIN="sysbackup"
 export BM_MONGODB_BACKUPPASS=""
 
 # the host where the database is
-export BM_MYSQL_HOST="localhost"
+export BM_MONGODB_HOST="localhost"
 
 # the port where MySQL listen to on the host
-export BM_MYSQL_PORT="27017"
+export BM_MONGODB_PORT="27017"
 
 # Extra options to append to mysqldump
 # (take care to what you do; this will be silently added to the 

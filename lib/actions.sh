@@ -1,4 +1,4 @@
-# Copyright © 2005-2016 The Backup Manager Authors
+# Copyright Â© 2005-2016 The Backup Manager Authors
 #
 # See the AUTHORS file for details.
 #
@@ -47,7 +47,11 @@ function make_archives()
             info "No backup method used."
         ;;
         *)
-            error "No such backup method: \$BM_ARCHIVE_METHOD"
+            if [ $(type -t "backup_method_${method}") = "function" ]; then
+                backup_method_${method} "${method}"
+            else
+                error "No such backup method: \$BM_ARCHIVE_METHOD"
+            fi
         ;;
     esac
 

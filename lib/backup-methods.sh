@@ -154,6 +154,12 @@ function __exec_meta_command()
             fi
             if [[ "$compress" = "bzip2" ]] ||
                [[ "$compress" = "bzip" ]]; then
+               # use pbzip2 if installed
+               if [[ -n "$pbzip2" ]]; then
+                 compress_bin=$pbzip2
+               else
+                 compress_bin=$bzip
+               fi
                 if [[ -z "$compress_bin" ]]; then
                     error "bzip2 is not installed but bzip2 compression needed."
                 fi

@@ -1,6 +1,7 @@
 # All external programs used must be initialized here
 zip=$(which zip 2> /dev/null) || true
 bzip=$(which bzip2 2> /dev/null) || true
+pbzip2=$(which pbzip2 2> /dev/null) || true
 gzip=$(which gzip 2> /dev/null) || true
 gpg=$(which gpg 2> /dev/null) || true
 xz=$(which xz 2> /dev/null) || true

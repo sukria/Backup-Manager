@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-# Copyright © 2005-2016 The Backup Manager Authors
+# Copyright © 2005-2018 The Backup Manager Authors
 #
 # See the AUTHORS file for details.
 #

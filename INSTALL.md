@@ -26,10 +26,10 @@ For Apple macOS with Fink
 
 2) Download Backup-Manager:
 
-    curl -L https://github.com/sukria/Backup-Manager/archive/0.7.13.zip > ~/Desktop/Backup-manager-0.7.13.zip
+    curl -L https://github.com/sukria/Backup-Manager/archive/0.7.15.zip > ~/Desktop/Backup-manager-0.7.15.zip
     cd ~/Desktop
-    unzip backup-manager-0.7.13.zip
-    cd Backup-Manager-0.7.13
+    unzip backup-manager-0.7.15.zip
+    cd Backup-Manager-0.7.15
 
 3) Then "make install", and install the needed packages asked by Fink,
 as all the needed packages are not installed with the basic Fink install.

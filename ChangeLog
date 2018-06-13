@@ -1,3 +1,10 @@
+Backup Manager 0.7.15
+	[ Philippe Villiers ]
+	* Documentation typos fixes
+	[ guard43ru ]
+	* Fix for issue #49
+	  Add pbzip2 support
+
 Backup Manager 0.7.14
 	[ Guillaume Rousse ]
 	* Sanitize installation process

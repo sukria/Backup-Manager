@@ -1100,3 +1100,51 @@ function backup_method_pipe()
         index=$(($index + 1))
     done
 }
+
+function backup_method_mongodb()
+{
+    method="$1"
+    debug "backup_method_mongodb ($method)"
+
+    info "Using method \"\$method\"."
+    if [[ ! -x $mongodump ]]; then
+        error "The \"mongodb\" method is chosen, but \$mongodump is not found."
+    fi
+
+    # SECURITY CAVEAT: Because of https://jira.mongodb.org/browse/SERVER-5897 the password is disclosed thru ps during the backup
+    base_command="echo $BM_MONGODB_BACKUPPASS | $mongodump --authenticationDatabase=admin --quiet --username=$BM_MONGODB_BACKUPLOGIN --host=$BM_MONGODB_HOST:$BM_MONGODB_PORT $BM_MONGODB_EXTRA_OPTIONS --gzip --archive "
+    base_command="$mongodump --authenticationDatabase=admin --quiet --username=$BM_MONGODB_BACKUPLOGIN --host=$BM_MONGODB_HOST:$BM_MONGODB_PORT $BM_MONGODB_EXTRA_OPTIONS --gzip --archive --password=$BM_MONGODB_BACKUPPASS"
+    
+        # get each DB name if backing up separately
+    if [ "$BM_MONGODB_DATABASES" = "__ALL__" ]; then
+        if [ "$BM_MONGODB_SEPARATELY" = "true" ]; then
+            if [[ ! -x $mongo ]]; then
+                error "Can't find "$mongo" but this is needed when backing up databases separately."
+            fi
+            
+            DBNAMES=$(echo 'var _=db.auth("'${BM_MONGODB_BACKUPLOGIN}'","'${BM_MONGODB_BACKUPPASS}'");_=db.adminCommand({listDatabases:1,nameOnly:true}).databases.forEach(function(d){print(d.name);});' | $mongo --quiet --host $BM_MONGODB_HOST:$BM_MONGODB_PORT admin)
+
+            # if DBs are excluded
+            for exclude in $BM_MONGODB_DBEXCLUDE
+            do
+                DBNAMES=$(echo $DBNAMES | sed "s/\b$exclude\b//g")
+            done
+
+            BM_MONGODB_DATABASES=$DBNAMES
+        fi
+    fi
+
+    for database in $BM_MONGODB_DATABASES
+    do
+        if [[ "$database" = "__ALL__" ]]; then
+            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-all-mongodb-databases.$TODAY.archive.gz"
+            compress="none"
+            command="$base_command"
+        else
+            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-mongodb-${database}.$TODAY.archive.gz"
+            compress="none"
+            command="$base_command -d $database"
+        fi
+        __create_file_with_meta_command
+    done   
+}

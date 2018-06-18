@@ -34,6 +34,9 @@ function make_archives()
         pgsql)
             backup_method_pgsql "$method"
         ;;
+        mongodb)
+            backup_method_mongodb "$method"
+        ;;
         tarball|tarball-incremental)
             backup_method_tarball "$method"
         ;;

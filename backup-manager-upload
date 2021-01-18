@@ -527,12 +527,8 @@ sub ftp_clean_directory($)
     my ($fh, $filename) = get_tempfile('ftp-archives-XXXXXX');
     my $BM_UPLOAD_FTP_SECURE = $ENV{"BM_UPLOAD_FTP_SECURE"};
     my $ra_files;
-    if ($BM_UPLOAD_FTP_SECURE eq "true") {
-        $ra_files = $ftp->list();
-    }
-    else {
-        $ra_files = $ftp->ls();
-    }
+    $ra_files = $ftp->ls();
+    
     foreach my $file (@$ra_files) {
         print $fh "$file\n";
     }

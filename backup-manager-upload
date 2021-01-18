@@ -813,7 +813,7 @@ sub ftptls_put_file ($$)
 {
     my ($ftp, $file) = @_;
     my $basename = basename ($file);
-    return $ftp->put ($basename, $file);
+    return $ftp->put ($file, $basename);
 }
 
 # }}}

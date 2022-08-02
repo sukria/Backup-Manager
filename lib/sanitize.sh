@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-# Copyright © 2005-2016 The Backup Manager Authors
+# Copyright Â© 2005-2016 The Backup Manager Authors
 #
 # See the AUTHORS file for details.
 #
@@ -96,7 +96,8 @@ function replace_deprecated_booleans()
         value=$(echo "$line" | awk -F '=' '{print $2}')
         # Be sure to not treat BM_ARCHIVE_PREFIX as a deprecated boolean
         if [[ "$key" != "BM_ARCHIVE_PREFIX" ]]; then
-            if [[ -n "$key" ]]; then
+            klen=${#key}
+            if [[ $klen -gt 2 ]]; then
                 if [[ $(expr match "$key" BM_) -gt 0 ]]; then
                     if [[ "$value" = "yes" ]]; then
                         warning "Deprecated boolean, \$key is set to \"yes\", setting \"true\" instead."

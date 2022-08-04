@@ -815,32 +815,35 @@ sub ftptls_put_file ($$)
 # from S3, the same way as the repository is purged.
 # Every files with a date field too old according to BM_ARCHIVE_TTL
 # will be deleted.
-sub s3_clean_directory($)
+sub s3_clean_directory($$)
 {
-    my ($bucket) = @_;
-    my $BM_ARCHIVE_TTL = $ENV{BM_ARCHIVE_TTL};
-    if (defined $ENV{BM_UPLOAD_S3_TTL} and
-        length ($ENV{BM_UPLOAD_S3_TTL})) {
-        $BM_ARCHIVE_TTL = $ENV{BM_UPLOAD_S3_TTL};
-    }
-    return 0 unless defined $BM_ARCHIVE_TTL;
-    my $date_to_remove = `date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago"`;
-    chomp $date_to_remove;
-
-    my $response = $bucket->list;
-    my @keys = @{ $response->{keys} };
-
-    foreach my $key (@keys) {
-	my $date = undef;
-	if ($key->{key} =~ /[\.\-](\d{8})\./) {
-	    $date = $1;
-	    if ($date and ($date <= $date_to_remove)) {
-		print_info $key->{key} . " has to be deleted, too old ($date <= $date_to_remove).";
-                $bucket->delete_key( $key->{key} );
-	    }
+	my ($bucket, $g_remote_dir) = @_;
+	my $BM_ARCHIVE_TTL = $ENV{BM_ARCHIVE_TTL};
+	if (defined $ENV{BM_UPLOAD_S3_TTL} and
+		length ($ENV{BM_UPLOAD_S3_TTL})) {
+		$BM_ARCHIVE_TTL = $ENV{BM_UPLOAD_S3_TTL};
 	}
-    }
-    return 1;
+	return 0 unless defined $BM_ARCHIVE_TTL;
+	my $date_to_remove = `date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago"`;
+	chomp $date_to_remove;
+
+	my $response = $bucket->list_all;
+	my @keys = @{ $response->{keys} };
+	my $g_remote_dir = substr($g_remote_dir, 1);
+
+	print_info "S3 purge starting. Count of files: " . scalar(@keys);
+
+	foreach my $key (@keys) {
+		my $date = undef;
+		if ($key->{key} =~ /^$g_remote_dir\/?(.*)/ && $key->{key} =~ /[\.\-](\d{8})\./) {
+			$date = $1;
+			if ($date and ($date <= $date_to_remove)) {
+				print_info $key->{key} . " has to be deleted, too old ($date <= $date_to_remove).";
+				$bucket->delete_key( $key->{key} );
+			}
+		}
+	}
+	return 1;
 }
 
 # How to upload files to s3.
@@ -883,6 +886,7 @@ sub send_files_with_s3($$$$$$)
 			{   
 				aws_access_key_id => $user,
 				aws_secret_access_key => $passwd,
+				host => $host,
 				timeout => 300
 			}
 		);
@@ -904,7 +908,7 @@ sub send_files_with_s3($$$$$$)
 			print_error "Could not create bucket $bucket" if not ( $bucket_obj );
 		}
 
-		s3_clean_directory($bucket_obj) if ($g_s3clean);
+		s3_clean_directory($bucket_obj, $g_remote_dir) if ($g_s3clean);
 
 		foreach my $file (@{$ra_files}) {
 			chomp $file;
@@ -924,16 +928,16 @@ sub send_files_with_s3($$$$$$)
 				my $filename = basename($split);
 				my $file_length = stat($split)->size;
 
-				print_info "opened $split of length $file_length and will name the key $filename";
+				print_info "opened $split of length $file_length and will name the key $g_remote_dir/$filename";
 
 				$totalbytes += $file_length;
 				$bucket_obj->add_key_filename(
-					$filename, $split,
+					"$g_remote_dir/$filename", $split,
 					{
 						content_type => "application/binary"
 					}
 				);
-				$uploaded{$filename} = $file_length;
+				$uploaded{"$g_remote_dir/$filename"} = $file_length;
 			}
             # For the S3 method, we assume success in any case.
             appendto_uploaded_archives($file, $host);

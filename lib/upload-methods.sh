@@ -153,7 +153,7 @@ function bm_upload_s3()
 {
     info "Using the upload method \"S3\"."
 
-    bm_upload_hosts="s3.amazon.com"
+    bm_upload_hosts="$BM_UPLOAD_HOSTS"
     bm_upload_init "$bm_upload_hosts" 
     
     if [[ -z "$BM_UPLOAD_S3_DESTINATION" ]]; then
@@ -171,6 +171,7 @@ function bm_upload_s3()
         -m="s3" \
         -h="$bm_upload_hosts" \
         -u="$BM_UPLOAD_S3_ACCESS_KEY" \
+        -d="$BM_UPLOAD_S3_DESTINATION" \
         -b="$BM_UPLOAD_S3_DESTINATION" \
         -r="$BM_REPOSITORY_ROOT" ${TODAY} 2>$logfile || 
     error "Error reported by backup-manager-upload for method \"s3\", check \"\$logfile\"."

@@ -5,6 +5,7 @@ pbzip2=$(which pbzip2 2> /dev/null) || true
 gzip=$(which gzip 2> /dev/null) || true
 gpg=$(which gpg 2> /dev/null) || true
 xz=$(which xz 2> /dev/null) || true
+zstd=$(which zstd 2> /dev/null) || true
 lzma=$(which lzma 2> /dev/null) || true
 dar=$(which dar 2> /dev/null) || true
 tar=$(which tar 2> /dev/null) || true

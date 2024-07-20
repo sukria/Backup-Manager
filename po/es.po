@@ -239,6 +239,11 @@ msgstr "El tipo de fichero \"tar.xz\" depende de la herramienta \"$xz\"."
 
 #: ../lib/backup-methods.sh:571
 #, sh-format
+msgid "The archive type \"tar.zst\" depends on the tool \"$zstd\"."
+msgstr "El tipo de fichero \"tar.zst\" depende de la herramienta \"$zstd\"."
+
+#: ../lib/backup-methods.sh:571
+#, sh-format
 msgid "The archive type \"tar.lzma\" depends on the tool \"$lzma\"."
 msgstr "El tipo de fichero \"tar.lzma\" depende de la herramienta \"$lzma\"."
 

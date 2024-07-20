@@ -512,6 +512,10 @@ function __get_backup_tarball_remote_command()
             __get_flags_tar_blacklist "$target"
             command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --lzma "$target""
         ;;
+        tar.zst)
+            __get_flags_tar_blacklist "$target"
+            command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --zstd "$target""
+        ;;
         *)
             error "Remote tarball building is not possible with this archive filetype: \"$BM_TARBALL_FILETYPE\"."
         ;;
@@ -609,6 +613,13 @@ function __get_backup_tarball_command()
             __get_flags_tar_blacklist "$target"
             command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --lzma -f"
         ;;
+        tar.zst)
+            if [[ ! -x $zstd ]]; then
+                error "The archive type \"tar.zst\" depends on the tool \"\$zstd\"."
+            fi
+            __get_flags_tar_blacklist "$target"
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --zstd -f"
+        ;;
         zip)
             if [[ ! -x $zip ]]; then
                 error "The archive type \"zip\" depends on the tool \"\$zip\"."
@@ -676,6 +687,7 @@ function build_encrypted_archive
 
     if [[ "$BM_TARBALL_FILETYPE" = "tar.xz" ]] ||
        [[ "$BM_TARBALL_FILETYPE" = "tar.lzma" ]] ||
+       [[ "$BM_TARBALL_FILETYPE" = "tar.zst" ]] ||
        [[ "$BM_TARBALL_FILETYPE" = "zip" ]] ||
        [[ "$BM_TARBALL_FILETYPE" = "dar" ]]; then
         error "The encryption is not yet possible with \"\$BM_TARBALL_FILETYPE\" archives."
@@ -813,7 +825,7 @@ function __make_local_tarball_token
             "dar")
                 __get_flags_dar_incremental "$dir_name"
             ;;
-            "tar"|"tar.gz"|"tar.bz2"|"tar.xz"|"tar.lzma")
+            "tar"|"tar.gz"|"tar.bz2"|"tar.xz"|"tar.lzma"|"tar.zst")
                 __get_flags_tar_incremental "$dir_name"
             ;;
             esac

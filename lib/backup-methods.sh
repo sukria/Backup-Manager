@@ -196,6 +196,42 @@ function __exec_meta_command()
                 error "Compressor \$compress is needed."
             fi
         ;;
+        "zstd"|"zst")
+            if [[ "$compress" = "zstd" ]] ||
+               [[ "$compress" = "zst" ]]; then
+               compress_bin=$zstd
+               if [[ -z "$compress_bin" ]]; then
+                   error "zstd is not installed but zstd compression needed."
+               fi
+               ext="zst"
+            fi
+            if [[ -n "$compress_bin" ]] && [[ -x "$compress_bin" ]]; then
+                debug "$command > $file_to_create 2> $logfile"
+                tail_logfile "$logfile"
+                if [[ "$BM_ENCRYPTION_METHOD" = "gpg" ]]; then
+                    warning "Encryption with gpg is not supported with zstd compression at this release."
+                else
+                    $command 2> $logfile | $nice $compress_bin -f -q --rm > $file_to_create.$ext 2> $logfile
+                    cmdpipestatus=${PIPESTATUS[0]}
+                    debug "$command 2> $logfile | $nice $compress_bin -f -q --rm > $file_to_create.$ext 2> $logfile"
+                    file_to_create="$file_to_create.$ext"
+                fi
+
+                if [[ $? -gt 0 ]]; then
+                    warning "Unable to exec \$command; check \$logfile"
+                    rm -f $file_to_create
+                else
+                    if [[ $cmdpipestatus -gt 0 ]]; then
+                        warning "Unable to exec first piped command \$command; check \$logfile"
+                        rm -f $file_to_create
+                    else
+                        rm -f $logfile
+                    fi
+                fi
+            else
+                error "Compressor \$compress is needed."
+            fi
+        ;;
         ""|"uncompressed"|"none")
             if [[ "$verbosedebug" == "true" ]]; then
                 tail -f $logfile &

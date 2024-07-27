@@ -218,7 +218,7 @@ export BM_MYSQL_HOST="localhost"
 # the port where MySQL listen to on the host
 export BM_MYSQL_PORT="3306"
 
-# which compression format to use? (gzip or bzip2)
+# which compression format to use? (gzip, bzip2 or zstd)
 export BM_MYSQL_FILETYPE="bzip2"
 
 # Extra options to append to mysqldump
@@ -255,7 +255,7 @@ export BM_PGSQL_HOST="localhost"
 # the port where PostgreSQL listen to on the host
 export BM_PGSQL_PORT="5432"
 
-# which compression format to use? (gzip or bzip2)
+# which compression format to use? (gzip, bzip2 or zstd)
 export BM_PGSQL_FILETYPE="bzip2"
 
 # Extra options to append to pg_dump

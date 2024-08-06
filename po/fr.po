@@ -87,6 +87,10 @@ msgid "The BM_TARBALL_FILETYPE conf key is set to \"tar.xz\" but xz is not insta
 msgstr "La clef BM_TARBALL_FILETYPE vaut « tar.xz » mais xz n'est pas installé."
 
 #: ../lib/actions.sh:193
+msgid "The BM_TARBALL_FILETYPE conf key is set to \"tar.zst\" but zstd is not installed."
+msgstr "La clef BM_TARBALL_FILETYPE vaut « tar.zst » mais zstd n'est pas installé."
+
+#: ../lib/actions.sh:193
 msgid "The BM_TARBALL_FILETYPE conf key is set to \"tar.lzma\" but lzma is not installed."
 msgstr "La clef BM_TARBALL_FILETYPE vaut « tar.lzma » mais lzma n'est pas installé."
 
@@ -203,6 +207,11 @@ msgstr "Le type d'archive « tar.bz2 » dépend de l'outil « $bzip »."
 #, sh-format
 msgid "The archive type \"tar.xz\" depends on the tool \"$xz\"."
 msgstr "Le type d'archive « tar.xz » dépend de l'outil « $xz »."
+
+#: ../lib/backup-methods.sh:576
+#, sh-format
+msgid "The archive type \"tar.zst\" depends on the tool \"$zstd\"."
+msgstr "Le type d'archive « tar.zst » dépend de l'outil « $zstd »."
 
 #: ../lib/backup-methods.sh:576
 #, sh-format

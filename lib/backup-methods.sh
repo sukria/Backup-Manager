@@ -196,6 +196,42 @@ function __exec_meta_command()
                 error "Compressor \$compress is needed."
             fi
         ;;
+        "zstd"|"zst")
+            if [[ "$compress" = "zstd" ]] ||
+               [[ "$compress" = "zst" ]]; then
+               compress_bin=$zstd
+               if [[ -z "$compress_bin" ]]; then
+                   error "zstd is not installed but zstd compression needed."
+               fi
+               ext="zst"
+            fi
+            if [[ -n "$compress_bin" ]] && [[ -x "$compress_bin" ]]; then
+                debug "$command > $file_to_create 2> $logfile"
+                tail_logfile "$logfile"
+                if [[ "$BM_ENCRYPTION_METHOD" = "gpg" ]]; then
+                    warning "Encryption with gpg is not supported with zstd compression at this release."
+                else
+                    $command 2> $logfile | $nice $compress_bin -f -q --rm > $file_to_create.$ext 2> $logfile
+                    cmdpipestatus=${PIPESTATUS[0]}
+                    debug "$command 2> $logfile | $nice $compress_bin -f -q --rm > $file_to_create.$ext 2> $logfile"
+                    file_to_create="$file_to_create.$ext"
+                fi
+
+                if [[ $? -gt 0 ]]; then
+                    warning "Unable to exec \$command; check \$logfile"
+                    rm -f $file_to_create
+                else
+                    if [[ $cmdpipestatus -gt 0 ]]; then
+                        warning "Unable to exec first piped command \$command; check \$logfile"
+                        rm -f $file_to_create
+                    else
+                        rm -f $logfile
+                    fi
+                fi
+            else
+                error "Compressor \$compress is needed."
+            fi
+        ;;
         ""|"uncompressed"|"none")
             if [[ "$verbosedebug" == "true" ]]; then
                 tail -f $logfile &
@@ -512,6 +548,10 @@ function __get_backup_tarball_remote_command()
             __get_flags_tar_blacklist "$target"
             command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --lzma "$target""
         ;;
+        tar.zst)
+            __get_flags_tar_blacklist "$target"
+            command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --zstd "$target""
+        ;;
         *)
             error "Remote tarball building is not possible with this archive filetype: \"$BM_TARBALL_FILETYPE\"."
         ;;
@@ -609,6 +649,13 @@ function __get_backup_tarball_command()
             __get_flags_tar_blacklist "$target"
             command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --lzma -f"
         ;;
+        tar.zst)
+            if [[ ! -x $zstd ]]; then
+                error "The archive type \"tar.zst\" depends on the tool \"\$zstd\"."
+            fi
+            __get_flags_tar_blacklist "$target"
+            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --zstd -f"
+        ;;
         zip)
             if [[ ! -x $zip ]]; then
                 error "The archive type \"zip\" depends on the tool \"\$zip\"."
@@ -676,6 +723,7 @@ function build_encrypted_archive
 
     if [[ "$BM_TARBALL_FILETYPE" = "tar.xz" ]] ||
        [[ "$BM_TARBALL_FILETYPE" = "tar.lzma" ]] ||
+       [[ "$BM_TARBALL_FILETYPE" = "tar.zst" ]] ||
        [[ "$BM_TARBALL_FILETYPE" = "zip" ]] ||
        [[ "$BM_TARBALL_FILETYPE" = "dar" ]]; then
         error "The encryption is not yet possible with \"\$BM_TARBALL_FILETYPE\" archives."
@@ -813,7 +861,7 @@ function __make_local_tarball_token
             "dar")
                 __get_flags_dar_incremental "$dir_name"
             ;;
-            "tar"|"tar.gz"|"tar.bz2"|"tar.xz"|"tar.lzma")
+            "tar"|"tar.gz"|"tar.bz2"|"tar.xz"|"tar.lzma"|"tar.zst")
                 __get_flags_tar_incremental "$dir_name"
             ;;
             esac

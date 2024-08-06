@@ -39,7 +39,7 @@ Features
 ### Backup Methods
 
 - Full backup only or Full + Incremental backup.
-- Archives formats: tar, tar.gz, tar.bz2, tar.xz, tar.lzma, dar, zip.
+- Archives formats: tar, tar.gz, tar.zst, tar.bz2, tar.xz, tar.lzma, dar, zip.
 - Backup to an attached disk, LAN or Internet.
 - Burns backup to CD/DVD with MD5 checksum verification.
 - Slice archives to 2 GB if using dar archives format.

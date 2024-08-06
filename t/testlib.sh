@@ -22,6 +22,7 @@ bzip=$(which bzip2) || true
 gzip=$(which gzip) || true
 gpg=$(which gpg) || true
 xz=$(which xz) || true
+zstd=$(which zstd) || true
 lzma=$(which lzma) || true
 dar=$(which dar) || true
 tar=$(which tar) || true

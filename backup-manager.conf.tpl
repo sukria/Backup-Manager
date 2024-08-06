@@ -115,9 +115,9 @@ export BM_TARBALL_NAMEFORMAT="long"
 
 # Type of archives
 # Available types are:
-#     tar, tar.gz, tar.bz2, tar.xz, tar.lzma, dar, zip.
+#     tar, tar.gz, tar.bz2, tar.xz, tar.lzma, tar.zst, dar, zip.
 # Make sure to satisfy the appropriate dependencies 
-# (bzip2, dar, xz, lzma, ...).
+# (bzip2, dar, xz, lzma, zstd...).
 export BM_TARBALL_FILETYPE="tar.gz"
 
 # You can choose to build archives remotely over SSH.
@@ -218,7 +218,7 @@ export BM_MYSQL_HOST="localhost"
 # the port where MySQL listen to on the host
 export BM_MYSQL_PORT="3306"
 
-# which compression format to use? (gzip or bzip2)
+# which compression format to use? (gzip, bzip2 or zstd)
 export BM_MYSQL_FILETYPE="bzip2"
 
 # Extra options to append to mysqldump
@@ -255,7 +255,7 @@ export BM_PGSQL_HOST="localhost"
 # the port where PostgreSQL listen to on the host
 export BM_PGSQL_PORT="5432"
 
-# which compression format to use? (gzip or bzip2)
+# which compression format to use? (gzip, bzip2 or zstd)
 export BM_PGSQL_FILETYPE="bzip2"
 
 # Extra options to append to pg_dump

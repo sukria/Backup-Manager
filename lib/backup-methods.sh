@@ -1029,13 +1029,28 @@ function backup_method_pgsql()
 function backup_method_mysql()
 {
     method="$1"
+    __backup_method_mysql_mariadb $method $mysqldump $mysql
+}
+
+function backup_method_mariadb()
+{
+    method="$1"
+    __backup_method_mysql_mariadb $method $mariadbdump $mariadb
+}
+
+
+function __backup_method_mysql_mariadb()
+{
+    method="$1"
+    dump_bin="$2"
+    client_bin="$3"
     mysql_conffile="$HOME/.backup-manager_my.cnf"
 
     debug "backup_method_mysql ($method)"
 
     info "Using method \"\$method\"."
-    if [[ ! -x $mysqldump ]]; then
-        error "The \"mysql\" method is chosen, but \$mysqldump is not found."
+    if [[ ! -x $dump_bin ]]; then
+        error "The \"\$method\" method is chosen, but \$dump_bin is not found."
     fi
 
     opt=""
@@ -1045,28 +1060,29 @@ function backup_method_mysql()
 
     # if a MySQL Client conffile exists, the password must be inside
     if [[ -f $mysql_conffile ]]; then
-        info "Using existing MySQL client configuration file: \$mysql_conffile"
+        info "Using existing MySQL/MariaDB client configuration file: \$mysql_conffile"
         BM_SHOULD_PURGE_MYCNF="false"
     # we create a default one, just with the password
     else
-        warning "Creating a default MySQL client configuration file: \$mysql_conffile"
+        warning "Creating a default MySQL/MariaDB client configuration file: \$mysql_conffile"
         echo "[client]" > $mysql_conffile
-        echo "# The following password will be sent to all standard MySQL clients" >> $mysql_conffile
+        echo "# The following password will be sent to all standard MySQL/MariaDB clients" >> $mysql_conffile
         chmod 600 $mysql_conffile
         echo "password=\"$BM_MYSQL_ADMINPASS\"" >> $mysql_conffile
         BM_SHOULD_PURGE_MYCNF="true"
     fi
-    base_command="$mysqldump --defaults-extra-file=$mysql_conffile $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST -P$BM_MYSQL_PORT $BM_MYSQL_EXTRA_OPTIONS"
+    if [ -n "$BM_MYSQL_PORT" ]; then BM_MYSQL_PORT_OPT="-P$BM_MYSQL_PORT"; else BM_MYSQL_PORT_OPT=""; fi
+    base_command="$dump_bin --defaults-extra-file=$mysql_conffile $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST $BM_MYSQL_PORT_OPT $BM_MYSQL_EXTRA_OPTIONS"
     compress="$BM_MYSQL_FILETYPE"
 
     # get each DB name if backing up separately
     if [ "$BM_MYSQL_DATABASES" = "__ALL__" ]; then
         if [ "$BM_MYSQL_SEPARATELY" = "true" ]; then
-            if [[ ! -x $mysql ]]; then
-                error "Can't find "$mysql" but this is needed when backing up databases separately."
+            if [[ ! -x $client_bin ]]; then
+                error "Can't find \"\$client_bin\" but this is needed when backing up databases separately."
             fi
 
-            DBNAMES=$($mysql --defaults-extra-file=$mysql_conffile -u $BM_MYSQL_ADMINLOGIN -h $BM_MYSQL_HOST -P $BM_MYSQL_PORT -B -N -e "show databases" | sed 's/ /%/g')
+            DBNAMES=$($client_bin --defaults-extra-file=$mysql_conffile -u $BM_MYSQL_ADMINLOGIN -h $BM_MYSQL_HOST $BM_MYSQL_PORT_OPT -B -N -e "show databases" | sed 's/ /%/g')
 
             # if DBs are excluded
             for exclude in $BM_MYSQL_DBEXCLUDE
@@ -1081,10 +1097,10 @@ function backup_method_mysql()
     for database in $BM_MYSQL_DATABASES
     do
         if [[ "$database" = "__ALL__" ]]; then
-            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-all-mysql-databases.$TODAY.sql"
+            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-all-${method}-databases.$TODAY.sql"
             command="$base_command --all-databases"
         else
-            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-mysql-${database}.$TODAY.sql"
+            file_to_create="$BM_REPOSITORY_ROOT/${BM_ARCHIVE_PREFIX}-${method}-${database}.$TODAY.sql"
             command="$base_command $database"
         fi
         __create_file_with_meta_command
@@ -1092,7 +1108,7 @@ function backup_method_mysql()
 
     # purge the my.cnf file, if created by Backup Manager
     if [[ "$BM_SHOULD_PURGE_MYCNF" == "true" ]]; then
-        info "Removing default MySQL client configuration file: \$mysql_conffile"
+        info "Removing default MySQL/MariaDB client configuration file: \$mysql_conffile"
         rm -f $mysql_conffile
     fi
 }

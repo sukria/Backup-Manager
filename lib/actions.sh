@@ -31,6 +31,9 @@ function make_archives()
         mysql)
             backup_method_mysql "$method"
         ;;
+        mariadb)
+            backup_method_mariadb "$method"
+        ;;
         pgsql)
             backup_method_pgsql "$method"
         ;;

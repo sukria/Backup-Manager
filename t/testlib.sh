@@ -34,6 +34,7 @@ cdrecord=$(which cdrecord) || true
 md5sum=$(which md5sum) || true
 bc=$(which bc) || true
 mysqldump=$(which mysqldump) || true
+mariadbdump=$(which mariadb-dump) || true
 svnadmin=$(which svnadmin) || true
 logger=$(which logger) || true
 

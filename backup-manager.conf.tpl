@@ -72,6 +72,7 @@ export BM_ARCHIVE_NICE_LEVEL="10"
 # - tarball
 # - tarball-incremental
 # - mysql
+# - mariadb
 # - pgsql
 # - mongodb
 # - svn
@@ -189,10 +190,10 @@ export BM_TARBALLINC_MASTERDATEVALUE="1"
 # BM_TARBALLINC_MASTERDATEVALUE="1"
 
 ##############################################################
-# Backup method: MYSQL
+# Backup method: MYSQL / MARIADB
 #############################################################
 
-# This method is dedicated to MySQL databases.
+# This method is dedicated to MySQL and MariaDB databases.
 # You should not use the tarball method for backing up database
 # directories or you may have corrupted archives.
 # Enter here the list of databases to backup.
@@ -215,7 +216,7 @@ export BM_MYSQL_ADMINPASS=""
 # the host where the database is
 export BM_MYSQL_HOST="localhost"
 
-# the port where MySQL listen to on the host
+# the port where MySQL listen to on the host. Leave empty if you're using unix_socket auth.
 export BM_MYSQL_PORT="3306"
 
 # which compression format to use? (gzip, bzip2 or zstd)

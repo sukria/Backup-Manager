@@ -28,6 +28,11 @@ set -e
 RELEASE="true"
 VERSION="0.7.16"
 
+#Set prefix for paths
+BIN_PREFIX=/usr/bin
+LIB_PREFIX=/usr/lib
+VAR_PREFIX=/var/lib
+
 # All the paths we provide
 libdir="/usr/lib/backup-manager"
 vardir="/var/lib/backup-manager"

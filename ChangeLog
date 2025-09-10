@@ -1,6 +1,18 @@
 Backup Manager 0.7.17
-	[ Fabien Marsaud ]
-	* Add MariaDB support
+
+    [ Fabien Marsaud ]
+      * Add MariaDB support
+
+    [ Carlos Milán Figueredo ]
+      * Add zstd compression support
+      * Add zstd support to MySQL and PostgreSQL backup methods
+
+    [ Benoît Peccatte ]
+      * Handle spaces in tarball blacklist
+
+    [ nat93 ]
+      * bm-upload: Fix ftp_clean_directory for FTPS
+      * bm-upload: Fix ftptls_put_file args position
 
 Backup Manager 0.7.16
 	[ doekia ]

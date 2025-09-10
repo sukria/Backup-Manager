@@ -294,7 +294,7 @@ function __get_flags_relative_blacklist()
     for pattern in $BM_TARBALL_BLACKLIST
     do
         # absolute paths
-        char=$(expr substr $pattern 1 1)
+        char=$(expr substr "$pattern" 1 1)
         if [[ "$char" = "/" ]]; then
 
            # we blacklist only absolute paths related to $target
@@ -302,14 +302,17 @@ function __get_flags_relative_blacklist()
 
                 # making a relative path...
                 pattern="${pattern#$target}"
-                length=$(expr length $pattern)
+                length=$(expr length "$pattern")
                 # for $target="/", no spare / is left at the beggining
                 # after the # substitution; thus take substr from pos 1
                 if [ "$target" != "/" ]; then
-                    pattern=$(expr substr $pattern 2 $length)
+                    pattern=$(expr substr "$pattern" 2 $length)
                 else
-                    pattern=$(expr substr $pattern 1 $length)
+                    pattern=$(expr substr "$pattern" 1 $length)
                 fi
+
+                # Replace ' ' with '?' to make command line be parsed properly
+                pattern=${pattern// /?}
 
                 # ...and blacklisting it
                 blacklist="$blacklist ${switch}${pattern}"

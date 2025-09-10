@@ -72,7 +72,9 @@ export BM_ARCHIVE_NICE_LEVEL="10"
 # - tarball
 # - tarball-incremental
 # - mysql
+# - mariadb
 # - pgsql
+# - mongodb
 # - svn
 # - pipe
 # - none
@@ -114,9 +116,9 @@ export BM_TARBALL_NAMEFORMAT="long"
 
 # Type of archives
 # Available types are:
-#     tar, tar.gz, tar.bz2, tar.xz, tar.lzma, dar, zip.
-# Make sure to satisfy the appropriate dependencies
-# (bzip2, dar, xz, lzma, ...).
+#     tar, tar.gz, tar.bz2, tar.xz, tar.lzma, tar.zst, dar, zip.
+# Make sure to satisfy the appropriate dependencies 
+# (bzip2, dar, xz, lzma, zstd...).
 export BM_TARBALL_FILETYPE="tar.gz"
 
 # You can choose to build archives remotely over SSH.
@@ -188,10 +190,10 @@ export BM_TARBALLINC_MASTERDATEVALUE="1"
 # BM_TARBALLINC_MASTERDATEVALUE="1"
 
 ##############################################################
-# Backup method: MYSQL
+# Backup method: MYSQL / MARIADB
 #############################################################
 
-# This method is dedicated to MySQL databases.
+# This method is dedicated to MySQL and MariaDB databases.
 # You should not use the tarball method for backing up database
 # directories or you may have corrupted archives.
 # Enter here the list of databases to backup.
@@ -214,10 +216,10 @@ export BM_MYSQL_ADMINPASS=""
 # the host where the database is
 export BM_MYSQL_HOST="localhost"
 
-# the port where MySQL listen to on the host
+# the port where MySQL listen to on the host. Leave empty if you're using unix_socket auth.
 export BM_MYSQL_PORT="3306"
 
-# which compression format to use? (gzip or bzip2)
+# which compression format to use? (gzip, bzip2 or zstd)
 export BM_MYSQL_FILETYPE="bzip2"
 
 # Extra options to append to mysqldump
@@ -254,13 +256,50 @@ export BM_PGSQL_HOST="localhost"
 # the port where PostgreSQL listen to on the host
 export BM_PGSQL_PORT="5432"
 
-# which compression format to use? (gzip or bzip2)
+# which compression format to use? (gzip, bzip2 or zstd)
 export BM_PGSQL_FILETYPE="bzip2"
 
 # Extra options to append to pg_dump
 # (take care to what you do; this will be silently added to the
 # command line.)
 export BM_PGSQL_EXTRA_OPTIONS=""
+
+##############################################################
+# Backup method: mongodb
+#############################################################
+
+# This method is dedicated to MongoDB databases.
+# Enter here the list of databases to backup.
+# Wildcard: __ALL__ (will dump all the databases in one archive)
+export BM_MONGODB_DATABASES="__ALL__"
+
+# The user who is allowed to read every databases filled in BM_MYSQL_DATABASES
+# Typical sysbackup user can be created by the following command:
+# mongo --quiet --username=root admin
+# > use admin
+# > db.createUser({user:"sysbackup",pwd:"somesecret",roles:["backup","clusterAdmin","readAnyDatabase"]});
+# > quit()
+export BM_MONGODB_BACKUPLOGIN="sysbackup"
+
+# its password
+export BM_MONGODB_BACKUPPASS=""
+
+# the host where the database is
+export BM_MONGODB_HOST="localhost"
+
+# the port where MySQL listen to on the host
+export BM_MONGODB_PORT="27017"
+
+# Extra options to append to mysqldump
+# (take care to what you do; this will be silently added to the 
+# command line.)
+export BM_MONGODB_EXTRA_OPTIONS=""
+
+# Make separate backups of each database?
+export BM_MONGODB_SEPARATELY="true"
+
+# Specify DBs to exclude here (separated by space) 
+export BM_MONGODB_DBEXCLUDE=""
 
 ##############################################################
 # Backup method: svn

@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-# Copyright © 2005-2016 The Backup Manager Authors
+# Copyright © 2005-2025 The Backup Manager Authors
 #
 # See the AUTHORS file for details.
 #
@@ -246,6 +246,13 @@ if [[ "$BM_ARCHIVE_METHOD" = "mysql" ]]; then
     confkey_require "BM_MYSQL_ADMINLOGIN" "root"
     confkey_require "BM_MYSQL_HOST" "localhost"
     confkey_require "BM_MYSQL_PORT" "3306"
+    confkey_require "BM_MYSQL_FILETYPE" "tar.gz"
+fi
+
+if [[ "$BM_ARCHIVE_METHOD" = "mariadb" ]]; then
+    confkey_require "BM_MYSQL_ADMINLOGIN" "root"
+    confkey_require "BM_MYSQL_HOST" "localhost"
+    confkey_require "BM_MYSQL_PORT" ""
     confkey_require "BM_MYSQL_FILETYPE" "tar.gz"
 fi
 

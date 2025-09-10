@@ -485,7 +485,7 @@ Suggested value: <tt>long</tt>.
 <sect2 id="BM_TARBALL_FILETYPE"><tt>BM_TARBALL_FILETYPE</tt>
 
 <p>
-<em>Type: enum(tar, tar.gz, tar.bz2, tar.xz, tar.lzma, zip, dar), default: <tt>tar.gz</tt>.</em>
+<em>Type: enum(tar, tar.gz, tar.bz2, tar.xz, tar.lzma, tar.zst, zip, dar), default: <tt>tar.gz</tt>.</em>
 
 <p>
 Basically, this configuration key defines the filetype of the resulting archive.
@@ -497,6 +497,9 @@ make sure you have the corresponding compressor installed.
 
 <p>
 For the best compression rate, choose <tt>tar.bz2</tt> or <tt>tar.xz</tt>.
+
+<p>
+For the best compression-performance balance, choose <tt>tar.zst</tt>.
 
 <p>
 Since version 0.7.1, &bmngr; supports <em>dar</em> archives. This archiver 
@@ -511,6 +514,7 @@ Make sure to statisfy dependencies according to the filetype you choose:
 <item> tar.bz2 : needs "bzip2".
 <item> tar.xz : needs "xz".
 <item> tar.lzma : needs "lzma".
+<item> tar.zst : needs "zstd".
 <item> dar : needs "dar".
 <item> zip : needs "zip".
 </list>
@@ -1188,7 +1192,7 @@ untrusted remote servers. However, since the encrypted files are not
 signed, this does not protect you from archive manipulation. So the
 <em>md5</em> hases are still needed.
 <p>
-This method uses all of the configuartion keys of the <em>ssh</em> method. One
+This method uses all of the configuaration keys of the <em>ssh</em> method. One
 additional key is required.
 <sect2
 id="BM_UPLOAD_SSH_GPG_RECIPIENT"><tt>BM_UPLOAD_SSH_GPG_RECIPIENT</tt>
@@ -1878,7 +1882,7 @@ Example:
 <p>
 Burning all the archives made on March, 12nd 2006:
 <example>
-# backup-manager --bnurn 20060312
+# backup-manager --burn 20060312
 </example>
 
 <sect2 id="md5check"><tt>--md5check</tt> or <tt>-m</tt>

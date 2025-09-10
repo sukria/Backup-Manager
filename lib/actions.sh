@@ -1,4 +1,4 @@
-# Copyright © 2005-2016 The Backup Manager Authors
+# Copyright ï¿½ 2005-2018 The Backup Manager Authors
 #
 # See the AUTHORS file for details.
 #
@@ -31,8 +31,14 @@ function make_archives()
         mysql)
             backup_method_mysql "$method"
         ;;
+        mariadb)
+            backup_method_mariadb "$method"
+        ;;
         pgsql)
             backup_method_pgsql "$method"
+        ;;
+        mongodb)
+            backup_method_mongodb "$method"
         ;;
         tarball|tarball-incremental)
             backup_method_tarball "$method"
@@ -184,14 +190,19 @@ function check_filetypes()
                 error "The BM_TARBALL_FILETYPE conf key is set to \"tar.bz2\" but bzip2 is not installed."
             fi
         ;;
-         "tar.xz" )
+        "tar.xz" )
             if [[ ! -x "$xz" ]]; then
                 error "The BM_TARBALL_FILETYPE conf key is set to \"tar.xz\" but xz is not installed."
             fi
         ;;
-         "tar.lzma" )
+        "tar.lzma" )
             if [[ ! -x "$lzma" ]]; then
                 error "The BM_TARBALL_FILETYPE conf key is set to \"tar.lzma\" but lzma is not installed."
+            fi
+        ;;
+        "tar.zst" )
+            if [[ ! -x "$zstd" ]]; then
+                error "The BM_TARBALL_FILETYPE conf key is set to \"tar.zst\" but zstd is not installed."
             fi
         ;;
         "dar" )

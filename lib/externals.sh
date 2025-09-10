@@ -1,9 +1,11 @@
 # All external programs used must be initialized here
 zip=$(which zip 2> /dev/null) || true
 bzip=$(which bzip2 2> /dev/null) || true
+pbzip2=$(which pbzip2 2> /dev/null) || true
 gzip=$(which gzip 2> /dev/null) || true
 gpg=$(which gpg 2> /dev/null) || true
 xz=$(which xz 2> /dev/null) || true
+zstd=$(which zstd 2> /dev/null) || true
 lzma=$(which lzma 2> /dev/null) || true
 dar=$(which dar 2> /dev/null) || true
 tar=$(which tar 2> /dev/null) || true
@@ -16,8 +18,12 @@ md5sum=$(which md5sum 2> /dev/null) || true
 bc=$(which bc 2> /dev/null) || true
 mysqldump=$(which mysqldump 2> /dev/null) || true
 mysql=$(which mysql 2> /dev/null) || true
+mariadbdump=$(which mariadb-dump 2> /dev/null) || true
+mariadb=$(which mariadb 2> /dev/null) || true
 pgdump=$(which pg_dump 2>/dev/null) || true
 svnadmin=$(which svnadmin 2> /dev/null) || true
 logger=$(which logger 2> /dev/null) || true
 nice_bin=$(which nice 2> /dev/null) || true
 dd=$(which dd 2> /dev/null) || true
+mongodump=$(which mongodump 2> /dev/null) || true
+mongo=$(which mongo 2> /dev/null) || true

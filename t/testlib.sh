@@ -22,6 +22,7 @@ bzip=$(which bzip2) || true
 gzip=$(which gzip) || true
 gpg=$(which gpg) || true
 xz=$(which xz) || true
+zstd=$(which zstd) || true
 lzma=$(which lzma) || true
 dar=$(which dar) || true
 tar=$(which tar) || true
@@ -33,6 +34,7 @@ cdrecord=$(which cdrecord) || true
 md5sum=$(which md5sum) || true
 bc=$(which bc) || true
 mysqldump=$(which mysqldump) || true
+mariadbdump=$(which mariadb-dump) || true
 svnadmin=$(which svnadmin) || true
 logger=$(which logger) || true
 

@@ -202,9 +202,9 @@ sub read_archives($$)
     while (<$fh>) {
         chomp();
 
-        if (/^\s*(\S+)\s*$/) {
-            $archive = $1;
-        }
+        # keep the whole line: the repository path may contain spaces
+        next unless /^\s*(.+?)\s*$/;
+        $archive = $1;
         
         my $rh_data = parse_archive ($archive);
         next unless defined $rh_data;

@@ -364,12 +364,15 @@ function clean_directory()
          \( -type f -o -type l \) -print \
          | $bmp --ttl=$BM_ARCHIVE_TTL > $list
     
-    # Then actually remove the files
-    for archive in `cat $list`
+    # Then actually remove the files (one path per line, paths may contain spaces)
+    while IFS= read -r archive
     do
+        if [[ -z "$archive" ]]; then
+            continue
+        fi
         info "Removing archive \"\$archive\"."
-        rm -f $archive
-    done
+        rm -f "$archive"
+    done < $list
     rm -f $list
 }
 

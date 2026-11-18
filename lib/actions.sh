@@ -111,7 +111,7 @@ function clean_repositories()
     debug "clean_repositories"
 
     info "Cleaning \$BM_REPOSITORY_ROOT"
-    clean_directory $BM_REPOSITORY_ROOT
+    clean_directory "$BM_REPOSITORY_ROOT"
 }
 
 # This will run the pre-command given.
@@ -217,17 +217,17 @@ function create_directories()
 {
     debug "create_directories()"
 
-    if [[ ! -d $BM_REPOSITORY_ROOT ]]
+    if [[ ! -d "$BM_REPOSITORY_ROOT" ]]
     then
         info "The repository \$BM_REPOSITORY_ROOT does not exist, creating it."
-        mkdir -p $BM_REPOSITORY_ROOT
+        mkdir -p "$BM_REPOSITORY_ROOT"
     fi
 
     # for security reason, the repository should not be world readable
     # only BM_REPOSITORY_USER:BM_REPOSITORY_GROUP can read/write it. 
     if [[ "$BM_REPOSITORY_SECURE" = "true" ]]; then
-        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $BM_REPOSITORY_ROOT
-        chmod $BM_REPOSITORY_CHMOD $BM_REPOSITORY_ROOT
+        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP "$BM_REPOSITORY_ROOT"
+        chmod $BM_REPOSITORY_CHMOD "$BM_REPOSITORY_ROOT"
     fi
 }
 

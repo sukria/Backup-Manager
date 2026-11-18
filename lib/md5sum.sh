@@ -83,3 +83,42 @@ function save_md5_sum()
     fi
 }
 
+
+# Will take the path to a MD5 file and remove
+# every entry whose archive does not exist anymore
+# in the directory of that MD5 file.
+# Lines that cannot be parsed are kept as is.
+function clean_md5_file()
+{
+    md5file="$1"
+    debug "clean_md5_file ($md5file)"
+
+    if [[ -z "$md5file" ]]; then
+        error "Internal error: bad usage of function clean_md5_file()"
+    fi
+
+    if [[ ! -f "$md5file" ]]; then
+        return 0
+    fi
+
+    md5dir=$(dirname "$md5file")
+    md5file_tmp=$(mktemp ${BM_TEMP_DIR}/bm-md5.XXXXXX)
+    nb_removed=0
+
+    while IFS= read -r line || [[ -n "$line" ]]
+    do
+        archive="${line#*  }"
+        if [[ "$archive" != "$line" ]] && [[ -n "$archive" ]] &&
+           [[ ! -e "$md5dir/$archive" ]] && [[ ! -L "$md5dir/$archive" ]]; then
+            nb_removed=$(($nb_removed + 1))
+        else
+            echo "$line" >> "$md5file_tmp"
+        fi
+    done < "$md5file"
+
+    if [[ "$nb_removed" -gt 0 ]]; then
+        info "Removing \$nb_removed obsolete entries from \"\$md5file\"."
+        cat "$md5file_tmp" > "$md5file"
+    fi
+    rm -f "$md5file_tmp"
+}

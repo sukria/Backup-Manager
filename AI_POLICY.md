@@ -20,11 +20,11 @@ whenever the practice changes.
 ## The agent
 
 The project is assisted by [Kōan](https://github.com/sukria/koan), an open source
-autonomous agent written and operated by the maintainer of this repository.
+autonomous agent written and operated by one of this repository's maintainers.
 
 Kōan is not a service, not a black box, and not a third party: its source,
-its prompts and its skills are public, and it runs on the maintainer's own
-machine under the maintainer's own GitHub account.
+its prompts and its skills are public, and it runs on that maintainer's own
+machine under their own GitHub account.
 
 Work produced by Kōan is marked as such in the pull request body.
 
@@ -77,7 +77,7 @@ reaches `master` without a human reading it.
 
 ## Releases
 
-Releases are cut by hand, by the same maintainer as always. Kōan may draft a
+Releases are cut by hand, by the same maintainers as always. Kōan may draft a
 changelog entry; the tag, the build and the publication are human actions.
 
 ---
@@ -99,4 +99,4 @@ Open an issue if you have a question about this policy.
 
 ---
 
-*[Alexis Sukrieh](https://alexissukrieh.com), maintainer of Backup Manager.*
+*[Alexis Sukrieh](https://alexissukrieh.com), co-maintainer of Backup Manager.*

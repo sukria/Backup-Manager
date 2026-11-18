@@ -749,6 +749,61 @@ This method uses all the tarball's configuration keys and adds two more. One to
 define the kind of frequency, the other to choose on which day the full backups 
 should be done.
 
+<sect2 id="tarballinc-restore">Restoring an incremental series
+
+<p>
+An incremental archive is not a standalone backup. Only the master archive
+holds a complete copy of the target; every archive made after it holds nothing
+but the changes since the previous one. Extracting a single incremental archive
+on its own therefore yields an almost empty directory, which is expected
+behaviour and not a sign of corruption.
+
+<p>
+To restore, extract the whole series into an empty directory, in chronological
+order, starting with the master, and pass
+<tt>--listed-incremental=/dev/null</tt> to tar every time:
+
+<example>
+mkdir /tmp/restore &amp;&amp; cd /tmp/restore
+
+tar --listed-incremental=/dev/null -xzf home.20171004.master.tar.gz
+tar --listed-incremental=/dev/null -xzf home.20171014.tar.gz
+tar --listed-incremental=/dev/null -xzf home.20171015.tar.gz
+</example>
+
+<p>
+The <tt>--listed-incremental=/dev/null</tt> switch is the part most often
+missed. Without it, tar extracts the archive members but ignores the
+incremental metadata, which is where file deletions are recorded. With it, a
+file that was deleted on the source between two runs is also removed from the
+restored tree, so the result matches the state of the target on the date of the
+last archive extracted, rather than a merge of every date in the series.
+
+<p>
+If files appear to be missing after a restore, check this before concluding
+that data was lost: either an archive was extracted without the switch, or the
+series was extracted out of order.
+
+<p>
+<em>Never restore on top of a live directory.</em> Always extract into an empty
+directory and move the files across afterwards. An incremental restore deletes
+files by design, so pointing it at a production directory can remove data that
+the backup was meant to protect.
+
+<p>
+Keep each master archive with the archives that follow it. Losing a master
+makes every incremental archive that depends on it unrestorable.
+&bmngr; tracks which archives are masters when purging the repository, so it
+does not drop a master that later archives still need, but that guarantee does
+not apply to archives you move or delete by hand.
+
+<p>
+Finally, note that nothing is captured between two runs. A file created and
+deleted in the interval between two archives appears in none of them. The
+interval between master archives is set by
+<tt>BM_TARBALLINC_MASTERDATEVALUE</tt>, but the interval between any two
+archives is whatever schedule &bmngr; is run on.
+
 <sect2 id="BM_TARBALLINC_MASTERDATETYPE"><tt>BM_TARBALLINC_MASTERDATETYPE</tt>
 
 <p>

@@ -5,6 +5,10 @@ Backup Manager
 
 https://github.com/sukria/Backup-Manager/
 
+> **Note.** This repository is the only official home of Backup Manager.
+> The old `backup-manager.org` domain expired years ago and is now held by a
+> third party: it is unrelated to this project and should not be visited.
+
 
 Description
 -----------

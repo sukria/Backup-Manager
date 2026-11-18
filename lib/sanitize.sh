@@ -192,6 +192,16 @@ confkey_handle_deprecated "BM_NAME_FORMAT" "BM_TARBALL_NAMEFORMAT"
 confkey_handle_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
 confkey_handle_deprecated "BM_DUMP_SYMLINKS" "BM_TARBALL_DUMPSYMLINKS"
 
+# BM_TARBALL_BLACKLIST can be either a space-separated list or an array
+# (needed for paths with spaces), it is converted to BM__TARBALL_BLACKLIST[].
+# see issue #82 for details.
+declare -a BM__TARBALL_BLACKLIST
+if [[ "$(declare -p BM_TARBALL_BLACKLIST 2>/dev/null)" == "declare -a"* ]]; then
+    BM__TARBALL_BLACKLIST=("${BM_TARBALL_BLACKLIST[@]}")
+else
+    BM__TARBALL_BLACKLIST=($BM_TARBALL_BLACKLIST)
+fi
+
 # encryption stuff goes here
 if [[ "$BM_ENCRYPTION_METHOD" = "gpg" ]]; then
     if [[ -z "$BM_ENCRYPTION_RECIPIENT" ]]; then

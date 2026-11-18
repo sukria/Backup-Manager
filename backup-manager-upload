@@ -12,6 +12,7 @@ use POSIX qw(strftime);
 use File::Temp qw(tempfile);
 use File::Basename;
 use File::stat;
+use File::Glob qw(bsd_glob);
 
 use constant TRUE => 1;
 use constant FALSE => 0;
@@ -87,6 +88,23 @@ date        : All files >= date will be uploaded. Either a valid date (YYYYMMDD)
 # Common subs (for all methods)
 ##############################################################
 # {{{
+
+# Escape glob metacharacters so a literal path (which may contain
+# spaces or brackets) can be used as a bsd_glob() prefix.
+sub glob_escape($)
+{
+    my $path = shift;
+    $path =~ s/([\\\[\]\{\}\*\?~])/\\$1/g;
+    return $path;
+}
+
+# Quote a string for safe interpolation in a /bin/sh command line.
+sub shell_quote($)
+{
+    my $str = shift;
+    $str =~ s/'/'\\''/g;
+    return "'$str'";
+}
 
 sub get_formated_date($)
 {
@@ -190,21 +208,21 @@ sub get_files_list_from_date($)
         exit E_INVALID;
     }
 
+    # bsd_glob does not split the pattern on whitespace, unlike <...>
+    my @candidates = bsd_glob(glob_escape($g_root_dir) . "/*$date*");
+
     my $upload_fname = $ENV{BM_UPLOADED_ARCHIVES};
     if ( defined $upload_fname ) {
         # filter file list through the BM_UPLOADED_ARCHIVES database
-        while (<$g_root_dir/*$date*>) {
-            my $file = $_;
-            my $cmd = "grep -q '$file' $upload_fname";
+        foreach my $file (@candidates) {
+            my $cmd = "grep -q " . shell_quote($file) . " $upload_fname";
             if ( system ("$cmd") ) {
                 push @{$ra_files}, $file;
             }
         }
     }
     else {
-        while (<$g_root_dir/*$date*>) {
-            push @{$ra_files}, $_;
-        }
+        push @{$ra_files}, @candidates;
     }
 
     return $ra_files;
@@ -329,14 +347,15 @@ sub send_file_with_scp($$$$$)
     my ($ssh_opts, $scp_opts) = ($opts->{'ssh'}, $opts->{'scp'});
     
     my $cmd = "";
+    my $q_file = shell_quote($file);
     if ( defined $g_gpg_recipient )    {        
         my $file_base = basename($file);
-        $cmd = "$gpg --encrypt --recipient $g_gpg_recipient --output - --batch $file | ";
+        $cmd = "$gpg --encrypt --recipient $g_gpg_recipient --output - --batch $q_file | ";
         $cmd .= "$ssh $ssh_opts -e none $user".'@'."$host ";
         $cmd .= "\"cat - > $location/$file_base.gpg\" >&2";
     }
     else {
-        $cmd = "$scp $scp_opts $file $user".'@'.$host.':'.$location." >&2";
+        $cmd = "$scp $scp_opts $q_file $user".'@'.$host.':'.$location." >&2";
     }
 
     # we use eval here to avoid crash with bad keys
@@ -465,7 +484,7 @@ sub ftp_upload_test_file($)
     else {
         my $remote_filesize = $ftp->size($ftp_test_filename);
         # Delete both test files
-        system("rm -f $BM_REPOSITORY_ROOT/$ftp_test_filename");
+        unlink $file_to_send;
         $ftp->delete($ftp_test_filename);
         # Test filesize (should be 2MB)
         if($remote_filesize == 2097152) {
@@ -493,7 +512,7 @@ sub ftptls_upload_test_file($)
     else {
         my $remote_filesize = $ftp->size($ftp_test_filename);
         # Delete both test files
-        system("rm -f $BM_REPOSITORY_ROOT/$ftp_test_filename");
+        unlink $file_to_send;
         $ftp->delete($ftp_test_filename);
         # Test filesize (should be 2MB)
         if($remote_filesize == 2097152) {
@@ -919,12 +938,12 @@ sub send_files_with_s3($$$$$$)
             my @splits = $file;
             if( stat($file)->size > $g_s3max_size ) {
                 my $split_prefix = "$file-split-";
-                my $cmd = "$split -b $g_s3max_size $file $split_prefix";
+                my $cmd = "$split -b $g_s3max_size " . shell_quote($file) . " " . shell_quote($split_prefix);
                 if( system($cmd) != 0 ) {
                     print_error "Could not run '$cmd' to split $file into chunks of size $g_s3max_size";
                     next;
                 } else {
-                    @splits = glob("$split_prefix*");
+                    @splits = bsd_glob(glob_escape($split_prefix) . "*");
                 }
             }
 

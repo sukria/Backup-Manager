@@ -153,26 +153,26 @@ function burn_files()
     fi
 }
 
+# Takes the candidate files as arguments (usually an expanded glob) and
+# stores the regular files in the what_to_burn array.
 function find_what_to_burn()
 {
-    source="$1"
-    debug "find_what_to_burn($source)"
+    debug "find_what_to_burn($*)"
     
-    what_to_burn=""
+    what_to_burn=()
+    for file in "$@"
+    do
+        if [[ -e "$file" ]] && [[ ! -L "$file" ]]; then
+            what_to_burn+=("$file")
+        fi
+    done
 
-    nb_file=$(ls -l $source 2>/dev/null | wc -l)
+    nb_file=${#what_to_burn[@]}
     if [[ $nb_file -gt 0 ]]; then
         info "Number of files to burn: \$nb_file."
     else
         error "Nothing to burn for the \$BM__BURNING_DATE, try the '--burn <date>' switch."
     fi
-    
-    for file in $source
-    do
-        if [[ ! -L $file ]]; then
-            what_to_burn="$what_to_burn $file"
-        fi
-    done    
 }
 
 # This has to do something without any interactive input.
@@ -181,7 +181,7 @@ function burn_files_non_interactive()
     debug "burn_files_non_interactive()"
 
     # find what to burn according to the size...
-    what_to_burn=""
+    what_to_burn=()
     size=$(size_of_path "$BM_REPOSITORY_ROOT")
 
     # We can't burn the whole repository, using only today's archives
@@ -194,19 +194,19 @@ function burn_files_non_interactive()
 
         BM__BURNING_DATE="$TODAY"
         info "Burning archives of \$BM__BURNING_DATE."
-        size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")
+        size=$(size_of_path "$BM_REPOSITORY_ROOT"/*"$BM__BURNING_DATE"*)
         
         # does not fit neither, cannot burn anything.
         if [[ $size -gt $BM_BURNING_MAXSIZE ]]; then
             error "Cannot burn archives of the \$BM__BURNING_DATE, too big: \${size}M, must fit in \$BM_BURNING_MAXSIZE"
         fi
-        find_what_to_burn "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*"
+        find_what_to_burn "$BM_REPOSITORY_ROOT"/*"$BM__BURNING_DATE"*
     else
         BM__BURNING_DATE="$TODAY"
-        find_what_to_burn "${BM_REPOSITORY_ROOT}/*"
+        find_what_to_burn "$BM_REPOSITORY_ROOT"/*
     fi
 
-    burn_session "$what_to_burn"
+    burn_session 1 1 "${what_to_burn[@]}"
 }
 
 # This will be used only in interactive mode, then we can burn 
@@ -219,26 +219,28 @@ function burn_files_interactive()
     purge_indexes
     if [[ ! -z "${BM__BURNING_DATE}" ]] ; then
         info "Burning archives of \$BM__BURNING_DATE."
-        find_what_to_burn "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*"
-        size=$(size_of_path "${BM_REPOSITORY_ROOT}/*${BM__BURNING_DATE}*")
+        find_what_to_burn "$BM_REPOSITORY_ROOT"/*"$BM__BURNING_DATE"*
+        size=$(size_of_path "$BM_REPOSITORY_ROOT"/*"$BM__BURNING_DATE"*)
     else
         info "Burning the whole archives."
         BM__BURNING_DATE="$TODAY"
-        find_what_to_burn "${BM_REPOSITORY_ROOT}/*"
-        size=$(size_of_path "${BM_REPOSITORY_ROOT}")
+        find_what_to_burn "$BM_REPOSITORY_ROOT"/*
+        size=$(size_of_path "$BM_REPOSITORY_ROOT")
     fi
     info "Trying to burn \$BM_REPOSITORY_ROOT (\$size MB) in interactive mode. You will be prompted to enter insert a disc when needed"
-    burn_multiples_media "$what_to_burn"
+    burn_multiples_media "${what_to_burn[@]}"
 }
 
-# This will burn $what_to_burn on a single session 
+# This will burn the given files on a single session 
 # It must fit in a medium
+# usage: burn_session <session_number> <number_of_indexes> <file>...
 function burn_session()
 {
-    what_to_burn="$1"
-    session_number="$2"
-    number_of_indexes="$3"
-    debug "burn_session($what_to_burn, $session_number, $number_of_indexes)"
+    session_number="$1"
+    number_of_indexes="$2"
+    shift 2
+    local files_to_burn=("$@")
+    debug "burn_session($session_number, $number_of_indexes, ${files_to_burn[*]})"
 
     # Since version 0.7.5 disc-image can be non-joliet.
     # This is handled by $BM_BURNING_ISO_FLAGS, let's default that 
@@ -275,9 +277,9 @@ function burn_session()
             fi
             
             info "Exporting archives to the DVD+R(W) disc in \$BM_BURNING_DEVICE."
-            debug "$growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V \"${title}\" ${what_to_burn} >> ${logfile}"
+            debug "$growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V \"${title}\" ${files_to_burn[*]} >> ${logfile}"
             tail_logfile $logfile
-            $growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
+            $growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V "${title}" "${files_to_burn[@]}" >> ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
         
@@ -296,8 +298,8 @@ function burn_session()
                 error "Unable to blank the DVD-R(W) disc (check \$logfile)."
             
             info "Exporting archives to the DVD-R(W) disc in \$BM_BURNING_DEVICE."
-            debug "$growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V \"${title}\" ${what_to_burn} >> ${logfile}"
-            $growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V "${title}" ${what_to_burn} >> ${logfile} 2>&1 ||
+            debug "$growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V \"${title}\" ${files_to_burn[*]} >> ${logfile}"
+            $growisofs -use-the-force-luke=tty -Z ${BM_BURNING_DEVICE} ${BM_BURNING_ISO_FLAGS} -V "${title}" "${files_to_burn[@]}" >> ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
         
@@ -313,8 +315,8 @@ function burn_session()
                 error "failed, check \$logfile"
             
             info "Burning data to \$BM_BURNING_DEVICE."
-            debug "${mkisofs} -V \"${title}\" -q ${BM_BURNING_ISO_FLAGS} ${what_to_burn} | ${cdrecord} -tao $devforced - > ${logfile}"
-            ${mkisofs} -V "${title}" -q ${BM_BURNING_ISO_FLAGS} ${what_to_burn} | \
+            debug "${mkisofs} -V \"${title}\" -q ${BM_BURNING_ISO_FLAGS} ${files_to_burn[*]} | ${cdrecord} -tao $devforced - > ${logfile}"
+            ${mkisofs} -V "${title}" -q ${BM_BURNING_ISO_FLAGS} "${files_to_burn[@]}" | \
             ${cdrecord} -tao $devforced - > ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
@@ -325,9 +327,9 @@ function burn_session()
             fi
 
             info "Burning data to \$BM_BURNING_DEVICE."
-            debug "${mkisofs} -V \"${title}\" -q ${BM_BURNING_ISO_FLAGS} ${what_to_burn} | ${cdrecord} -tao $devforced - > ${logfile}"
+            debug "${mkisofs} -V \"${title}\" -q ${BM_BURNING_ISO_FLAGS} ${files_to_burn[*]} | ${cdrecord} -tao $devforced - > ${logfile}"
             tail_logfile $logfile
-            ${mkisofs} -V "${title}" -q ${BM_BURNING_ISO_FLAGS} ${what_to_burn} | \
+            ${mkisofs} -V "${title}" -q ${BM_BURNING_ISO_FLAGS} "${files_to_burn[@]}" | \
             ${cdrecord} -tao $devforced - > ${logfile} 2>&1 ||
                 error "failed, check \$logfile"
         ;;
@@ -355,7 +357,7 @@ function purge_indexes()
     debug "purge_indexes()"
 
     index_prefix=$(get_index_prefix)
-    rm -f ${index_prefix}*
+    rm -f "$index_prefix"*
 }
 
 function get_index_prefix()
@@ -365,29 +367,32 @@ function get_index_prefix()
     echo "$index_prefix"
 }
 
-# Parse "$target" and build index files. Put as many files in index as possible
+# Parse the given files and build index files. Put as many files in index as possible
 # according to BM_BURNING_MAXSIZE.
 # indexes are not included here, should be added by hand after that processing.
 function __build_indexes_from_target()
 {
-    target="$1"
-    debug "__build_indexes_from_target ($target)"
+    debug "__build_indexes_from_target ($*)"
 
-    indexes=""
-    medium_index=""
+    indexes=()
+    medium_files=()
     index_number=1
     number_of_indexes=1
     index_prefix=$(get_index_prefix)
     index_session="$index_prefix-$index_number"
 
-    # Sorting by filetypes
-    target=$(ls -v $target)
+    # Sorting by filetypes (version sort, like ls -v)
+    sorted_files=()
+    while IFS= read -r file
+    do
+        sorted_files+=("$file")
+    done < <(printf '%s\n' "$@" | sort -V)
 
     # Write the indexes files in order to have one index file by medium.
     # When a medium is full, we create a new one.
-    for file in ${target}
+    for file in "${sorted_files[@]}"
     do
-        if [[ ! -f $file ]]; then
+        if [[ ! -f "$file" ]]; then
             continue
         fi
         size_of_file=$(size_of_path "$file")
@@ -398,26 +403,23 @@ function __build_indexes_from_target()
         fi
 
         # Addd file to the index file.
-        medium_possible_index="$medium_index $file"
-        size_of_possible_index=$(size_of_path "$medium_possible_index")
+        size_of_possible_index=$(size_of_path "${medium_files[@]}" "$file")
 
         if [[ $size_of_possible_index -gt $BM_BURNING_MAXSIZE ]] ; then
-            indexes="$indexes $index_session"
+            indexes+=("$index_session")
             
             number_of_indexes=$(($number_of_indexes +1))
             index_number=$(($index_number + 1))
             index_session="$index_prefix-$index_number"
-            echo "$file" > $index_session
+            echo "$file" > "$index_session"
             
-            medium_index="$file"
-            medium_possible_index=""
-
+            medium_files=("$file")
         else
-            echo "$file" >> $index_session
-            medium_index="$medium_possible_index"
+            echo "$file" >> "$index_session"
+            medium_files+=("$file")
         fi  
     done
-    indexes="$indexes $index_session"
+    indexes+=("$index_session")
 }
 
 function __insert_new_medium()
@@ -437,15 +439,14 @@ function __burn_session_from_file()
         error "No such index file: \"\$index_file\"."
     fi
     
-    what_to_burn_session=""
-
-    for file_to_burn in $(cat "$index_file")
-      do
-      what_to_burn_session="$what_to_burn_session $file_to_burn"
-    done
+    # one path per line, paths may contain spaces
+    what_to_burn=()
+    while IFS= read -r file_to_burn
+    do
+        what_to_burn+=("$file_to_burn")
+    done < "$index_file"
     
-    what_to_burn="$what_to_burn_session"
-    burn_session "$what_to_burn_session" "$session_number" "$number_of_indexes"
+    burn_session "$session_number" "$number_of_indexes" "${what_to_burn[@]}"
 }
 
 function __append_index_paths_in_indexes()
@@ -453,26 +454,25 @@ function __append_index_paths_in_indexes()
     debug "__append_index_paths_in_indexes()"
 
     prefix=$(get_index_prefix)
-    for index_file in $prefix*
+    for index_file in "$prefix"*
     do    
-        for index_path in $prefix*
+        for index_path in "$prefix"*
         do
-            echo "$index_path" >> $index_file
+            echo "$index_path" >> "$index_file"
         done
     done
 }
 
 function burn_multiples_media()
 {
-    target="$1"
-    debug "burn_multiples_media ($target)"
+    debug "burn_multiples_media ($*)"
     
     # first purge existing indexs
     purge_indexes
 
     # put in $indexes a list of files that contain
     # archives to put on each medium.
-    __build_indexes_from_target "$target"
+    __build_indexes_from_target "$@"
 
     # Display the number of medias required by the burning systemp.
     if [[ $number_of_indexes -eq 1 ]]; then
@@ -487,7 +487,7 @@ function burn_multiples_media()
 
     # foreach index, build its content on a media, interactively
     session_number=0
-    for index in $indexes
+    for index in "${indexes[@]}"
     do
         session_number=$(($session_number + 1))
         info "Burning content of \$index"
@@ -496,5 +496,5 @@ function burn_multiples_media()
     done
 
     # Remove all the index files.
-    rm -f $indexes
+    rm -f "${indexes[@]}"
 }

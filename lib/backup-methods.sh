@@ -1077,8 +1077,18 @@ function __backup_method_mysql_mariadb()
         echo "password=\"$BM_MYSQL_ADMINPASS\"" >> $mysql_conffile
         BM_SHOULD_PURGE_MYCNF="true"
     fi
+
+    # --defaults-extra-file lets ~/.my.cnf override our credentials (bug #146),
+    # so read only our conffile when it holds a password; otherwise the
+    # password is expected to come from ~/.my.cnf.
+    if grep -Eq '^[[:space:]]*password[[:space:]]*=[[:space:]]*("[^"]|[^"[:space:]])' $mysql_conffile; then
+        mysql_defaults_opt="--defaults-file=$mysql_conffile"
+    else
+        mysql_defaults_opt="--defaults-extra-file=$mysql_conffile"
+    fi
+
     if [ -n "$BM_MYSQL_PORT" ]; then BM_MYSQL_PORT_OPT="-P$BM_MYSQL_PORT"; else BM_MYSQL_PORT_OPT=""; fi
-    base_command="$dump_bin --defaults-extra-file=$mysql_conffile $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST $BM_MYSQL_PORT_OPT $BM_MYSQL_EXTRA_OPTIONS"
+    base_command="$dump_bin $mysql_defaults_opt $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST $BM_MYSQL_PORT_OPT $BM_MYSQL_EXTRA_OPTIONS"
     compress="$BM_MYSQL_FILETYPE"
 
     # get each DB name if backing up separately
@@ -1088,7 +1098,7 @@ function __backup_method_mysql_mariadb()
                 error "Can't find \"\$client_bin\" but this is needed when backing up databases separately."
             fi
 
-            DBNAMES=$($client_bin --defaults-extra-file=$mysql_conffile -u $BM_MYSQL_ADMINLOGIN -h $BM_MYSQL_HOST $BM_MYSQL_PORT_OPT -B -N -e "show databases" | sed 's/ /%/g')
+            DBNAMES=$($client_bin $mysql_defaults_opt -u $BM_MYSQL_ADMINLOGIN -h $BM_MYSQL_HOST $BM_MYSQL_PORT_OPT -B -N -e "show databases" | sed 's/ /%/g')
 
             # if DBs are excluded
             for exclude in $BM_MYSQL_DBEXCLUDE

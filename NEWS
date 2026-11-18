@@ -23,7 +23,7 @@ NOTE: changes for versions above 0.7.6 are tracked in the ChangeLog file.
           $BM_ARCHIVE_PREFIX (bug #153)
 
     - Changes
-        - The post-command is now always executed, event if an error occured
+        - The post-command is now always executed, event if an error occurred
           before (bug #118).
         - Don't stop the pipe commands if one of them fails (bug #141).
 
@@ -199,7 +199,7 @@ NOTE: changes for versions above 0.7.6 are tracked in the ChangeLog file.
           to the new format: upgrade-conffile.sh
         * Upgraded the validation process, so deprecated variables trigger warnings
           and are used as default values for the right name.
-        * Better control of the tar commands, when an error occured, user is warned,
+        * Better control of the tar commands, when an error occurred, user is warned,
           and a temp logfile is given.
         * Huge code cleanup for providing a modular implementation for several archive
           methods.

@@ -936,11 +936,15 @@ sub send_files_with_s3($$$$$$)
         foreach my $file (@{$ra_files}) {
             chomp $file;
             my @splits = $file;
+            my $is_split = FALSE;
             if( stat($file)->size > $g_s3max_size ) {
                 my $split_prefix = "$file-split-";
                 my $cmd = "$split -b $g_s3max_size " . shell_quote($file) . " " . shell_quote($split_prefix);
+                $is_split = TRUE;
                 if( system($cmd) != 0 ) {
                     print_error "Could not run '$cmd' to split $file into chunks of size $g_s3max_size";
+                    # remove any partial chunks left behind by split
+                    unlink bsd_glob(glob_escape($split_prefix) . "*");
                     next;
                 } else {
                     @splits = bsd_glob(glob_escape($split_prefix) . "*");
@@ -961,6 +965,14 @@ sub send_files_with_s3($$$$$$)
                     }
                 );
                 $uploaded{$filename} = $file_length;
+            }
+            # The chunks are only temporary copies of the original archive,
+            # which is kept: remove them to avoid wasting disk space.
+            if ($is_split) {
+                foreach my $split (@splits) {
+                    unlink $split
+                        or print_warning "Unable to remove chunk $split: $!";
+                }
             }
             # For the S3 method, we assume success in any case.
             appendto_uploaded_archives($file, $host);

@@ -75,9 +75,9 @@ function check_cdrom_md5_sums()
     # now we can check the md5 sums.
     for file in $mount_point/*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*
     do
-        base_file=$(basename $file)
-        date_of_file=$(get_date_from_file $file)
-        prefix_of_file=$(get_prefix_from_file $file)
+        base_file=$(basename "$file")
+        date_of_file=$(get_date_from_file "$file")
+        prefix_of_file=$(get_prefix_from_file "$file")
 
         # Do not check the md5 sums of indexes.
         if [[ "$prefix_of_file" = "index" ]]; then
@@ -87,7 +87,7 @@ function check_cdrom_md5_sums()
         str=$(echo_translated "Checking MD5 sum for \$base_file:")
 
         # try to read the previously saved md5 hash in the database
-        md5hash_trust=$(get_md5sum_from_file ${base_file} $MD5FILE)
+        md5hash_trust=$(get_md5sum_from_file "$base_file" "$MD5FILE")
 
         # If the MD5 hash was not found, do not generate it; instead
         # issue a warning that the burned archive cannot be verified
@@ -97,7 +97,7 @@ function check_cdrom_md5_sums()
         fi
 
         # now calculate burnt archive's md5 sum and compare with database
-        md5hash_cdrom=$(get_md5sum $file) || md5hash_cdrom="undefined"
+        md5hash_cdrom=$(get_md5sum "$file") || md5hash_cdrom="undefined"
         case $md5hash_cdrom in
             $md5hash_trust)
                 echo_translated "\$str ok."

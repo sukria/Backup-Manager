@@ -14,6 +14,10 @@ Backup Manager 0.7.17
       * bm-upload: Fix ftp_clean_directory for FTPS
       * bm-upload: Fix ftptls_put_file args position
 
+    [ Kōan ]
+      * Fix for issue #124
+        Purge entries of removed archives from the hashes.md5 file
+
 Backup Manager 0.7.16
 	[ doekia ]
 	* Add MongoDB support

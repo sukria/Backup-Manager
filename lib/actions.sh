@@ -106,12 +106,14 @@ function upload_files()
 
 # This will parse all the files contained in BM_REPOSITORY_ROOT
 # and will clean them up. Using clean_directory() and clean_file().
+# Entries of purged archives are then removed from MD5FILE.
 function clean_repositories()
 {
     debug "clean_repositories"
 
     info "Cleaning \$BM_REPOSITORY_ROOT"
     clean_directory $BM_REPOSITORY_ROOT
+    clean_md5_file "$MD5FILE"
 }
 
 # This will run the pre-command given.

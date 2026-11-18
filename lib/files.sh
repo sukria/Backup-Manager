@@ -67,20 +67,18 @@ function get_dir_name()
     echo "$dirname"
 }
 
-# This will take a path and return the size in mega bytes
+# This will take one or more paths and return the size in mega bytes
 # used on the disk.
 # Thanks to Michel Grentzinger <mic.grentz@online.fr>
 function size_of_path()
 {
-    path="$1"
-    debug "size_of_path ($path)"
+    debug "size_of_path ($*)"
 
-    if [[ -z "$path" ]]; then
+    if [[ $# -eq 0 ]] || [[ -z "$1" ]]; then
         error "No path given."
     fi
 
-    #echo "DEBUG: du --si --block-size=1000k -c $path | tail -n 1 | awk '{print $1}'" >&2
-    total_size=$(du --si --block-size=1000k -c $path | tail -n 1 | awk '{print $1}')
+    total_size=$(du --si --block-size=1000k -c "$@" | tail -n 1 | awk '{print $1}')
     echo $total_size
 }
 
@@ -208,7 +206,7 @@ function get_date_from_archive()
     file="$1"
     debug "get_date_from_archive ($file)"
 
-    date=$(echo $file | sed -e 's/.*\(20[0-9][0-9][0-9][0-9][0-3][0-9]\).*/\1/')
+    date=$(echo "$file" | sed -e 's/.*\(20[0-9][0-9][0-9][0-9][0-3][0-9]\).*/\1/')
     echo "$date"
 }   
 
@@ -364,12 +362,15 @@ function clean_directory()
          \( -type f -o -type l \) -print \
          | $bmp --ttl=$BM_ARCHIVE_TTL > $list
     
-    # Then actually remove the files
-    for archive in `cat $list`
+    # Then actually remove the files (one path per line, paths may contain spaces)
+    while IFS= read -r archive
     do
+        if [[ -z "$archive" ]]; then
+            continue
+        fi
         info "Removing archive \"\$archive\"."
-        rm -f $archive
-    done
+        rm -f "$archive"
+    done < $list
     rm -f $list
 }
 
@@ -383,7 +384,7 @@ function purge_duplicate_archives()
 
     if [[ -z "$2" ]]; then
         debug "purge_duplicate_archives ($file_to_create)"
-        md5hash=$(get_md5sum $file_to_create)
+        md5hash=$(get_md5sum "$file_to_create")
     else
         # if the 2nd argument exists, it is the md5sum
         md5hash="$2"
@@ -396,7 +397,7 @@ function purge_duplicate_archives()
         return 0
     fi
 
-    if [[ ! -e $file_to_create ]]; then
+    if [[ ! -e "$file_to_create" ]]; then
         error "The given file does not exist: \$file_to_create"
         return 1
     fi    
@@ -406,27 +407,28 @@ function purge_duplicate_archives()
     fi
 
     # we'll parse all the files of the same source
-    date_of_file=$(get_date_from_file $file_to_create) || 
+    date_of_file=$(get_date_from_file "$file_to_create") || 
         error "Unable to get date from file."
     if [[ -z "$date_of_file" ]]; then
         error "Unable to get date from file."
     fi
    
-    file_pattern=$(echo $file_to_create | sed -e "s/\\(.*\\)$date_of_file/\\1\*/") || 
-        error "Unable to find the pattern of the file."
+    # split the name around its (last) date: archivename-<date>-filetype
+    pattern_prefix="${file_to_create%"$date_of_file"*}"
+    pattern_suffix="${file_to_create##*"$date_of_file"}"
     
     # loop on each archive occurences (eg: archivename-*-filetype)
-    for file in $file_pattern
+    for file in "$pattern_prefix"*"$pattern_suffix"
     do
         # handle only regular files
-        if [[ ! -L $file ]] && [[ "$file" != "$file_to_create" ]]; then
+        if [[ ! -L "$file" ]] && [[ "$file" != "$file_to_create" ]]; then
             
             # get the date of the file we parse
-            date_of_file=$(get_date_from_file $file) || 
+            date_of_file=$(get_date_from_file "$file") || 
                 error "Unable to get date from file."
             
             # get the md5 hash of the file we parse, in its .md5 file
-            md5sum_to_check="$(get_md5sum_from_file $file $MD5FILE)"
+            md5sum_to_check="$(get_md5sum_from_file "$file" "$MD5FILE")"
             if [[ -z "$md5sum_to_check" ]]; then
                 warning "Unable to find the md5 hash of file \"\$file\" in file \"\$MD5FILE\"."
                 continue
@@ -435,8 +437,8 @@ function purge_duplicate_archives()
             # if the md5 hashes are the same, purge the duplicate 
             if [[ "$md5hash" = "$md5sum_to_check" ]]; then
                 info "\$file is a duplicate of \$file_to_create (using symlink)."
-                rm -f $file
-                ln -s $file_to_create $file
+                rm -f "$file"
+                ln -s "$file_to_create" "$file"
             fi
         fi
     done

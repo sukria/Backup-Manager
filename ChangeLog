@@ -1,4 +1,70 @@
-Backup Manager 0.7.17
+Backup Manager 1.0 "The Undead Release"
+
+    First release since 0.7.15 (June 2018). It gathers everything that landed
+    in the meantime, so the version number finally says what the project is:
+    a tool that has been doing its job in production for twenty years.
+
+    [ Security ]
+      * The MySQL/MariaDB password set in BM_MYSQL_ADMINPASS is no longer
+        overridden by the [client] section of the user's ~/.my.cnf. The client
+        is now invoked with --defaults-file when our own conffile holds a
+        password (closes #146). Note that --defaults-file also makes global
+        option files such as /etc/mysql/my.cnf be ignored; add anything you
+        need from them to BM_MYSQL_EXTRA_OPTIONS. (Kōan)
+
+    [ New features ]
+      * MongoDB backup method. (Philippe Villiers)
+      * MariaDB support, alongside MySQL (closes #144). (Fabien Marsaud)
+      * zstd compression for tarballs, and for the MySQL and PostgreSQL
+        backup methods. (Carlos Milán Figueredo)
+      * BM_REPOSITORY_ROOT may contain spaces. Repository creation, archive
+        commit, purge, tarball/incremental/dar/pipe archives, burning and
+        upload all handle them (closes #109). (Kōan)
+      * BM_TARBALL_BLACKLIST accepts a Bash array, like BM_TARBALL_TARGETS.
+        Entries containing whitespace work for both absolute and relative
+        paths. The plain string form keeps working unchanged (closes #82).
+        (Kōan)
+
+    [ Bug fixes ]
+      * backup-manager-upload: the chunks created when splitting an archive
+        larger than the S3 maximum size are removed once uploaded, instead of
+        piling up in the repository and being re-uploaded as archives of their
+        own on the next run (closes #143). (Kōan)
+      * backup-manager-upload: fixed ftp_clean_directory for FTPS, and the
+        argument order in ftptls_put_file. (nat93)
+      * Spaces in the tarball blacklist are handled. (Benoît Peccatte)
+      * Removed a stale BM_BMP_PATH export that broke the purge path
+        (closes #91). (Thomas Parmelan)
+      * replace_deprecated_booleans no longer mistakes a one or two character
+        key for a configuration variable. (David Read)
+
+    [ Documentation ]
+      * Documented how to restore an incremental tarball series: extraction
+        order, the --listed-incremental=/dev/null switch that replays
+        deletions, and the dependency on the master archive.
+        (Alexis Sukrieh)
+      * Removed every reference to backup-manager.org. The domain has been
+        squatted and no longer belongs to the project (closes #147).
+        (Alexis Sukrieh)
+      * README and documentation improvements. (eXeCUT, Matteo Cypriani)
+
+    [ Project ]
+      * Kōan (https://koan.anantys.com), an open source autonomous agent,
+        joins the project as an assistant co-maintainer. It opens pull
+        requests, triages issues and runs security audits; it never merges,
+        never releases and never has the last word. AI_POLICY.md states how
+        it is used here and where it stops, and every change it produces is
+        reviewed and merged by a human maintainer. (Alexis Sukrieh)
+      * AGENTS.md records the contribution conventions: English for
+        everything written, devel as the base branch, how to run the test
+        suite, and the backward compatibility rules that archive names and
+        configuration variables are held to. (Alexis Sukrieh)
+      * The test suite runs on every push and pull request through GitHub
+        Actions. (Kōan)
+
+    -- Alexis Sukrieh - alexis@anantys.com, maintainer
+
+Backup Manager 0.7.17 (not released, folded into 1.0)
 
     [ Kōan ]
       * Support spaces in BM_REPOSITORY_ROOT (repository creation, purge,
@@ -23,7 +89,7 @@ Backup Manager 0.7.17
       * bm-upload: Fix ftp_clean_directory for FTPS
       * bm-upload: Fix ftptls_put_file args position
 
-Backup Manager 0.7.16
+Backup Manager 0.7.16 (not released, folded into 1.0)
 	[ doekia ]
 	* Add MongoDB support
 

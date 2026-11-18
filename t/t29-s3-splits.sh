@@ -7,7 +7,7 @@ set -e
 
 source testlib.sh
 
-workdir=$(mktemp -d "${TMPDIR:-/tmp}/bm-t07-XXXXXX")
+workdir=$(mktemp -d "${TMPDIR:-/tmp}/bm-t29-XXXXXX")
 trap 'rm -rf "$workdir"' EXIT
 
 # A fake Net::Amazon::S3 that records uploads in memory.

@@ -22,7 +22,7 @@
 function commit_archive()
 {
     file_to_create="$1"
-    size=$(size_of_path $file_to_create)
+    size=$(size_of_path "$file_to_create")
     str=$(echo_translated "\$file_to_create: ok (\${size}M,")
     debug "commit_archive ($file_to_create)"
 
@@ -32,24 +32,24 @@ function commit_archive()
     bm_pending_incremental_list=""
     bm_pending_archive=""
 
-    base=$(basename $file_to_create)
-    md5hash=$(get_md5sum $file_to_create)
+    base=$(basename "$file_to_create")
+    md5hash=$(get_md5sum "$file_to_create")
     if [[ "$verbose" = "true" ]]; then
         echo "$str ${md5hash})"
     fi
 
     # Check if the md5file contains already the md5sum of the file_to_create.
     # In this case, the new md5sum overwrites the old one.
-    if grep "$base" $MD5FILE >/dev/null 2>&1 ; then
-        previous_md5sum=$(get_md5sum_from_file $base $MD5FILE)
-        sed -e "/$base/s/$previous_md5sum/$md5hash/" -i $MD5FILE
+    if grep "$base" "$MD5FILE" >/dev/null 2>&1 ; then
+        previous_md5sum=$(get_md5sum_from_file "$base" "$MD5FILE")
+        sed -e "/$base/s/$previous_md5sum/$md5hash/" -i "$MD5FILE"
     else
-        echo "$md5hash  $base" >> $MD5FILE
+        echo "$md5hash  $base" >> "$MD5FILE"
     fi
 
     # Now that the file is created, remove previous duplicates if exist.
     # Pass in the calculated (costly) md5 sum, to speed things up.
-    purge_duplicate_archives $file_to_create $md5hash ||
+    purge_duplicate_archives "$file_to_create" "$md5hash" ||
         error "Unable to purge duplicates of \$file_to_create"
 
     # ownership
@@ -60,9 +60,9 @@ function commit_archive()
 function chown_archive {
     file="$1"
     if [[ "$BM_REPOSITORY_SECURE" = "true" ]]; then
-        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $file ||
+        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP "$file" ||
             warning "Unable to change the owner of \"\$file\"."
-        chmod $BM_ARCHIVE_CHMOD $file ||
+        chmod $BM_ARCHIVE_CHMOD "$file" ||
             warning "Unable to change file permissions of \"\$file\"."
     fi
 }
@@ -79,17 +79,17 @@ function clean_exit()
 
         # remove the archive that is being built (it's incomplete)
         warning "Removing archive \"\$bm_pending_archive\" (build interrupted)."
-        rm -f $bm_pending_archive
+        rm -f "$bm_pending_archive"
 
         # if we're building incremental stuff, restore the original incremental list file
         if [[ -n "$bm_pending_incremental_list" ]]; then
             if [[ -e "${bm_pending_incremental_list}.orig" ]]; then
                 warning "Restoring incremental-building details list: \"\$bm_pending_incremental_list\"."
-                rm -f $bm_pending_incremental_list
-                mv "${bm_pending_incremental_list}.orig" $bm_pending_incremental_list
+                rm -f "$bm_pending_incremental_list"
+                mv "${bm_pending_incremental_list}.orig" "$bm_pending_incremental_list"
             else
                 warning "Removing incremental-building details list: \"$bm_pending_incremental_list\"."
-                rm -f $bm_pending_incremental_list
+                rm -f "$bm_pending_incremental_list"
             fi
         fi
     fi
@@ -105,7 +105,7 @@ function commit_archives()
     debug "commit_archives ($file_to_create)"
 
     if [[ "$BM_TARBALL_FILETYPE" = "dar" ]]; then
-        for dar_file in $file_to_create.*.dar
+        for dar_file in "$file_to_create".*.dar
         do
             commit_archive "$dar_file"
         done

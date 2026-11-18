@@ -58,11 +58,11 @@ function make_archives()
     esac
 
     # Now make sure the md5 file is okay.
-    if [[ -e $MD5FILE ]] && 
+    if [[ -e "$MD5FILE" ]] && 
        [[ "$BM_REPOSITORY_SECURE" = "true" ]]; then
-        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $MD5FILE ||
+        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP "$MD5FILE" ||
             warning "Unable to change the owner of \"\$MD5FILE\"."
-        chmod $BM_ARCHIVE_CHMOD $MD5FILE ||
+        chmod $BM_ARCHIVE_CHMOD "$MD5FILE" ||
             warning "Unable to change file permissions of \"\$MD5FILE\"."
     fi
 done

@@ -626,7 +626,7 @@ BM_TARBALL_TARGETS[3]="/mnt/win/Program Files"
 <sect2 id="BM_TARBALL_BLACKLIST"><tt>BM_TARBALL_BLACKLIST</tt>
 
 <p>
-<em>Type: space-separated list, default: <tt>"/proc /dev /sys /tmp"</tt>.</em>
+<em>Type: space-separated list or array, default: <tt>"/proc /dev /sys /tmp"</tt>.</em>
 
 <p>
 It can be very useful to prevent some locations of your filesytem from being
@@ -645,6 +645,20 @@ Example:
 <example>
 export BM_TARBALL_BLACKLIST="/tmp /dev /proc *.mp3 *.mpg"
 </example>
+
+<p>
+If a path contains spaces, use an array, like with BM_TARBALL_TARGETS[]:
+
+<example>
+declare -a BM_TARBALL_BLACKLIST
+BM_TARBALL_BLACKLIST[0]="/tmp"
+BM_TARBALL_BLACKLIST[1]="/home/me/dir with spaces"
+export BM_TARBALL_BLACKLIST
+</example>
+
+<p>
+Whitespaces are given to tar and dar as the <tt>?</tt> wildcard, which matches
+any single character.
 
 <sect2 id="BM_TARBALL_OVER_SSH"><tt>BM_TARBALL_OVER_SSH</tt>
 <p>

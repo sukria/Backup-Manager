@@ -10,6 +10,10 @@ Backup Manager 0.7.17
     [ Benoît Peccatte ]
       * Handle spaces in tarball blacklist
 
+    [ Alexis Sukrieh ]
+      * BM_TARBALL_BLACKLIST can be an array, entries with whitespaces are
+        handled for absolute and relative paths (#82)
+
     [ nat93 ]
       * bm-upload: Fix ftp_clean_directory for FTPS
       * bm-upload: Fix ftptls_put_file args position

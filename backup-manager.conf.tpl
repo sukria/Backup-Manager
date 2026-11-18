@@ -158,7 +158,16 @@ export BM_TARBALL_TARGETS
 
 # Files to exclude when generating tarballs, you can put absolute
 # or relative paths, Bash wildcards are possible.
+# Paths without spaces in their name:
 export BM_TARBALL_BLACKLIST="/dev /sys /proc /tmp"
+
+# If one or more of the paths contain a space, use an array instead:
+# declare -a BM_TARBALL_BLACKLIST
+# BM_TARBALL_BLACKLIST[0]="/dev"
+# BM_TARBALL_BLACKLIST[1]="/home/me/dir with spaces"
+# export BM_TARBALL_BLACKLIST
+# Note: whitespaces are passed to tar/dar as '?' (any single character),
+# so "/home/me/dir with spaces" also excludes "/home/me/dir_with_spaces".
 
 # With the "dar" filetype, you can choose a maximum slice limit.
 export BM_TARBALL_SLICESIZE="1000M"

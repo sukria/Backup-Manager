@@ -848,11 +848,17 @@ the ps command).
 <p>
 To close that vulnerability, the MySQL client password is not passed through
 the command line anymore, it is written in a configuration file located in the
-home directory of the user running &bmngr; : <tt>~/.my.cnf</tt>.
+home directory of the user running &bmngr; : <tt>~/.backup-manager_my.cnf</tt>.
 
 <p>
 If that file doesn't exist at runtime, &bmngr; will create it and will then
-write the password provided in <tt>BM_MYSQL_ADMINPASS</tt> inside. 
+write the password provided in <tt>BM_MYSQL_ADMINPASS</tt> inside.
+
+<p>
+When that file holds a password, it is passed with <tt>--defaults-file</tt>,
+so the client options found in <tt>~/.my.cnf</tt> or in the global option
+files cannot override it. Otherwise (empty password), <tt>~/.my.cnf</tt> is
+still read and can provide the password.
 
 <sect2 id="BM_MYSQL_DATABASES"><tt>BM_MYSQL_DATABASES</tt>
 

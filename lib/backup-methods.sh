@@ -291,8 +291,12 @@ function __get_flags_relative_blacklist()
         target=${target%/}
     fi
     blacklist=""
-    for pattern in $BM_TARBALL_BLACKLIST
+    for pattern in "${BM__TARBALL_BLACKLIST[@]}"
     do
+        if [[ -z "$pattern" ]]; then
+            continue
+        fi
+
         # absolute paths
         char=$(expr substr "$pattern" 1 1)
         if [[ "$char" = "/" ]]; then
@@ -311,8 +315,8 @@ function __get_flags_relative_blacklist()
                     pattern=$(expr substr "$pattern" 1 $length)
                 fi
 
-                # Replace ' ' with '?' to make command line be parsed properly
-                pattern=${pattern// /?}
+                # Replace whitespaces with '?' to make command line be parsed properly
+                pattern=${pattern//[[:space:]]/?}
 
                 # ...and blacklisting it
                 blacklist="$blacklist ${switch}${pattern}"
@@ -320,6 +324,7 @@ function __get_flags_relative_blacklist()
 
         # relative path are blindly appended to the blacklist
         else
+            pattern=${pattern//[[:space:]]/?}
             blacklist="$blacklist ${switch}${pattern}"
         fi
     done
@@ -834,8 +839,9 @@ function __make_local_tarball_token
 
     # look for the target in the blacklist...
     is_blacklisted="0"
-    for blacklist_pattern in $BM_TARBALL_BLACKLIST; do
-        if [[ "$t" == "$blacklist_pattern" ]]; then
+    for blacklist_pattern in "${BM__TARBALL_BLACKLIST[@]}"; do
+        if [[ -n "$blacklist_pattern" ]] &&
+           [[ "${t%/}" == "${blacklist_pattern%/}" ]]; then
             is_blacklisted="1"
         fi
     done

@@ -22,7 +22,7 @@
 function commit_archive()
 {
     file_to_create="$1"
-    size=$(size_of_path $file_to_create)
+    size=$(size_of_path "$file_to_create")
     str=$(echo_translated "\$file_to_create: ok (\${size}M,")
     debug "commit_archive ($file_to_create)"
 
@@ -32,24 +32,24 @@ function commit_archive()
     bm_pending_incremental_list=""
     bm_pending_archive=""
 
-    base=$(basename $file_to_create)
-    md5hash=$(get_md5sum $file_to_create)
+    base=$(basename "$file_to_create")
+    md5hash=$(get_md5sum "$file_to_create")
     if [[ "$verbose" = "true" ]]; then
         echo "$str ${md5hash})"
     fi
 
     # Check if the md5file contains already the md5sum of the file_to_create.
     # In this case, the new md5sum overwrites the old one.
-    if grep "$base" $MD5FILE >/dev/null 2>&1 ; then
-        previous_md5sum=$(get_md5sum_from_file $base $MD5FILE)
-        sed -e "/$base/s/$previous_md5sum/$md5hash/" -i $MD5FILE
+    if grep "$base" "$MD5FILE" >/dev/null 2>&1 ; then
+        previous_md5sum=$(get_md5sum_from_file "$base" "$MD5FILE")
+        sed -e "/$base/s/$previous_md5sum/$md5hash/" -i "$MD5FILE"
     else
-        echo "$md5hash  $base" >> $MD5FILE
+        echo "$md5hash  $base" >> "$MD5FILE"
     fi
 
     # Now that the file is created, remove previous duplicates if exist.
     # Pass in the calculated (costly) md5 sum, to speed things up.
-    purge_duplicate_archives $file_to_create $md5hash ||
+    purge_duplicate_archives "$file_to_create" "$md5hash" ||
         error "Unable to purge duplicates of \$file_to_create"
 
     # ownership
@@ -60,9 +60,9 @@ function commit_archive()
 function chown_archive {
     file="$1"
     if [[ "$BM_REPOSITORY_SECURE" = "true" ]]; then
-        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP $file ||
+        chown $BM_REPOSITORY_USER:$BM_REPOSITORY_GROUP "$file" ||
             warning "Unable to change the owner of \"\$file\"."
-        chmod $BM_ARCHIVE_CHMOD $file ||
+        chmod $BM_ARCHIVE_CHMOD "$file" ||
             warning "Unable to change file permissions of \"\$file\"."
     fi
 }
@@ -79,17 +79,17 @@ function clean_exit()
 
         # remove the archive that is being built (it's incomplete)
         warning "Removing archive \"\$bm_pending_archive\" (build interrupted)."
-        rm -f $bm_pending_archive
+        rm -f "$bm_pending_archive"
 
         # if we're building incremental stuff, restore the original incremental list file
         if [[ -n "$bm_pending_incremental_list" ]]; then
             if [[ -e "${bm_pending_incremental_list}.orig" ]]; then
                 warning "Restoring incremental-building details list: \"\$bm_pending_incremental_list\"."
-                rm -f $bm_pending_incremental_list
-                mv "${bm_pending_incremental_list}.orig" $bm_pending_incremental_list
+                rm -f "$bm_pending_incremental_list"
+                mv "${bm_pending_incremental_list}.orig" "$bm_pending_incremental_list"
             else
                 warning "Removing incremental-building details list: \"$bm_pending_incremental_list\"."
-                rm -f $bm_pending_incremental_list
+                rm -f "$bm_pending_incremental_list"
             fi
         fi
     fi
@@ -105,7 +105,7 @@ function commit_archives()
     debug "commit_archives ($file_to_create)"
 
     if [[ "$BM_TARBALL_FILETYPE" = "dar" ]]; then
-        for dar_file in $file_to_create.*.dar
+        for dar_file in "$file_to_create".*.dar
         do
             commit_archive "$dar_file"
         done
@@ -134,7 +134,7 @@ function __exec_meta_command()
     compress="$3"
     debug "__exec_meta_command ($command, $file_to_create, $compress)"
 
-    if [[ -f $file_to_create ]] && [[ $force != true ]]
+    if [[ -f "$file_to_create" ]] && [[ $force != true ]]
 
     then
         warning "File \$file_to_create already exists, skipping."
@@ -167,27 +167,27 @@ function __exec_meta_command()
             fi
 
             if [[ -n "$compress_bin" ]] && [[ -x "$compress_bin" ]]; then
-                debug "$command > $file_to_create 2> $logfile"
+                debug "$command > \"$file_to_create\" 2> $logfile"
                 tail_logfile "$logfile"
                 if [[ "$BM_ENCRYPTION_METHOD" = "gpg" ]]; then
-                    $command 2>$logfile | $nice $compress_bin -f -q -9 2>$logfile | $nice $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.$ext.gpg 2> $logfile
+                    $command 2>$logfile | $nice $compress_bin -f -q -9 2>$logfile | $nice $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > "$file_to_create.$ext.gpg" 2> $logfile
                     cmdpipestatus=${PIPESTATUS[0]}
-                    debug "$command | $nice $compress_bin -f -q -9 | $nice $gpg $BM__GPG_HOMEDIR -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create.$ext.gpg 2> $logfile"
+                    debug "$command | $nice $compress_bin -f -q -9 | $nice $gpg $BM__GPG_HOMEDIR -r \"$BM_ENCRYPTION_RECIPIENT\" -e > \"$file_to_create.$ext.gpg\" 2> $logfile"
                     file_to_create="$file_to_create.$ext.gpg"
                 else
-                    $command 2> $logfile | $nice $compress_bin -f -q -9 > $file_to_create.$ext 2> $logfile
+                    $command 2> $logfile | $nice $compress_bin -f -q -9 > "$file_to_create.$ext" 2> $logfile
                     cmdpipestatus=${PIPESTATUS[0]}
-                    debug "$command 2> $logfile | $nice $compress_bin -f -q -9 > $file_to_create.$ext 2> $logfile"
+                    debug "$command 2> $logfile | $nice $compress_bin -f -q -9 > \"$file_to_create.$ext\" 2> $logfile"
                     file_to_create="$file_to_create.$ext"
                 fi
 
                 if [[ $? -gt 0 ]]; then
                     warning "Unable to exec \$command; check \$logfile"
-                    rm -f $file_to_create
+                    rm -f "$file_to_create"
                 else
                     if [[ $cmdpipestatus -gt 0 ]]; then
                         warning "Unable to exec first piped command \$command; check \$logfile"
-                        rm -f $file_to_create
+                        rm -f "$file_to_create"
                     else
                         rm -f $logfile
                     fi
@@ -206,24 +206,24 @@ function __exec_meta_command()
                ext="zst"
             fi
             if [[ -n "$compress_bin" ]] && [[ -x "$compress_bin" ]]; then
-                debug "$command > $file_to_create 2> $logfile"
+                debug "$command > \"$file_to_create\" 2> $logfile"
                 tail_logfile "$logfile"
                 if [[ "$BM_ENCRYPTION_METHOD" = "gpg" ]]; then
                     warning "Encryption with gpg is not supported with zstd compression at this release."
                 else
-                    $command 2> $logfile | $nice $compress_bin -f -q --rm > $file_to_create.$ext 2> $logfile
+                    $command 2> $logfile | $nice $compress_bin -f -q --rm > "$file_to_create.$ext" 2> $logfile
                     cmdpipestatus=${PIPESTATUS[0]}
-                    debug "$command 2> $logfile | $nice $compress_bin -f -q --rm > $file_to_create.$ext 2> $logfile"
+                    debug "$command 2> $logfile | $nice $compress_bin -f -q --rm > \"$file_to_create.$ext\" 2> $logfile"
                     file_to_create="$file_to_create.$ext"
                 fi
 
                 if [[ $? -gt 0 ]]; then
                     warning "Unable to exec \$command; check \$logfile"
-                    rm -f $file_to_create
+                    rm -f "$file_to_create"
                 else
                     if [[ $cmdpipestatus -gt 0 ]]; then
                         warning "Unable to exec first piped command \$command; check \$logfile"
-                        rm -f $file_to_create
+                        rm -f "$file_to_create"
                     else
                         rm -f $logfile
                     fi
@@ -237,18 +237,18 @@ function __exec_meta_command()
                 tail -f $logfile &
             fi
 
-            debug "$command 1> $file_to_create 2>$logfile"
+            debug "$command 1> \"$file_to_create\" 2>$logfile"
             tail_logfile "$logfile"
             if [[ "$BM_ENCRYPTION_METHOD" = "gpg" ]]; then
-                $command | $nice $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create.gpg 2> $logfile
+                $command | $nice $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > "$file_to_create.gpg" 2> $logfile
                 file_to_create="$file_to_create.gpg"
             else
-                $command 1> $file_to_create 2>$logfile
+                $command 1> "$file_to_create" 2>$logfile
             fi
 
             if [[ $? -gt 0 ]]; then
                 warning "Unable to exec \$command; check \$logfile"
-                rm -f $file_to_create
+                rm -f "$file_to_create"
             else
                 rm -f $logfile
             fi
@@ -259,7 +259,7 @@ function __exec_meta_command()
         esac
 
         # make sure we didn't loose the archive
-        if [[ ! -e $file_to_create ]]; then
+        if [[ ! -e "$file_to_create" ]]; then
             error "Unable to find \$file_to_create"
         fi
         export BM_RET="$file_to_create"
@@ -438,10 +438,10 @@ function __get_flags_tar_incremental()
     bm_pending_incremental_list="$incremental_list"
     if [[ -e "${incremental_list}" ]]; then
         debug "cp $incremental_list ${incremental_list}.orig"
-        cp $incremental_list "${incremental_list}.orig"
+        cp "$incremental_list" "${incremental_list}.orig"
     fi
 
-    incremental=""
+    incremental_flags=()
     __get_master_day
     __init_masterdatevalue
 
@@ -454,7 +454,8 @@ function __get_flags_tar_incremental()
     if [[ -e "$incremental_list" ]]; then
         master=""
     fi
-    incremental="--listed-incremental $incremental_list"
+    # an array keeps the list path as a single word, even with spaces
+    incremental_flags=(--listed-incremental "$incremental_list")
 }
 
 # This will set the appropriate dar options for making incremental backups.
@@ -463,7 +464,7 @@ function __get_flags_dar_incremental()
     dir_name="$1"
     debug "__get_flags_dar_incremental ($dir_name)"
 
-    incremental=""
+    incremental_flags=()
 
     __get_master_day
     __init_masterdatevalue
@@ -477,7 +478,7 @@ function __get_flags_dar_incremental()
         lastday_dar_master="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday.master.dar"
         lastday_dar_master_first_slice="$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday.master.1.dar"
 
-        if [[ -e $lastday_dar ]] || [[ -e $lastday_dar_first_slice ]] || [[ -e $lastday_dar_master ]]  || [[ -e $lastday_dar_master_first_slice ]]; then
+        if [[ -e "$lastday_dar" ]] || [[ -e "$lastday_dar_first_slice" ]] || [[ -e "$lastday_dar_master" ]]  || [[ -e "$lastday_dar_master_first_slice" ]]; then
             # we have found a previous dar backup, this one will be used as a reference
             # if needed.
             break
@@ -490,17 +491,17 @@ function __get_flags_dar_incremental()
     if [[ "$master_day" != "$BM_TARBALLINC_MASTERDATEVALUE" ]] ; then
 
         # Either we have a master backup made lastday...
-        if [[ -e $lastday_dar_master ]] ||
-           [[ -e $lastday_dar_master_first_slice ]] ; then
-            incremental="--ref $BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday.master"
+        if [[ -e "$lastday_dar_master" ]] ||
+           [[ -e "$lastday_dar_master_first_slice" ]] ; then
+            incremental_flags=(--ref "$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday.master")
 
         # ... Or we have an incremental backup made lastday
-        elif [[ -e $lastday_dar ]] || [[ -e $lastday_dar_first_slice ]] ; then
-            incremental="--ref $BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday"
+        elif [[ -e "$lastday_dar" ]] || [[ -e "$lastday_dar_first_slice" ]] ; then
+            incremental_flags=(--ref "$BM_REPOSITORY_ROOT/$BM_ARCHIVE_PREFIX$dir_name.$lastday")
         fi
 
         # if we use some --ref then, it's not a master but an incremental backup.
-        if [[ -n "$incremental" ]] ; then
+        if [[ ${#incremental_flags[@]} -gt 0 ]] ; then
             master=""
         fi
     fi
@@ -623,6 +624,9 @@ function check_error_code()
     error_code=0
 }
 
+# Builds the archiver command line. Words carrying repository paths
+# (output file, incremental list/reference) are not part of it: the
+# callers append them, quoted, as separate words.
 function __get_backup_tarball_command()
 {
     debug "__get_backup_tarball_command ()"
@@ -630,39 +634,39 @@ function __get_backup_tarball_command()
     case $BM_TARBALL_FILETYPE in
         tar)
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f"
+            command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -f"
         ;;
         tar.gz)
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -z -f"
+            command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -z -f"
         ;;
         tar.bz2|tar.bz)
             if [[ ! -x $bzip ]]; then
                 error "The archive type \"tar.bz2\" depends on the tool \"\$bzip\"."
             fi
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j -f"
+            command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c -j -f"
         ;;
         tar.xz)
             if [[ ! -x $xz ]]; then
                 error "The archive type \"tar.xz\" depends on the tool \"\$xz\"."
             fi
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --xz -f"
+            command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --xz -f"
         ;;
         tar.lzma)
             if [[ ! -x $lzma ]]; then
                 error "The archive type \"tar.lzma\" depends on the tool \"\$lzma\"."
             fi
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --lzma -f"
+            command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --lzma -f"
         ;;
         tar.zst)
             if [[ ! -x $zstd ]]; then
                 error "The archive type \"tar.zst\" depends on the tool \"\$zstd\"."
             fi
             __get_flags_tar_blacklist "$target"
-            command="$tar $incremental $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --zstd -f"
+            command="$tar $blacklist $dumpsymlinks $BM_TARBALL_EXTRA_OPTIONS -p -c --zstd -f"
         ;;
         zip)
             if [[ ! -x $zip ]]; then
@@ -675,7 +679,7 @@ function __get_backup_tarball_command()
                 error "The archive type \"dar\" depends on the tool \"\$dar\"."
             fi
             __get_flags_dar_blacklist "$target"
-            command="$dar $incremental $blacklist $maxsize $overwrite $BM_TARBALL_EXTRA_OPTIONS -z9 -Q -c $file_to_create -R"
+            command="$dar $blacklist $maxsize $overwrite $BM_TARBALL_EXTRA_OPTIONS -z9 -Q"
         ;;
         *)
             error "The archive type \"\$BM_TARBALL_FILETYPE\" is not supported."
@@ -698,20 +702,19 @@ function build_clear_archive
         # dar has a special commandline, that cannot fit the common tar way
         "dar")
             BM__CURRENT_COMMAND="dar"
-            debug "$command $target> $logfile 2>&1"
+            debug "$command ${incremental_flags[*]} -c \"$file_to_create\" -R \"$target\" > $logfile 2>&1"
             tail_logfile "$logfile"
 
-            $command "$target"> $logfile 2>&1 || error_code=$?
+            $command "${incremental_flags[@]}" -c "$file_to_create" -R "$target" > $logfile 2>&1 || error_code=$?
             check_error_code "$error_code" "$file_to_create" "$logfile"
         ;;
 
         # the common commandline
         *)
             BM__CURRENT_COMMAND="generic"
-            debug "$command $file_to_create \"$target\" > $logfile 2>&1"
+            debug "$command \"$file_to_create\" ${incremental_flags[*]} \"$target\" > $logfile 2>&1"
             tail_logfile "$logfile"
-            debug "$command $file_to_create \"$target\""
-            $command $file_to_create "$target" > $logfile 2>&1 || error_code=$?
+            $command "$file_to_create" "${incremental_flags[@]}" "$target" > $logfile 2>&1 || error_code=$?
             check_error_code "$error_code" "$file_to_create" "$logfile"
         ;;
     esac
@@ -739,10 +742,10 @@ function build_encrypted_archive
 
     file_to_create="$file_to_create.gpg"
 
-    debug "$command - \"$target\" 2>>$logfile | $gpg $BM__GPG_HOMEDIR -r \"$BM_ENCRYPTION_RECIPIENT\" -e > $file_to_create 2>> $logfile"
+    debug "$command - ${incremental_flags[*]} \"$target\" 2>>$logfile | $gpg $BM__GPG_HOMEDIR -r \"$BM_ENCRYPTION_RECIPIENT\" -e > \"$file_to_create\" 2>> $logfile"
     tail_logfile "$logfile"
 
-    $command - "$target" 2>>$logfile | $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > $file_to_create 2>> $logfile || error_code=$?
+    $command - "${incremental_flags[@]}" "$target" 2>>$logfile | $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > "$file_to_create" 2>> $logfile || error_code=$?
     check_error_code "$error_code" "$file_to_create" "$logfile"
 }
 
@@ -862,7 +865,7 @@ function __make_local_tarball_token
         master=".master"
 
         # handling of incremental options
-        incremental=""
+        incremental_flags=()
 
         if [[ $method = tarball-incremental ]]
         then
@@ -1080,8 +1083,18 @@ function __backup_method_mysql_mariadb()
         echo "password=\"$BM_MYSQL_ADMINPASS\"" >> $mysql_conffile
         BM_SHOULD_PURGE_MYCNF="true"
     fi
+
+    # --defaults-extra-file lets ~/.my.cnf override our credentials (bug #146),
+    # so read only our conffile when it holds a password; otherwise the
+    # password is expected to come from ~/.my.cnf.
+    if grep -Eq '^[[:space:]]*password[[:space:]]*=[[:space:]]*("[^"]|[^"[:space:]])' $mysql_conffile; then
+        mysql_defaults_opt="--defaults-file=$mysql_conffile"
+    else
+        mysql_defaults_opt="--defaults-extra-file=$mysql_conffile"
+    fi
+
     if [ -n "$BM_MYSQL_PORT" ]; then BM_MYSQL_PORT_OPT="-P$BM_MYSQL_PORT"; else BM_MYSQL_PORT_OPT=""; fi
-    base_command="$dump_bin --defaults-extra-file=$mysql_conffile $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST $BM_MYSQL_PORT_OPT $BM_MYSQL_EXTRA_OPTIONS"
+    base_command="$dump_bin $mysql_defaults_opt $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST $BM_MYSQL_PORT_OPT $BM_MYSQL_EXTRA_OPTIONS"
     compress="$BM_MYSQL_FILETYPE"
 
     # get each DB name if backing up separately
@@ -1091,7 +1104,7 @@ function __backup_method_mysql_mariadb()
                 error "Can't find \"\$client_bin\" but this is needed when backing up databases separately."
             fi
 
-            DBNAMES=$($client_bin --defaults-extra-file=$mysql_conffile -u $BM_MYSQL_ADMINLOGIN -h $BM_MYSQL_HOST $BM_MYSQL_PORT_OPT -B -N -e "show databases" | sed 's/ /%/g')
+            DBNAMES=$($client_bin $mysql_defaults_opt -u $BM_MYSQL_ADMINLOGIN -h $BM_MYSQL_HOST $BM_MYSQL_PORT_OPT -B -N -e "show databases" | sed 's/ /%/g')
 
             # if DBs are excluded
             for exclude in $BM_MYSQL_DBEXCLUDE

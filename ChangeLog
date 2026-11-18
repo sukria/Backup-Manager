@@ -1,5 +1,10 @@
 Backup Manager 0.7.17
 
+    [ Kōan ]
+      * Support spaces in BM_REPOSITORY_ROOT (repository creation, purge,
+        archive commit, tarball/incremental/dar/pipe archives, burning and
+        upload) (closes #109)
+
     [ Fabien Marsaud ]
       * Add MariaDB support
 

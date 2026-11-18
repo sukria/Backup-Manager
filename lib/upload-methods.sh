@@ -133,7 +133,7 @@ function bm_upload_ftp()
     if [[ "$BM_UPLOAD_FTP_TEST" = "true" ]]; then
             ftp_test_switch="--ftp-test"
 		# create the test file
-		$dd if=/dev/zero of=$BM_REPOSITORY_ROOT/2mb_file.dat bs=1M count=2 > /dev/null 2>&1
+		$dd if=/dev/zero of="$BM_REPOSITORY_ROOT/2mb_file.dat" bs=1M count=2 > /dev/null 2>&1
     fi
  
     logfile="$(mktemp ${BM_TEMP_DIR}/bmu-log.XXXXXX)"

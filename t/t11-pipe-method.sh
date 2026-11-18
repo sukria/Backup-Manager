@@ -8,8 +8,8 @@ source testlib.sh
 
 source confs/base.conf
 
-# taken verbatim from file attached to bug #4 that previously lived at
-# http://bugzilla.backup-manager.org/cgi-bin/attachment.cgi?id=1&action=view
+# taken verbatim from the file attached to bug #4 of the former bugzilla,
+# which is no longer online.
 export BM_REPOSITORY_ROOT="$PWD/repository"
 export BM_ARCHIVE_METHOD="pipe"
 source $locallib/sanitize.sh

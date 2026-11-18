@@ -11,7 +11,11 @@ trash=\
 	foo.d \
 	bar01 \
 	foo-bar.d \
-	bar21
+	bar21 \
+	spaced\ repo \
+	spaced \
+	repo \
+	testdir-spaces
 
 clean:
 	rm -rf $(trash)

@@ -1,0 +1,26 @@
+name: tests
+
+on:
+  push:
+    branches: [devel, master]
+  pull_request:
+    branches: [devel, master]
+
+permissions:
+  contents: read
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install external tools probed by t/testlib.sh
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq \
+            dar zstd xz-utils gnupg rsync zip bzip2 genisoimage
+
+      - name: Run test suite
+        run: bash t/run-tests.sh

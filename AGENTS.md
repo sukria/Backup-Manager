@@ -28,6 +28,20 @@ a thread they cannot help with.
 Pull requests start from `devel` and target `devel`. `master` only receives
 merges from `devel` at release time.
 
+## Releasing
+
+A release is cut by the `🚀 Release` workflow, dispatched on `devel` with the
+version number as input. It runs the test suite, tags, fast-forwards `master`,
+and publishes the GitHub release with a distribution tarball.
+
+Two things are written by hand on `devel` first, and the workflow refuses to
+release without them:
+
+- `VERSION` holds the version being released. It is what the installed tool
+  reports, so it is bumped in a reviewed commit, not by a robot.
+- `ChangeLog` has a `Backup Manager <version>` section. Those lines become the
+  release notes, so they are written for the people upgrading.
+
 ## Running the tests
 
 ```bash

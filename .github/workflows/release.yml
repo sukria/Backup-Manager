@@ -1,0 +1,135 @@
+name: 🚀 Release
+
+# The sole executor of a release. It is dispatched on `devel`, which is where
+# everything has already landed and been reviewed; `master` and the tag are
+# outputs of this workflow, never inputs. The ChangeLog section and the VERSION
+# file are written by hand before dispatching: this workflow refuses to invent
+# either of them.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version, no leading v (e.g. 1.1, 1.0.1)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yml
+
+  release:
+    needs: tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    name: release
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: 🔍 Refuse to release from anything but devel
+        run: |
+          if [ "${{ github.ref_name }}" != "devel" ]; then
+            echo "::error::Releases must be dispatched on 'devel', not '${{ github.ref_name }}'."
+            exit 1
+          fi
+
+      - name: 🔍 Validate version format
+        env:
+          VERSION: ${{ inputs.version }}   # bound as data, never interpolated into the shell
+        run: |
+          # Tags in this repository are plain numbers (1.0, 0.7.15), and the
+          # Debian and Ubuntu packages derive their upstream version from them.
+          if ! printf '%s' "$VERSION" | grep -qE '^[0-9]+(\.[0-9]+){1,2}$'; then
+            echo "::error::Version must match MAJOR.MINOR or MAJOR.MINOR.PATCH, with no leading v"
+            exit 1
+          fi
+
+      - name: 🔍 Check the tag does not already exist
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          if git rev-parse "refs/tags/$VERSION" >/dev/null 2>&1; then
+            echo "::error::Tag $VERSION already exists"
+            exit 1
+          fi
+
+      - name: 🔍 Check the VERSION file matches
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          # VERSION is what the installed tool reports to its users, so it is
+          # bumped in a reviewed commit on devel, not by this workflow.
+          FILE=$(tr -d '[:space:]' < VERSION)
+          if [ "$FILE" != "$VERSION" ]; then
+            echo "::error::VERSION file says '$FILE' — bump it on devel before dispatching"
+            exit 1
+          fi
+
+      - name: 📝 Extract the release notes from the ChangeLog
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          # The ChangeLog is curated by hand, one section per release, headed
+          # `Backup Manager <version>`. Releasing without that section is a
+          # process error, so it fails here rather than shipping a git log.
+          # $VERSION is safe to interpolate here: the step above accepted only
+          # digits and dots.
+          awk -v want="$VERSION" '
+            !found && $1 == "Backup" && $2 == "Manager" && $3 == want { found=1; next }
+            found && /^Backup Manager / { exit }
+            found { print }
+          ' ChangeLog > /tmp/release-notes.md
+          if ! grep -q '[^[:space:]]' /tmp/release-notes.md; then
+            echo "::error::No 'Backup Manager $VERSION' section in the ChangeLog"
+            exit 1
+          fi
+          cat /tmp/release-notes.md
+
+      - name: 📦 Build the distribution tarball
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          # The man pages are generated from the Perl scripts, so they are built
+          # here and shipped in the tarball: distribution maintainers build from
+          # this archive and should not need pod2man.
+          make manpages
+          DIR="backup-manager-$VERSION"
+          mkdir -p "/tmp/dist/$DIR"
+          git archive HEAD | tar -x -C "/tmp/dist/$DIR"
+          cp man/backup-manager-upload.8 man/backup-manager-purge.8 "/tmp/dist/$DIR/man/"
+          tar -C /tmp/dist -czf "/tmp/$DIR.tar.gz" "$DIR"
+          tar tzf "/tmp/$DIR.tar.gz" | head -5
+
+      - name: 🏷️ Create the release tag
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "$VERSION" -m "Backup Manager $VERSION"
+          git push origin "refs/tags/$VERSION"
+
+      - name: 🏷️ Fast-forward master to the released commit
+        run: |
+          # master is the released branch. This push must be a fast-forward; a
+          # rejection means master diverged and needs a human, never a merge
+          # commit or a force-push from here.
+          git push origin HEAD:refs/heads/master
+
+      - name: 🚀 Create the GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          gh release create "$VERSION" \
+            --title "Backup Manager $VERSION" \
+            --notes-file /tmp/release-notes.md \
+            --latest \
+            "/tmp/backup-manager-$VERSION.tar.gz"

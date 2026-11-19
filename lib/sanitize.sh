@@ -15,7 +15,61 @@
 #
 # Check that every key in the conffile is ok for a proper run.
 # Also manage deprecated confkeys the best as possible, so a deprecated
-# conffile just renders warnings but still works as before.
+# conffile just renders warnings but still works as before, and refuse to
+# run with a retired confkey instead of silently ignoring it.
+
+# How a configuration key is renamed:
+#
+# 1. Deprecation. The old name is added to BM__DEPRECATED_CONFKEYS. It keeps
+#    working: its value is copied to the new key, with a warning.
+#
+# 2. Retirement. The entry is moved to BM__RETIRED_CONFKEYS, along with the
+#    version it is retired in. From then on, a conffile setting the old name
+#    makes backup-manager stop with an error naming the new key.
+#
+# Never just delete an entry. A key that is not read anymore is silently
+# ignored, and the new key falls back to its default value: the archives
+# land in another repository, or get purged with the default TTL. An entry
+# in BM__RETIRED_CONFKEYS is kept forever, which also prevents a future key
+# from reusing a name that used to mean something else.
+#
+# When retiring a key, also update contrib/upgrade-conffile.sh and the
+# "Renamed configuration keys" section of doc/user-guide.sgml.
+
+# Renamed keys that are still honoured.
+# Format: "OLD_KEY NEW_KEY"
+BM__DEPRECATED_CONFKEYS=(
+    "BM_DIRECTORIES BM_TARBALL_DIRECTORIES"
+)
+
+# Renamed keys that are not honoured anymore, the run stops if one is set.
+# Format: "OLD_KEY NEW_KEY[|OTHER_NEW_KEY] VERSION"
+# A key that was split in several new keys lists all of them, separated by
+# a pipe.
+BM__RETIRED_CONFKEYS=(
+    "BM_ARCHIVES_REPOSITORY BM_REPOSITORY_ROOT 1.1"
+    "BM_ARCHIVES_PREFIX BM_ARCHIVE_PREFIX 1.1"
+    "BM_BACKUP_METHOD BM_ARCHIVE_METHOD 1.1"
+    "BM_MAX_TIME_TO_LIVE BM_ARCHIVE_TTL 1.1"
+    "BM_PURGE_DUPLICATES BM_ARCHIVE_PURGEDUPS 1.1"
+    "BM_USER BM_REPOSITORY_USER 1.1"
+    "BM_GROUP BM_REPOSITORY_GROUP 1.1"
+    "BM_FILETYPE BM_TARBALL_FILETYPE 1.1"
+    "BM_NAME_FORMAT BM_TARBALL_NAMEFORMAT 1.1"
+    "BM_DIRECTORIES_BLACKLIST BM_TARBALL_BLACKLIST 1.1"
+    "BM_DUMP_SYMLINKS BM_TARBALL_DUMPSYMLINKS 1.1"
+    "BM_UPLOAD_MODE BM_UPLOAD_METHOD 1.1"
+    "BM_UPLOAD_DIR BM_UPLOAD_DESTINATION 1.1"
+    "BM_UPLOAD_KEY BM_UPLOAD_SSH_KEY 1.1"
+    "BM_UPLOAD_USER BM_UPLOAD_SSH_USER|BM_UPLOAD_FTP_USER 1.1"
+    "BM_UPLOAD_PASSWD BM_UPLOAD_FTP_PASSWORD 1.1"
+    "BM_FTP_PURGE BM_UPLOAD_FTP_PURGE 1.1"
+    "BM_UPLOAD_FTPPURGE BM_UPLOAD_FTP_PURGE 1.1"
+)
+
+# Booleans used to accept "yes" and "no", they only accept "true" and
+# "false" since this version.
+BM__RETIRED_BOOLEANS_VERSION="1.1"
 
 # we'll count the number of warnings, here
 nb_warnings=0
@@ -84,35 +138,51 @@ function confkey_error()
     error "The configuration key \$key is not set but \$keymandatory is enabled."
 }
 
-# In version older than 0.6, it was possible to set booleans to "yes" or "no",
-# that's not valid anymore. In order to be backward compatible, we override yes/no
-# values to true/false, but we trigger a warning.
-function replace_deprecated_booleans()
+# Refuses to run when a retired key is set, naming its replacement.
+# The value is not used in place of the new key: guessing could put the
+# archives in the wrong place or purge them with the wrong TTL.
+function confkey_refuse_retired()
 {
-    debug "replace_deprecated_booleans()"
-    for line in $(env)
+    retired_key="$1"
+    new_keys="$2"
+    retired_version="$3"
+    debug "confkey_refuse_retired ($retired_key, $new_keys, $retired_version)"
+
+    eval "retired_value=\"\${$retired_key-}\"" || retired_value=""
+
+    if [[ -n "$retired_value" ]]; then
+        if [[ "$new_keys" = *"|"* ]]; then
+            new_keys="${new_keys//|/, }"
+            error "The configuration key \"\$retired_key\" was removed in Backup Manager \$retired_version, rename it to one of \$new_keys, depending on your configuration. See contrib/upgrade-conffile.sh."
+        else
+            error "The configuration key \"\$retired_key\" was removed in Backup Manager \$retired_version, rename it to \"\$new_keys\". See contrib/upgrade-conffile.sh."
+        fi
+    fi
+}
+
+# In version older than 0.6, it was possible to set booleans to "yes" or "no".
+# That was honoured with a warning until BM__RETIRED_BOOLEANS_VERSION, it is
+# now refused: we cannot tell which keys are booleans, so we cannot safely
+# keep overriding the value.
+function refuse_retired_booleans()
+{
+    debug "refuse_retired_booleans()"
+    retired_version="$BM__RETIRED_BOOLEANS_VERSION"
+    # Every BM_ variable, exported or not: an unexported BM_REPOSITORY_SECURE=yes
+    # would otherwise silently read as false.
+    for key in $(compgen -v BM_)
     do
-        key=$(echo "$line" | awk -F '=' '{print $1}')
-        value=$(echo "$line" | awk -F '=' '{print $2}')
+        value="${!key}"
         # Be sure to not treat BM_ARCHIVE_PREFIX as a deprecated boolean
         if [[ "$key" != "BM_ARCHIVE_PREFIX" ]]; then
-            klen=${#key}
-            if [[ $klen -gt 2 ]]; then
-                if [[ $(expr match "$key" BM_) -gt 0 ]]; then
-                    if [[ "$value" = "yes" ]]; then
-                        warning "Deprecated boolean, \$key is set to \"yes\", setting \"true\" instead."
-                        nb_warnings=$(($nb_warnings + 1))
-                        eval "export $key=\"true\""
-                    fi
-                    if [[ "$value" = "no" ]]; then
-                        warning "Deprecated boolean, \$key is set to \"no\", setting \"false\" instead."
-                        nb_warnings=$(($nb_warnings + 1))
-                        eval "export $key=\"false\""
-                    fi
-                fi
+            if [[ "$value" = "yes" ]]; then
+                error "The configuration key \$key is set to \"yes\", booleans only accept \"true\" or \"false\" since Backup Manager \$retired_version. Set it to \"true\". See contrib/upgrade-conffile.sh."
+            fi
+            if [[ "$value" = "no" ]]; then
+                error "The configuration key \$key is set to \"no\", booleans only accept \"true\" or \"false\" since Backup Manager \$retired_version. Set it to \"false\". See contrib/upgrade-conffile.sh."
             fi
         fi
-    done    
+    done
 }
 
 ##############################################################
@@ -120,9 +190,18 @@ function replace_deprecated_booleans()
 # the best possible, with default values and so on...
 #############################################################
 
-# First of all replace yes/no booleans with true/false ones.
-replace_deprecated_booleans
-confkey_handle_deprecated "BM_ARCHIVES_REPOSITORY" "BM_REPOSITORY_ROOT"
+# First of all, refuse retired keys and yes/no booleans, then honour the
+# deprecated keys, before any default value is applied.
+for entry in "${BM__RETIRED_CONFKEYS[@]}"
+do
+    confkey_refuse_retired $entry
+done
+refuse_retired_booleans
+for entry in "${BM__DEPRECATED_CONFKEYS[@]}"
+do
+    confkey_handle_deprecated $entry
+done
+
 confkey_require "BM_REPOSITORY_ROOT" "/var/archives" 
 
 # The temp dir used by BM
@@ -137,9 +216,7 @@ export BM_REPOSITORY_ROOT="${BM_REPOSITORY_ROOT%/}"
 
 confkey_require "BM_REPOSITORY_SECURE" "true" 
 if [[ "$BM_REPOSITORY_SECURE" = "true" ]]; then
-    confkey_handle_deprecated "BM_USER" "BM_REPOSITORY_USER"
     confkey_require "BM_REPOSITORY_USER" "root"
-    confkey_handle_deprecated "BM_GROUP" "BM_REPOSITORY_GROUP"
     confkey_require "BM_REPOSITORY_GROUP" "root"
     confkey_require "BM_REPOSITORY_CHMOD" "770"
     confkey_require "BM_ARCHIVE_CHMOD" "660"
@@ -147,16 +224,12 @@ fi
 
 confkey_require "BM_REPOSITORY_RECURSIVEPURGE" "false" 
 
-confkey_handle_deprecated "BM_MAX_TIME_TO_LIVE" "BM_ARCHIVE_TTL"
 confkey_require "BM_ARCHIVE_TTL" "5"
 
-confkey_handle_deprecated "BM_PURGE_DUPLICATES" "BM_ARCHIVE_PURGEDUPS"
 confkey_require "BM_ARCHIVE_PURGEDUPS" "true"
 
-confkey_handle_deprecated "BM_ARCHIVES_PREFIX" "BM_ARCHIVE_PREFIX"
 confkey_require "BM_ARCHIVE_PREFIX" "$HOSTNAME"
 
-confkey_handle_deprecated "BM_BACKUP_METHOD" "BM_ARCHIVE_METHOD"
 confkey_require "BM_ARCHIVE_METHOD" "tarball"
 
 confkey_require "BM_ARCHIVE_NICE_LEVEL" "10"
@@ -186,11 +259,6 @@ if [[ "$BM_ARCHIVE_METHOD" = "tarball" ]] ||
     confkey_require "BM_TARBALL_NAMEFORMAT" "long"
     confkey_require "BM_TARBALL_DUMPSYMLINKS" "false"
 fi
-
-confkey_handle_deprecated "BM_FILETYPE" "BM_TARBALL_FILETYPE"
-confkey_handle_deprecated "BM_NAME_FORMAT" "BM_TARBALL_NAMEFORMAT"
-confkey_handle_deprecated "BM_DIRECTORIES_BLACKLIST" "BM_TARBALL_BLACKLIST"
-confkey_handle_deprecated "BM_DUMP_SYMLINKS" "BM_TARBALL_DUMPSYMLINKS"
 
 # BM_TARBALL_BLACKLIST can be either a space-separated list or an array
 # (needed for paths with spaces), it is converted to BM__TARBALL_BLACKLIST[].
@@ -225,9 +293,6 @@ fi
 
 # Converting anything in BM_TARBALL_DIRECTORIES in the array BM_TARBALL_TARGETS[].
 # see bug #86 for details.
-if [[ -n "$BM_DIRECTORIES" ]]; then
-    BM_TARBALL_DIRECTORIES="$BM_DIRECTORIES"
-fi
 if [[ -n "$BM_TARBALL_DIRECTORIES" ]]; then
     declare -a BM_TARBALL_TARGETS
     index=0
@@ -240,8 +305,6 @@ fi
 
 if [[ "$BM_UPLOAD_METHOD" = "rsync" ]]; then
     confkey_require "BM_UPLOAD_RSYNC_DUMPSYMLINKS" "false"
-    confkey_handle_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
-    confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
 fi
 
 if [[ "$BM_UPLOAD_METHOD" = "ssh" ]]; then
@@ -288,20 +351,6 @@ if [[ -n "$BM_BURNING_METHOD" ]] &&
     confkey_require "BM_BURNING_MAXSIZE" "650"
     confkey_require "BM_BURNING_CHKMD5" "true"
 fi
-
-if [[ -n "$BM_UPLOAD_MODE" ]]; then
-    confkey_handle_deprecated "BM_UPLOAD_MODE" "BM_UPLOAD_METHOD"
-   
-    confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_SSH_USER"
-    confkey_handle_deprecated "BM_UPLOAD_KEY" "BM_UPLOAD_SSH_KEY"
-
-    confkey_handle_deprecated "BM_UPLOAD_USER" "BM_UPLOAD_FTP_USER"
-    confkey_handle_deprecated "BM_UPLOAD_PASSWD" "BM_UPLOAD_FTP_PASSWORD"
-    confkey_handle_deprecated "BM_FTP_PURGE" "BM_UPLOAD_FTP_PURGE"
-    confkey_handle_deprecated "BM_UPLOAD_FTPPURGE" "BM_UPLOAD_FTP_PURGE"
-
-    confkey_handle_deprecated "BM_UPLOAD_DIR" "BM_UPLOAD_DESTINATION"
-fi        
 
 if [[ -z "$BM_ARCHIVE_STRICTPURGE" ]]; then
     confkey_require "BM_ARCHIVE_STRICTPURGE" "true"

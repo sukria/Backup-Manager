@@ -6,6 +6,10 @@
 #  * There is one section per "backup method", you have to
 #    fill the section of the chosen method.
 #
+#  * Keys renamed in older versions are refused, see the
+#    "Renamed configuration keys" section of the user guide.
+#    contrib/upgrade-conffile.sh renames them for you.
+#
 ##############################################################
 
 ##############################################################

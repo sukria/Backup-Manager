@@ -254,7 +254,7 @@ function bm_upload_rsync_common()
     for directory in $BM_UPLOAD_RSYNC_DIRECTORIES
     do
         if [[ -n "$bm_upload_hosts" ]]; then
-            servers=`echo $bm_upload_hosts| sed 's/ /,/g'`
+            servers=`echo $bm_upload_hosts| sed 's/,/ /g'`
             for host in $servers
             do
                 _exec_rsync_command

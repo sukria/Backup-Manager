@@ -87,6 +87,7 @@ our own findings as much as to yours.
 | Merge a pull request | Review and merge every one of them |
 | Approve its own work | Decide what ships |
 | Close an issue on its own | Judge whether a report is resolved |
+| Publish a security advisory | Decide when a defect becomes public |
 | Tag, build or publish a release | Run every release by hand |
 | Decide the direction of the project | Own the design and the roadmap |
 

@@ -57,6 +57,58 @@ comes with the test that fails without it.
 
 ## Backward compatibility
 
-This is the rule that matters most here. An upgrade must never orphan existing
-archives, silently stop purging them, or turn an incremental backup into a full
-one. When a format changes, the new code still reads what the old code wrote.
+**This is the rule that matters most here, and it outranks every other
+consideration in this file.**
+
+This tool has been running in production since 2005. It is packaged by Debian
+and Ubuntu, it runs as root from cron on machines nobody is watching, and its
+job is to hold the only remaining copy of someone's data. A configuration file
+written fifteen years ago is still a supported input. Somebody out there is
+running a version two releases old and will upgrade to yours without reading
+anything.
+
+So: **an established behaviour is a contract, whatever its age and whether or
+not it was ever documented.** An upgrade must never orphan existing archives,
+silently stop purging them, turn an incremental backup into a full one, or make
+an existing `backup-manager.conf` stop working. When a format changes, the new
+code still reads what the old code wrote.
+
+The burden of proof is on the change, never on the existing behaviour. "Nobody
+could reasonably depend on this" is not an argument that carries here.
+
+### Nothing breaks without an incubation period
+
+When a change really is necessary, it goes through deprecation. It does not go
+straight in.
+
+1. **The old form keeps working**, and keeps producing the same result.
+2. **A warning tells the user what to do instead**, naming both the old and the
+   new form. The mechanism already exists: `confkey_handle_deprecated` in
+   `lib/sanitize.sh` honours the old key, warns, and feeds the new one.
+   Use it rather than inventing something.
+3. **The deprecation ships in a release and lives there**, long enough for the
+   distribution packages to carry it and for users to meet the warning.
+4. **Removal is a separate, later, deliberate decision**, announced in the
+   ChangeLog. It is never a side effect of the change that introduced the
+   replacement.
+
+A warning the user can act on is always preferable to a failure, and a failure
+is always preferable to silence. Degrading quietly is the worst of the three:
+this tool is read by nobody on the day it runs, so a behaviour change that
+produces no message produces no backup either, and nobody finds out until they
+need the data.
+
+### What counts as a public contract
+
+Not just the documented surface. All of it:
+
+- Every `BM_*` configuration variable, its name, and what it accepts.
+- Archive file names and the `$TODAY` date format. Hooks, cron jobs and user
+  scripts parse them.
+- Every variable exported to `BM_PRE_BACKUP_COMMAND` and
+  `BM_POST_BACKUP_COMMAND`.
+- Command line flags of `backup-manager`, `backup-manager-purge` and
+  `backup-manager-upload`.
+- Exit codes, and the md5 database format.
+
+Touching any of these is a deprecation cycle, not an edit.

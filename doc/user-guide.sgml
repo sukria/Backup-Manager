@@ -250,6 +250,78 @@ export BM_ENCRYPTION_RECIPIENT="Alexis Sukrieh"
 export BM_ENCRYPTION_RECIPIENT="sukria@sukria.net"
 </example>
 
+<p>
+Any string that GPG accepts for its <tt>-r</tt> option works: a key ID, a full
+fingerprint, the "Real Name" or the email address given when the key was
+created. If several keys match a name or an email address, use the
+fingerprint.
+
+<p>
+<em>Which keyring is used?</em>
+<p>
+&bmngr; runs GPG on the local machine and never contacts a key server, so the
+key does not need to be published anywhere. GPG looks the recipient up in the
+keyring of the user running &bmngr;, in <tt>$HOME/.gnupg</tt>. If
+<tt>HOME</tt> is not set, <tt>/root/.gnupg</tt> is used. When &bmngr; runs as
+root, from cron for instance, the public key must be in root's keyring. The key
+does not have to belong to root: only the public key has to be imported there.
+
+<p>
+<em>Setting up a key</em>
+<p>
+The safest setup is to create the key pair on another machine, keep the
+private key there, and import only the public key on the server. An attacker
+who gains access to the server then cannot read the archives.
+
+<p>
+On the machine that holds the private key, create the key if you do not have
+one yet, then export its public part:
+
+<example>
+$ gpg --gen-key
+$ gpg --list-keys you@example.org
+$ gpg --export --armor you@example.org > backup-key.asc
+</example>
+
+<p>
+Copy <tt>backup-key.asc</tt> to the server, and import it as the user that
+runs &bmngr; (root here):
+
+<example>
+# gpg --import backup-key.asc
+# gpg --edit-key you@example.org
+gpg> trust
+  (choose "5 = I trust ultimately")
+gpg> quit
+</example>
+
+<p>
+Setting the trust level is needed: &bmngr; runs GPG unattended, and GPG refuses
+to encrypt to an imported key it has no reason to trust, so the archive would
+not be built.
+
+<p>
+You can also create the key directly on the server, by running
+<tt>gpg --gen-key</tt> as root. The private key then lives on the server, next
+to the archives it protects.
+
+<p>
+<em>Checking the setup</em>
+<p>
+Before relying on it, check that encryption works as the user running
+&bmngr;, with the value of <tt>BM_ENCRYPTION_RECIPIENT</tt>:
+
+<example>
+# echo test | gpg -r "you@example.org" -e > /dev/null &amp;&amp; echo OK
+</example>
+
+<p>
+If this command asks a question or fails, the backup will fail the same way.
+
+<p>
+Keep a copy of the private key and its passphrase in a safe place, away from
+the server. Without it, no encrypted archive can be restored.
+
 <sect1 id="archives">Archives
 
 <p>

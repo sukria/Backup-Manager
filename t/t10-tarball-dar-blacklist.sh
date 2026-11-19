@@ -15,7 +15,7 @@ export BM_REPOSITORY_ROOT="$PWD/repository"
 export BM_ARCHIVE_METHOD="tarball"
 export BM_TARBALL_NAMEFORMAT="long"
 export BM_TARBALL_FILETYPE="dar"
-export BM_TARBALL_DUMPSYMLINKS="no"
+export BM_TARBALL_DUMPSYMLINKS="false"
 export BM_TARBALL_DIRECTORIES="$PWD/var/www/"
 export BM_TARBALL_BLACKLIST="$PWD/var/www/xim $PWD/var/www/Upload/ /tmp/ titi"
 source $locallib/sanitize.sh

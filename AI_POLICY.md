@@ -53,10 +53,35 @@ housekeeping notes, not decisions.
 
 ### Security audits
 
-Kōan scans the codebase for the usual classes of defect, and for dependencies
-with known CVEs. Findings are verified by a human before anything is acted on,
-and anything sensitive goes through a private security advisory, never a public
-issue.
+Kōan runs a monthly audit of the codebase: static analysis, the usual classes
+of defect, and dependencies with known CVEs.
+
+**A finding it rates critical or high is filed as a public issue**, labelled
+`security`. Lower-severity findings stay in the maintainer's notes.
+
+That is a deliberate choice, and it deserves an explanation, because the
+conventional advice is the opposite.
+
+This project has no funded security team and no on-call. A vulnerability kept
+in a private channel is a vulnerability nobody works on, and the backlog of
+this repository is proof enough that quiet reports go stale here. A public
+issue, on the other hand, gets read: by whoever wants to send the patch, and by
+the Debian and Ubuntu maintainers who package this tool and who would otherwise
+learn about the defect last. Disclosure is what gets a fix shipped.
+
+So the trade is made openly: **we describe the defect, where it lives and what
+it costs you, and we never publish a working exploit, a ready-to-paste payload,
+or a recipe for abusing an installed system.** Enough to find and fix it, not
+enough to hand it to somebody looking for targets. An issue of this kind is
+triaged before anything else in the backlog.
+
+A human verifies every finding before it is filed. Kōan does not decide what is
+real.
+
+**If you have found a vulnerability yourself**, you are welcome to open an issue
+the same way. If you would rather not disclose it before a fix exists, that is a
+legitimate position: say so in a thread without the details, or contact the
+maintainer directly, and we will agree on a private channel.
 
 ---
 

@@ -1,3 +1,13 @@
+Backup Manager 1.1 (not released)
+
+    [ New features ]
+      * New BM_EXIT_ON_ERROR configuration key. When set to "true",
+        backup-manager exits with code 3 if one or more tarball archives
+        failed to build, instead of 0, so cron and monitoring can notice it.
+        It is disabled by default: the exit status of existing setups does
+        not change. Whether to enable it by default will be decided in a
+        later release (closes #171). (Kōan)
+
 Backup Manager 1.0 "The Undead Release"
 
     First release since 0.7.15 (June 2018). It gathers everything that landed

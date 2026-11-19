@@ -310,6 +310,34 @@ Example:
 export BM_ARCHIVE_NICE_LEVEL="19" # recommanded for desktop users.
 </example>
 
+<sect2 id="BM_EXIT_ON_ERROR"><tt>BM_EXIT_ON_ERROR</tt>
+
+<p>
+<em>Type: boolean, default: <tt>false</tt>.</em>
+
+<p>
+When an archive fails to build, &bmngr; prints a warning and goes on with the
+other archives, the upload and the burning. By default, it still exits with
+code <tt>0</tt>, so a cron job or a monitoring tool that checks the exit status
+sees a successful backup.
+
+<p>
+Set this key to <tt>true</tt> to make &bmngr; exit with code <tt>3</tt> when at
+least one archive failed to build. The rest of the run is unchanged: the
+archives that could be built are still uploaded and burnt, and the
+post-backup command still runs.
+
+<p>
+Only failures of the <tt>tarball</tt> and <tt>tarball-incremental</tt> methods
+are counted for now (an unreadable target, or an archiver that fails).
+
+<p>
+Example:
+
+<example>
+export BM_EXIT_ON_ERROR="true"
+</example>
+
 <sect2 id="BM_ARCHIVE_PURGEDUPS"><tt>BM_ARCHIVE_PURGEDUPS</tt>
 
 <p>

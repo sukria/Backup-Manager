@@ -67,6 +67,24 @@ Disable the burning process.
 .P
 .B --no-purge
 Disable the purging process.
+.SH EXIT STATUS
+.TP
+.B 0
+The run completed. Unless BM_EXIT_ON_ERROR is set to "true", this is also
+returned when some archives failed to build.
+.TP
+.B 1
+A fatal error stopped the run.
+.TP
+.B 3
+BM_EXIT_ON_ERROR is set to "true" and at least one tarball archive failed to
+build. The other steps of the run were still performed.
+.TP
+.B 15
+The pre-backup or the post-backup command failed.
+.TP
+.B 70
+The run was interrupted by a signal.
 .SH BUGS
 If you find a bug or want to submit a wish-list to the development team, feel
 free to create a new issue at https://github.com/sukria/Backup-Manager/issues

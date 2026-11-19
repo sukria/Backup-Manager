@@ -259,6 +259,7 @@ if [[ "$nopurge" != "true" ]]; then
 fi
 
 debug "Building archives"
+nb_archive_errors=0
 bm_dbus_send_progress 20 "Building archives"
 make_archives
 
@@ -287,7 +288,12 @@ umask $BM_UMASK >/dev/null
 curr_time=`date +%Y-%m-%d%t%T`
 info "Process finished at $curr_time"
 
+bm_exit_code=$(get_exit_code)
+if [[ "$bm_exit_code" != "0" ]]; then
+    warning "Some archives failed to build, exiting with code \$bm_exit_code."
+fi
+
 bm_dbus_send_progress 100 "Finished"
-bm_dbus_send_event "shutdown" "0"
-exit 0
+bm_dbus_send_event "shutdown" "$bm_exit_code"
+exit $bm_exit_code
 

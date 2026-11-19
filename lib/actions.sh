@@ -232,3 +232,17 @@ function create_directories()
 }
 
 
+
+# The exit code of a run: 0, unless BM_EXIT_ON_ERROR is enabled and
+# some archives failed to build. 3 is not used by any other exit path.
+function get_exit_code()
+{
+    debug "get_exit_code()"
+
+    if [[ "$BM_EXIT_ON_ERROR" = "true" ]] &&
+       [[ ${nb_archive_errors:-0} -gt 0 ]]; then
+        echo 3
+    else
+        echo 0
+    fi
+}

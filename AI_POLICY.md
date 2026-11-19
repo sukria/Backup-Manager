@@ -56,42 +56,27 @@ housekeeping notes, not decisions.
 Kōan runs a monthly audit of the codebase: static analysis, the usual classes
 of defect, and dependencies with known CVEs.
 
-**A finding it rates critical or high is filed as a public issue**, labelled
-`security`, with one exception stated below. Lower-severity findings stay in
-the maintainer's notes.
+**A finding it rates critical or high goes through a private security
+advisory**, exactly like a report from an outside researcher. It is fixed
+first, and published afterwards with a CVE, which is what alerts the
+distributions and the vulnerability databases.
 
-That is a deliberate choice, and it deserves an explanation, because the
-conventional advice is the opposite.
+**No unfixed vulnerability is ever filed as a public issue**, including one we
+found ourselves. This project is packaged by Debian and Ubuntu, so between a
+public description and the distribution update there is a window of weeks in
+which every affected installation is both identified and exploitable. The
+public backlog shows security work only once it is done.
 
-This project has no funded security team and no on-call. A vulnerability kept
-in a private channel is a vulnerability nobody works on, and the backlog of
-this repository is proof enough that quiet reports go stale here. A public
-issue, on the other hand, gets read: by whoever wants to send the patch, and by
-the Debian and Ubuntu maintainers who package this tool and who would otherwise
-learn about the defect last. Disclosure is what gets a fix shipped.
+Lower-severity findings, hardening with no concrete exploit path, are handled
+as ordinary issues in the open. Quoting a variable or tightening a file mode is
+not a secret.
 
-So the trade is made openly: **we describe the defect, where it lives and what
-it costs you, and we never publish a working exploit, a ready-to-paste payload,
-or a recipe for abusing an installed system.** Enough to find and fix it, not
-enough to hand it to somebody looking for targets. An issue of this kind is
-triaged before anything else in the backlog.
+A human verifies every finding before anything is filed, and a human decides
+what ships. Kōan does not decide what is real.
 
-**One class is handled privately**: a defect that is both critical and reachable
-remotely, without access to the machine. This project is packaged by Debian and
-Ubuntu, so between a public issue and the distribution update there is a window
-in which every affected installation is both identified and vulnerable. That
-single case goes through a private security advisory, is fixed first, and is
-published afterwards with a CVE, which is what alerts the distributions. Every
-other finding, including local privilege defects and data destruction, is
-public from the start.
-
-A human verifies every finding before it is filed. Kōan does not decide what is
-real.
-
-**If you have found a vulnerability yourself**, you are welcome to open an issue
-the same way. If you would rather not disclose it before a fix exists, use the
-**Report a vulnerability** button in this repository's Security tab. It reaches
-the maintainers privately, and nothing becomes public until there is a fix.
+[SECURITY.md](SECURITY.md) describes the reporting channel, the 90 day
+disclosure window and what you can expect after sending a report. It applies to
+our own findings as much as to yours.
 
 ---
 

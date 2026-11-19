@@ -57,7 +57,8 @@ Kōan runs a monthly audit of the codebase: static analysis, the usual classes
 of defect, and dependencies with known CVEs.
 
 **A finding it rates critical or high is filed as a public issue**, labelled
-`security`. Lower-severity findings stay in the maintainer's notes.
+`security`, with one exception stated below. Lower-severity findings stay in
+the maintainer's notes.
 
 That is a deliberate choice, and it deserves an explanation, because the
 conventional advice is the opposite.
@@ -75,13 +76,22 @@ or a recipe for abusing an installed system.** Enough to find and fix it, not
 enough to hand it to somebody looking for targets. An issue of this kind is
 triaged before anything else in the backlog.
 
+**One class is handled privately**: a defect that is both critical and reachable
+remotely, without access to the machine. This project is packaged by Debian and
+Ubuntu, so between a public issue and the distribution update there is a window
+in which every affected installation is both identified and vulnerable. That
+single case goes through a private security advisory, is fixed first, and is
+published afterwards with a CVE, which is what alerts the distributions. Every
+other finding, including local privilege defects and data destruction, is
+public from the start.
+
 A human verifies every finding before it is filed. Kōan does not decide what is
 real.
 
 **If you have found a vulnerability yourself**, you are welcome to open an issue
-the same way. If you would rather not disclose it before a fix exists, that is a
-legitimate position: say so in a thread without the details, or contact the
-maintainer directly, and we will agree on a private channel.
+the same way. If you would rather not disclose it before a fix exists, use the
+**Report a vulnerability** button in this repository's Security tab. It reaches
+the maintainers privately, and nothing becomes public until there is a fix.
 
 ---
 

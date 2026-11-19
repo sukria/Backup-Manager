@@ -53,10 +53,30 @@ housekeeping notes, not decisions.
 
 ### Security audits
 
-Kōan scans the codebase for the usual classes of defect, and for dependencies
-with known CVEs. Findings are verified by a human before anything is acted on,
-and anything sensitive goes through a private security advisory, never a public
-issue.
+Kōan runs a monthly audit of the codebase: static analysis, the usual classes
+of defect, and dependencies with known CVEs.
+
+**A finding it rates critical or high goes through a private security
+advisory**, exactly like a report from an outside researcher. It is fixed
+first, and published afterwards with a CVE, which is what alerts the
+distributions and the vulnerability databases.
+
+**No unfixed vulnerability is ever filed as a public issue**, including one we
+found ourselves. This project is packaged by Debian and Ubuntu, so between a
+public description and the distribution update there is a window of weeks in
+which every affected installation is both identified and exploitable. The
+public backlog shows security work only once it is done.
+
+Lower-severity findings, hardening with no concrete exploit path, are handled
+as ordinary issues in the open. Quoting a variable or tightening a file mode is
+not a secret.
+
+A human verifies every finding before anything is filed, and a human decides
+what ships. Kōan does not decide what is real.
+
+[SECURITY.md](SECURITY.md) describes the reporting channel, the 90 day
+disclosure window and what you can expect after sending a report. It applies to
+our own findings as much as to yours.
 
 ---
 
@@ -67,6 +87,7 @@ issue.
 | Merge a pull request | Review and merge every one of them |
 | Approve its own work | Decide what ships |
 | Close an issue on its own | Judge whether a report is resolved |
+| Publish a security advisory | Decide when a defect becomes public |
 | Tag, build or publish a release | Run every release by hand |
 | Decide the direction of the project | Own the design and the roadmap |
 

@@ -55,6 +55,43 @@ comes with the test that fails without it.
 - Keep commits focused: one concern per commit, one subject line that says what
   changed.
 
+## Security
+
+This tool runs as root from cron on machines nobody watches, and it is packaged
+by Debian and Ubuntu. A vulnerability here reaches far more installations than
+this repository's own releases, and it reaches them slowly, through
+distribution updates that take weeks.
+
+**Never describe an unfixed vulnerability anywhere public.** Not in an issue,
+not in a pull request title or body, not in a commit message, not in a code
+comment, not in the ChangeLog. The moment a defect is described publicly, every
+installation running the affected version is both identified and exploitable
+until the distributions catch up.
+
+That holds whoever found it: an outside reporter, a maintainer, or the monthly
+automated audit. [SECURITY.md](SECURITY.md) is the reporting channel,
+[AI_POLICY.md](AI_POLICY.md) covers the audit.
+
+### Working on a security fix
+
+1. **It starts as a private advisory**, not an issue. The fix is developed in
+   the temporary private fork attached to it.
+2. **The commit message and the pull request say what the code does, not what
+   it protects against.** "Quote the repository path in the purge loop" is
+   enough. Do not write "fixes an injection that lets a crafted archive name
+   run arbitrary commands" before the advisory is published.
+3. **No proof-of-concept anywhere.** Not in the advisory body, not in a test,
+   not in a fixture file. A regression test asserts the correct behaviour; it
+   does not ship a working exploit.
+4. **Publication comes after the release.** The advisory is published with a
+   CVE once the fix ships, which is what alerts the distributions and the
+   vulnerability databases. Only then does the ChangeLog describe the defect.
+
+**A hardening change with no concrete exploit path is ordinary work**, and goes
+through the normal public flow. Quoting a variable, tightening a file mode,
+checking an exit code: do those in the open. The private path is for a defect
+somebody could act on.
+
 ## Backward compatibility
 
 **This is the rule that matters most here, and it outranks every other

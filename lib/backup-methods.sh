@@ -961,6 +961,8 @@ function backup_method_tarball()
     elif [[ $nb_err -gt 1 ]]; then
         warning "\$nb_err errors occurred during the tarball generation."
     fi
+    # nb_err is reset by every call, keep a count for the whole run.
+    nb_archive_errors=$((${nb_archive_errors:-0} + $nb_err))
 }
 
 function backup_method_pgsql()

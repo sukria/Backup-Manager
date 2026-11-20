@@ -37,6 +37,7 @@ my $g_ftpclean  = undef;
 my $g_ftptest  = undef;
 my $g_s3clean   = undef;
 my $g_s3max_size = 4*1024*1024*1024; # 4G
+my $g_s3region  = undef;
 my $g_sshclean   = undef;
 my $g_protocol     = 'scp';
 my $g_remote_dir= '/var/archives/uploads';
@@ -62,6 +63,7 @@ BackupManager::Config::getopt("$0 -m=mode -h=host -u=user [options] date\n
 --ftp-test    : Sends a test file before uploading archives in FTP mode.
 --s3-purge    : Purge the remote directory before uploading files in S3 mode.
 --s3-maxsize    : Maximum file size to upload.  If file execeds this size, it will be `split`. Default is 4GB
+--s3-region    : AWS region of the bucket (e.g. eu-west-1). Enables Signature V4.
 --ssh-purge    : Purge the remote directory before uploading files in SSH mode.
 date        : All files >= date will be uploaded. Either a valid date (YYYYMMDD) or one of this words : today, yesterday",
 'verbose'    => sub { init_dialog($_[1]) },
@@ -78,6 +80,7 @@ date        : All files >= date will be uploaded. Either a valid date (YYYYMMDD)
 'ftp-test'    => \$g_ftptest,
 's3-purge'    => \$g_s3clean,
 's3-maxsize=i'    => \$g_s3max_size,
+'s3-region=s'    => \$g_s3region,
 'ssh-purge'    => \$g_sshclean,
 'list'        => \$g_list,
 );
@@ -939,10 +942,23 @@ sub __s3_errstr($)
     return 'unknown error';
 }
 
-# Returns the bucket object for $name.
+# Minimum Net::Amazon::S3 version needed for Signature V4 and the
+# region-aware bucket() call used when BM_UPLOAD_S3_REGION is set.
+use constant S3_REGION_MIN_VERSION => '0.86';
+
+# True when a region was given with --s3-region.
+sub __s3_has_region()
+{
+    return (defined $g_s3region and length $g_s3region);
+}
+
+# Returns the bucket object for $name. Without a region, the call is the
+# historical one, so existing setups keep talking to S3 the same way.
 sub __s3_bucket($$)
 {
     my ($s3, $name) = @_;
+    return $s3->bucket({ bucket => $name, region => $g_s3region })
+        if __s3_has_region();
     return $s3->bucket($name);
 }
 
@@ -959,6 +975,14 @@ sub send_files_with_s3($$$$$$)
 
     if ($Net::Amazon::S3::VERSION < '0.39') {
         print_error "Net::Amazon::S3 >= 0.39 is required, but version ${Net::Amazon::S3::VERSION} was found, cannot use S3 service";
+        return FALSE;
+    }
+
+    if (__s3_has_region() and
+        $Net::Amazon::S3::VERSION < S3_REGION_MIN_VERSION) {
+        print_error "Net::Amazon::S3 >= " . S3_REGION_MIN_VERSION
+            . " is required to use BM_UPLOAD_S3_REGION, but version "
+            . "${Net::Amazon::S3::VERSION} was found";
         return FALSE;
     }
 
@@ -986,13 +1010,14 @@ sub send_files_with_s3($$$$$$)
         my %uploaded;
         # [archive, [its keys]] for every archive fully sent to this host
         my @sent_files;
-        my $s3 = Net::Amazon::S3->new(
-            {   
-                aws_access_key_id => $user,
-                aws_secret_access_key => $passwd,
-                timeout => 300
-            }
+        my %s3_args = (
+            aws_access_key_id     => $user,
+            aws_secret_access_key => $passwd,
+            timeout               => 300,
         );
+        $s3_args{authorization_method} = 'Net::Amazon::S3::Signature::V4'
+            if __s3_has_region();
+        my $s3 = Net::Amazon::S3->new(\%s3_args);
 
         unless (defined $s3) {
             print_error "Unable to connect to $host : $@\n";
@@ -1015,7 +1040,11 @@ sub send_files_with_s3($$$$$$)
                 return FALSE;
             }
             print_info "Bucket $bucket does not exist... creating";
-            unless ($s3->add_bucket({ bucket => $bucket })) {
+            my %add_args = (bucket => $bucket);
+            # us-east-1 is the default and AWS rejects it as a constraint.
+            $add_args{location_constraint} = $g_s3region
+                if __s3_has_region() and $g_s3region ne 'us-east-1';
+            unless ($s3->add_bucket(\%add_args)) {
                 print_error "Could not create bucket $bucket: " . __s3_errstr($s3);
                 return FALSE;
             }
@@ -1334,6 +1363,11 @@ Purge the remote directory before uploading files in FTP mode.
 =item B<--s3-purge>
 
 Purge the remote directory before uploading files in FTP mode.
+
+=item B<--s3-region>
+
+AWS region of the S3 bucket (e.g. eu-west-1). Enables Signature V4 signing
+and sets the location of the bucket when it has to be created.
 
 =item B<--ssh-purge>
 

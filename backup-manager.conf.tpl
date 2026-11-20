@@ -517,6 +517,12 @@ export BM_UPLOAD_S3_PURGE="false"
 # By default, BM_ARCHIVE_TTL will be used.
 export BM_UPLOAD_S3_TTL=""
 
+# AWS region of the bucket (e.g. "eu-west-1"). Required for buckets
+# outside us-east-1, which only accept Signature V4 requests.
+# Also used as the location of the bucket when backup-manager creates it.
+# Leave empty to keep the historical behaviour.
+export BM_UPLOAD_S3_REGION=""
+
 ##############################################################
 # The RSYNC method
 #############################################################

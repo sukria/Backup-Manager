@@ -1526,6 +1526,21 @@ locally, make it build archives, upload them to S3 and then purge them locally
 to the local TTL (BM_ARCHIVE_TTL) and a non-null value to BM_UPLOAD_S3_TTL.
 <p>
 
+<sect2 id="BM_UPLOAD_S3_REGION"><tt>BM_UPLOAD_S3_REGION</tt>
+<p>
+<em>Type: string, default: <tt>empty</tt></em>
+<p>
+The AWS region the bucket lives in, for instance <tt>eu-west-1</tt>. Buckets
+outside <tt>us-east-1</tt> only accept Signature V4 requests: without this
+setting, uploads to them fail with an error such as
+<tt>PermanentRedirect</tt>. When &bmngr; creates the bucket, it creates it in
+this region. Requires a recent Net::Amazon::S3 Perl module.
+<p>
+<example>
+export BM_UPLOAD_S3_REGION="eu-west-1"
+</example>
+<p>
+
 <sect1 id="upload-rsync">RSYNC uploads
 <sect2 id="upload-rsync-desc">Description
 <p>

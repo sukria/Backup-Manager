@@ -412,6 +412,7 @@ function purge_duplicate_archives()
     if [[ -z "$date_of_file" ]]; then
         error "Unable to get date from file."
     fi
+    date_of_reference="$date_of_file"
    
     # split the name around its (last) date: archivename-<date>-filetype
     pattern_prefix="${file_to_create%"$date_of_file"*}"
@@ -430,7 +431,20 @@ function purge_duplicate_archives()
             # get the md5 hash of the file we parse, in its .md5 file
             md5sum_to_check="$(get_md5sum_from_file "$file" "$MD5FILE")"
             if [[ -z "$md5sum_to_check" ]]; then
-                warning "Unable to find the md5 hash of file \"\$file\" in file \"\$MD5FILE\"."
+                # A newer archive without an entry may not be committed
+                # yet: never replace it with a link to an older one.
+                if [[ ! "$date_of_file" < "$date_of_reference" ]]; then
+                    debug "No md5 hash recorded for $file, newer than $file_to_create, skipping."
+                    continue
+                fi
+                # Archives written by older releases, or left by a build
+                # that was not committed, have no entry: hash them for this
+                # comparison only, never record them in $MD5FILE.
+                info "No md5 hash recorded for \"\$file\" in \"\$MD5FILE\", computing it."
+                md5sum_to_check="$(get_md5sum "$file")"
+            fi
+            if [[ "$md5sum_to_check" = "undefined" ]]; then
+                warning "Unable to compute the md5 hash of file \"\$file\"."
                 continue
             fi
             

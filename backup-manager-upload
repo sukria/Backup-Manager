@@ -924,6 +924,28 @@ sub s3_clean_directory($)
     return 1;
 }
 
+# Returns the last error reported by Net::Amazon::S3, readable by a human:
+# the message followed by the S3 error code, when both are known.
+sub __s3_errstr($)
+{
+    my ($s3) = @_;
+    my $code = $s3->err;
+    my $msg  = $s3->errstr;
+    $code = undef unless defined $code and length $code;
+    $msg  = undef unless defined $msg and length $msg;
+    return "$msg ($code)" if defined $msg and defined $code and $msg ne $code;
+    return $msg  if defined $msg;
+    return $code if defined $code;
+    return 'unknown error';
+}
+
+# Returns the bucket object for $name.
+sub __s3_bucket($$)
+{
+    my ($s3, $name) = @_;
+    return $s3->bucket($name);
+}
+
 # How to upload files to s3.
 # We'll use the Net::Amazon::S3 module here.
 sub send_files_with_s3($$$$$$)
@@ -979,14 +1001,25 @@ sub send_files_with_s3($$$$$$)
 
         print_info "Connected to $host";
 
-        my $bucket_obj = $s3->bucket($bucket);
+        my $bucket_obj = __s3_bucket($s3, $bucket);
 
         my $response = $bucket_obj->list;
 
-        if (not ( $response->{bucket} ) ) {
+        if (not ($response and $response->{bucket})) {
+            my $err = $s3->err;
+            # Older Net::Amazon::S3 versions may set no error code at all
+            # on a missing bucket: keep trying to create it in that case.
+            if (defined $err and length $err and $err ne 'NoSuchBucket') {
+                print_error "Cannot access bucket $bucket: " . __s3_errstr($s3)
+                    . " (if the bucket lives outside us-east-1, set BM_UPLOAD_S3_REGION)";
+                return FALSE;
+            }
             print_info "Bucket $bucket does not exist... creating";
-            $bucket_obj = $s3->add_bucket( { bucket => $bucket } );
-            print_error "Could not create bucket $bucket" if not ( $bucket_obj );
+            unless ($s3->add_bucket({ bucket => $bucket })) {
+                print_error "Could not create bucket $bucket: " . __s3_errstr($s3);
+                return FALSE;
+            }
+            $bucket_obj = __s3_bucket($s3, $bucket);
         }
 
         s3_clean_directory($bucket_obj) if ($g_s3clean);

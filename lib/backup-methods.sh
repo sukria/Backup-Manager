@@ -689,6 +689,24 @@ function __get_backup_tarball_command()
     echo "$nice_bin -n $BM_ARCHIVE_NICE_LEVEL $command"
 }
 
+# Tells check_error_code() which archiver produced the exit code, so the
+# archiver-specific "warning" codes (tar: 1, dar: 11) commit the archive
+# instead of being counted as failures.
+function __set_current_command_from_filetype()
+{
+    case "$BM_TARBALL_FILETYPE" in
+        tar|tar.gz|tar.bz2|tar.bz|tar.xz|tar.lzma|tar.zst)
+            BM__CURRENT_COMMAND="tar"
+        ;;
+        dar)
+            BM__CURRENT_COMMAND="dar"
+        ;;
+        *)
+            BM__CURRENT_COMMAND="generic"
+        ;;
+    esac
+}
+
 function build_clear_archive
 {
     debug "build_clear_archive ()"
@@ -711,7 +729,7 @@ function build_clear_archive
 
         # the common commandline
         *)
-            BM__CURRENT_COMMAND="generic"
+            __set_current_command_from_filetype
             debug "$command \"$file_to_create\" ${incremental_flags[*]} \"$target\" > $logfile 2>&1"
             tail_logfile "$logfile"
             $command "$file_to_create" "${incremental_flags[@]}" "$target" > $logfile 2>&1 || error_code=$?
@@ -813,8 +831,10 @@ function __build_remote_archive()
 
             debug "$remote_command > $file_to_create 2>$logfile"
             tail_logfile "$logfile"
+            __set_current_command_from_filetype
             $remote_command > "$file_to_create" 2>$logfile || error_code=$?
             check_error_code "$error_code" "$file_to_create" "$logfile"
+            BM__CURRENT_COMMAND=""
         else
             warning "File \$file_to_check already exists, skipping."
             continue

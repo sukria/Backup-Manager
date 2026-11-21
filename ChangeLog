@@ -1,3 +1,20 @@
+Backup Manager ${NEXT}
+
+    [ New features ]
+      * BM_MYSQL_SKIP_LOCKS: set it to "true" to dump MySQL/MariaDB
+        databases with --single-transaction --skip-lock-tables, so they
+        stay writable during the backup. Only InnoDB (and other
+        transactional) tables are guaranteed to be consistent this way.
+        Unset or "false" keeps the previous behaviour (closes #54). (Kōan)
+
+    [ Deprecations ]
+      * BM_MYSQL_SAFEDUMPS is deprecated and logs a warning when set. It only
+        added --opt, which mysqldump and mariadb-dump already enable by
+        default, so the dump does not change. Setting it to "false" never
+        disabled table locking; a second warning now points to
+        BM_MYSQL_SKIP_LOCKS. Remove the key from your configuration file;
+        it will be dropped in a future release. (Kōan)
+
 Backup Manager 1.0 "The Undead Release"
 
     First release since 0.7.15 (June 2018). It gathers everything that landed

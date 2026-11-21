@@ -1065,9 +1065,28 @@ function __backup_method_mysql_mariadb()
         error "The \"\$method\" method is chosen, but \$dump_bin is not found."
     fi
 
+    # BM_MYSQL_SAFEDUMPS is deprecated (#54): --opt is already the default of
+    # mysqldump and mariadb-dump. It keeps its behaviour until it is removed.
     opt=""
+    if [[ -n "$BM_MYSQL_SAFEDUMPS" ]]; then
+        warning "The configuration key BM_MYSQL_SAFEDUMPS is deprecated and will be removed in a future release: --opt is already enabled by default. Remove it from your configuration file."
+    fi
     if [[ "$BM_MYSQL_SAFEDUMPS" = "true" ]]; then
         opt="--opt"
+    fi
+    if [[ "$BM_MYSQL_SAFEDUMPS" = "false" ]] && [[ "$BM_MYSQL_SKIP_LOCKS" != "true" ]]; then
+        warning "BM_MYSQL_SAFEDUMPS is false, but this does not disable table locking. Set BM_MYSQL_SKIP_LOCKS to true to dump without locking tables."
+    fi
+
+    # Dump from a consistent snapshot instead of locking the tables.
+    # --skip-lock-tables must come after --opt, which turns locking on.
+    lock_opt=""
+    if [[ "$BM_MYSQL_SKIP_LOCKS" = "true" ]]; then
+        if [[ "$BM_MYSQL_EXTRA_OPTIONS" =~ (^|[[:space:]])(--lock-all-tables|-x)([[:space:]=]|$) ]]; then
+            error "BM_MYSQL_SKIP_LOCKS is true, but BM_MYSQL_EXTRA_OPTIONS asks for --lock-all-tables. Remove one of them."
+        fi
+        lock_opt="--single-transaction --skip-lock-tables"
+        info "Dumping without table locks: only InnoDB and other transactional tables are guaranteed to be consistent."
     fi
 
     # if a MySQL Client conffile exists, the password must be inside
@@ -1094,7 +1113,7 @@ function __backup_method_mysql_mariadb()
     fi
 
     if [ -n "$BM_MYSQL_PORT" ]; then BM_MYSQL_PORT_OPT="-P$BM_MYSQL_PORT"; else BM_MYSQL_PORT_OPT=""; fi
-    base_command="$dump_bin $mysql_defaults_opt $opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST $BM_MYSQL_PORT_OPT $BM_MYSQL_EXTRA_OPTIONS"
+    base_command="$dump_bin $mysql_defaults_opt $opt $lock_opt -u$BM_MYSQL_ADMINLOGIN -h$BM_MYSQL_HOST $BM_MYSQL_PORT_OPT $BM_MYSQL_EXTRA_OPTIONS"
     compress="$BM_MYSQL_FILETYPE"
 
     # get each DB name if backing up separately

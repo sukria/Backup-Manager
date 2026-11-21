@@ -209,12 +209,17 @@ export BM_TARBALLINC_MASTERDATEVALUE="1"
 # Wildcard: __ALL__ (will dump all the databases in one archive)
 export BM_MYSQL_DATABASES="__ALL__"
 
-# The best way to produce MySQL dump is done by using the "--opt" switch
-# of mysqldump. This make the dump directly usable with mysql (add the drop table
-# statements), lock the tables during the dump and other things.
-# This is recommended for full-clean-safe backups, but needs a
-# privileged user (for the lock permissions).
-export BM_MYSQL_SAFEDUMPS="true"
+# BM_MYSQL_SAFEDUMPS is deprecated and triggers a warning when set: it only
+# added "--opt", which mysqldump and mariadb-dump already enable by default.
+# Setting it to "false" never disabled table locking; use BM_MYSQL_SKIP_LOCKS.
+
+# Set to "true" to dump without locking tables: mysqldump/mariadb-dump gets
+# "--single-transaction --skip-lock-tables" and reads a consistent snapshot
+# instead. Recommended for large InnoDB databases that must stay writable
+# during the backup. Tables using a non-transactional engine (MyISAM, Aria,
+# MEMORY) are then dumped without any lock and may be inconsistent.
+# Cannot be combined with --lock-all-tables in BM_MYSQL_EXTRA_OPTIONS.
+export BM_MYSQL_SKIP_LOCKS="false"
 
 # The user who is allowed to read every databases filled in BM_MYSQL_DATABASES
 export BM_MYSQL_ADMINLOGIN="root"

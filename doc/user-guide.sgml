@@ -891,20 +891,47 @@ export BM_MYSQL_DATABASES="mysql mybase wordpress dotclear phpbb2"
 
 <sect2 id="BM_MYSQL_SAFEDUMPS"><tt>BM_MYSQL_SAFEDUMPS</tt>
 <p>
-<em>Type: boolean, default: <tt>true</tt>.</em>
+<em>Type: boolean, deprecated.</em>
 
 <p>
-The best way to produce MySQL dumps is done by using mysqldump's <tt>--opt</tt> switch. 
-This makes the dump directly usable with mysql (adds the drop table
-statements), locks tables during the dump generation and other cool things (see <tt>mysqldump</tt>).
-This is recommended for full-clean-safe backups, but needs a 
-privileged user (for the lock permissions).
+This key is deprecated and will be removed in a future release. Backup
+Manager logs a warning whenever it is set; remove it from your
+configuration file.
+
+<p>
+When set to <tt>true</tt>, it adds <tt>--opt</tt> to the dump command: drop
+table statements, extended inserts, quick mode and table locks (see
+<tt>mysqldump</tt>). Since MySQL 4.1, and in every MariaDB release,
+<tt>--opt</tt> is already enabled by default, so this key does not change
+the dump on supported servers.
+
+<p>
+Setting it to <tt>false</tt> does <em>not</em> disable table locking. To
+dump without locking the tables, use <tt>BM_MYSQL_SKIP_LOCKS</tt>.
+
+<sect2 id="BM_MYSQL_SKIP_LOCKS"><tt>BM_MYSQL_SKIP_LOCKS</tt>
+<p>
+<em>Type: boolean, default: <tt>false</tt>.</em>
+
+<p>
+By default, <tt>mysqldump</tt> and <tt>mariadb-dump</tt> lock the tables
+of each database while dumping it, which blocks writes for as long as the
+dump takes. When set to <tt>true</tt>, Backup Manager adds
+<tt>--single-transaction --skip-lock-tables</tt>: the dump reads a
+consistent snapshot and the database stays writable.
+
+<p>
+Only transactional engines such as InnoDB get a consistent dump this way.
+Tables using MyISAM, Aria or MEMORY are read without any lock and may be
+inconsistent. This option cannot be combined with
+<tt>--lock-all-tables</tt> in <tt>BM_MYSQL_EXTRA_OPTIONS</tt>; Backup
+Manager stops with an error if both are set.
 
 <p>
 Example:
 
 <example>
-export BM_MYSQL_SAFEDUMPS="true"
+export BM_MYSQL_SKIP_LOCKS="true"
 </example>
 
 

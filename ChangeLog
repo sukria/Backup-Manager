@@ -15,6 +15,15 @@ Backup Manager ${NEXT}
         BM_MYSQL_SKIP_LOCKS. Remove the key from your configuration file;
         it will be dropped in a future release. (Kōan)
 
+    [ Bug fixes ]
+      * S3 upload: an archive is only recorded in BM_UPLOADED_ARCHIVES once
+        every one of its keys is confirmed in the bucket. A rejected upload,
+        or one missing from the bucket listing, is now reported, makes the
+        upload exit with code 22 and is retried by the next run, as does an
+        archive that could not be split into chunks. The
+        confirmation and the purge list the whole bucket instead of its
+        first 1000 keys (closes #170). (Kōan)
+
 Backup Manager 1.0 "The Undead Release"
 
     First release since 0.7.15 (June 2018). It gathers everything that landed

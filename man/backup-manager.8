@@ -27,6 +27,12 @@ installed in `/usr/share/backup-manager/backup-manager.conf.tpl'.
 .P
 If you want exhaustive details about how to write your own configuration files,
 please refer to the Backup Manager User Guide.
+.P
+Configuration keys that have been renamed and retired make Backup Manager stop
+with an error naming the new key. The script
+`/usr/lib/backup-manager/contrib/upgrade-conffile.sh' renames them in a
+configuration file. The list of renamed keys is in the "Renamed configuration
+keys" section of the Backup Manager User Guide.
 .SH OPTIONS
 .P
 .B --version

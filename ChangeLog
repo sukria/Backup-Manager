@@ -1,5 +1,23 @@
 Backup Manager ${NEXT}
 
+    [ Breaking changes ]
+      * The configuration keys renamed in the 0.5.x series are retired. They
+        were still honoured with a warning; a configuration file that sets
+        one of them now makes backup-manager stop with an error naming the
+        new key, before any backup or purge. Simply dropping them would
+        have been worse: the new keys would have fallen back on their
+        defaults, e.g. BM_MAX_TIME_TO_LIVE="90" ignored means
+        BM_ARCHIVE_TTL="5". The retired keys are BM_ARCHIVES_REPOSITORY,
+        BM_ARCHIVES_PREFIX, BM_BACKUP_METHOD, BM_MAX_TIME_TO_LIVE,
+        BM_PURGE_DUPLICATES, BM_USER, BM_GROUP, BM_FILETYPE, BM_NAME_FORMAT,
+        BM_DIRECTORIES_BLACKLIST, BM_DUMP_SYMLINKS, BM_UPLOAD_MODE,
+        BM_UPLOAD_DIR, BM_UPLOAD_KEY, BM_UPLOAD_USER, BM_UPLOAD_PASSWD,
+        BM_FTP_PURGE and BM_UPLOAD_FTPPURGE. Run
+        contrib/upgrade-conffile.sh on your configuration file to rename
+        them; the user guide lists the new names (closes #166). (Kōan)
+      * Booleans set to "yes" or "no" are refused the same way, use "true"
+        or "false". contrib/upgrade-conffile.sh rewrites them. (Kōan)
+
     [ New features ]
       * BM_MYSQL_SKIP_LOCKS: set it to "true" to dump MySQL/MariaDB
         databases with --single-transaction --skip-lock-tables, so they
@@ -14,6 +32,13 @@ Backup Manager ${NEXT}
         disabled table locking; a second warning now points to
         BM_MYSQL_SKIP_LOCKS. Remove the key from your configuration file;
         it will be dropped in a future release. (Kōan)
+      * BM_DIRECTORIES, silently used as BM_TARBALL_DIRECTORIES so far, now
+        warns that it should be renamed. (Kōan)
+
+    [ Bug fixes ]
+      * contrib/upgrade-conffile.sh renamed BM_FTP_PURGE to a deprecated
+        key, and did not handle the BM_UPLOAD_* keys nor yes/no booleans.
+        (Kōan)
 
     [ Bug fixes ]
       * S3 upload: an archive is only recorded in BM_UPLOADED_ARCHIVES once

@@ -164,7 +164,7 @@ writable) by any user in the system. This mode is enabled by default (owned by
 <tt>root:root</tt>).
 
 <p> To enable this mode, set the configuration key <tt>BM_REPOSITORY_SECURE</tt>
-to <tt>yes</tt>, then update <tt>BM_REPOSITORY_USER</tt> and
+to <tt>true</tt>, then update <tt>BM_REPOSITORY_USER</tt> and
 <tt>BM_REPOSITORY_GROUP</tt> to your needs.
 
 <p>
@@ -1849,6 +1849,77 @@ Example with a custom script:
 <example>
 export BM_POST_BACKUP_COMMAND="/usr/local/bin/backup-cleanup.pl $TODAY"
 </example>
+
+<sect id="renamed-keys">Renamed configuration keys
+
+<p>
+Some configuration keys have been renamed over time. A renamed key goes
+through two steps:
+
+<list>
+<item><em>Deprecated</em>: the old name still works. Its value is used for the
+new key, and &bmngr; warns that the key should be renamed.
+<item><em>Retired</em>: the old name does not work anymore. If your
+configuration file still sets it, &bmngr; stops with an error naming the new
+key, before taking any backup. It never ignores the old key silently: the new
+key would then fall back on its default value, and your archives would be
+written to another repository, or purged with another time to live.
+</list>
+
+<p>
+The script <tt>contrib/upgrade-conffile.sh</tt>, installed in
+<tt>/usr/lib/backup-manager/contrib/</tt> (or
+<tt>/usr/local/lib/backup-manager/contrib/</tt>), renames every retired and
+deprecated key of a configuration file. It shows the changes and asks before
+applying them:
+
+<example>
+/usr/lib/backup-manager/contrib/upgrade-conffile.sh /etc/backup-manager.conf
+</example>
+
+<sect1 id="retired-keys">Retired keys
+
+<p>
+These keys date from the 0.5.x series and were retired in version 1.1:
+
+<list>
+<item><tt>BM_ARCHIVES_REPOSITORY</tt> is now <tt>BM_REPOSITORY_ROOT</tt>.
+<item><tt>BM_ARCHIVES_PREFIX</tt> is now <tt>BM_ARCHIVE_PREFIX</tt>.
+<item><tt>BM_BACKUP_METHOD</tt> is now <tt>BM_ARCHIVE_METHOD</tt>.
+<item><tt>BM_MAX_TIME_TO_LIVE</tt> is now <tt>BM_ARCHIVE_TTL</tt>.
+<item><tt>BM_PURGE_DUPLICATES</tt> is now <tt>BM_ARCHIVE_PURGEDUPS</tt>.
+<item><tt>BM_USER</tt> is now <tt>BM_REPOSITORY_USER</tt>.
+<item><tt>BM_GROUP</tt> is now <tt>BM_REPOSITORY_GROUP</tt>.
+<item><tt>BM_FILETYPE</tt> is now <tt>BM_TARBALL_FILETYPE</tt>.
+<item><tt>BM_NAME_FORMAT</tt> is now <tt>BM_TARBALL_NAMEFORMAT</tt>.
+<item><tt>BM_DIRECTORIES_BLACKLIST</tt> is now <tt>BM_TARBALL_BLACKLIST</tt>.
+<item><tt>BM_DUMP_SYMLINKS</tt> is now <tt>BM_TARBALL_DUMPSYMLINKS</tt>.
+<item><tt>BM_UPLOAD_MODE</tt> is now <tt>BM_UPLOAD_METHOD</tt>.
+<item><tt>BM_UPLOAD_DIR</tt> is now <tt>BM_UPLOAD_DESTINATION</tt>.
+<item><tt>BM_UPLOAD_KEY</tt> is now <tt>BM_UPLOAD_SSH_KEY</tt>.
+<item><tt>BM_UPLOAD_PASSWD</tt> is now <tt>BM_UPLOAD_FTP_PASSWORD</tt>.
+<item><tt>BM_FTP_PURGE</tt> is now <tt>BM_UPLOAD_FTP_PURGE</tt>.
+<item><tt>BM_UPLOAD_FTPPURGE</tt> is now <tt>BM_UPLOAD_FTP_PURGE</tt>.
+<item><tt>BM_UPLOAD_USER</tt> is now <tt>BM_UPLOAD_SSH_USER</tt> for the
+<tt>ssh</tt>, <tt>ssh-gpg</tt> and <tt>rsync</tt> upload methods, and
+<tt>BM_UPLOAD_FTP_USER</tt> for the <tt>ftp</tt> upload method. The upgrade
+script sets both.
+</list>
+
+<p>
+Booleans only accept <tt>true</tt> and <tt>false</tt> since version 1.1. A key
+set to <tt>yes</tt> or <tt>no</tt> stops &bmngr; with an error; set it to
+<tt>true</tt> or <tt>false</tt> instead.
+
+<sect1 id="deprecated-keys">Deprecated keys
+
+<p>
+These keys still work, with a warning, and will be retired in a future
+version:
+
+<list>
+<item><tt>BM_DIRECTORIES</tt> is now <tt>BM_TARBALL_DIRECTORIES</tt>.
+</list>
 
 <chapt id="using">Using &bmngr;
 <p>

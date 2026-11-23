@@ -689,6 +689,24 @@ function __get_backup_tarball_command()
     echo "$nice_bin -n $BM_ARCHIVE_NICE_LEVEL $command"
 }
 
+# Tells check_error_code() which archiver produced the exit code, so the
+# archiver-specific "warning" codes (tar: 1, dar: 11) commit the archive
+# instead of being counted as failures.
+function __set_current_command_from_filetype()
+{
+    case "$BM_TARBALL_FILETYPE" in
+        tar|tar.gz|tar.bz2|tar.bz|tar.xz|tar.lzma|tar.zst)
+            BM__CURRENT_COMMAND="tar"
+        ;;
+        dar)
+            BM__CURRENT_COMMAND="dar"
+        ;;
+        *)
+            BM__CURRENT_COMMAND="generic"
+        ;;
+    esac
+}
+
 function build_clear_archive
 {
     debug "build_clear_archive ()"
@@ -711,7 +729,7 @@ function build_clear_archive
 
         # the common commandline
         *)
-            BM__CURRENT_COMMAND="generic"
+            __set_current_command_from_filetype
             debug "$command \"$file_to_create\" ${incremental_flags[*]} \"$target\" > $logfile 2>&1"
             tail_logfile "$logfile"
             $command "$file_to_create" "${incremental_flags[@]}" "$target" > $logfile 2>&1 || error_code=$?
@@ -745,8 +763,22 @@ function build_encrypted_archive
     debug "$command - ${incremental_flags[*]} \"$target\" 2>>$logfile | $gpg $BM__GPG_HOMEDIR -r \"$BM_ENCRYPTION_RECIPIENT\" -e > \"$file_to_create\" 2>> $logfile"
     tail_logfile "$logfile"
 
-    $command - "${incremental_flags[@]}" "$target" 2>>$logfile | $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > "$file_to_create" 2>> $logfile || error_code=$?
+    # $? of the pipeline is only gpg's status: keep tar's status too, so a
+    # tar failure is not committed and tar exit 1 is handled as a warning.
+    # The group runs in a || list so that "set -e" does not abort on failure.
+    pipe_status=(0 0)
+    { $command - "${incremental_flags[@]}" "$target" 2>>$logfile | $gpg $BM__GPG_HOMEDIR -r "$BM_ENCRYPTION_RECIPIENT" -e > "$file_to_create" 2>> $logfile
+      pipe_status=("${PIPESTATUS[@]}"); } || true
+
+    if [[ "${pipe_status[1]}" != "0" ]]; then
+        BM__CURRENT_COMMAND="generic"
+        error_code="${pipe_status[1]}"
+    else
+        __set_current_command_from_filetype
+        error_code="${pipe_status[0]}"
+    fi
     check_error_code "$error_code" "$file_to_create" "$logfile"
+    BM__CURRENT_COMMAND=""
 }
 
 function __build_local_archive()
@@ -813,8 +845,10 @@ function __build_remote_archive()
 
             debug "$remote_command > $file_to_create 2>$logfile"
             tail_logfile "$logfile"
+            __set_current_command_from_filetype
             $remote_command > "$file_to_create" 2>$logfile || error_code=$?
             check_error_code "$error_code" "$file_to_create" "$logfile"
+            BM__CURRENT_COMMAND=""
         else
             warning "File \$file_to_check already exists, skipping."
             continue

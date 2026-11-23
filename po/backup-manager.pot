@@ -745,9 +745,14 @@ msgstr ""
 msgid "Unable to find the pattern of the file."
 msgstr ""
 
-#: ../lib/files.sh:431
+#: ../lib/files.sh:443
 #, sh-format
-msgid "Unable to find the md5 hash of file \"$file\" in file \"$MD5FILE\"."
+msgid "No md5 hash recorded for \"$file\" in \"$MD5FILE\", computing it."
+msgstr ""
+
+#: ../lib/files.sh:447
+#, sh-format
+msgid "Unable to compute the md5 hash of file \"$file\"."
 msgstr ""
 
 #: ../lib/files.sh:437

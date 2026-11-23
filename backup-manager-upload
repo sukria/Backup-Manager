@@ -838,6 +838,54 @@ sub ftptls_put_file ($$)
 ##############################################################
 # {{{
 
+# List every key of an S3 bucket.
+# list() returns at most 1000 keys per call; list_all() follows the markers
+# until the whole bucket is listed. Net::Amazon::S3 releases lacking
+# list_all() are paged by hand.
+# Returns a reference to the array of keys, or (undef, reason) if the
+# listing failed.
+sub s3_list_keys($)
+{
+    my ($bucket) = @_;
+    if ($bucket->can('list_all')) {
+        my $response = eval { $bucket->list_all };
+        return (undef, $@) unless defined $response
+                              and ref $response eq 'HASH'
+                              and ref $response->{keys} eq 'ARRAY';
+        return $response->{keys};
+    }
+
+    my @keys;
+    my $marker;
+    while (1) {
+        my $response = eval {
+            $bucket->list(defined $marker ? { marker => $marker } : {});
+        };
+        return (undef, $@) unless defined $response
+                              and ref $response eq 'HASH'
+                              and ref $response->{keys} eq 'ARRAY';
+        push @keys, @{$response->{keys}};
+        last unless $response->{is_truncated} and @{$response->{keys}};
+        $marker = $response->{next_marker} || $response->{keys}[-1]{key};
+    }
+    return \@keys;
+}
+
+# Return a readable description of the last S3 error: the exception thrown
+# by Net::Amazon::S3 if any, its err/errstr otherwise.
+sub s3_error_string($$)
+{
+    my ($s3, $exception) = @_;
+    if (defined $exception and length $exception) {
+        chomp $exception;
+        return $exception;
+    }
+    my $err = $s3->can('err') ? $s3->err : undef;
+    my $errstr = $s3->can('errstr') ? $s3->errstr : undef;
+    return join(': ', grep { defined and length } ($err, $errstr))
+        || 'unknown error';
+}
+
 # Function for purging a directory
 # from S3, the same way as the repository is purged.
 # Every files with a date field too old according to BM_ARCHIVE_TTL
@@ -854,8 +902,14 @@ sub s3_clean_directory($)
     my $date_to_remove = `date +%Y%m%d --date "$BM_ARCHIVE_TTL days ago"`;
     chomp $date_to_remove;
 
-    my $response = $bucket->list;
-    my @keys = @{ $response->{keys} };
+    my ($ra_keys, $list_error) = s3_list_keys($bucket);
+    unless (defined $ra_keys) {
+        chomp $list_error if defined $list_error;
+        print_error "Unable to list the keys of the bucket, cannot purge it: "
+                  . ($list_error || 'unknown error');
+        return 0;
+    }
+    my @keys = @{$ra_keys};
 
     foreach my $key (@keys) {
     my $date = undef;
@@ -901,11 +955,15 @@ sub send_files_with_s3($$$$$$)
 
     my $totalbytes = 0;
     my $starttime = time();
-    my %uploaded;
+    my $success = TRUE;
     my $backup_bucket;
 
     # loop on each hosts given and connect to them.
     foreach my $host (@{$ra_hosts}) {
+        # key name => size of every key sent to this host
+        my %uploaded;
+        # [archive, [its keys]] for every archive fully sent to this host
+        my @sent_files;
         my $s3 = Net::Amazon::S3->new(
             {   
                 aws_access_key_id => $user,
@@ -945,26 +1003,40 @@ sub send_files_with_s3($$$$$$)
                     print_error "Could not run '$cmd' to split $file into chunks of size $g_s3max_size";
                     # remove any partial chunks left behind by split
                     unlink bsd_glob(glob_escape($split_prefix) . "*");
+                    $success = FALSE;
                     next;
                 } else {
                     @splits = bsd_glob(glob_escape($split_prefix) . "*");
                 }
             }
 
+            my @file_keys;
+            my $file_uploaded = TRUE;
             for my $split (@splits) {
                 my $filename = basename($split);
                 my $file_length = stat($split)->size;
 
                 print_info "opened $split of length $file_length and will name the key $filename";
 
+                # Depending on its version, Net::Amazon::S3 either returns
+                # false or dies when the upload fails: handle both.
+                my $added = eval {
+                    $bucket_obj->add_key_filename(
+                        $filename, $split,
+                        {
+                            content_type => "application/binary"
+                        }
+                    );
+                };
+                unless ($added) {
+                    print_error "Unable to upload $split to bucket $bucket on $host: "
+                              . s3_error_string($s3, $@);
+                    $file_uploaded = FALSE;
+                    last;
+                }
                 $totalbytes += $file_length;
-                $bucket_obj->add_key_filename(
-                    $filename, $split,
-                    {
-                        content_type => "application/binary"
-                    }
-                );
                 $uploaded{$filename} = $file_length;
+                push @file_keys, $filename;
             }
             # The chunks are only temporary copies of the original archive,
             # which is kept: remove them to avoid wasting disk space.
@@ -974,32 +1046,58 @@ sub send_files_with_s3($$$$$$)
                         or print_warning "Unable to remove chunk $split: $!";
                 }
             }
-            # For the S3 method, we assume success in any case.
-            appendto_uploaded_archives($file, $host);
+            if ($file_uploaded) {
+                push @sent_files, [$file, \@file_keys];
+            }
+            else {
+                # Not recorded as uploaded, so the next run retries it.
+                $success = FALSE;
+            }
         }
 
-        # get a list of files and confirm uploads
-        $response = $bucket_obj->list;
-        my @keys = @{ $response->{keys} };
-        foreach my $key ( @keys ) {
+        # Get the list of keys from the bucket and confirm the uploads.
+        my %confirmed;
+        my ($ra_keys, $list_error) = s3_list_keys($bucket_obj);
+        if (not defined $ra_keys) {
+            # Nothing can be confirmed, so nothing gets recorded.
+            print_error "Unable to list the keys of bucket $bucket on $host, "
+                      . "cannot confirm the uploads: " . s3_error_string($s3, $list_error);
+            $success = FALSE;
+            $ra_keys = [];
+            %uploaded = ();
+        }
+        foreach my $key (@{$ra_keys}) {
             if (not defined $uploaded{$key->{key}}) {
                 next;
             }
             if ($key->{size} == $uploaded{$key->{key}}) {
                 print_info $key->{key} . " uploaded sucessfully";
-                delete $uploaded{$key->{key}};
-            } 
+                $confirmed{$key->{key}} = TRUE;
+            }
             else {
                 print_error $key->{key} . " did not upload sucessfully. S3 reports $key is " . $key->{size} . " bytes rather than " . $uploaded{$key->{key}};
-                delete $uploaded{$key->{key}};
-                return FALSE;
+                $success = FALSE;
+            }
+            delete $uploaded{$key->{key}};
+        }
+        # Whatever is left was sent but is missing from the bucket.
+        foreach my $key (sort keys %uploaded) {
+            print_error "$key did not upload sucessfully. It is missing from bucket $bucket on $host";
+            $success = FALSE;
+        }
+
+        # Only archives whose every key is confirmed are recorded as uploaded.
+        foreach my $sent (@sent_files) {
+            my ($file, $ra_file_keys) = @{$sent};
+            if (not grep { not $confirmed{$_} } @{$ra_file_keys}) {
+                appendto_uploaded_archives($file, $host);
             }
         }
     }
 
     print_info ("Uploaded $totalbytes bytes of data to S3 in " 
              .  (time() - $starttime) . " seconds");
-    return TRUE;
+    return $success;
 }
 
 # }}}

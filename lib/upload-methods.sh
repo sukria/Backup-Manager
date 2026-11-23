@@ -165,9 +165,13 @@ function bm_upload_s3()
     if [[ "$BM_UPLOAD_S3_PURGE" = "true" ]]; then
         s3_purge_switch="--s3-purge"
     fi
+    s3_region_switch=""
+    if [[ -n "$BM_UPLOAD_S3_REGION" ]]; then
+        s3_region_switch="--s3-region=$BM_UPLOAD_S3_REGION"
+    fi
  
     logfile="$(mktemp ${BM_TEMP_DIR}/bmu-log.XXXXXX)"
-    $bmu $v_switch $s3_purge_switch \
+    $bmu $v_switch $s3_purge_switch $s3_region_switch \
         -m="s3" \
         -h="$bm_upload_hosts" \
         -u="$BM_UPLOAD_S3_ACCESS_KEY" \

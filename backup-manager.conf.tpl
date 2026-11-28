@@ -67,6 +67,13 @@ export BM_ARCHIVE_STRICTPURGE="true"
 # Choose a nice level from -20 (most favorable scheduling) to 19 (least favorable).
 export BM_ARCHIVE_NICE_LEVEL="10"
 
+# By default, backup-manager exits 0 even if some archives failed
+# to build. Set this to "true" to exit with code 3 in that case,
+# so cron jobs and monitoring can notice the failure.
+# Only failures of the tarball and tarball-incremental methods
+# are counted for now.
+export BM_EXIT_ON_ERROR="false"
+
 # The backup method to use.
 # Available methods are:
 # - tarball
